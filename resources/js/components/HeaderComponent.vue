@@ -227,5 +227,6 @@ export default {
 .icon__wrapper-active{
     background: rgb(16, 163, 127);
     color: #ffffff;
+    font-size: 12px;
 }
 </style>
