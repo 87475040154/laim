@@ -1,0 +1,175 @@
+// Fonts
+@import 'fonts';
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+
+html{
+    font-family: 'Open-Sans', sans-serif;
+}
+
+body{
+    padding-right: 0!important;
+}
+
+/* Отменяем стили автозаполнения - иначе фон у инпут становился светлым */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+// ТЕМА ПРИЛОЖЕНИЕ - ТЕМНА СВЕТЛАЯ
+/* Light Theme */
+:root {
+    --app-bg-color: #e6e6e6;
+    --app-text-color: #000000;
+    --app-header-bg-color: #10a37F;
+}
+
+/* Dark Theme */
+.dark-theme {
+    --app-bg-color: rgb(43,43,49);
+    --app-text-color: #ffffff;
+    --app-header-bg-color: #10a37F;
+}
+
+
+
+.title_style{
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 32px;
+    color: rgb(0, 0, 0);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    overflow-wrap: break-word;
+}
+
+//Класс скрывает рекапчу 3версии
+.grecaptcha-badge {
+    display: none;
+}
+
+//------------------ СТИЛИ ДЛЯ КНОПОК -------------------//
+
+
+// -------------------Стили для скролбара ----------------------//
+.desktop__device{
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 0px;
+        background: none!important;
+    }
+    ::-webkit-scrollbar-thumb {
+         border-radius: 10px;
+         background-color: #606060;
+     }
+    ::-webkit-scrollbar-track {
+          background: #edeef0;
+      }
+}
+.mobile__device{
+    ::-webkit-scrollbar { /* chrome based */
+        width: 0px;  /* ширина scrollbar'a */
+        height: 0px;
+        background: transparent;  /* опционально */
+    }
+    -ms-overflow-style: none;  /* IE 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+
+
+/////////////////////////////////////////////Пагинация
+.pagination{
+    font-weight: bold;
+}
+
+.page-link{
+    color: #00796b;
+}
+
+.page-link:hover{
+    color: #29a188;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #00796b;
+    border-color: #00796b;
+}
+
+//Убираем надпись current с пагинации
+.pagination-page-nav.active>a>span{
+    display: none!important;
+}
+//---------------------ПОЛЯ ФОРМЫ ----------------------||
+.form{
+    width: 100%;
+
+    /* Отмена выделения текста */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Обвертка для поля */
+.form-group{
+    padding: 10px;
+}
+
+/* Для текста ошибок валидации */
+.text__error{
+    font-size: 0.8em;
+    color: #f85c5c;
+}
+
+
+
+//Отменяем свечение
+textarea, input, button{
+    box-shadow: none !important;
+}
+
+
+//////////////////////////////////////
+.PATCH_modal {  // Отменяем прокрутку фона модальных окон
+    touch-action: none;
+    overscroll-behavior: none;
+    overflow: hidden;
+    -webkit-overflow-scrolling: auto;
+}
+
+/* При экране менее 768px для mobile */
+@media screen and (min-width: 768px){
+    .PATCH_modal {  // Отменяем прокрутку фона модальных окон
+        padding-right: 8px!important;
+    }
+}
+
+
+//Для пакета sweetalert2
+.swal2-radio{
+display: flex!important;
+flex-direction: column!important;
+align-items: flex-start!important;
+margin: 0!important;
+}
+
+.swal2-container.swal2-backdrop-show, .swal2-container.swal2-noanimation {
+z-index: 10000!important;
+}
+
+.swal2-popup, .swal2-toast, .swal2-title, .swal2-html-container{
+text-align: center!important;
+}
+

@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "kz.laim",
+        "sha256_cert_fingerprints": ["71:83:C9:78:D1:56:43:E6:7C:87:1A:F6:BD:CB:13:AC:89:4B:50:F5:17:66:75:EA:DD:88:80:CE:EF:86:1B:4A"]
+      }
+    }]

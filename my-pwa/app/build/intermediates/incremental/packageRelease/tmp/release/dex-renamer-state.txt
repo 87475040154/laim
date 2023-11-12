@@ -1,0 +1,4 @@
+#Sat May 13 19:19:40 ALMT 2023
+base.0=C\:\\OpenServer\\domains\\laim-2.kz\\my-pwa\\app\\build\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

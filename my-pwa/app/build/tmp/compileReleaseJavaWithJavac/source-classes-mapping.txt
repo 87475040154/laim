@@ -1,0 +1,8 @@
+kz/laim/BuildConfig.java
+ kz.laim.BuildConfig
+kz/laim/DelegationService.java
+ kz.laim.DelegationService
+kz/laim/Application.java
+ kz.laim.Application
+kz/laim/LauncherActivity.java
+ kz.laim.LauncherActivity
