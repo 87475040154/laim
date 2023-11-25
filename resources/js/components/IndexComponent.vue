@@ -75,18 +75,12 @@
 
 
                 <!-- Блок с пагинацией  - покажется если найденно более 30 объявлений -->
-                <div class="mt-3" >
+                <div v-if="authStore.desktopOrMobile == 'Desktop'" class="mt-3" >
 
                     <!-- Экран более - 768 px-->
                     <Bootstrap5Pagination :align="'center'" :limit="3" :data="ads_arr"
                                           @pagination-change-page="(page)=> $router.push({name: 'allAds', params: {table_name: $route.params.table_name, page: page}})"
                                           class="d-none d-md-flex"
-                    ></Bootstrap5Pagination>
-
-                    <!-- Экран менее - 768 px-->
-                    <Bootstrap5Pagination :align="'center'" :limit="1" :data="ads_arr"
-                                          @pagination-change-page="(page)=> $router.push({name: 'allAds', params: {table_name: $route.params.table_name, page: page}})"
-                                          class="d-md-none"
                     ></Bootstrap5Pagination>
 
                 </div>
@@ -113,6 +107,16 @@
     <div style="position: relative; z-index: 2">
         <router-view></router-view>
     </div>
+
+    <div v-if="authStore.desktopOrMobile != 'Desktop'">
+        <!-- Реализуем бесконечную прокрутку -->
+        <div ref="scrollObserver"></div>
+        <!-- Показывать загрузчик или сообщение о конце списка -->
+        <div v-if="loading">Loading...</div>
+        <div v-else-if="!canLoadMore">No more posts</div>
+    </div>
+
+
 
 </template>
 
@@ -167,7 +171,13 @@ export default {
             //Кнопка объекты на карте - Показать если есть выбранная локация области
             showMapButton: false,
 
-            updateGoryachieRightPanel: false
+            updateGoryachieRightPanel: false,
+
+            //Для бесконечной прокрутки
+            loading: false,
+            canLoadMore: true,
+            page: 2,
+            perPage: 10,
         }
     },
 
@@ -250,6 +260,10 @@ export default {
     },
 
     methods: {
+
+        test(){
+            console.log('123123123')
+        },
 
         //Метод - Получить объявления выбранной категории
         async getAds() {
@@ -348,11 +362,85 @@ export default {
             }
         },
 
+        // Для бесконечной прокрутки
+        loadMore() {
+
+            if (this.loading || !this.canLoadMore) {
+                return;
+            }
+
+            const scrollObserver = this.$refs.scrollObserver;
+            const rect = scrollObserver.getBoundingClientRect();
+
+
+            if (rect.bottom - 1000 <= window.innerHeight) {
+                this.loading = true;
+
+                !this.authStore.check ? this.getMyLikeAds = false : '';
+                this.showBtnAppInstall = false;
+
+                //Получим данны фильтра с LocaleStorage если он применен
+                let filter = localStorage.getItem ("filter=" + this.$route.params.table_name ) == undefined ? '' : JSON.parse(localStorage.getItem ("filter=" + this.$route.params.table_name ));
+
+                //Получаю объявления
+                let url = this.$route.params.table_name == 'goryachie' ? '/getGoryachie' : 'getAllAds';
+
+                axios.get(url, {
+
+                    params: {
+                        page: this.page,
+                        user_id: useAuthStore().check ? useAuthStore().user.id : 0,
+                        table_name: this.$route.params.table_name,
+                        filter: filter == '' ? 'Фильтр не применен' : filter,
+                        getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
+                    }
+
+                })
+                    .then(response => {
+                        this.query = false;
+
+
+
+                        const newPosts = response.data.ads.data;
+                        if (newPosts.length > 0) {
+                            this.ads_arr.data = this.ads_arr.data.concat(newPosts);
+                            this.page++;
+                        }
+                        else {
+                            // Нет больше постов
+                            this.canLoadMore = false;
+                        }
+
+                        this.updateGoryachieRightPanel = !this.updateGoryachieRightPanel;
+
+                        //Метод проверить колличество - Фильтра
+                        this.filterLength(filter);
+
+                    })
+                    .catch((errors)=>{
+                        this.query = false;
+                        console.error('Error loading more posts', error);
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+
+            }
+        },
+        handleScroll() {
+            this.loadMore();
+        },
+
     },
 
     mounted(){
         localStorage.getItem('getMyLikeAds') != undefined ? this.getMyLikeAds = true: '';
+        window.addEventListener('scroll', this.handleScroll);
         this.getAds();
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll);
     },
 
 }
@@ -365,9 +453,9 @@ export default {
 
 .index-page__top-panel{
     display: flex;
-    gap: 4em;
-    background: #ffffff;
+    flex-grow: 1;
     align-items: center;
+    background: #ffffff;
     padding: 12px;
     border-radius: 10px;
     position: relative;
