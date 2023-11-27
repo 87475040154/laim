@@ -98,7 +98,7 @@
                         </v-btn>
 
                         <!-- Продолжить заполнять старое -->
-                        <v-btn @click="openModal(true)" variant="flat" size="large" color="blue" class="text-body-1">
+                        <v-btn @click="openModal(true)" variant="flat" size="large" color="blue-darken-1" class="text-body-1">
                             {{ $t('addAdsContinue') }}
                         </v-btn>
 
@@ -2311,7 +2311,7 @@ export default defineComponent({
     font-size: 1.1em;
     font-weight: 600;
     line-height: 1.5rem;
-    color: #000000
+    color: #8b9098
 }
 
 .form__input{
@@ -2320,8 +2320,8 @@ export default defineComponent({
 }
 
 .form__item{
-    background: #e6e6e6;
-    color: #000;
+    background: #f2f3f5;
+    color: #8b9098;
     cursor: pointer;
     padding: 10px 15px;
     margin: 2px 5px;
@@ -2330,7 +2330,7 @@ export default defineComponent({
 }
 
 .item__active{
-    background: #2196F3;
+    background: #2d81e1;
     color: #ffffff;
 }
 

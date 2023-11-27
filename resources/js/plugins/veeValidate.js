@@ -9,8 +9,8 @@ import {
 
 import { localize } from '@vee-validate/i18n';
 import ru from '@vee-validate/i18n/dist/locale/ru.json';
-import kz from '@vee-validate/i18n/dist/locale/kz.json';
 import en from '@vee-validate/i18n/dist/locale/en.json';
+import kz from '../../../node_modules/@vee-validate/i18n/dist/locale/kz.json';
 import { setLocale } from '@vee-validate/i18n';
 
 

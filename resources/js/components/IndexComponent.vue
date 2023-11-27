@@ -15,13 +15,13 @@
                 <v-badge floating v-if="countFilter > 0" :content="countFilter" color="error">
                     <i class="bi bi-hdd-stack-fill"></i>
                 </v-badge>
-                 <i v-else class="bi bi-hdd-stack-fill"></i>
+                <i v-else class="bi bi-hdd-stack-fill"></i>
 
                 <v-tooltip activator="parent" location="bottom">{{ $t('indexMakeFilter') }}</v-tooltip>
             </div>
 
             <!-- Кнопка показать мои лайки  -->
-            <span>
+            <div>
                 <v-icon v-if="$route.params.table_name != 'goryachie'"
                         @click="authStore.check ? getMyLike(): $router.push('/auth')"
                         :icon="getMyLikeAds ? 'mdi-heart' : 'mdi-heart-outline'"
@@ -29,20 +29,17 @@
                         class="icon__heart"
                 ></v-icon>
                 <v-tooltip activator="parent" location="bottom">{{ $t('indexMyFavorites') }}</v-tooltip>
-            </span>
-
+            </div>
 
             <!-- Выбор языка -->
-            <span  class="flex-grow-1">
-                <span role="button">
-                    <span @click="$router.push({name: 'lang', params: {table_name: $route.params.table_name, page: $route.params.page}})">{{ updateDateLocaleStore.lang == 'kz' ? 'Қаз': '' }}</span>
-                    <span @click="$router.push({name: 'lang', params: {table_name: $route.params.table_name, page: $route.params.page}})">{{ updateDateLocaleStore.lang == 'ru' ? 'Рус': '' }}</span>
-                    <span @click="$router.push({name: 'lang', params: {table_name: $route.params.table_name, page: $route.params.page}})">{{ updateDateLocaleStore.lang == 'en' ? 'Eng': '' }}</span>
+            <div role="button">
+                <span @click="$router.push({name: 'lang', params: {table_name: $route.params.table_name, page: $route.params.page}})">{{ updateDateLocaleStore.lang == 'kz' ? 'Қаз': '' }}</span>
+                <span @click="$router.push({name: 'lang', params: {table_name: $route.params.table_name, page: $route.params.page}})">{{ updateDateLocaleStore.lang == 'ru' ? 'Рус': '' }}</span>
+                <span @click="$router.push({name: 'lang', params: {table_name: $route.params.table_name, page: $route.params.page}})">{{ updateDateLocaleStore.lang == 'en' ? 'Eng': '' }}</span>
 
-                    <v-tooltip activator="parent" location="bottom">{{ $t('indexChangeLanguage') }}</v-tooltip>
-                </span>
+                <v-tooltip activator="parent" location="bottom">{{ $t('indexChangeLanguage') }}</v-tooltip>
+            </div>
 
-            </span>
         </div>
 
         <!-- Текст горячие предложеня -->
@@ -111,16 +108,18 @@
     <div v-if="authStore.desktopOrMobile != 'Desktop'">
         <!-- Реализуем бесконечную прокрутку -->
         <div ref="scrollObserver"></div>
-        <!-- Показывать загрузчик или сообщение о конце списка -->
-        <div v-if="loading">Loading...</div>
-        <div v-else-if="!canLoadMore">No more posts</div>
+        <!-- Gif Load  - Если объявления еще не загрузились -->
+        <div v-if="loading" class="d-flex justify-content-center py-1">
+            <div class="spinner-border spinner-border-sm" style="color: var(--app-text-color)" role="status"></div>
+        </div>
+        <div v-else-if="!canLoadMore">{{ $t('indexAdsNotFound') }}</div>
     </div>
-
 
 
 </template>
 
 <script>
+
 //Импортирую Store - Общее состояние
 import { useAuthStore} from "../stores/auth";
 import { useCheckInternetStore } from "../stores/checkInternet";
@@ -196,7 +195,7 @@ export default {
 
         //Отслеживаем примение фильтра
         'filterStore.make_filter'() {
-           this.getAds();
+            this.getAds();
         }
     },
 
@@ -260,10 +259,6 @@ export default {
     },
 
     methods: {
-
-        test(){
-            console.log('123123123')
-        },
 
         //Метод - Получить объявления выбранной категории
         async getAds() {
@@ -373,7 +368,7 @@ export default {
             const rect = scrollObserver.getBoundingClientRect();
 
 
-            if (rect.bottom - 1000 <= window.innerHeight) {
+            if (rect.bottom - 2000 <= window.innerHeight) {
                 this.loading = true;
 
                 !this.authStore.check ? this.getMyLikeAds = false : '';
@@ -398,8 +393,6 @@ export default {
                 })
                     .then(response => {
                         this.query = false;
-
-
 
                         const newPosts = response.data.ads.data;
                         if (newPosts.length > 0) {
@@ -427,20 +420,17 @@ export default {
 
             }
         },
-        handleScroll() {
-            this.loadMore();
-        },
 
     },
 
     mounted(){
         localStorage.getItem('getMyLikeAds') != undefined ? this.getMyLikeAds = true: '';
-        window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('scroll', this.loadMore);
         this.getAds();
     },
 
     beforeDestroy() {
-        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('scroll', this.loadMore);
     },
 
 }
@@ -453,7 +443,7 @@ export default {
 
 .index-page__top-panel{
     display: flex;
-    flex-grow: 1;
+    justify-content: space-between;
     align-items: center;
     background: #ffffff;
     padding: 12px;

@@ -165,7 +165,6 @@ import { createPinia } from 'pinia';
 
 //Авторизация через Google, Apple
 import vue3GoogleLogin from 'vue3-google-login'
-
 //Для мультиязыка
 import { i18nVue } from 'laravel-vue-i18n'
 
@@ -179,8 +178,8 @@ app.use(VeeValidatePlugin)
     .use(VueReCaptcha, { siteKey: '6Ld4nRkkAAAAABV1_7o0mAOBAHWa5hf1Y5Z7OEoB', loaderOptions: {useRecaptchaNet: true}})
     .use(i18nVue, {
         resolve: async lang => {
-            const langs = import.meta.glob('../../lang/php_*.json');
-            return await langs[`../../lang/php_${lang}.json`]();
+            const langs = import.meta.glob('./lang/php_*.json');
+            return await langs[`./lang/php_${lang}.json`]();
         }
     })
     .mount("#app")

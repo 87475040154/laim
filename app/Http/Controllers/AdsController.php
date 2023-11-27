@@ -382,12 +382,12 @@ class AdsController extends Controller
 
         //Если запрос получить мои лайки
         if($request->getMyLikeAds == 'Получить мои лайки'){
-            $ads_arr = $query->latest()->paginate(30);
+            $ads_arr = $query->latest()->paginate(50);
         }
 
         //Если запрос моих архивных
         if($filter != 'Фильтр не применен' && $filter['arhiv'] != '' && $request->getMyLikeAds == 'Не получать мои лайки' && !isset($request->getAdsYandexClusterer)){
-            $ads_arr = $query->latest()->paginate(30);
+            $ads_arr = $query->latest()->paginate(50);
         }
 
         //Если запрос только активных объявлений
@@ -401,19 +401,14 @@ class AdsController extends Controller
                 $query->where('author_id', $request->user_id);
             }]) ->orderBy('bueAds', 'desc') // Сначала выводим объявления на которых есть реклама
                 ->orderBy('updated_at', 'desc') // Затем получим все остальные
-                ->paginate(30);
+                ->select(['id', 'zagolovok', 'table_name', 'cena', 'oblast', 'gorod', 'raion', 'ulica', 'nomer_doma', 'images', 'srochno_torg', 'top', 'top_8', 'goryachie', 'top_x7', 'top_x30', 'created_at'])
+                ->paginate(50);
         }
 
         // Перебираем объявления и добавляем дополнительные данные
         foreach ($ads_arr as $ads) {
             // Разбиваем поле "images" на массив по запятым
             $ads->images = explode(',', $ads->images);
-            isset($ads->mebel_arr) && $ads->mebel_arr != null?$ads->mebel_arr = explode(',', $ads->mebel_arr):$ads->mebel_arr = [];
-            isset($ads->raznoe) && $ads->raznoe != null?$ads->raznoe = explode(',', $ads->raznoe):$ads->raznoe = [];
-            isset($ads->bezopasnost) && $ads->bezopasnost != null ? $ads->bezopasnost = explode(',', $ads->bezopasnost): $ads->bezopasnost = [];
-            isset($ads->raspolojenie) && $ads->raspolojenie != null?$ads->raspolojenie = explode(',', $ads->raspolojenie): $ads->raspolojenie = [];
-            isset($ads->kommunikacii) && $ads->kommunikacii != null?$ads->kommunikacii = explode(',', $ads->kommunikacii):$ads->kommunikacii = [];
-
 
             // Проверяем наличие лайка пользователя
             $ads->userLike = ($request->getMyLikeAds == 'Получить мои лайки')
@@ -559,7 +554,7 @@ class AdsController extends Controller
         $allRecords = $allQuery
             ->orderByDesc('bueAds') // Сначала выводим объявления на которых есть реклама
             ->orderByDesc('updated_at') // Затем получим все остальные
-            ->paginate(30);
+            ->paginate(50);
 
         // Получаем коллекцию объектов stdClass из результата
         $collection = $allRecords->getCollection();
@@ -599,7 +594,7 @@ class AdsController extends Controller
             ->where('goryachie', '!=', null)
             ->orderBy('goryachie', 'desc') // Затем получим все остальные
             ->select('id','table_name', 'zagolovok', 'images', 'cena', 'oblast','gorod', 'raion')
-            ->paginate(30);;
+            ->paginate(50);;
 
         // Перебираем объявления и добавляем дополнительные данные
         foreach ($ads_arr as $ads) {

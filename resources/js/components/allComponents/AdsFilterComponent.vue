@@ -1097,7 +1097,7 @@ export default {
     font-size: 1.1em;
     font-weight: 600;
     line-height: 1.5rem;
-    color: #000000
+    color: #8b9098
 }
 
 /* Поле */
@@ -1108,8 +1108,8 @@ export default {
 
 /* Кнопка */
 .form__item{
-    background: #e6e6e6;
-    color: #000;
+    background: #f2f3f5;
+    color: #8b9098;
     cursor: pointer;
     padding: 10px 15px;
     margin: 2px 5px;
@@ -1119,7 +1119,7 @@ export default {
 
 /* Выбранная кнопка */
 .item__active{
-    background: #2196F3;
+    background: #2d81e1;
     color: #ffffff;
 }
 
