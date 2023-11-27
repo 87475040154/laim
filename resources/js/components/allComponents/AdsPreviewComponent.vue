@@ -5,8 +5,8 @@
         <v-card max-width="650" style="background: #ffffff; box-shadow: none; border-radius: 6px"
                 class="mx-3 my-3 mx-sm-auto ads__preview"
                 :class="{
-                    'bg-teal-lighten-4': ads.top_x7 != undefined && ads.top_x7 != null,
-                    'bg-red-lighten-4': ads.top_x30 != undefined && ads.top_x30 != null,
+                    'bg-teal-lighten-5': ads.top_x7 != undefined && ads.top_x7 != null,
+                    'bg-red-lighten-5': ads.top_x30 != undefined && ads.top_x30 != null,
                 }"
         >
 
