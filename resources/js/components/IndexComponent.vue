@@ -176,7 +176,7 @@ export default {
             loading: false,
             canLoadMore: true,
             page: 2,
-            perPage: 10,
+            lastScrollPosition: 0
         }
     },
 
@@ -359,7 +359,6 @@ export default {
 
         // Для бесконечной прокрутки
         loadMore() {
-
             if (this.loading || !this.canLoadMore) {
                 return;
             }
@@ -367,59 +366,66 @@ export default {
             const scrollObserver = this.$refs.scrollObserver;
             const rect = scrollObserver.getBoundingClientRect();
 
+            // Определите, находится ли блок scrollObserver в области видимости
+            const isVisible = rect.bottom - 2000 <= window.innerHeight && rect.top >= 0;
 
-            if (rect.bottom - 2000 <= window.innerHeight) {
+            if (isVisible) {
                 this.loading = true;
 
-                !this.authStore.check ? this.getMyLikeAds = false : '';
-                this.showBtnAppInstall = false;
+                // Определите направление прокрутки
+                const scrollDirection = this.lastScrollPosition > window.pageYOffset ? 'up' : 'down';
+                this.lastScrollPosition = window.pageYOffset;
 
-                //Получим данны фильтра с LocaleStorage если он применен
-                let filter = localStorage.getItem ("filter=" + this.$route.params.table_name ) == undefined ? '' : JSON.parse(localStorage.getItem ("filter=" + this.$route.params.table_name ));
+                // Определите номер страницы для загрузки
+                const nextPage = scrollDirection === 'down' ? this.page + 1 : this.page - 1;
 
-                //Получаю объявления
-                let url = this.$route.params.table_name == 'goryachie' ? '/getGoryachie' : 'getAllAds';
+                if (nextPage >= 1) {
+                    let filter = localStorage.getItem("filter=" + this.$route.params.table_name) == undefined ? '' : JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name));
 
-                axios.get(url, {
+                    let url = this.$route.params.table_name == 'goryachie' ? '/getGoryachie' : 'getAllAds';
 
-                    params: {
-                        page: this.page,
-                        user_id: useAuthStore().check ? useAuthStore().user.id : 0,
-                        table_name: this.$route.params.table_name,
-                        filter: filter == '' ? 'Фильтр не применен' : filter,
-                        getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
-                    }
-
-                })
-                    .then(response => {
-                        this.query = false;
-
-                        const newPosts = response.data.ads.data;
-                        if (newPosts.length > 0) {
-                            this.ads_arr.data = this.ads_arr.data.concat(newPosts);
-                            this.page++;
+                    axios.get(url, {
+                        params: {
+                            page: nextPage,
+                            user_id: useAuthStore().check ? useAuthStore().user.id : 0,
+                            table_name: this.$route.params.table_name,
+                            filter: filter == '' ? 'Фильтр не применен' : filter,
+                            getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
                         }
-                        else {
-                            // Нет больше постов
-                            this.canLoadMore = false;
-                        }
-
-                        this.updateGoryachieRightPanel = !this.updateGoryachieRightPanel;
-
-                        //Метод проверить колличество - Фильтра
-                        this.filterLength(filter);
-
                     })
-                    .catch((errors)=>{
-                        this.query = false;
-                        console.error('Error loading more posts', error);
-                    })
-                    .finally(() => {
-                        this.loading = false;
-                    });
+                        .then(response => {
+                            this.query = false;
 
+                            const newPosts = response.data.ads.data;
+                            if (newPosts.length > 0) {
+                                if (scrollDirection === 'down') {
+                                    // Если прокрутка вниз, оставляем последние 10 и добавляем новые 30
+                                    this.ads_arr.data = this.ads_arr.data.slice(-10).concat(newPosts);
+                                    this.page++;
+                                } else {
+                                    // Если прокрутка вверх, оставляем первые 10 и добавляем новые 30
+                                    this.ads_arr.data = newPosts.slice(0, 10).concat(this.ads_arr.data);
+                                    this.page--;
+                                }
+                            } else {
+                                // Нет больше постов
+                                this.canLoadMore = false;
+                            }
+
+                            // Метод проверить количество - Фильтра
+                            this.filterLength(filter);
+                        })
+                        .catch((errors) => {
+                            this.query = false;
+                            console.error('Error loading more posts', errors);
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        });
+                }
             }
         },
+
 
     },
 

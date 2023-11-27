@@ -382,12 +382,12 @@ class AdsController extends Controller
 
         //Если запрос получить мои лайки
         if($request->getMyLikeAds == 'Получить мои лайки'){
-            $ads_arr = $query->latest()->paginate(50);
+            $ads_arr = $query->latest()->paginate(30);
         }
 
         //Если запрос моих архивных
         if($filter != 'Фильтр не применен' && $filter['arhiv'] != '' && $request->getMyLikeAds == 'Не получать мои лайки' && !isset($request->getAdsYandexClusterer)){
-            $ads_arr = $query->latest()->paginate(50);
+            $ads_arr = $query->latest()->paginate(30);
         }
 
         //Если запрос только активных объявлений
@@ -402,7 +402,7 @@ class AdsController extends Controller
             }]) ->orderBy('bueAds', 'desc') // Сначала выводим объявления на которых есть реклама
                 ->orderBy('updated_at', 'desc') // Затем получим все остальные
                 ->select(['id', 'zagolovok', 'table_name', 'cena', 'oblast', 'gorod', 'raion', 'ulica', 'nomer_doma', 'images', 'srochno_torg', 'top', 'top_8', 'goryachie', 'top_x7', 'top_x30', 'created_at'])
-                ->paginate(50);
+                ->paginate(30);
         }
 
         // Перебираем объявления и добавляем дополнительные данные
@@ -554,7 +554,7 @@ class AdsController extends Controller
         $allRecords = $allQuery
             ->orderByDesc('bueAds') // Сначала выводим объявления на которых есть реклама
             ->orderByDesc('updated_at') // Затем получим все остальные
-            ->paginate(50);
+            ->paginate(30);
 
         // Получаем коллекцию объектов stdClass из результата
         $collection = $allRecords->getCollection();
@@ -594,7 +594,7 @@ class AdsController extends Controller
             ->where('goryachie', '!=', null)
             ->orderBy('goryachie', 'desc') // Затем получим все остальные
             ->select('id','table_name', 'zagolovok', 'images', 'cena', 'oblast','gorod', 'raion')
-            ->paginate(50);;
+            ->paginate(30);;
 
         // Перебираем объявления и добавляем дополнительные данные
         foreach ($ads_arr as $ads) {
