@@ -342,7 +342,7 @@ export default {
     border-radius: 12px;
     color: #232222;
     font-size: 1.1em;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
     cursor: pointer;
 }

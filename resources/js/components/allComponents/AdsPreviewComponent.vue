@@ -53,17 +53,13 @@
                                 </div>
 
                                 <!-- Текст описания -->
-                                <div class="d-flex py-2">
+                                <div class="d-flex">
                                     <v-icon icon="mdi-check mx-2"></v-icon>
                                     <div class="text-grey">{{ $t('bueAdsIndex28DaysOfActivePromotion') }}</div>
                                 </div>
-                                <div class="d-flex ">
-                                    <v-icon icon="mdi-check mx-2"></v-icon>
-                                    <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
-                                </div>
                                 <div class="d-flex py-2">
                                     <v-icon icon="mdi-check mx-2"></v-icon>
-                                    <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheFire') }}</div>
+                                    <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
                                 </div>
                                 <div class="d-flex">
                                     <v-icon icon="mdi-check mx-2"></v-icon>
@@ -99,17 +95,13 @@
                                 </div>
 
                                 <!-- Текст описания -->
-                                <div class="d-flex py-2">
+                                <div class="d-flex ">
                                     <v-icon icon="mdi-check mx-2"></v-icon>
                                     <div class="text-grey">{{ $t('bueAdsIndex7DaysOfActivePromotion') }}</div>
                                 </div>
-                                <div class="d-flex ">
-                                    <v-icon icon="mdi-check mx-2"></v-icon>
-                                    <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
-                                </div>
                                 <div class="d-flex py-2">
                                     <v-icon icon="mdi-check mx-2"></v-icon>
-                                    <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheFire') }}</div>
+                                    <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
                                 </div>
                                 <div class="d-flex">
                                     <v-icon icon="mdi-check mx-2"></v-icon>
@@ -140,34 +132,6 @@
                                     <!-- Описание -->
                                     <div class="flex-grow-1 align-center" >
                                         <div>{{ $t('bueAdsIndexSendToTheTOP24Hours') }}</div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </v-menu>
-
-                        <!-- Горячие -->
-                        <v-menu open-on-hover>
-                            <template v-slot:activator="{ props }">
-                                <div v-if="ads.goryachie != null" class="icon__fire" v-bind="props">
-                                    <v-icon icon="mdi-fire" size="x-small" color="white"></v-icon>
-                                </div>
-                            </template>
-                            <div class="bueAds__card">
-
-                                <!-- Горячие на 24 часа -->
-                                <div class="d-flex align-center">
-
-                                    <!-- Иконка -->
-                                    <div class="mx-3 d-flex justify-center align-center rounded-circle"
-                                         style="width: 21px; height: 21px; background: #FF0000"
-                                    >
-                                        <v-icon icon="mdi-fire" size="x-small" color="white"></v-icon>
-                                    </div>
-
-                                    <!-- Описание -->
-                                    <div class="flex-grow-1 align-center">
-                                        <div>{{ $t('bueAdsIndexSendToTheFire') }}</div>
                                     </div>
 
                                 </div>

@@ -81,8 +81,6 @@ Route::get('/checkInternet', [ProjectDataController::class, 'checkInternet']);//
 Route::get('/getAllAds', [AdsController::class, 'getAllAds']);//Получить все объявление
 Route::get('/getUserAds', [AdsController::class, 'getUserAds']);//Получить все объявления пользователя
 Route::get('/getOneAds', [AdsController::class, 'getOneAds']);//Получить 1 объявление
-Route::get('/getGoryachie', [AdsController::class, 'getGoryachie']);//Получить Горячие объявления
-Route::get('/getGoryachieRightPanel', [AdsController::class, 'getGoryachieRightPanel']);//Получить Горячие объявления для правой панели
 Route::post('/addAdsStatistic', [AdsController::class, 'addAdsStatistic']);//Добавим статистику на объявление
 
 //Локация Казахстана

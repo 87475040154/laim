@@ -79,7 +79,6 @@ return new class extends Migration
             $table->dateTime('bueAds')->nullable(); // Указать что на данное объявление куплена реклама, для дальнейшей сортировки при получении объявлений
             $table->dateTime('top')->nullable(); // Отправить в ТОП на 24 часа,
             $table->dateTime('top_8')->nullable(); // Отправить в ТОП на 24 часа и 8 поднятий в верх Топа,
-            $table->dateTime('goryachie')->nullable(); // Отправить в горячие на 24 часа,
             $table->dateTime('top_x7')->nullable(); // Отпраить в топ на 7 дней -  top x7 ,
             $table->dateTime('top_x30')->nullable(); // Отпраить в топ на 30 дней - top x30,
 
@@ -109,7 +108,6 @@ return new class extends Migration
             $table->index('bueAds');
             $table->index('top');
             $table->index('top_8');
-            $table->index('goryachie');
             $table->index('top_x7');
             $table->index('top_x30');
             $table->index('updated_at');

@@ -22,8 +22,7 @@
 
             <!-- Кнопка показать мои лайки  -->
             <div>
-                <v-icon v-if="$route.params.table_name != 'goryachie'"
-                        @click="authStore.check ? getMyLike(): $router.push('/auth')"
+                <v-icon @click="authStore.check ? getMyLike(): $router.push('/auth')"
                         :icon="getMyLikeAds ? 'mdi-heart' : 'mdi-heart-outline'"
                         :class="{'text-red':getMyLikeAds}"
                         class="icon__heart"
@@ -42,51 +41,25 @@
 
         </div>
 
-        <!-- Текст горячие предложеня -->
-        <div v-if="$route.params.table_name === 'goryachie'" class="pt-3 mx-2 mx-md-auto text-body-1 text-grey" style="max-width: 800px">
-            {{ goryachiePredlojeniya }}
-        </div>
-
         <!-- Gif Load  - Если объявления еще не загрузились -->
         <div v-if="query" class="d-flex justify-content-center py-1">
             <div class="spinner-border spinner-border-sm" style="color: var(--app-text-color)" role="status"></div>
         </div>
 
-        <!-- Компонент для отображения превью всех полученных объявлений  - И компонент правая панель-->
-        <div class="row g-0 gap-2 mx-auto" style="max-width: 1100px">
-            <div class="col">
-                <ads-preview-component  :ads_arr="ads_arr.data" :getMyLikeAds="getMyLikeAds"></ads-preview-component>
+        <ads-preview-component  :ads_arr="ads_arr.data" :getMyLikeAds="getMyLikeAds"></ads-preview-component>
 
-                <!-- Если объявления не найденны покажется текст -->
-                <div v-if="count_ads == 0 && !query" class="text-center text-muted my-3">
-                    <h4>{{ $t('indexAdsNotFound') }}</h4>
-                </div>
-
-                <!-- Кнопка -  установить приложение laim.kz  -->
-                <div v-if="appInstallStore.app != '' && showBtnAppInstall && $route.name != 'userAds'" class="m-3 mx-sm-auto" style="max-width: 600px">
-                    <v-btn @click="appInstallStore.install()" block  color="white" class="text-body-2">
-                        <img src="/public/img/siteImg/allImg/logo.svg" width="25" height="25" alt="logo" class="rounded-3">
-                        {{  $t('indexInstallLime') }}
-                    </v-btn>
-                </div>
-
-
-                <!-- Блок с пагинацией  - покажется если найденно более 30 объявлений -->
-                <div v-if="authStore.desktopOrMobile == 'Desktop'" class="mt-3" >
-
-                    <!-- Экран более - 768 px-->
-                    <Bootstrap5Pagination :align="'center'" :limit="3" :data="ads_arr"
-                                          @pagination-change-page="(page)=> $router.push({name: 'allAds', params: {table_name: $route.params.table_name, page: page}})"
-                                          class="d-none d-md-flex"
-                    ></Bootstrap5Pagination>
-
-                </div>
-
-            </div>
-
-            <right-panel-component v-if="$route.params.table_name != 'goryachie'" class="col-auto" :update="updateGoryachieRightPanel"></right-panel-component>
+        <!-- Если объявления не найденны покажется текст -->
+        <div v-if="count_ads == 0 && !query" class="text-center text-muted my-3">
+            <h4>{{ $t('indexAdsNotFound') }}</h4>
         </div>
 
+        <!-- Кнопка -  установить приложение laim.kz  -->
+        <div v-if="appInstallStore.app != '' && showBtnAppInstall && $route.name != 'userAds'" class="m-3 mx-sm-auto" style="max-width: 600px">
+            <v-btn @click="appInstallStore.install()" block  color="white" class="text-body-2">
+                <img src="/public/img/siteImg/allImg/logo.svg" width="25" height="25" alt="logo" class="rounded-3">
+                {{  $t('indexInstallLime') }}
+            </v-btn>
+        </div>
 
         <!-- Кнопка показать объекты на карте -->
         <v-btn rounded="xl" height="40" class="text-caption mb-5 mb-lg-0 text-white"
@@ -112,9 +85,7 @@
         <div v-if="loading" class="d-flex justify-content-center py-1">
             <div class="spinner-border spinner-border-sm" style="color: var(--app-text-color)" role="status"></div>
         </div>
-        <div v-else-if="!canLoadMore">{{ $t('indexAdsNotFound') }}</div>
     </div>
-
 
 </template>
 
@@ -130,7 +101,6 @@ import {useUpdateDateLocaleStore} from "../stores/updateDateLocale";
 
 //Импортируем Компоненты
 import adsPreviewComponent from "./allComponents/AdsPreviewComponent.vue";
-import rightPanelComponent from "./allComponents/RightPanelComponent.vue";
 
 //Пакет для пагинации Laravel + Vue
 import { Bootstrap5Pagination } from 'laravel-vue-pagination';
@@ -141,7 +111,6 @@ export default {
     components: {
         adsPreviewComponent,
         Bootstrap5Pagination,
-        rightPanelComponent,
     },
 
     data(){
@@ -170,13 +139,10 @@ export default {
             //Кнопка объекты на карте - Показать если есть выбранная локация области
             showMapButton: false,
 
-            updateGoryachieRightPanel: false,
-
             //Для бесконечной прокрутки
             loading: false,
-            canLoadMore: true,
             page: 2,
-            lastScrollPosition: 0
+            stop: false
         }
     },
 
@@ -199,70 +165,12 @@ export default {
         }
     },
 
-    computed: {
-
-        //Вывод текста горячие в зависимости от локали
-        goryachiePredlojeniya(){
-            //Получим данны фильтра с LocaleStorage если он применен
-            let filter = localStorage.getItem ("filter=" + this.$route.params.table_name ) == undefined ? '' : JSON.parse(localStorage.getItem ("filter=" + this.$route.params.table_name ));
-
-            if(filter != ''){
-                if(filter['oblast'] != null && filter['gorod'] == null){
-                    if(this.updateDateLocaleStore.lang == 'ru'){return filter['oblast'] + ' горячие предложения'}
-                    if(this.updateDateLocaleStore.lang == 'kz'){
-                        this.KZLocationStore.translateLocation({ oblast: filter['oblast'] });
-                        return this.KZLocationStore.oblast + ' ыстық ұсыныстар';
-                    }
-                    if(this.updateDateLocaleStore.lang == 'en'){
-                        this.KZLocationStore.translateLocation({ oblast: filter['oblast'] });
-                        return this.KZLocationStore.oblast + ' hot offers';
-                    }
-                }
-                else if(filter['gorod'] != null && filter['raion'] == null){
-                    if(this.updateDateLocaleStore.lang == 'ru'){
-                        return filter['gorod'] + ' горячие предложения'
-                    }
-                    if(this.updateDateLocaleStore.lang == 'kz'){
-                        this.KZLocationStore.translateLocation({ gorod: filter['gorod'] });
-                        return this.KZLocationStore.gorod + ' ыстық ұсыныстар';
-                    }
-                    if(this.updateDateLocaleStore.lang == 'en'){
-                        this.KZLocationStore.translateLocation({ gorod: filter['gorod'] });
-                        return this.KZLocationStore.gorod + ' hot offers';
-                    }
-                }
-                else if(filter['raion'] != null){
-                    if(this.updateDateLocaleStore.lang == 'ru'){
-                        return filter['raion'] + ' горячие предложения'
-                    }
-                    if(this.updateDateLocaleStore.lang == 'kz'){
-                        this.KZLocationStore.translateLocation({ raion: filter['raion'] });
-                        return this.KZLocationStore.raion + ' ыстық ұсыныстар';
-                    }
-                    if(this.updateDateLocaleStore.lang == 'en'){
-                        this.KZLocationStore.translateLocation({ raion: filter['raion'] });
-                        return this.KZLocationStore.raion + ' hot offers';
-                    }
-                }
-                else{
-                    if(this.updateDateLocaleStore.lang == 'ru')return  'Горячие предложения в Казахстане';
-                    if(this.updateDateLocaleStore.lang == 'kz')return  'Қазақстандағы ыстық ұсыныстар';
-                    if(this.updateDateLocaleStore.lang == 'en')return 'Hot deals in Kazakhstan';
-                }
-            }
-            else{
-                if(this.updateDateLocaleStore.lang == 'ru')return  'Горячие предложения в Казахстане';
-                if(this.updateDateLocaleStore.lang == 'kz')return  'Қазақстандағы ыстық ұсыныстар';
-                if(this.updateDateLocaleStore.lang == 'en')return 'Hot deals in Kazakhstan';
-            }
-        }
-    },
-
     methods: {
 
         //Метод - Получить объявления выбранной категории
         async getAds() {
             this.query = true;
+            this.stop = false;
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
             await this.checkInternetStore.checkInternet();
@@ -276,8 +184,7 @@ export default {
             let filter = localStorage.getItem ("filter=" + this.$route.params.table_name ) == undefined ? '' : JSON.parse(localStorage.getItem ("filter=" + this.$route.params.table_name ));
 
             //Получаю объявления
-            let url = this.$route.params.table_name == 'goryachie' ? '/getGoryachie' : 'getAllAds';
-            axios.get(url, {
+            axios.get('getAllAds', {
 
                 params: {
                     page: this.$route.params.page,
@@ -292,8 +199,6 @@ export default {
                     this.query = false;
                     this.ads_arr = response.data.ads;
                     this.count_ads = response.data.ads.total;
-
-                    this.updateGoryachieRightPanel = !this.updateGoryachieRightPanel;
 
                     if(response.data.ads.total > 0)this.showBtnAppInstall = true
 
@@ -343,8 +248,7 @@ export default {
 
                     //И отнимем lat, lon
                     countFilter -= 2;
-
-                    this.$route.params.table_name != 'goryachie' ? this.showMapButton = true : this.showMapButton = false;
+                    this.showMapButton = true
                 }else{
                     this.showMapButton = false;
                 }
@@ -359,85 +263,53 @@ export default {
 
         // Для бесконечной прокрутки
         loadMore() {
-            if (this.loading || !this.canLoadMore) {
-                return;
-            }
+            if (this.loading || this.stop) return;
 
             const scrollObserver = this.$refs.scrollObserver;
             const rect = scrollObserver.getBoundingClientRect();
 
-            // Определите, находится ли блок scrollObserver в области видимости
-            const isVisible = rect.bottom - 2000 <= window.innerHeight && rect.top >= 0;
 
-            if (isVisible) {
+            if (rect.bottom <= window.innerHeight) {
                 this.loading = true;
+                let filter = localStorage.getItem("filter=" + this.$route.params.table_name) == undefined ? '' : JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name));
 
-                // Определите направление прокрутки
-                const scrollDirection = this.lastScrollPosition > window.pageYOffset ? 'up' : 'down';
-                this.lastScrollPosition = window.pageYOffset;
+                axios.get('getAllAds', {
+                    params: {
+                        page: this.page,
+                        user_id: useAuthStore().check ? useAuthStore().user.id : 0,
+                        table_name: this.$route.params.table_name,
+                        filter: filter == '' ? 'Фильтр не применен' : filter,
+                        getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
+                    }
+                })
+                    .then(response => {
+                        this.page += 1;
 
-                // Определите номер страницы для загрузки
-                const nextPage = scrollDirection === 'down' ? this.page + 1 : this.page - 1;
+                        // Метод проверить количество - Фильтра
+                        this.filterLength(filter);
 
-                if (nextPage >= 1) {
-                    let filter = localStorage.getItem("filter=" + this.$route.params.table_name) == undefined ? '' : JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name));
+                        this.ads_arr.data = [...this.ads_arr.data, ...response.data.ads.data];
 
-                    let url = this.$route.params.table_name == 'goryachie' ? '/getGoryachie' : 'getAllAds';
+                        this.page > response.data.ads.last_page ? this.stop = true: this.stop = false;
 
-                    axios.get(url, {
-                        params: {
-                            page: nextPage,
-                            user_id: useAuthStore().check ? useAuthStore().user.id : 0,
-                            table_name: this.$route.params.table_name,
-                            filter: filter == '' ? 'Фильтр не применен' : filter,
-                            getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
-                        }
+                        this.loading = false;
                     })
-                        .then(response => {
-                            this.query = false;
 
-                            const newPosts = response.data.ads.data;
-                            if (newPosts.length > 0) {
-                                if (scrollDirection === 'down') {
-                                    // Если прокрутка вниз, оставляем последние 10 и добавляем новые 30
-                                    this.ads_arr.data = this.ads_arr.data.slice(-10).concat(newPosts);
-                                    this.page++;
-                                } else {
-                                    // Если прокрутка вверх, оставляем первые 10 и добавляем новые 30
-                                    this.ads_arr.data = newPosts.slice(0, 10).concat(this.ads_arr.data);
-                                    this.page--;
-                                }
-                            } else {
-                                // Нет больше постов
-                                this.canLoadMore = false;
-                            }
-
-                            // Метод проверить количество - Фильтра
-                            this.filterLength(filter);
-                        })
-                        .catch((errors) => {
-                            this.query = false;
-                            console.error('Error loading more posts', errors);
-                        })
-                        .finally(() => {
-                            this.loading = false;
-                        });
-                }
             }
         },
-
-
     },
 
     mounted(){
         localStorage.getItem('getMyLikeAds') != undefined ? this.getMyLikeAds = true: '';
-        window.addEventListener('scroll', this.loadMore);
         this.getAds();
+
+        this.authStore.desktopOrMobile != 'Desktop' ? window.addEventListener('scroll', this.loadMore) :'';
+
     },
 
     beforeDestroy() {
         window.removeEventListener('scroll', this.loadMore);
-    },
+    }
 
 }
 </script>

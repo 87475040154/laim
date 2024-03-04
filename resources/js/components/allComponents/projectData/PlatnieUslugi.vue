@@ -21,17 +21,13 @@
             </div>
 
             <!-- Текст описания -->
-            <div class="d-flex py-2">
+            <div class="d-flex">
                 <v-icon icon="mdi-check mx-2"></v-icon>
                 <div class="text-grey">{{ $t('bueAdsIndex28DaysOfActivePromotion') }}</div>
             </div>
-            <div class="d-flex ">
-                <v-icon icon="mdi-check mx-2"></v-icon>
-                <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
-            </div>
             <div class="d-flex py-2">
                 <v-icon icon="mdi-check mx-2"></v-icon>
-                <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheFire') }}</div>
+                <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
             </div>
             <div class="d-flex">
                 <v-icon icon="mdi-check mx-2"></v-icon>
@@ -64,17 +60,13 @@
             </div>
 
             <!-- Текст описания -->
-            <div class="d-flex py-2">
+            <div class="d-flex">
                 <v-icon icon="mdi-check mx-2"></v-icon>
                 <div class="text-grey">{{ $t('bueAdsIndex7DaysOfActivePromotion') }}</div>
             </div>
-            <div class="d-flex ">
+            <div class="d-flex py-2 ">
                 <v-icon icon="mdi-check mx-2"></v-icon>
                 <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
-            </div>
-            <div class="d-flex py-2">
-                <v-icon icon="mdi-check mx-2"></v-icon>
-                <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheFire') }}</div>
             </div>
             <div class="d-flex">
                 <v-icon icon="mdi-check mx-2"></v-icon>
@@ -142,23 +134,6 @@ background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(26,135,175,1) 0%, 
 
                 </div>
 
-                <!-- Горячие на 24 часа -->
-                <div class="d-flex align-center" style="border-top: 1px solid rgba(0,0,0,.1); border-bottom: 1px solid rgba(0,0,0,.1)">
-
-                    <!-- Иконка -->
-                    <div class="mx-3 d-flex justify-center align-center rounded-circle"
-                         style="width: 21px; height: 21px; background: #FF0000"
-                    >
-                        <v-icon icon="mdi-fire" size="x-small" color="white"></v-icon>
-                    </div>
-
-                    <!-- Описание -->
-                    <div class="flex-grow-1 align-center">
-                        <div>{{ $t('bueAdsIndexSendToTheFire') }}</div>
-                        <div class="text-grey">240 &#8376;</div>
-                    </div>
-
-                </div>
 
                 <!-- Срочно торг -->
                 <div class="d-flex align-center">

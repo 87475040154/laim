@@ -2046,7 +2046,6 @@ export default defineComponent({
                     //Если связь есть, то получим токен нашей капчи
                     this.$recaptcha('login')
                         .then((token)=>{
-
                             this.form.table_name = this.$route.params.table_name
 
                             //Добавим токен рекапчи в запрос
@@ -2056,7 +2055,7 @@ export default defineComponent({
                             this.form.role = this.authStore.user.role;
 
                             //Приведу данные цена в формат вместо 80 000 на 80000 например
-                            this.form.cena = this.form.cena.replace(/\D/g, "");
+                            this.form.cena = String(this.form.cena).replace(/\D/g, "");
 
                             //Добавим фото в массив из промежуточного массива
                             this.form.images = [];
@@ -2067,7 +2066,8 @@ export default defineComponent({
                                 if(elem.image != undefined){
                                     this.form.images.push(elem.image);
                                     this.form.old_images.push(null)
-                                }else{
+                                }
+                                else{
                                     //Это мы заносим имена старых фото
                                     this.form.old_images.push(elem.previewImg.substring(12))
                                 }

@@ -196,33 +196,6 @@ class Kernel extends ConsoleKernel
         })->hourlyAt(17);
 
 
-        // Удаление -- ГОРЯЧИЕ с объявления - если прошли 24 часа - Проверка каждый час на 27 минуте ->hourlyAt(27)
-        $schedule->call(function () {
-
-            $tables = [
-                Kvartira::class,
-                Obshejitie::class,
-                Dom::class,
-                Ofis::class,
-                Zdanie::class,
-                Magazin::class,
-                Prombaza::class,
-                Prochaya::class,
-                Business::class,
-                Snimu::class,
-            ];
-
-            foreach ($tables as $tableClass) {
-
-                $tableClass::where(function ($query) {
-                    $query->whereNotNull('goryachie')->where('goryachie', '<', Carbon::now()->subDay());
-                })->update([
-                    'goryachie' => null,
-                ]);
-            }
-
-        })->hourlyAt(27);
-
 
         // Поднять -- Top x7 - Top x30 в топ и добавить в горячие - Проверка каждый час на 47 минуте ->hourlyAt(47)
         $schedule->call(function () {
@@ -249,7 +222,6 @@ class Kernel extends ConsoleKernel
                     ->update([
                         'bueAds' => Carbon::now(),
                         'top' => Carbon::now(),
-                        'goryachie' => Carbon::now(),
                     ]);
 
             }
@@ -303,7 +275,6 @@ class Kernel extends ConsoleKernel
                     //Добавим рекламу объявлению x30
                     if ($bueAds->bue_ads_type == 'Top x30') {
                         $ads->bueAds = Carbon::now();
-                        $ads->goryachie = Carbon::now();
                         $ads->top = Carbon::now();
                         $ads->top_x7 = Null;
                         $ads->top_x30 = Carbon::now();
@@ -311,7 +282,6 @@ class Kernel extends ConsoleKernel
                     }
                     else if ($bueAds->bue_ads_type == 'Top x7') {
                         $ads->bueAds = Carbon::now();
-                        $ads->goryachie = Carbon::now();
                         $ads->top = Carbon::now();
                         $ads->top_x7 = Carbon::now();
                         $ads->top_x30 = Null;
@@ -322,7 +292,6 @@ class Kernel extends ConsoleKernel
 
                         foreach ($bueType as $type) {
                             if ($type == 'Срочно торг') $ads->srochno_torg = 1;
-                            if ($type == 'Горячие') $ads->goryachie = Carbon::now();
                             if ($type == 'Топ 24') {
                                 $ads->bueAds = Carbon::now();
                                 $ads->top = Carbon::now();

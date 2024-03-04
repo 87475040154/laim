@@ -17,7 +17,7 @@ export default {
 
     beforeRouteEnter(to, from, next) {
         if (to.path === '/' && Object.keys(to.params).length === 0 && Object.keys(to.query).length === 0) {
-            next('/allAds/goryachie/1');
+            next('/allAds/Kvartira/1');
         } else {
             next();
         }

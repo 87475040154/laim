@@ -401,7 +401,7 @@ class AdsController extends Controller
                 $query->where('author_id', $request->user_id);
             }]) ->orderBy('bueAds', 'desc') // Сначала выводим объявления на которых есть реклама
                 ->orderBy('updated_at', 'desc') // Затем получим все остальные
-                ->select(['id', 'zagolovok', 'table_name', 'cena', 'oblast', 'gorod', 'raion', 'ulica', 'nomer_doma', 'images', 'srochno_torg', 'top', 'top_8', 'goryachie', 'top_x7', 'top_x30', 'created_at'])
+                ->select(['id', 'zagolovok', 'table_name', 'cena', 'oblast', 'gorod', 'raion', 'ulica', 'nomer_doma', 'images', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30', 'created_at'])
                 ->paginate(30);
         }
 
@@ -493,120 +493,6 @@ class AdsController extends Controller
         //Вернем данные
         return response()->json([ 'allAds' => $allRecords, 'userData' => $user ],200);
     }
-
-    //Метод получить все объявления Горячие
-    public function getGoryachie(Request $request){
-
-        $filter = $request->filter;
-
-        // Функция для создания запроса к таблице
-        $createQuery = function ($table) use ($filter) {
-            return DB::table($table)
-                ->whereNotNull('goryachie')
-                ->when($filter !== 'Фильтр не применен', function ($query) use ($filter) {
-                    $filters = [
-                        'oblast', 'gorod', 'raion', 'ownerOrRealtor',
-                        'cena_ot', 'cena_do', 'sostoyanie', 'ploshad_ot', 'ploshad_do', 'tel'
-                    ];
-
-                    // Переберем и применим те, что переданы в фильтре для сортировки
-                    foreach ($filters as $filterName) {
-                        if (isset($filter[$filterName]) && $filter[$filterName] !== '') {
-                            $dbColumn = str_replace(['_ot', '_do'], '', $filterName);
-
-                            // Если в фильтре есть поле _ot или _do для сравнения больше/меньше
-                            if (strpos($filterName, '_ot') !== false || strpos($filterName, '_do') !== false) {
-                                $query->when($filter[$dbColumn . '_ot'] != '' || $filter[$dbColumn . '_do'] != 0, function ($query) use ($filter, $dbColumn) {
-                                    $query->where(function ($query) use ($dbColumn, $filter) {
-                                        $query->when($filter[$dbColumn . '_ot'] != '', function ($query) use ($dbColumn, $filter) {
-                                            $query->where($dbColumn, '>=', $filter[$dbColumn . '_ot']);
-                                        })->when($filter[$dbColumn . '_do'] != '', function ($query) use ($dbColumn, $filter) {
-                                            $query->where($dbColumn, '<=', $filter[$dbColumn . '_do']);
-                                        });
-                                    });
-                                });
-                            } else {
-                                $query->where($filterName, $filter[$filterName]);
-                            }
-                        }
-                    }
-
-                    $query->where('control', 'Активно');
-                })
-                ->select('id', 'author_id', 'table_name', 'zagolovok', 'cena', 'oblast', 'gorod', 'raion', 'images', 'srochno_torg', 'bueAds', 'top', 'top_8', 'goryachie', 'top_x7', 'top_x30', 'created_at', 'updated_at');
-        };
-
-        // Создаем запрос для первой таблицы
-        $firstQuery = $createQuery('kvartiras');
-
-        // Создаем общий запрос для объединения
-        $allQuery = $firstQuery;
-
-        // Список остальных таблиц
-        $otherTables = ['obshejities', 'doms', 'ofis', 'zdanies', 'magazins', 'prombazas', 'prochayas', 'businesses', 'snimus'];
-
-        // Добавляем остальные таблицы с помощью unionAll
-        foreach ($otherTables as $table) {
-            $allQuery->unionAll($createQuery($table));
-        }
-
-        // Выполняем пагинацию
-        $allRecords = $allQuery
-            ->orderByDesc('bueAds') // Сначала выводим объявления на которых есть реклама
-            ->orderByDesc('updated_at') // Затем получим все остальные
-            ->paginate(30);
-
-        // Получаем коллекцию объектов stdClass из результата
-        $collection = $allRecords->getCollection();
-
-        // Выполните запрос к базе данных, чтобы получить все лайки пользователя
-        $likes = DB::table('likes')->where('author_id', $request->user_id)->get();
-
-        // Обновите каждое объявление в коллекции, добавив значение likes
-        $collection = $collection->map(function ($item) use ($likes) {
-            $item->images = explode(',', $item->images);
-
-            // Проверьте наличие лайка для данного объявления
-            $hasLike = $likes->first(function ($like) use ($item) {
-                return $item->id == $like->likeable_id &&
-                    'App\\Models\\Ads\\' . $item->table_name == $like->likeable_type;
-            });
-
-            // Установите значение userLike в зависимости от наличия лайка
-            $item->userLike = $hasLike != null ? true : false;
-            return $item;
-        });
-
-        // Замените коллекцию с обновленными данными
-        $allRecords->setCollection($collection);
-
-        return response()->json(['ads' => $allRecords], 200);
-    }
-
-    //Метод получить Горячие объявления для правой панели
-    public function getGoryachieRightPanel(Request $request){
-
-        //С какой таблицы получаем
-        $modelClass = 'App\Models\Ads\\' . $request->table_name;
-        $query = $modelClass::query();
-
-        $ads_arr = $query->where('control', 'Активно')
-            ->where('goryachie', '!=', null)
-            ->orderBy('goryachie', 'desc') // Затем получим все остальные
-            ->select('id','table_name', 'zagolovok', 'images', 'cena', 'oblast','gorod', 'raion')
-            ->paginate(30);;
-
-        // Перебираем объявления и добавляем дополнительные данные
-        foreach ($ads_arr as $ads) {
-            // Разбиваем поле "images" на массив по запятым
-            $ads->images = explode(',', $ads->images);
-        }
-
-        //Вернуть найденные объявления
-        return response()->json(['ads'=>$ads_arr], 200);
-
-    }
-
 
     //Метод Toggle - Запустить - Остановить рекламирование
     public function adsActiveToggle(Request $request){

@@ -206,7 +206,7 @@ export default {
                 sender_id: '',
                 recipient_id: '',
                 ads: '',
-                message: this.$t('oneAdsBottomOffCanvasMessageText'),
+                message: '',
                 recaptcha_token: ''
             }),
 
