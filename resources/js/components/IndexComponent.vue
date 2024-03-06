@@ -1,5 +1,11 @@
 <template>
 
+    <!-- Вывод внутренних - дочерних  компонентов например: Фильтр, язык и тд. -->
+    <div style="position: relative; z-index: 2">
+        <router-view></router-view>
+    </div>
+
+
     <!-- Страница вывод - Превью всех объявлений -->
     <div class="index__page">
 
@@ -94,11 +100,6 @@
 
         </div>
 
-    </div>
-
-    <!-- Вывод внутренних - дочерних  компонентов например: Фильтр, язык и тд. -->
-    <div style="position: relative; z-index: 2">
-        <router-view></router-view>
     </div>
 
 
