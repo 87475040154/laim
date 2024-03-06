@@ -71,6 +71,17 @@
             {{  $t('indexOnTheMap') }}
         </v-btn>
 
+        <!-- Блок с пагинацией  - покажется если найденно более 30 объявлений -->
+        <div v-if="authStore.desktopOrMobile == 'Desktop'" class="mt-3" >
+
+            <!-- Экран более - 768 px-->
+            <Bootstrap5Pagination :align="'center'" :limit="3" :data="ads_arr"
+                                  @pagination-change-page="(page)=> $router.push({name: 'allAds', params: {table_name: $route.params.table_name, page: page}})"
+                                  class="d-none d-md-flex"
+            ></Bootstrap5Pagination>
+
+        </div>
+
     </div>
 
     <!-- Вывод внутренних компонентов -->
@@ -78,13 +89,10 @@
         <router-view></router-view>
     </div>
 
+
+    <!-- Для автоподгрузки на мобильных устройствах -->
     <div v-if="authStore.desktopOrMobile != 'Desktop'">
-        <!-- Реализуем бесконечную прокрутку -->
         <div ref="scrollObserver"></div>
-        <!-- Gif Load  - Если объявления еще не загрузились -->
-        <div v-if="loading" class="d-flex justify-content-center py-1">
-            <div class="spinner-border spinner-border-sm" style="color: var(--app-text-color)" role="status"></div>
-        </div>
     </div>
 
 </template>
@@ -139,10 +147,10 @@ export default {
             //Кнопка объекты на карте - Показать если есть выбранная локация области
             showMapButton: false,
 
-            //Для бесконечной прокрутки
-            loading: false,
-            page: 2,
-            stop: false
+            //Для курсорной навигации на Мобильных устройствах
+            nextCursor: '',
+            prevCursor: '',
+
         }
     },
 
@@ -167,10 +175,9 @@ export default {
 
     methods: {
 
-        //Метод - Получить объявления выбранной категории
+        //Метод - Получить объявления обычной постраничной навигацией для Desktop
         async getAds() {
             this.query = true;
-            this.stop = false;
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
             await this.checkInternetStore.checkInternet();
@@ -192,6 +199,7 @@ export default {
                     table_name: this.$route.params.table_name,
                     filter: filter == '' ? 'Фильтр не применен' : filter,
                     getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
+                    cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true
                 }
 
             })
@@ -199,8 +207,10 @@ export default {
                     this.query = false;
                     this.ads_arr = response.data.ads;
                     this.count_ads = response.data.ads.total;
-
                     if(response.data.ads.total > 0)this.showBtnAppInstall = true
+
+                    this.nextCursor = response.data.ads.next_cursor;
+
 
                     //Метод проверить колличество - Фильтра
                     this.filterLength(filter);
@@ -213,14 +223,55 @@ export default {
 
         },
 
-        //Получить мой лайки
+        // Метод получения объявлений на мобильных устройствах - курсорной погинацией
+        getAdsMobileCursorPaginate() {
+            if(this.query)return;
+
+            const scrollObserver = this.$refs.scrollObserver;
+            const rect = scrollObserver.getBoundingClientRect();
+
+            if (rect.bottom <= window.innerHeight) {
+                let filter = localStorage.getItem("filter=" + this.$route.params.table_name) == undefined ? '' : JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name));
+                this.query = true;
+
+                axios.get('getAllAds', {
+                    params: {
+                        cursor: this.nextCursor,
+                        user_id: useAuthStore().check ? useAuthStore().user.id : 0,
+                        table_name: this.$route.params.table_name,
+                        filter: filter == '' ? 'Фильтр не применен' : filter,
+                        getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
+                        cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true
+                    }
+                })
+                    .then(response => {
+
+                        //Канкатенируем старые обьявления с новыми полученными
+                        this.ads_arr.data = [...this.ads_arr.data, ...response.data.ads.data];
+
+                        // Добавим данные для пагинации
+                        this.nextCursor = response.data.ads.next_cursor;
+                        this.prevCursor = response.data.ads.prev_cursor;
+
+                        // Метод проверить количество - Фильтра
+                        this.filterLength(filter);
+
+                        this.query = false;
+                    }).catch(()=>{
+                    this.query = false;
+                })
+
+            }
+        },
+
+        // Метод - Получить мои избранные объявления
         getMyLike(){
             this.getMyLikeAds = this.getMyLikeAds ? false : true;
             this.getMyLikeAds ? localStorage.setItem('getMyLikeAds', true) : localStorage.removeItem('getMyLikeAds')
             this.getAds()
         },
 
-        //Метод - Узнать Длину фильтра
+        //Метод - Узнаем длину фильтра, тоесть сколько указанно критерий в фильтре
         filterLength(filter){
             if(filter == ''){
                 this.countFilter = 0;
@@ -261,54 +312,22 @@ export default {
             }
         },
 
-        // Для бесконечной прокрутки
-        loadMore() {
-            if (this.loading || this.stop) return;
-
-            const scrollObserver = this.$refs.scrollObserver;
-            const rect = scrollObserver.getBoundingClientRect();
-
-
-            if (rect.bottom <= window.innerHeight) {
-                this.loading = true;
-                let filter = localStorage.getItem("filter=" + this.$route.params.table_name) == undefined ? '' : JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name));
-
-                axios.get('getAllAds', {
-                    params: {
-                        page: this.page,
-                        user_id: useAuthStore().check ? useAuthStore().user.id : 0,
-                        table_name: this.$route.params.table_name,
-                        filter: filter == '' ? 'Фильтр не применен' : filter,
-                        getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
-                    }
-                })
-                    .then(response => {
-                        this.page += 1;
-
-                        // Метод проверить количество - Фильтра
-                        this.filterLength(filter);
-
-                        this.ads_arr.data = [...this.ads_arr.data, ...response.data.ads.data];
-
-                        this.page > response.data.ads.last_page ? this.stop = true: this.stop = false;
-
-                        this.loading = false;
-                    })
-
-            }
-        },
     },
 
     mounted(){
+
+        // При загрузке компонента - узнаем мы запрашиваем все объявления или только мои избранные
         localStorage.getItem('getMyLikeAds') != undefined ? this.getMyLikeAds = true: '';
+
         this.getAds();
 
-        this.authStore.desktopOrMobile != 'Desktop' ? window.addEventListener('scroll', this.loadMore) :'';
+        // На мобильных устройствах при курсорной навигации запрашиваем объявления
+        this.authStore.desktopOrMobile != 'Desktop' ? window.addEventListener('scroll', this.getAdsMobileCursorPaginate) :'';
 
     },
 
     beforeDestroy() {
-        window.removeEventListener('scroll', this.loadMore);
+        window.removeEventListener('scroll', this.getAdsMobileCursorPaginate);
     }
 
 }

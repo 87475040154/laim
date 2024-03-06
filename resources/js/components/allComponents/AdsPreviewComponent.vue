@@ -450,7 +450,7 @@
                             >
                             mdi-heart
                             </v-icon>
-                            <v-tooltip activator="parent" location="bottom">{{ $t('AdsPreviewAddFavorites') }}</v-tooltip>
+<!--                            <v-tooltip activator="parent" location="bottom">{{ $t('AdsPreviewAddFavorites') }}</v-tooltip>-->
                         </span>
 
 

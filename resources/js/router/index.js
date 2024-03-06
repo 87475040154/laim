@@ -20,7 +20,7 @@ const routes = [
                 component: () => import('../components/IndexComponent.vue'),
                 name: 'allAds',
                 meta: {
-                    title: 'Главная страница'
+                    title: 'Аренда недвижимости'
                 },
 
                 children: [
@@ -339,7 +339,7 @@ router.beforeEach( (to, from, next) => {
     let lang = getActiveLanguage();
     if(lang == 'ru')document.title = to.meta.title;
     if(lang == 'kz'){
-        if(to.meta.title == 'Главная страница')document.title = 'Басты бет';
+        if(to.meta.title == 'Аренда недвижимости')document.title = 'Жалға берілетін мүлік';
         if(to.meta.title == 'Недвижимость')document.title = 'Жылжымайтын мүлік';
         if(to.meta.title == 'Фото')document.title = 'Фото';
         if(to.meta.title == 'Объект на карте')document.title = 'Картадағы нысан';
@@ -362,7 +362,7 @@ router.beforeEach( (to, from, next) => {
         if(to.meta.title == 'Проверка платежа')document.title = 'Төлемді тексеру';
     }
     if(lang == 'en'){
-        if(to.meta.title == 'Главная страница')document.title = 'Main page';
+        if(to.meta.title == 'Аренда недвижимости')document.title = 'Real estate rental';
         if(to.meta.title == 'Недвижимость')document.title = 'Real estate';
         if(to.meta.title == 'Фото')document.title = 'Photo';
         if(to.meta.title == 'Объект на карте')document.title = 'Object on the map';

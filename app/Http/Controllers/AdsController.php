@@ -382,12 +382,14 @@ class AdsController extends Controller
 
         //Если запрос получить мои лайки
         if($request->getMyLikeAds == 'Получить мои лайки'){
-            $ads_arr = $query->latest()->paginate(30);
+            $query->latest();
+            $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(30) : $query->paginate(30);
         }
 
         //Если запрос моих архивных
         if($filter != 'Фильтр не применен' && $filter['arhiv'] != '' && $request->getMyLikeAds == 'Не получать мои лайки' && !isset($request->getAdsYandexClusterer)){
-            $ads_arr = $query->latest()->paginate(30);
+            $query->latest();
+            $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(30) : $query->paginate(30);
         }
 
         //Если запрос только активных объявлений
@@ -397,12 +399,15 @@ class AdsController extends Controller
             //Получим связанные лайки предварительная загрузка
             // Дополнительные условия и сортировка
             $query->where('control', 'Активно');
-            $ads_arr = $query->with(['likes' => function ($query) use ($request) {
+            $query->with(['likes' => function ($query) use ($request) {
                 $query->where('author_id', $request->user_id);
-            }]) ->orderBy('bueAds', 'desc') // Сначала выводим объявления на которых есть реклама
+            }])
+                ->orderBy('bueAds', 'desc') // Сначала выводим объявления на которых есть реклама
                 ->orderBy('updated_at', 'desc') // Затем получим все остальные
-                ->select(['id', 'zagolovok', 'table_name', 'cena', 'oblast', 'gorod', 'raion', 'ulica', 'nomer_doma', 'images', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30', 'created_at'])
-                ->paginate(30);
+                ->select(['id', 'zagolovok', 'table_name', 'cena', 'oblast', 'gorod', 'raion', 'ulica', 'nomer_doma', 'images', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30','bueAds','updated_at', 'created_at']);
+
+            $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(30) : $query->paginate(30);
+
         }
 
         // Перебираем объявления и добавляем дополнительные данные
