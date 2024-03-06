@@ -46,7 +46,19 @@
             <div class="spinner-border spinner-border-sm" style="color: var(--app-text-color)" role="status"></div>
         </div>
 
+        <!-- Компонент превью объявлений -->
         <ads-preview-component  :ads_arr="ads_arr.data" :getMyLikeAds="getMyLikeAds"></ads-preview-component>
+
+        <!-- Для мобильных устройств - Курсорная прокрутка -->
+        <div v-if="authStore.desktopOrMobile == 'Mobile'">
+            <div ref="scrollObserver"></div>
+
+            <!-- Gif Load  - Если объявления еще не загрузились -->
+            <div v-if="queryCursorPaginate" class="d-flex justify-content-center py-1">
+                <div class="spinner-border spinner-border-sm" style="color: var(--app-text-color)" role="status"></div>
+            </div>
+
+        </div>
 
         <!-- Если объявления не найденны покажется текст -->
         <div v-if="count_ads == 0 && !query" class="text-center text-muted my-3">
@@ -84,16 +96,11 @@
 
     </div>
 
-    <!-- Вывод внутренних компонентов -->
+    <!-- Вывод внутренних - дочерних  компонентов например: Фильтр, язык и тд. -->
     <div style="position: relative; z-index: 2">
         <router-view></router-view>
     </div>
 
-
-    <!-- Для автоподгрузки на мобильных устройствах -->
-    <div v-if="authStore.desktopOrMobile != 'Desktop'">
-        <div ref="scrollObserver"></div>
-    </div>
 
 </template>
 
@@ -123,6 +130,7 @@ export default {
 
     data(){
         return {
+
             //Подключаю Store - Наше общее состояние
             authStore: useAuthStore(),
             checkInternetStore: useCheckInternetStore(),
@@ -131,23 +139,27 @@ export default {
             updateDateLocaleStore: useUpdateDateLocaleStore(),
             KZLocationStore: useKZLocationStore(),
 
-
-            showBtnAppInstall: false,
             query: false,
 
+
+            showBtnAppInstall: false,
+
             count_ads: 0,
+
             ads_arr: {}, //Полученные объявления с БД
 
-            //Для получения моих понравившихся
+            //Для получения моих избранных
             getMyLikeAds: false,
 
-            //Для фильтра
+            //Сколько позиций выбранно в фильтре
             countFilter: 0,
 
             //Кнопка объекты на карте - Показать если есть выбранная локация области
             showMapButton: false,
 
             //Для курсорной навигации на Мобильных устройствах
+            queryCursorPaginate: false,
+
             nextCursor: '',
             prevCursor: '',
 
@@ -225,14 +237,14 @@ export default {
 
         // Метод получения объявлений на мобильных устройствах - курсорной погинацией
         getAdsMobileCursorPaginate() {
-            if(this.query)return;
+            if( this.query || this.queryCursorPaginate || this.nextCursor == null )return;
 
             const scrollObserver = this.$refs.scrollObserver;
             const rect = scrollObserver.getBoundingClientRect();
 
             if (rect.bottom <= window.innerHeight) {
                 let filter = localStorage.getItem("filter=" + this.$route.params.table_name) == undefined ? '' : JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name));
-                this.query = true;
+                this.queryCursorPaginate = true;
 
                 axios.get('getAllAds', {
                     params: {
@@ -256,9 +268,9 @@ export default {
                         // Метод проверить количество - Фильтра
                         this.filterLength(filter);
 
-                        this.query = false;
+                        this.queryCursorPaginate = false;
                     }).catch(()=>{
-                    this.query = false;
+                    this.queryCursorPaginate = false;
                 })
 
             }
