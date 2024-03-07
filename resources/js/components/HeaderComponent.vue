@@ -71,7 +71,7 @@
         </div>
 
         <!-- МЕНЮ - КАТЕГОРИИ - ЧТО ПОКАЗАТЬ -->
-        <v-item-group class="d-flex gap-2 justify-content-md-center text-center p-1 pb-3 p-md-2 py-md-3" style="overflow: auto">
+        <v-item-group class="d-flex gap-2 justify-content-md-center text-center p-1 pt-3 pb-3 p-md-2 py-md-3" style="overflow: auto">
 
             <!-- Квартиры -->
             <div @click="changeMenu('/allAds/Kvartira/1')">
