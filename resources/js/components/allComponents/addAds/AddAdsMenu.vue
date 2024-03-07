@@ -308,7 +308,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2em;
+    font-size: 1.5em;
     font-weight: bold;
     position: relative;
     background: #ffffff;
