@@ -80,8 +80,8 @@
         </div>
 
         <!-- Кнопка показать объекты на карте -->
-        <v-btn rounded="xl" height="40" class="text-caption mb-5 mb-lg-0 text-white"
-               style="position:fixed; bottom: 20px; right: 20px; background: #10a37f"
+        <v-btn rounded="xl" height="45" class="text-caption mb-5 mb-lg-0 text-dark"
+               style="position:fixed; bottom: 20px; right: 20px; background: rgb(246 196 13)"
                v-if="showMapButton"
                @click="$router.push('/mapCluster/' + $route.params.table_name)"
         >
