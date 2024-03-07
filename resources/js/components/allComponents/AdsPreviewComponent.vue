@@ -493,6 +493,7 @@
 
                             <!-- Кнопка сдать быстрее -->
                             <v-btn dark color="blue-darken-2"
+                                   size="x-large"
                                    @click="$router.push('/bueAds/' + ads.author_id + '/' + ads.table_name + '/1/' + ads.id)"
                                    class="text-body-1"
                                    style="min-width: 170px"
@@ -510,7 +511,7 @@
                             <div class="dropstart">
 
                                 <!-- Кнопка - Окрыть скрытое меню -->
-                                <v-btn icon size="small" data-bs-toggle="dropdown" aria-expanded="false">
+                                <v-btn icon size="x-large" data-bs-toggle="dropdown" aria-expanded="false">
                                     <v-icon>mdi-dots-vertical</v-icon>
                                 </v-btn>
 
@@ -521,7 +522,10 @@
                                     >
 
                                         <!-- Кнопка - Рекламировать или Отановить объявление -->
-                                        <v-btn dark color="blue-darken-2" class="text-body-1"
+                                        <v-btn dark
+                                               color="blue-darken-2"
+                                               class="text-body-1"
+                                               size="x-large"
                                                @click="adsActiveToggle(index, ads.id, ads.table_name, ads.control)"
                                                :disabled="query"
                                         >
@@ -529,14 +533,18 @@
                                         </v-btn>
 
                                         <!-- Кнопка - Редактировать обьявление -->
-                                        <v-btn dark icon size="small" color="blue-darken-2"
+                                        <v-btn dark icon
+                                               size="x-large"
+                                               color="blue-darken-2"
                                                @click="$router.push({name: 'addAds', params: {table_name: ads.table_name, id: ads.id, step:1}})"
                                         >
                                             <i class="bi bi-pencil-square"></i>
                                         </v-btn>
 
                                         <!-- Кнопка - Удалить объявление -->
-                                        <v-btn dark icon size="small" color="blue-darken-2"
+                                        <v-btn dark icon
+                                               size="x-large"
+                                               color="blue-darken-2"
                                                @click="deleteAds(index, ads.id, ads.table_name, ads.control)"
                                                :disabled="query"
                                         >
