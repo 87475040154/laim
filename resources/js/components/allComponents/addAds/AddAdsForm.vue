@@ -87,18 +87,18 @@
                 <div v-if="showLocaleStorageAds" class="text-center">
 
                     <!-- Заголовок -->
-                    <h4 class="py-3 pt-5 fw-bold">{{ $t('addAdsDoYouHaveAnUnfinishedAd') }}</h4>
+                    <h2 class="py-3 pt-5 fw-bold">{{ $t('addAdsDoYouHaveAnUnfinishedAd') }}</h2>
 
                     <!-- Кнопки -->
                     <div class="d-flex gap-2 align-center justify-center py-2">
 
                         <!-- Подать новое -->
-                        <v-btn @click="openModal(false)" variant="flat" size="large" class="text-white text-body-1" style="background: #10a37f">
+                        <v-btn @click="openModal(false)" variant="flat" size="x-large" class="text-white text-body-1" style="background: #10a37f; width: 160px">
                             {{ $t('addAdsSubmitANewOne') }}
                         </v-btn>
 
                         <!-- Продолжить заполнять старое -->
-                        <v-btn @click="openModal(true)" variant="flat" size="large" color="blue-darken-1" class="text-body-1">
+                        <v-btn @click="openModal(true)" variant="flat" size="x-large" color="blue-darken-2" class="text-body-1" style="width:160px">
                             {{ $t('addAdsContinue') }}
                         </v-btn>
 
@@ -1360,7 +1360,7 @@
                                     <v-btn size="x-small" icon @click="deleteImage(index)" style="position: absolute; top: 5px; right: 5px">
                                         <v-icon>mdi-delete</v-icon>
                                     </v-btn>
-                                    <img :src="img.previewImg" @click="$router.push('/imageAddAds'), imageStore.showImages({images: imageAndPreviewImage,index, addAdsImg:true})"  width="100" height="100" role="button">
+                                    <img :src="img.previewImg" @click="$router.push('/imageAddAds/' + $route.params.table_name), imageStore.showImages({images: imageAndPreviewImage,index, addAdsImg:true})"  width="100" height="100" role="button">
                                 </div>
                             </draggable>
                         </div>
@@ -1378,8 +1378,9 @@
 
                             <!-- Вывод выбранной локации - При клике открыть окно с локациями - получим области по умолчанию  -->
                             <v-btn @click="$router.push({ name: 'addAdsFormLocation',  params: {table_name: $route.params.table_name, id: $route.params.id, step: $route.params.step, locationId: 'null', stepLocation:1 } })"
-                                   class="flex-fill text-body-2" :class="{'rounded-e-0' : KZLocationStore.location != ''}"
-                                   color="blue" size="large"
+                                   class="flex-fill text-body-2"
+                                   :class="{'rounded-e-0' : KZLocationStore.location != ''}"
+                                   color="blue" size="x-large" rounded="0"
                             >
 
                                 <!-- Вывод выбранной локации -->
@@ -1397,7 +1398,7 @@
                             </v-btn>
                             <!-- Кнопка сбросить локацию -->
                             <v-btn v-if="KZLocationStore.location != ''"
-                                   color="red" size="large" :rounded="0"
+                                   color="red" size="x-large" :rounded="0"
                                    @click="KZLocationStore.removeLocation()">
                                 <v-icon>mdi-close</v-icon>
                             </v-btn>
@@ -2321,9 +2322,9 @@ export default defineComponent({
 
 .form__item{
     background: #f2f3f5;
-    color: #8b9098;
+    color: rgb(69 69 70);
     cursor: pointer;
-    padding: 10px 15px;
+    padding: 15px 20px;
     margin: 2px 5px;
     border-radius: 10px;
     font-size: 1em;

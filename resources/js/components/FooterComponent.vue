@@ -89,12 +89,12 @@
             </div>
 
             <!-- Сдать -->
-            <div  class="footer__mobile-link" @click="authStore.check ? $router.push('/addAdsMenu') : $router.push('/auth')">
+            <div  class="footer__mobile-link" @click="authStore.check ? $router.push('/addAdsMenu/' + $route.params.table_name) : $router.push('/auth')">
                 <v-icon style="font-size: 2em; color: #10a37f">mdi-plus-box</v-icon>
             </div>
 
             <!-- Чаты -->
-            <div  class="footer__mobile-link" @click="authStore.check ? $router.push('/chat/null') : $router.push('/auth')">
+            <div  class="footer__mobile-link" @click="authStore.check ? $router.push('/chat/null/'+ $route.params.table_name) : $router.push('/auth')">
                 <v-badge v-if="authStore.check && getProjectDataStore.countNewMessage > 0" :content="getProjectDataStore.countNewMessage" color="error">
                     <i class="bi bi-envelope"></i>
                 </v-badge>
@@ -104,7 +104,7 @@
             </div>
 
             <!-- Мой аккаунт -->
-            <div  class="footer__mobile-link" @click="authStore.check ? $router.push('/myAccount') : $router.push('/auth')">
+            <div  class="footer__mobile-link" @click="authStore.check ? $router.push('/myAccount/'+ $route.params.table_name) : $router.push('/auth')">
                 <v-icon>{{authStore.check ? 'mdi-account': 'mdi-account-arrow-right'}}</v-icon>
                 <div style="font-size: 0.5em; line-height: 8px">
                     {{authStore.check ? authStore.user.name: $t('footerLogin')}}

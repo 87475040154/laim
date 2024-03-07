@@ -25,11 +25,10 @@
 
                     <v-chip size="small" class="bg-red-darken-2" v-if="authStore.user.role == 'admin'">Админ</v-chip>
 
+                    <v-spacer></v-spacer>
+
                     <!-- Кнопка назад -->
-                    <v-btn icon dark variant="text"
-                           @click="$router.back()"
-                           style="position: absolute; top: 0; right: 10px;"
-                    >
+                    <v-btn icon dark variant="text" class="mx-2"  @click="$router.back()">
                         <v-icon>mdi-arrow-right</v-icon>
                     </v-btn>
 
@@ -63,7 +62,7 @@
 
                     <!-- Правила размещения объявлений / Пользовательское соглашение / Выход -->
                     <div class="myAccount__lings-block">
-                        <div @click="$router.push('/settings')" class="myAccount__ling">
+                        <div @click="$router.push('/settings/'+ $route.params.table_name)" class="myAccount__ling">
                             <v-icon icon="mdi-cog-outline px-4"></v-icon>
                             <span class="myAccount__ling-text">{{ $t('myAccountSettings') }}</span>
                         </div>
@@ -263,16 +262,11 @@ export default {
 }
 
 .myAccount__header{
-    position: relative;
-    width: 100%;
-    height: 44px;
     display: flex;
     align-items: center;
-    font-size: 1.2em;
-    font-weight: bold;
     background: var(--app-header-bg-color);
     color: #ffffff;
-    padding: 0 10px;
+    padding: 0 5px;
 }
 
 .myAccount__body{

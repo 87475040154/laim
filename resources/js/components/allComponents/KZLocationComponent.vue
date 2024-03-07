@@ -50,7 +50,7 @@
                         <v-divider class="m-0"></v-divider>
 
                         <!-- Локация -->
-                        <div class="p-2 py-md-1 d-flex align-items-center text-body-1">
+                        <div class="p-2 d-flex align-items-center text-body-1">
 
                             <div class="col py-2">
                                 <!-- Выбор Облости -->

@@ -38,7 +38,7 @@ const routes = [
 
                             //Фото
                             {
-                                path: '/imageOneAds',
+                                path: '/imageOneAds/:table_name',
                                 component: ()=> import('../components/allComponents/ImageComponent.vue'),
                                 name: 'imageOneAds',
                                 meta: {
@@ -48,7 +48,7 @@ const routes = [
 
                             //Карта
                             {
-                                path: '/mapOneAds',
+                                path: '/mapOneAds/:table_name',
                                 component: ()=> import('../components/allComponents/map/YandexMap.vue'),
                                 name: 'yandexMapOneAds',
                                 meta: {
@@ -108,7 +108,7 @@ const routes = [
 
                     //Мой кабинет
                     {
-                        path: '/myAccount',
+                        path: '/myAccount/:table_name',
                         component: ()=> import('../components/allComponents/user/MyAccountComponent.vue'),
                         name: 'myAccount',
                         meta: {
@@ -118,7 +118,7 @@ const routes = [
                         children: [
                             //Настройки
                             {
-                                path: '/settings',
+                                path: '/settings/:table_name',
                                 component: ()=> import('../components/allComponents/user/Settings.vue'),
                                 name: "settings",
                                 meta: {
@@ -131,7 +131,7 @@ const routes = [
 
                     //Чаты
                     {
-                        path: '/chat/:id',
+                        path: '/chat/:id/:table_name',
                         component: ()=> import('../components/allComponents/ChatComponent.vue'),
                         name: 'chat',
                         meta: {
@@ -142,7 +142,7 @@ const routes = [
                         children: [
                             //Фото
                             {
-                                path: '/imageChat',
+                                path: '/imageChat/:table_name',
                                 component: ()=> import('../components/allComponents/ImageComponent.vue'),
                                 name: 'imageChat',
                                 meta: {
@@ -185,7 +185,7 @@ const routes = [
 
                     // Меню Подача объявления
                     {
-                        path: '/addAdsMenu',
+                        path: '/addAdsMenu/:table_name',
                         component: ()=> import('../components/allComponents/addAds/AddAdsMenu.vue'),
                         name: 'addAdsMenu',
                         meta: {
@@ -218,7 +218,7 @@ const routes = [
 
                             //Фото
                             {
-                                path: '/imageAddAds',
+                                path: '/imageAddAds/:table_name',
                                 component: ()=> import('../components/allComponents/ImageComponent.vue'),
                                 name: 'imageAddAds',
                                 meta: {

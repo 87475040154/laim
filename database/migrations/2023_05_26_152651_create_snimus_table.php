@@ -37,6 +37,8 @@ return new class extends Migration
             $table->string('raion')->nullable();
             $table->double('lat');
             $table->double('lon');
+            $table->string('ulica')->nullable();
+            $table->string('nomer_doma')->nullable();
 
 
             $table->string('images')->default('no-image');

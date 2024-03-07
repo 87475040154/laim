@@ -82,7 +82,7 @@
                             <div class="col-auto"><i class="bi bi-person-circle" style="font-size: 2em"></i></div>
 
                             <!-- Имя отправителя / Последнее СМС -->
-                            <div @click="$router.push('/chat/' + chat.id)" class="col mx-2" role="button">
+                            <div @click="$router.push('/chat/' + chat.id +'/'+ $route.params.table_name)" class="col mx-2" role="button">
 
                                 <!-- Имя отпровителя написавшего мне и сколько новых от него смс -->
                                 <div>
@@ -138,7 +138,7 @@
                                     <v-card max-width="600" style="box-shadow: none; border: 1px solid #dce1e6; border-radius: 12px"
                                             class="mx-3 my-3 mx-sm-auto"
                                             :class="{
-                                                'bg-teal-lighten-4': ads.top_x7 != undefined && ads.top_x7 != null,
+                                                'bg-green-lighten-4': ads.top_x7 != undefined && ads.top_x7 != null,
                                                 'bg-red-lighten-4': ads.top_x30 != undefined && ads.top_x30 != null,
                                             }"
                                     >
@@ -154,7 +154,7 @@
                                                     {{ $t('adsPreviewComponentUrgentBargaining') }}
                                                 </div>
 
-                                                <img v-if="ads.images[0] != 'no-image'" @click="$router.push('/imageChat'), imageStore.showImages({images: ads.images,index: 0, allImg: true})" class="rounded-sm" :src=" '/img/adsImg/' + ads.images[0] " style="width: 100%; height: 150px; object-fit: cover; object-position: center" alt="Фото недвижимости">
+                                                <img v-if="ads.images[0] != 'no-image'" @click="$router.push('/imageChat/'+ $route.params.table_name), imageStore.showImages({images: ads.images,index: 0, allImg: true})" class="rounded-sm" :src=" '/img/adsImg/' + ads.images[0] " style="width: 100%; height: 150px; object-fit: cover; object-position: center" alt="Фото недвижимости">
                                                 <img v-else src="/public/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" style="width: 100%; height: 150px;">
 
                                             </div>
@@ -479,7 +479,7 @@
 
                                                 <!-- Сам слайд Фото -->
                                                 <swiper-slide v-for="(img, i) in message.images" :key="i">
-                                                    <img @click="$router.push('/imageChat'), imageStore.showImages({images: message.images,index: i, chatImg: true})" class="rounded-t-sm" :src=" '/img/messageImg/' + img " style="width: 100%; height: 90px; object-fit: cover; object-position: center" alt="Фото недвижимости">
+                                                    <img @click="$router.push('/imageChat'+ $route.params.table_name), imageStore.showImages({images: message.images,index: i, chatImg: true})" class="rounded-t-sm" :src=" '/img/messageImg/' + img " style="width: 100%; height: 90px; object-fit: cover; object-position: center" alt="Фото недвижимости">
                                                 </swiper-slide>
                                             </swiper>
 
@@ -510,7 +510,7 @@
 
                                                 <!-- Сам слайд Фото -->
                                                 <swiper-slide v-for="(img, i) in message.images" :key="i">
-                                                    <img @click="$router.push('/imageChat'), imageStore.showImages({images: message.images,index: i, chatImg: true})" class="rounded-t-sm" :src=" '/img/messageImg/' + img " style="width: 100%; height: 90px; object-fit: cover; object-position: center" alt="Фото недвижимости">
+                                                    <img @click="$router.push('/imageChat/'+ $route.params.table_name), imageStore.showImages({images: message.images,index: i, chatImg: true})" class="rounded-t-sm" :src=" '/img/messageImg/' + img " style="width: 100%; height: 90px; object-fit: cover; object-position: center" alt="Фото недвижимости">
                                                 </swiper-slide>
                                             </swiper>
 
@@ -563,7 +563,7 @@
                                     <v-btn size="x-small" icon @click="deleteImage(index)" style="position: absolute; top: 5px; right: 5px">
                                         <v-icon>mdi-delete</v-icon>
                                     </v-btn>
-                                    <img :src="img.previewImg" @click="$router.push('/imageChat'), imageStore.showImages({images: imageAndPreviewImage,index, chatImg:true})"  width="100" height="100" role="button">
+                                    <img :src="img.previewImg" @click="$router.push('/imageChat/'+ $route.params.table_name), imageStore.showImages({images: imageAndPreviewImage,index, chatImg:true})"  width="100" height="100" role="button">
                                 </span>
                                     </draggable>
                                 </div>

@@ -35,7 +35,7 @@
 
                             <!-- Чаты -->
                             <v-btn icon size="x-small" color="blue-grey" variant="tonal"
-                                   @click="$router.push('/chat/null')"
+                                   @click="$router.push('/chat/null/'+ $route.params.table_name)"
                             >
                                 <v-badge floating v-if="getProjectDataStore.countNewMessage > 0" :content="getProjectDataStore.countNewMessage" color="error" style="margin-botom: -5px">
                                     <v-icon class="mt-n2" size="large">mdi-email-outline</v-icon>
@@ -44,9 +44,9 @@
                                 <v-tooltip activator="parent" location="bottom">{{ $t('headerChats') }}</v-tooltip>
                             </v-btn>
 
-                            <!-- Имя пользователя - Показать если авторизован -->
+                            <!-- Мой аккаунт- Имя пользователя - Показать если авторизован -->
                             <v-btn icon size="x-small" color="blue-grey" variant="tonal"
-                                   @click="$router.push('/myAccount')"
+                                   @click="$router.push('/myAccount/'+ $route.params.table_name)"
                             >
                                 <v-icon size="x-large">mdi-account-outline</v-icon>
                                 <v-tooltip activator="parent" location="bottom">{{ $t('headerMyAccount') }}</v-tooltip>
@@ -59,7 +59,7 @@
                     <!-- Кнопка Подать Объявление -->
                     <div class="mx-3">
                         <v-btn rounded="lg" class="text-body-1 text-white" style="background: #fc3441"
-                               @click="authStore.check ? $router.push('/addAdsMenu') : $router.push('/auth')"
+                               @click="authStore.check ? $router.push('/addAdsMenu/' + $route.params.table_name) : $router.push('/auth')"
                         >
                             {{ $t('headerSubmitAnAd')}}
                         </v-btn>

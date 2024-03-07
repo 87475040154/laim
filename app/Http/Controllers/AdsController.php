@@ -328,7 +328,7 @@ class AdsController extends Controller
                 'ownerOrRealtor', 'tip_sdelki', 'tip_obekta', 'period_arendi', 'kolichestvo_komnat_ot',
                 'kolichestvo_komnat_do', 'deistvuushii_bisnes', 'cena_tip', 'cena_ot', 'cena_do',
                 'sfera_deyatelnosti', 'mestopolojenie', 'tip_ofisa', 'etag_ot', 'etag_do', 'etagnost_ot',
-                'etagnost_do', 'visota_potolkov_ot', 'visota_potolkov_do', 'ploshad_ot', 'ploshad_do',
+                'etagnost_do', 'visota_potolkov_ot', 'visota_potolkov_do', 'ploshad_obshaya_ot', 'ploshad_obshaya_do',
                 'ploshad_uchastka_ot', 'ploshad_uchastka_do', 'tip_stroeniya', 'sostoyanie', 'mebel', 'dush', 'sanuzel',
                 'kanalizaciya', 'voda', 'otoplenie', 'oblast', 'gorod', 'raion', 'tel'
             ];

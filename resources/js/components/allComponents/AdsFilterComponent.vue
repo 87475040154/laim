@@ -57,7 +57,13 @@
                         <div class="d-flex">
 
                             <!-- Вывод выбранной локации - При клике открыть окно с локациями - получим области по умолчанию  -->
-                            <v-btn @click="$router.push({ name: 'location',  params: { tabele_name: $route.params.table_name, locationId: 'null', stepLocation:1 } })" class="flex-fill text-body-2" :class="{'rounded-e-0' : KZLocationStore.location != ''}" color="blue" size="large" >
+                            <v-btn @click="$router.push({ name: 'location',  params: { tabele_name: $route.params.table_name, locationId: 'null', stepLocation:1 } })"
+                                   class="flex-fill text-body-2"
+                                   :class="{'rounded-e-0' : KZLocationStore.location != ''}"
+                                   color="blue"
+                                   size="x-large"
+                                   rounded="0"
+                            >
 
                                 <!-- Вывод выбранной локации -->
                                 <div v-if="KZLocationStore.location != ''">
@@ -80,7 +86,7 @@
                             </v-btn>
                             <!-- Кнопка сбросить локацию -->
                             <v-btn v-if="KZLocationStore.location != ''"
-                                   color="red" size="large" :rounded="0"
+                                   color="red" size="x-large" :rounded="0"
                                    @click="KZLocationStore.removeLocation()">
                                 <v-icon>mdi-close</v-icon>
                             </v-btn>
@@ -598,8 +604,8 @@
 
                         <!-- Площадь от м2  -->
                         <v-text-field
-                            v-model="form.ploshad_ot"
-                            name="ploshad_ot" :label="$t('filterAreaFromM2')"
+                            v-model="form.ploshad_obshaya_ot"
+                            name="ploshad_obshaya_ot" :label="$t('filterAreaFromM2')"
                             type="text"
                             inputmode="numeric"
                             variant="outlined" color="blue"
@@ -607,8 +613,8 @@
 
                         <!-- Площадь до м2  -->
                         <v-text-field
-                            v-model="form.ploshad_do"
-                            name="ploshad_do" :label="$t('filterAreaUpToM2')"
+                            v-model="form.ploshad_obshaya_do"
+                            name="ploshad_obshaya_do" :label="$t('filterAreaUpToM2')"
                             type="text"
                             inputmode="numeric"
                             variant="outlined" color="blue"
@@ -847,8 +853,8 @@ export default {
                 visota_potolkov_ot: '',
                 visota_potolkov_do: '',
 
-                ploshad_ot: '',
-                ploshad_do: '',
+                ploshad_obshaya_ot: '',
+                ploshad_obshaya_do: '',
                 ploshad_uchastka_ot: '',
                 ploshad_uchastka_do: '',
 
@@ -1109,9 +1115,9 @@ export default {
 /* Кнопка */
 .form__item{
     background: #f2f3f5;
-    color: #8b9098;
+    color: rgb(69 69 70);
     cursor: pointer;
-    padding: 10px 15px;
+    padding: 15px 20px;
     margin: 2px 5px;
     border-radius: 10px;
     font-size: 1em;

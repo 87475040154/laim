@@ -33,7 +33,7 @@
 
                         <!-- Вывод самого слайда - то-есть 1-го фото -->
                         <swiper-slide v-for="(img, i) in ads.images" :key="i" class="px-lg-5 position-relative">
-                            <img @click="imageStore.showImages({images: ads.images,index: i, allImg: true}), $router.push('/imageOneAds')" :src="'/img/adsImg/' + img " style="width: 100%; height: 350px; object-fit: cover; object-position: center; border-radius: 3px 3px 0 0; box-shadow: 0 0 5px #e3e3e3; z-index: 0">
+                            <img @click="imageStore.showImages({images: ads.images,index: i, allImg: true}), $router.push('/imageOneAds/'+ $route.params.table_name)" :src="'/img/adsImg/' + img " style="width: 100%; height: 350px; object-fit: cover; object-position: center; border-radius: 3px 3px 0 0; box-shadow: 0 0 5px #e3e3e3; z-index: 0">
 
                             <!-- Кнопки перетаскивания -->
                             <div class="swiper-button-next" @click="slidePrev()"></div>
@@ -142,7 +142,7 @@
 
                             <!-- Кнопка открыть карту на весь экран -->
                             <div style="position: absolute; top: 0; left: 0; right:0; bottom:0" role="button"
-                                 @click="$router.push({name: 'yandexMapOneAds', query: {lat: ads.lat, lon:ads.lon, image: ads.images[0]} })"
+                                 @click="$router.push({name: 'yandexMapOneAds', params: {'table_name': $route.params.table_name}, query: {lat: ads.lat, lon:ads.lon, image: ads.images[0]} })"
                             >
                             </div>
 
