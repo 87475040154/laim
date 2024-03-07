@@ -11,7 +11,7 @@
             <div class="addAds__header">
 
                 <!-- Кнопка Назад / Заголовок старницы - что сдать / Закрыть форму или сохранить -->
-                <div class="row g-0 align-center text-white" style="background: var(--app-header-bg-color);">
+                <div class="row g-0 align-center text-teal-lighten-3" style="background: var(--app-header-bg-color);">
 
                     <!-- Кнопка Назад -->
                     <div class="col-auto">
