@@ -53,7 +53,9 @@
         </div>
 
         <!-- Компонент превью объявлений -->
-        <ads-preview-component  :ads_arr="ads_arr.data" :getMyLikeAds="getMyLikeAds"></ads-preview-component>
+        <ads-preview-component  :ads_arr="ads_arr.data" :getMyLikeAds="getMyLikeAds" @get-ads-cursor-paginate="getAdsMobileCursorPaginate">
+
+        </ads-preview-component>
 
         <!-- Для мобильных устройств - Курсорная прокрутка -->
         <div v-if="authStore.desktopOrMobile == 'Mobile'">
@@ -240,41 +242,35 @@ export default {
         getAdsMobileCursorPaginate() {
             if( this.query || this.queryCursorPaginate || this.nextCursor == null )return;
 
-            const scrollObserver = this.$refs.scrollObserver;
-            const rect = scrollObserver.getBoundingClientRect();
+            let filter = localStorage.getItem("filter=" + this.$route.params.table_name) == undefined ? '' : JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name));
+            this.queryCursorPaginate = true;
 
-            if (rect.bottom <= window.innerHeight) {
-                let filter = localStorage.getItem("filter=" + this.$route.params.table_name) == undefined ? '' : JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name));
-                this.queryCursorPaginate = true;
+            axios.get('getAllAds', {
+                params: {
+                    cursor: this.nextCursor,
+                    user_id: useAuthStore().check ? useAuthStore().user.id : 0,
+                    table_name: this.$route.params.table_name,
+                    filter: filter == '' ? 'Фильтр не применен' : filter,
+                    getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
+                    cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true
+                }
+            })
+                .then(response => {
 
-                axios.get('getAllAds', {
-                    params: {
-                        cursor: this.nextCursor,
-                        user_id: useAuthStore().check ? useAuthStore().user.id : 0,
-                        table_name: this.$route.params.table_name,
-                        filter: filter == '' ? 'Фильтр не применен' : filter,
-                        getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
-                        cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true
-                    }
-                })
-                    .then(response => {
+                    //Канкатенируем старые обьявления с новыми полученными
+                    this.ads_arr.data = [...this.ads_arr.data, ...response.data.ads.data];
 
-                        //Канкатенируем старые обьявления с новыми полученными
-                        this.ads_arr.data = [...this.ads_arr.data, ...response.data.ads.data];
+                    // Добавим данные для пагинации
+                    this.nextCursor = response.data.ads.next_cursor;
+                    this.prevCursor = response.data.ads.prev_cursor;
 
-                        // Добавим данные для пагинации
-                        this.nextCursor = response.data.ads.next_cursor;
-                        this.prevCursor = response.data.ads.prev_cursor;
+                    // Метод проверить количество - Фильтра
+                    this.filterLength(filter);
 
-                        // Метод проверить количество - Фильтра
-                        this.filterLength(filter);
-
-                        this.queryCursorPaginate = false;
-                    }).catch(()=>{
                     this.queryCursorPaginate = false;
-                })
-
-            }
+                }).catch(()=>{
+                this.queryCursorPaginate = false;
+            })
         },
 
         // Метод - Получить мои избранные объявления
@@ -331,16 +327,7 @@ export default {
 
         // При загрузке компонента - узнаем мы запрашиваем все объявления или только мои избранные
         localStorage.getItem('getMyLikeAds') != undefined ? this.getMyLikeAds = true: '';
-
         this.getAds();
-
-        // На мобильных устройствах при курсорной навигации запрашиваем объявления
-        this.authStore.desktopOrMobile != 'Desktop' ? window.addEventListener('scroll', this.getAdsMobileCursorPaginate) :'';
-
-    },
-
-    beforeDestroy() {
-        window.removeEventListener('scroll', this.getAdsMobileCursorPaginate);
     }
 
 }

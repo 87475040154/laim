@@ -1,7 +1,16 @@
 <template>
 
     <!-- Компонент вывод превью объявлений -->
-    <div v-for="(ads, index) of ads_array" :key="index">
+    <RecycleScroller
+        v-if="ads_arr.length > 0"
+        :page-mode="true"
+        class="scroller"
+        :items="ads_arr"
+        :item-size="170"
+        key-field="id"
+        v-slot="{ item:ads, index }"
+        @scroll-end="$emit('get-ads-cursor-paginate')"
+    >
         <v-card max-width="650" style="background: #ffffff; box-shadow: none; border-radius: 6px"
                 class="mx-3 my-3 mx-sm-auto ads__preview"
                 :class="{
@@ -450,7 +459,7 @@
                             >
                             mdi-heart
                             </v-icon>
-<!--                            <v-tooltip activator="parent" location="bottom">{{ $t('AdsPreviewAddFavorites') }}</v-tooltip>-->
+                            <!--                            <v-tooltip activator="parent" location="bottom">{{ $t('AdsPreviewAddFavorites') }}</v-tooltip>-->
                         </span>
 
 
@@ -561,7 +570,8 @@
             </div>
 
         </v-card>
-    </div>
+    </RecycleScroller>
+
 
 </template>
 
@@ -575,8 +585,15 @@ import { useGetProjectDataStore } from "../../stores/getProjectData";
 import { useAdsStore } from "../../stores/ads";
 import {useUpdateDateLocaleStore} from "../../stores/updateDateLocale";
 
+import { RecycleScroller } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+
 export default {
     name: "AdsPreviewComponent",
+
+    components: {
+        RecycleScroller
+    },
 
     props: {
         ads_arr: Array,
@@ -596,6 +613,7 @@ export default {
 
             ads_array: '',
             query: false,
+
         }
     },
 
@@ -758,12 +776,19 @@ export default {
                 return this.$filters.transformDateRuNotWatch(newDate); // Здесь используйте ваш фильтр для форматирования даты
             }
         },
+
     }
 
 }
 </script>
 
 <style scoped>
+
+.scroller {
+    width: 100%;
+    height: 100%;
+}
+
 
 .ads__preview{
     user-select: none;
