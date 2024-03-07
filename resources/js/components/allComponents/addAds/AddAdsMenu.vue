@@ -338,7 +338,7 @@ export default {
     margin: auto;
     width: 80px;
     height: 80px;
-    background-color: #eaeaea;
+    background-color: #f2f3f5;
     border-radius: 12px;
     color: #232222;
     font-size: 1.1em;

@@ -769,7 +769,12 @@
                 <div class="filter__footer">
 
                     <!-- Кнопка найти -->
-                    <v-btn @click="search" size="large" block class="text-body-1 text-white" style="background: #10a37f">
+                    <v-btn @click="search"
+                           size="x-large"
+                           block
+                           class="text-body-1 text-white"
+                           style="background: #10a37f"
+                    >
                         {{ $t('filterShowResults') }}
                     </v-btn>
 

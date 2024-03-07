@@ -1374,7 +1374,7 @@
 
                         <!-- Выбор локации - Область, город, район -->
                         <div class="form__title">{{ $t('addAdsChooseACity') }}</div>
-                        <div class="d-flex">
+                        <div class="d-flex pb-3">
 
                             <!-- Вывод выбранной локации - При клике открыть окно с локациями - получим области по умолчанию  -->
                             <v-btn @click="$router.push({ name: 'addAdsFormLocation',  params: {table_name: $route.params.table_name, id: $route.params.id, step: $route.params.step, locationId: 'null', stepLocation:1 } })"
@@ -1570,7 +1570,12 @@
                         </span>
 
                         <!-- Кнопка далее - для перехода к следующему разделу формы -->
-                        <v-btn v-if="$route.params.step < 7" @click="formValidate(false)" size="large" style="background: rgb(16, 163, 127);" block class="text-body-1 text-white">
+                        <v-btn v-if="$route.params.step < 7" @click="formValidate(false)"
+                               size="x-large"
+                               style="background: rgb(16, 163, 127);"
+                               block
+                               class="text-body-1 text-white"
+                        >
                             {{ $t('addAdsFurther') }}
                         </v-btn>
 
@@ -1587,7 +1592,12 @@
                                 </div>
                             </div>
 
-                            <v-btn @click="formValidate(false)" size="large" style="background: rgb(16, 163, 127);" block class="mb-3 text-body-1 text-white">
+                            <v-btn @click="formValidate(false)"
+                                   size="x-large"
+                                   style="background: rgb(16, 163, 127);"
+                                   block
+                                   class="mb-3 text-body-1 text-white"
+                            >
                                 <span>{{ $t('addAdsThatsRight') }}</span>
                             </v-btn>
                         </div>
@@ -1608,7 +1618,14 @@
 
                             <!-- Кнопка отправить форму -->
                             <div class="form-group text-center">
-                                <v-btn @click="formValidate(true)" size="large" dark block style="background: rgb(16, 163, 127);" :disabled="query" id="submit_form_btn" class="text-body-1 text-white">
+                                <v-btn @click="formValidate(true)"
+                                       size="x-large"
+                                       dark block
+                                       style="background: rgb(16, 163, 127);"
+                                       :disabled="query"
+                                       id="submit_form_btn"
+                                       class="text-body-1 text-white"
+                                >
                                     <v-progress-circular v-if="query" size="x-small" indeterminate color="white"></v-progress-circular>
                                     <span v-if="form.addOrUpdate == 'add'"> {{ $t('addAdsPlaceAnAd') }} </span>
                                     <span v-else> {{ $t('addAdsSaveChanges') }} </span>
