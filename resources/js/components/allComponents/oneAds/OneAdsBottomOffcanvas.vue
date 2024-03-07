@@ -46,8 +46,8 @@
 
                         <!-- Кнопки - Tel, whatsapp - 1 - Если отправленно с контактами автора-->
                         <div>
-                            <a v-if="$route.query.tel == undefined"  :href="'https://api.whatsapp.com/send?phone='+ads.tel+'&text=' + $t('oneAdsBottomOffCanvasGoodDayForRent')  + 'https://laim.kz/oneAds/'+ $route.params.table_name + '/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-2" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
-                            <a :href="'tel: '+ String($route.query.tel || ads.tel)" class="btn bg-blue text-white text-body-1 mx-1 py-2" style="width: 100%; max-width: 170px">
+                            <a v-if="$route.query.tel == undefined"  :href="'https://api.whatsapp.com/send?phone='+ads.tel+'&text=' + $t('oneAdsBottomOffCanvasGoodDayForRent')  + 'https://laim.kz/oneAds/'+ $route.params.table_name + '/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
+                            <a :href="'tel: '+ String($route.query.tel || ads.tel)" class="btn bg-blue text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px">
                                 <i class="bi bi-telephone-fill pr-2"></i>
                                 <small> {{ $route.query.tel || ads.tel }}</small>
                             </a>
@@ -55,8 +55,8 @@
 
                         <!-- Кнопки - Tel, whatsapp - 2 -->
                         <div v-if="$route.query.tel == undefined" class="mt-2">
-                            <a v-if="ads.tel2 != null" :href="'https://api.whatsapp.com/send?phone='+ads.tel2+'&text=' + $t('oneAdsBottomOffCanvasGoodDayForRent') + 'https://laim.kz/oneAds/'+ $route.params.table_name + '/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-2" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
-                            <a v-if="ads.tel2 != null" :href="'tel:'+ads.tel2" class="btn bg-blue text-white text-body-1 mx-1 py-2" style="width: 100%; max-width: 170px">
+                            <a v-if="ads.tel2 != null" :href="'https://api.whatsapp.com/send?phone='+ads.tel2+'&text=' + $t('oneAdsBottomOffCanvasGoodDayForRent') + 'https://laim.kz/oneAds/'+ $route.params.table_name + '/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
+                            <a v-if="ads.tel2 != null" :href="'tel:'+ads.tel2" class="btn bg-blue text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px">
                                 <i class="bi bi-telephone-fill pr-2"></i>
                                 <small>{{ String(ads.tel2) }}</small>
                             </a>
