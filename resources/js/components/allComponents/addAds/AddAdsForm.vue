@@ -2322,12 +2322,12 @@ export default defineComponent({
 
 .form__item{
     background: #f2f3f5;
-    color: rgb(69 69 70);
     cursor: pointer;
-    padding: 15px 20px;
+    padding: 13px 15px;
     margin: 2px 5px;
     border-radius: 10px;
-    font-size: 1em;
+    color: rgb(51, 51, 51);
+    font-size: 16px;
 }
 
 .item__active{

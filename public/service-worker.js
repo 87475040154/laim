@@ -36,7 +36,7 @@ const staticAssets = [
     '/lang/php_ru.json',
 
     // Шрифты
-    '/fonts/static/OpenSans-Regular.ttf',
+    '/fonts/OpenSans/OpenSans-Regular.ttf',
     '/fonts/YandexSans/YandexSansText-Regular.ttf',
 
     // Кэширую проект
