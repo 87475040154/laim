@@ -10,7 +10,7 @@
     <div class="index__page">
 
         <!-- Блок - Сколько найденно объявлений - кнопка открыть фильтр - кнопка полуить мои like -->
-        <div class="index-page__top-panel">
+        <div class="index-page__top-panel my-2">
 
             <!-- Всего - Сколько найденно объявлений по данному запросу -->
             <div>{{ $t('indexFound') }} {{count_ads}}</div>
@@ -53,9 +53,7 @@
         </div>
 
         <!-- Компонент превью объявлений -->
-        <ads-preview-component  :ads_arr="ads_arr.data" :getMyLikeAds="getMyLikeAds" @get-ads-cursor-paginate="getAdsMobileCursorPaginate">
-
-        </ads-preview-component>
+        <ads-preview-component  :ads_arr="ads_arr.data" :getMyLikeAds="getMyLikeAds" @get-ads-cursor-paginate="getAdsMobileCursorPaginate"></ads-preview-component>
 
         <!-- Для мобильных устройств - Курсорная прокрутка -->
         <div v-if="authStore.desktopOrMobile == 'Mobile'">
@@ -216,14 +214,15 @@ export default {
                     filter: filter == '' ? 'Фильтр не применен' : filter,
                     getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
                     cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true,
-                    countAds: this.count_ads == 0 ? true: false
+                    countAds: true
                 }
 
             })
                 .then(response => {
                     this.query = false;
                     this.ads_arr = response.data.ads;
-                    this.count_ads = response.data.countAds != '' ? response.data.countAds : '' ;
+                    response.data.ads.total != undefined ? this.count_ads = response.data.ads.total:'';
+                    response.data.countAds != 'null' ? this.count_ads = response.data.countAds :'';
                     if(response.data.ads.total > 0)this.showBtnAppInstall = true
 
                     this.nextCursor = response.data.ads.next_cursor;

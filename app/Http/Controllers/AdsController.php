@@ -421,12 +421,11 @@ class AdsController extends Controller
         }
 
         //Вернуть найденные объявления
-        if($request->countAds == 'true'){
+        $countAds = 'null';
+        if(isset($request->countAds) && $request->cursorPaginate == 'true'){
             $countAds = $query->count();
-        }else{
-            $countAds = '';
         }
-        return response()->json(['ads'=>$ads_arr, 'countAds'=>$countAds], 200);
+        return response()->json(['ads'=>$ads_arr,'countAds'=>$countAds], 200);
     }
 
     //Метод получить 1-но объявление если оно активно для любого пользователя
