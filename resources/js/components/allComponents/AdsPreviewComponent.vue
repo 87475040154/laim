@@ -1,16 +1,20 @@
 <template>
 
     <!-- Компонент вывод превью объявлений -->
+
+    <!-- Это компонент для виртуального скрола- чтоб убрать лишнее элементы в DOM -->
     <RecycleScroller
         v-if="ads_arr.length > 0"
         :page-mode="true"
         class="scroller"
         :items="ads_arr"
-        :item-size="170"
+        :item-size="175"
         key-field="id"
         v-slot="{ item:ads, index }"
         @scroll-end="$emit('get-ads-cursor-paginate')"
     >
+
+        <!-- Сам блок с превью -->
         <v-card max-width="650" style="background: #ffffff; box-shadow: none; border-radius: 6px"
                 class="mx-3 my-3 mx-sm-auto ads__preview"
                 :class="{
@@ -459,7 +463,7 @@
                             >
                             mdi-heart
                             </v-icon>
-                            <!--                            <v-tooltip activator="parent" location="bottom">{{ $t('AdsPreviewAddFavorites') }}</v-tooltip>-->
+                            <v-tooltip activator="parent" location="bottom">{{ $t('AdsPreviewAddFavorites') }}</v-tooltip>
                         </span>
 
 

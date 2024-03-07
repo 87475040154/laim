@@ -184,6 +184,7 @@ export default {
 
         //Отслеживаем примение фильтра
         'filterStore.make_filter'() {
+            this.count_ads = 0;
             this.getAds();
         }
     },
@@ -214,14 +215,15 @@ export default {
                     table_name: this.$route.params.table_name,
                     filter: filter == '' ? 'Фильтр не применен' : filter,
                     getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
-                    cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true
+                    cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true,
+                    countAds: this.count_ads == 0 ? true: false
                 }
 
             })
                 .then(response => {
                     this.query = false;
                     this.ads_arr = response.data.ads;
-                    this.count_ads = response.data.ads.total;
+                    this.count_ads = response.data.countAds != '' ? response.data.countAds : '' ;
                     if(response.data.ads.total > 0)this.showBtnAppInstall = true
 
                     this.nextCursor = response.data.ads.next_cursor;
