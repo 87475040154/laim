@@ -344,7 +344,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     background: #ffffff;
-    padding: 12px;
+    padding: 15px;
     border-radius: 10px;
     position: relative;
 }
