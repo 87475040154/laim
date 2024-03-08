@@ -96,7 +96,7 @@
                     <div class="px-2 py-2">
 
                         <!-- Цена аренды -->
-                        <div class="pb-2 d-flex align-center text-body-1">
+                        <div class="pb-2 d-flex align-center text-body-1 mt-2">
 
                             <!-- Цена -->
                             <span class="title">
