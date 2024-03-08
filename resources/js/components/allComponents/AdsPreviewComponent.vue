@@ -4,7 +4,7 @@
 
     <!-- Это компонент для виртуального скрола- чтоб убрать лишнее элементы в DOM -->
     <DynamicScroller
-        v-if="ads_arr.length > 0"
+        v-if="ads_arr && ads_arr.length > 0"
         :page-mode="true"
         class="scroller"
         :items="ads_arr"

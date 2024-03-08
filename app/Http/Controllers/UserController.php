@@ -146,30 +146,33 @@ class UserController extends Controller
         $className = 'App\\' . $bueAds->table_name;
         $ads = $className::find($bueAds->ads_id);
 
-
-        foreach ($bueAds as $type) {
-            if ($type == 'Top x30') {
-                $ads->bueAds = Carbon::now();
-                $ads->top = Carbon::now();
-                $ads->top_x7 = Null;
-                $ads->top_x30 = Carbon::now();
-            };
-            if ($type == 'Top x7') {
-                $ads->bueAds = Carbon::now();
-                $ads->top = Carbon::now();
-                $ads->top_x7 = Carbon::now();
-                $ads->top_x30 = Null;
-            };
-            if ($type == 'Срочно торг') $ads->srochno_torg = 1;
-            if ($type == 'Топ 24') {
-                $ads->bueAds = Carbon::now();
-                $ads->top = Carbon::now();
-            }
-            if ($type == 'Топ 8 раз') {
-                $ads->bueAds = Carbon::now();
-                $ads->top_8 = Carbon::now();
+        if ($bueAds == 'Top x30') {
+            $ads->bueAds = Carbon::now();
+            $ads->top = Carbon::now();
+            $ads->top_x7 = Null;
+            $ads->top_x30 = Carbon::now();
+        }
+        else if ($bueAds == 'Top x7') {
+            $ads->bueAds = Carbon::now();
+            $ads->top = Carbon::now();
+            $ads->top_x7 = Carbon::now();
+            $ads->top_x30 = Null;
+        }
+        else{
+            $bueAds = explode(',', $bueAds->bue_ads_type);
+            foreach ($bueAds as $type) {
+                if ($type == 'Срочно торг') $ads->srochno_torg = 1;
+                if ($type == 'Топ 24') {
+                    $ads->bueAds = Carbon::now();
+                    $ads->top = Carbon::now();
+                }
+                if ($type == 'Топ 8 раз') {
+                    $ads->bueAds = Carbon::now();
+                    $ads->top_8 = Carbon::now();
+                }
             }
         }
+
 
         // Сохраняем объявление с рекламой
         $ads->save();
@@ -194,6 +197,5 @@ class UserController extends Controller
         // Возвращаем успешный ответ
         return response()->json(['message' => 'Заказ успешно удален'], 200);
     }
-
 
 }

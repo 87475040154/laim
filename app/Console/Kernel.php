@@ -266,35 +266,34 @@ class Kernel extends ConsoleKernel
             BueAds::where('result', 'В ожидании')->chunk(200, function ($bueAds_arr) {
 
                 // Отправим зарос на проверку оплаты
-
                 foreach ($bueAds_arr as $bueAds){
                     // Получим объявление - на которое добавить рекламу
                     $className = 'App\Models\Ads\\' . $bueAds->table_name;
                     $ads = $className::find($bueAds->ads_id);
 
-                    $bueType = explode(',', $bueAds->bue_ads_type);
-
-                    foreach ($bueType as $type) {
-                        if ($type == 'Top x30') {
-                            $ads->bueAds = Carbon::now();
-                            $ads->top = Carbon::now();
-                            $ads->top_x7 = Null;
-                            $ads->top_x30 = Carbon::now();
-                        };
-                        if ($type == 'Top x7') {
-                            $ads->bueAds = Carbon::now();
-                            $ads->top = Carbon::now();
-                            $ads->top_x7 = Carbon::now();
-                            $ads->top_x30 = Null;
-                        };
-                        if ($type == 'Срочно торг') $ads->srochno_torg = 1;
-                        if ($type == 'Топ 24') {
-                            $ads->bueAds = Carbon::now();
-                            $ads->top = Carbon::now();
-                        }
-                        if ($type == 'Топ 8 раз') {
-                            $ads->bueAds = Carbon::now();
-                            $ads->top_8 = Carbon::now();
+                    if ($bueAds == 'Top x30') {
+                        $ads->bueAds = Carbon::now();
+                        $ads->top = Carbon::now();
+                        $ads->top_x7 = Null;
+                        $ads->top_x30 = Carbon::now();
+                    }
+                    else if ($bueAds == 'Top x7') {
+                        $ads->bueAds = Carbon::now();
+                        $ads->top = Carbon::now();
+                        $ads->top_x7 = Carbon::now();
+                        $ads->top_x30 = Null;
+                    }else{
+                        $bueAds = explode(',', $bueAds->bue_ads_type);
+                        foreach ($bueAds as $type) {
+                            if ($type == 'Срочно торг') $ads->srochno_torg = 1;
+                            if ($type == 'Топ 24') {
+                                $ads->bueAds = Carbon::now();
+                                $ads->top = Carbon::now();
+                            }
+                            if ($type == 'Топ 8 раз') {
+                                $ads->bueAds = Carbon::now();
+                                $ads->top_8 = Carbon::now();
+                            }
                         }
                     }
 

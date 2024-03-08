@@ -1247,7 +1247,7 @@ export default {
 /*Для кнопок - скачать, поделиться */
 .ads_header-btn{
     color: rgb(93, 111, 106);
-    padding: 10px 15px;
+    padding: 7px 12px;
     background: #F5F5F5;
     border-radius: 10px;
     cursor: pointer;
