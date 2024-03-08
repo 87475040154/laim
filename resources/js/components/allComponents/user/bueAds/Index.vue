@@ -39,7 +39,7 @@
                             </div>
 
                             <!-- Текст заголовок -->
-                            <h5 class="fw-bold px-1">{{ $t('bueAdsIndexx30ViewsPerMonth') }}</h5>
+                            <h4 class="fw-bold px-1">{{ $t('bueAdsIndexx30ViewsPerMonth') }}</h4>
 
                         </div>
 
@@ -64,7 +64,12 @@
 
                         <!-- Кнопка продвинуть -->
                         <div class="px-3 py-1">
-                            <v-btn @click="showBottomOffcanvas('Top x30')"  size="large" color="blue-darken-2" block class="text-body-1">
+                            <v-btn @click="showBottomOffcanvas('Top x30')"
+                                   size="x-large"
+                                   color="blue-darken-2"
+                                   block
+                                   class="text-body-1"
+                            >
                                 {{ $t('bueAdsIndexPromote') }}
                             </v-btn>
                         </div>
@@ -85,7 +90,7 @@
                             </div>
 
                             <!-- Текст заголовок -->
-                            <h5 class="fw-bold px-1">{{ $t('bueAdsIndexx7ViewsPerWeek') }}</h5>
+                            <h4 class="fw-bold px-1">{{ $t('bueAdsIndexx7ViewsPerWeek') }}</h4>
 
                         </div>
 
@@ -110,7 +115,12 @@
 
                         <!-- Кнопка продвинуть -->
                         <div class="px-3 py-1">
-                            <v-btn @click="showBottomOffcanvas('Top x7')" size="large" color="blue-darken-2" block class="text-body-1">
+                            <v-btn @click="showBottomOffcanvas('Top x7')"
+                                   size="x-large"
+                                   color="blue-darken-2"
+                                   block
+                                   class="text-body-1"
+                            >
                                 {{ $t('bueAdsIndexPromote') }}
                             </v-btn>
                         </div>
@@ -122,7 +132,7 @@
 
                         <!-- Заголовок-->
                         <div class="p-2">
-                            <h5 class="fw-bold">{{ $t('bueAdsIndexPromoteAnAd') }}</h5>
+                            <h4 class="fw-bold">{{ $t('bueAdsIndexPromoteAnAd') }}</h4>
 
                             <!-- Подзаголовок -->
                             <div class="text-grey">
@@ -135,8 +145,10 @@
                         <div class="p-0 pt-1">
 
                             <!-- Топ на сутки 8 раз -->
-                            <div class="d-flex align-center text-white" style="background: rgb(0,212,255);
-background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(26,135,175,1) 0%, rgba(177,32,161,1) 0%, rgba(115,19,146,1) 80%, rgba(106,7,144,1) 100%, rgba(145,8,82,1) 100%, rgba(138,4,142,1) 100%);">
+                            <div class="d-flex align-center text-white"
+                                 style="background: rgb(0,212,255);
+background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(26,135,175,1) 0%, rgba(177,32,161,1) 0%, rgba(115,19,146,1) 80%, rgba(106,7,144,1) 100%, rgba(145,8,82,1) 100%, rgba(138,4,142,1) 100%);"
+                            >
 
                                 <!-- Иконка -->
                                 <div class="mx-3 d-flex justify-center align-center rounded-circle"
@@ -159,7 +171,7 @@ background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(26,135,175,1) 0%, 
                             </div>
 
                             <!-- ТОП 24 часа -->
-                            <div class="d-flex align-center" :class="{'opacity-25': bueAdsType.includes('Топ 8 раз')}">
+                            <div class="d-flex align-center py-3" :class="{'opacity-25': bueAdsType.includes('Топ 8 раз')}">
 
                                 <!-- Иконка -->
                                 <div class="mx-3 d-flex justify-center align-center rounded-circle"
@@ -183,7 +195,7 @@ background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(26,135,175,1) 0%, 
 
 
                             <!-- Срочно торг -->
-                            <div class="d-flex align-center">
+                            <div class="d-flex align-center mb-2">
 
                                 <!-- Иконка -->
                                 <div class="mx-3 d-flex justify-center align-center rounded-circle"
@@ -210,15 +222,26 @@ background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(26,135,175,1) 0%, 
 
                         <!-- Кнопка продвинуть - c рекламой -->
                         <div class="px-3 pb-3" v-if="bueAdsType.length > 0">
-                            <v-btn @click="showBottomOffcanvas('Top')" size="large" color="blue-darken-2" block :disabled="query" class="text-body-1">
+                            <v-btn @click="showBottomOffcanvas('Top')"
+                                   size="x-large"
+                                   color="blue-darken-2"
+                                   block
+                                   :disabled="query"
+                                   class="text-body-1"
+                            >
                                 <v-progress-circular v-if="query" size="x-small" indeterminate color="white"></v-progress-circular>
                                 <span>{{ $t('bueAdsIndexPromoteFor') }} {{bueAdsSumm}} &#8376;</span>
                             </v-btn>
                         </div>
 
                         <!-- Кнопка опубликовать без - рекламы -->
-                        <div class="px-3 pb-3" v-else>
-                            <v-btn @click="$router.replace('/userAds/Kvartira/'+authStore.user.id + '/1')" size="large" color="blue-darken-2" block class="text-body-1">
+                        <div v-else class="px-3 pb-3">
+                            <v-btn @click="$router.replace('/userAds/Kvartira/'+authStore.user.id + '/1')"
+                                   size="x-large"
+                                   color="blue-darken-2"
+                                   block
+                                   class="text-body-1"
+                            >
                                 {{ $t('bueAdsIndexSubmitWithoutPromotion') }}
                             </v-btn>
                         </div>

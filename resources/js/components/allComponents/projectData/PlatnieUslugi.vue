@@ -16,7 +16,7 @@
                 </div>
 
                 <!-- Текст заголовок -->
-                <h5 class="fw-bold px-1">{{ $t('bueAdsIndexx30ViewsPerMonth') }}</h5>
+                <h4 class="fw-bold px-1">{{ $t('bueAdsIndexx30ViewsPerMonth') }}</h4>
 
             </div>
 
@@ -55,7 +55,7 @@
                 </div>
 
                 <!-- Текст заголовок -->
-                <h5 class="fw-bold px-1">{{ $t('bueAdsIndexx7ViewsPerWeek') }}</h5>
+                <h4 class="fw-bold px-1">{{ $t('bueAdsIndexx7ViewsPerWeek') }}</h4>
 
             </div>
 
@@ -85,7 +85,7 @@
 
             <!-- Заголовок-->
             <div class="p-2">
-                <h5 class="fw-bold">{{ $t('bueAdsIndexPromoteAnAd') }}</h5>
+                <h4 class="fw-bold">{{ $t('bueAdsIndexPromoteAnAd') }}</h4>
 
                 <!-- Подзаголовок -->
                 <div class="text-grey">
@@ -117,7 +117,7 @@ background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(26,135,175,1) 0%, 
                 </div>
 
                 <!-- ТОП 24 часа -->
-                <div class="d-flex align-center">
+                <div class="d-flex align-center py-3">
 
                     <!-- Иконка -->
                     <div class="mx-3 d-flex justify-center align-center rounded-circle"
