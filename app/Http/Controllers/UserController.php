@@ -82,7 +82,11 @@ class UserController extends Controller
         return 'success';
     }
 
-    //Метод - Добавить заказ в БД
+
+
+    ////////////// ПОКУПКА РЕКЛАМЫ /////////////////
+
+    // Метод - Добавить заказ в БД
     public function addOrderDB(Request $request)
     {
 
@@ -178,7 +182,7 @@ class UserController extends Controller
 
     }
 
-    //Метод - удалить заказ с БД, Если не прошла оплата
+    // Метод - удалить заказ с БД, Если не прошла оплата
     public function deleteOrderDB(Request $request){
         // Получаем заказ по переданному ID и проверяем, существует ли он
         $order = BueAds::find($request->order_id);
@@ -190,5 +194,6 @@ class UserController extends Controller
         // Возвращаем успешный ответ
         return response()->json(['message' => 'Заказ успешно удален'], 200);
     }
+
 
 }

@@ -362,12 +362,12 @@ class AdsController extends Controller
 
             //Получить или активные или по фильтру
             if($filter == 'Фильтр не применен'){
-                $ads_arr = $query->where('control', '=','Активно')->latest()->select(['id', 'tip_obekta','table_name', 'lat', 'lon', 'cena'])->get();
+                $ads_arr = $query->where('control', '=','Активно')->select(['id', 'tip_obekta','table_name', 'lat', 'lon', 'cena'])->get();
             }else{
                 if($filter['arhiv'] != ''){
-                    $ads_arr = $query->latest()->select(['id','ads_id', 'table_name', 'lat', 'lon', 'cena'])->get();
+                    $ads_arr = $query->select(['id','ads_id', 'table_name', 'lat', 'lon', 'cena'])->get();
                 }else{
-                    $ads_arr = $query->latest()->select(['id', 'table_name', 'lat', 'lon', 'cena'])->get();
+                    $ads_arr = $query->select(['id', 'table_name', 'lat', 'lon', 'cena'])->get();
                 }
             }
 

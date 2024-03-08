@@ -162,12 +162,15 @@ export default {
 
         //Клик по множественному кластеру
         onClustererMounted(e) {
+
+            // При монтировании навесим событие прослушивания
             e.component.exposed.events.add('click',  (e)=>{
+
                 let data = e.get("target");
                 let arr_id = []; //Массив id - объявлений
 
                 //Получим метки и объявления по ним
-                if(data.geometry._lastZoom == 21){
+                if(data.geometry._lastZoom == 15){
                     data.properties._data.geoObjects.forEach(elem=>{
                         arr_id.push(elem.properties._data.id);
                     })
@@ -184,7 +187,7 @@ export default {
             });
         },
 
-        //Показать 1 объявление
+        //Показать 1 объявление или массив
         showAds(ads_id){
             //Заносим id одного объявления если клик по маркеру или массив если по кластеру
 

@@ -18,13 +18,13 @@
             <div class="yandexMapClusterShowAds__block">
 
                 <!-- Header -->
-                <div class="yandexMapClusterShowAds__header position-relative">
+                <div class="yandexMapClusterShowAds__header">
 
                     <!-- Кнопка закрыть-->
                     <v-btn role="button" icon size="small" variant="text"
                            class="mx-1"
-                           style="position: absolute; top: 5px; right: 5px"
-                           dark @click="$router.back()">
+                           dark @click="$router.back()"
+                    >
                         <v-icon size="large">mdi-close</v-icon>
                     </v-btn>
 
@@ -227,6 +227,9 @@ export default {
 
 
 .yandexMapClusterShowAds__header{
+    display: flex;
+    justify-content: end;
+    align-items: center;
     height: auto;
 }
 

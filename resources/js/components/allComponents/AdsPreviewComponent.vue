@@ -27,8 +27,8 @@
                 <v-card max-width="650" style="background: #ffffff; box-shadow: none; border-radius: 6px"
                         class="mx-3 my-2 mx-sm-auto ads__preview"
                         :class="{
-                    'bg-green-lighten-5': ads.top_x7 != undefined && ads.top_x7 != null,
-                    'bg-red-lighten-5': ads.top_x30 != undefined && ads.top_x30 != null,
+                    'bg-green': ads.top_x7 != undefined && ads.top_x7 != null,
+                    'bg-red': ads.top_x30 != undefined && ads.top_x30 != null,
                 }"
                 >
 
@@ -135,7 +135,7 @@
                                 <!-- ТОП 24 час -->
                                 <v-menu open-on-hover>
                                     <template v-slot:activator="{ props }">
-                                        <div v-if="ads.top != null || ads.top_8 != null" class="icon__triangle" v-bind="props">
+                                        <div v-if="ads.top != null" class="icon__triangle" v-bind="props">
                                             <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>
                                         </div>
                                     </template>
@@ -154,6 +154,34 @@
                                             <!-- Описание -->
                                             <div class="flex-grow-1 align-center" >
                                                 <div>{{ $t('bueAdsIndexSendToTheTOP24Hours') }}</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </v-menu>
+
+                                <!-- 8 Раз в ТОП за 24 часа -->
+                                <v-menu open-on-hover>
+                                    <template v-slot:activator="{ props }">
+                                        <div v-if="ads.top_8 != null" class="icon__triangle icon__triangleTOP8" v-bind="props">
+                                            <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>
+                                        </div>
+                                    </template>
+                                    <div class="bueAds__card">
+
+                                        <!-- Поднятие в ТОП каждые 3 часа -->
+                                        <div class="d-flex align-center">
+
+                                            <!-- Иконка -->
+                                            <div class="mx-3 d-flex justify-center align-center rounded-circle"
+                                                 style="width: 21px; height: 21px; background: #710250"
+                                            >
+                                                <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>
+                                            </div>
+
+                                            <!-- Описание -->
+                                            <div class="flex-grow-1 align-center" >
+                                                <div>{{ $t('bueAdsIndexSendToTheTOP8') }}</div>
                                             </div>
 
                                         </div>
@@ -837,7 +865,7 @@ export default {
 
 
 /* Стили для иконок */
-.icon__crown, .icon__diamond, .icon__triangle, .icon__fire{
+.icon__crown, .icon__diamond, .icon__triangle{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -856,14 +884,15 @@ export default {
 .icon__triangle{
     background: orange
 }
-.icon__fire{
-    background: #FF0000
+
+.icon__triangleTOP8{
+    background: #710250
 }
+
 
 .icon__crown:hover,
 .icon__diamond:hover,
 .icon__triangle:hover,
-.icon__fire:hover,
 .icon__heart:hover {
     transform: scale(1.20);
     transition: transform 0.1s ease;

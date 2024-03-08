@@ -1,11 +1,9 @@
 <template>
     <!-- КОМПОНЕНТ - МЕТОД ПОКУПКИ РЕКЛАМЫ -->
 
-    <!-- Backdrop -->
+    <!-- Это блок - Backdrop -->
     <transition name="bueAdsPayMethod__animation-backdrop">
-
         <div v-if="bueAdsPayMethodAnimation" class="bueAdsPayMethod__backdrop" @click="$router.back()"></div>
-
     </transition>
 
     <!-- Обвертка - Компонента -->
@@ -37,28 +35,37 @@
 
                 <!-- Body -->
                 <div class="bueAdsPayMethod__body">
-                    <!-- Оплата Kaspi.kz -->
-                    <!--            <div class="border-bottom p-2 px-3 row g-0 gap-3 align-center" role="button">-->
-                    <!--                <div class="col-auto">-->
-                    <!--                    <img src="/public/img/siteImg/allImg/logo_kaspi.png" width="25" height="25" alt="Логотип">-->
-                    <!--                </div>-->
-                    <!--                <span class="col">Kaspi.kz</span>-->
-                    <!--            </div>-->
 
-                    <!-- Карта Visa -->
+                    <!-- Кнопка - Оплата через карту - Freedom Pay -->
                     <div v-if="!showFormVisaCard"
                         @click="showFormVisaCard = !showFormVisaCard"
                          class="border-bottom p-2 py-3 px-3 row g-0 gap-3 align-center"
                          role="button"
                     >
+                        <!-- Иконка справа-->
                         <div class="col-auto">
                             <img src="/public/img/siteImg/allImg/logo_visa.png" width="25" height="25" alt="Логотип">
                         </div>
+
+                        <!-- Текст -->
                         <span class="col">{{ $t('bueAdsPayMethodVisaMasterCardCard') }}</span>
                     </div>
 
+                    <!-- Кнопка - Оплата с Личного счёта -->
+                    <div v-if="!showFormVisaCard"
+                        class="border-bottom p-2 py-3 px-3 row g-0 gap-3 align-center"
+                        role="button"
+                    >
+                        <div class="col-auto">
+                            <img src="/public/img/siteImg/allImg/logo.svg" width="25" height="25" alt="Логотип">
+                        </div>
+                        <span class="col">{{ $t('bueAdsPayMethodPersonalAccount') }} ({{authStore.user.balance}} &#8376;)</span>
+                    </div>
+
+
                     <!-- Форма для ввода Номера карты - Visa -->
                     <div v-if="showFormVisaCard">
+
                         <!-- Форма Карты Visa -->
                         <validation-observer tag="div" ref="form" v-slot="{ handleSubmit }">
                             <form @submit="handleSubmit($event, addOrderDB)" class="form p-2 text-center">
@@ -150,17 +157,6 @@
                     <!-- Тег с id - Если нужна будет проверка карты - от самой SDK-->
                     <div id="3dsForm"></div>
 
-                    <!-- Личный счёт -->
-                    <div v-if="!showFormVisaCard"
-                        class="border-bottom p-2 py-3 px-3 row g-0 gap-3 align-center"
-                        role="button"
-                    >
-                        <div class="col-auto">
-                            <img src="/public/img/siteImg/allImg/logo.svg" width="25" height="25" alt="Логотип">
-                        </div>
-                        <span class="col">{{ $t('bueAdsPayMethodPersonalAccount') }} ({{authStore.user.balance}} &#8376;)</span>
-                    </div>
-
                 </div>
 
             </div>
@@ -180,10 +176,11 @@ import { useUpdateDateLocaleStore} from "../../../../stores/updateDateLocale";
 
 
 import {mask} from 'vue-the-mask' //Пакет для изменения данных при вводе в поле, маска
+
 export default {
     name: "BueAdsPayMethod",
 
-    directives: {mask},
+    directives: {mask}, // Директива для изменения формата с 000000 на 0000 0000 v-mask
 
     data(){
         return {
@@ -199,11 +196,11 @@ export default {
             //Показать форму для ввода данных карты visa для оплаты
             showFormVisaCard: false,
 
-            // Сама карта
+            // Данные карты
             card_number: '',
-            card_holder_name: '',
-            card_expiry: '', // Сначала добавлю сюда ММ/ГГ
+            card_expiry: '', // ММ/ГГ
             card_cvv: '',
+            card_holder_name: ''
 
         }
     },
