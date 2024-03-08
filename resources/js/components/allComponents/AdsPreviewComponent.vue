@@ -170,7 +170,7 @@
                             <div @click="showOneAds(ads, index)" role="button" class="d-flex align-start flex-column" style="height: 115px">
 
                                 <!-- Заголовок -->
-                                <div style="font-size: 1.1em; color: #4b4b4b">
+                                <div style="font-size: 17px; color: #4b4b4b">
                                     {{ads.zagolovok}}
                                 </div>
 
