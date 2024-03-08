@@ -120,7 +120,7 @@
                         </div>
 
                         <!-- Заголовок -->
-                        <div class="mb-5" style="font-size: 16px; line-height: 24px;">
+                        <div class="mb-5" style="font-size: 18px; line-height: 24px;">
                             {{ads.zagolovok}}
                         </div>
 
@@ -663,8 +663,8 @@
                         <div v-if="ads.mebel_arr != undefined && ads.mebel_arr.length != 0" class="my-4">
                             <div class="title mb-2">{{ $t('oneAdsFurnitureAndAppliances') }}</div>
 
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'ru'">{{ads.mebel_arr.join(", ")}}</div>
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'kz'">
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.mebel_arr.join(", ")}}</div>
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
                                     <span v-for="mebel in ads.mebel_arr">
                                         {{ mebel == 'Холодильник' ? 'Тоңазытқыш, ' : ''}}
                                         {{ mebel == 'Стиральная машина' ? 'Кір жуғыш машина, ' : ''}}
@@ -677,7 +677,7 @@
                                         {{ mebel == 'Вся бытовая техника' ? 'Барлық тұрмыстық техника, ' : ''}}
                                     </span>
                             </div>
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'en'">
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
                                      <span v-for="mebel in ads.mebel_arr">
                                         {{ mebel == 'Холодильник' ? 'Fridge, ' : ''}}
                                         {{ mebel == 'Стиральная машина' ? 'Washer, ' : ''}}
@@ -696,8 +696,8 @@
                         <div v-if="ads.raznoe != undefined && ads.raznoe.length != 0" class="my-4">
                             <div class="title mb-2">{{ $t('oneAdsMiscellaneous') }}</div>
 
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'ru'">{{ads.raznoe.join(", ")}}</div>
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'kz'">
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.raznoe.join(", ")}}</div>
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
                                     <span v-for="raznoe in ads.raznoe">
                                         {{ raznoe == 'Кухня-студия' ? 'Ас үй студиясы, ' : ''}}
                                         {{ raznoe == 'Комнаты изолированны' ? 'Бөлмелер оқшауланған, ' : ''}}
@@ -721,7 +721,7 @@
                                         {{ raznoe == 'Своя подстанция' ? 'Өзінің қосалқы станциясы, ' : ''}}
                                     </span>
                             </div>
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'en'">
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
                                      <span v-for="raznoe in ads.raznoe">
                                         {{ raznoe == 'Кухня-студия' ? 'Studio Kitchen, ' : ''}}
                                         {{ raznoe == 'Комнаты изолированны' ? 'The rooms are isolated, ' : ''}}
@@ -751,15 +751,15 @@
                         <div v-if="ads.raspolojenie != undefined && ads.raspolojenie.length != 0" class="my-4">
                             <div class="title mb-2">{{ $t('oneAdsLocation') }}</div>
 
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'ru'">{{ads.raspolojenie.join(", ")}}</div>
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'kz'">
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.raspolojenie.join(", ")}}</div>
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
                                     <span v-for="raspolojenie in ads.raspolojenie">
                                         {{ raspolojenie == 'В городе' ? 'Қалада, ' : ''}}
                                         {{ raspolojenie == 'В пригороде' ? 'Қала маңында, ' : ''}}
                                         {{ raspolojenie == 'Вдоль трассы' ? 'Жол бойында, ' : ''}}
                                     </span>
                             </div>
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'en'">
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
                                     <span v-for="raspolojenie in ads.raspolojenie">
                                         {{ raspolojenie == 'В городе' ? 'In the city, ' : ''}}
                                         {{ raspolojenie == 'В пригороде' ? 'In the suburbs, ' : ''}}
@@ -772,8 +772,8 @@
                         <div v-if="ads.kommunikacii != undefined && ads.kommunikacii != '' && ads.table_name != 'Snimu'" class="my-4">
                             <div class="title mb-2">{{ $t('oneAdsCommunications') }}</div>
 
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'ru'">{{ads.kommunikacii.join(", ")}}</div>
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'kz'">
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.kommunikacii.join(", ")}}</div>
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
                                     <span v-for="kommunikacii in ads.kommunikacii">
                                         {{ kommunikacii == 'Свет' ? 'Жарық, ' : ''}}
                                         {{ kommunikacii == 'Газ' ? 'Газ, ' : ''}}
@@ -784,7 +784,7 @@
                                         {{ kommunikacii == 'Канализация' ? 'Кәріз, ' : ''}}
                                     </span>
                             </div>
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'en'">
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
                                      <span v-for="kommunikacii in ads.kommunikacii">
                                         {{ kommunikacii == 'Свет' ? 'Light, ' : ''}}
                                         {{ kommunikacii == 'Газ' ? 'Gas, ' : ''}}
@@ -801,8 +801,8 @@
                         <div v-if="ads.bezopasnost != undefined && ads.bezopasnost != '' && ads.table_name != 'Snimu'" class="my-4">
                             <div class="title mb-2">{{ $t('oneAdsSafety') }}</div>
 
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'ru'">{{ads.bezopasnost.join(", ")}}</div>
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'kz'">
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.bezopasnost.join(", ")}}</div>
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
                                     <span v-for="bezopasnost in ads.bezopasnost">
                                         {{ bezopasnost == 'Домофон' ? 'Домофон, ' : ''}}
                                         {{ bezopasnost == 'Видеодомофон' ? 'Видеодомофон, ' : ''}}
@@ -814,7 +814,7 @@
                                         {{ bezopasnost == 'Консьерж' ? 'Консьерж, ' : ''}}
                                     </span>
                             </div>
-                            <div class="p-2" style="font-size: 1.1em" v-if="updateDateLocale.lang == 'en'">
+                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
                                      <span v-for="bezopasnost in ads.bezopasnost">
                                         {{ bezopasnost == 'Домофон' ? 'Intercom, ' : ''}}
                                         {{ bezopasnost == 'Видеодомофон' ? 'Video intercom, ' : ''}}
@@ -831,7 +831,7 @@
                         <!-- Описание от хозяина-->
                         <div class="my-4">
                             <div class="title mb-2">{{ $t('oneAdsDescription') }}</div>
-                            <div class="p-2" style="white-space: pre-line; font-size: 1.1em">
+                            <div class="p-2" style="white-space: pre-line; font-size: 17px">
 
                                 <!-- Это установленный компонент В компоненте - Показать - скрыть полное описание -->
                                 <text-clamp :text="ads.text_obyavleniya" :max-lines="8">
@@ -1219,7 +1219,7 @@ export default {
 
 /*Для заголовков*/
 .title{
-    font-size: 18px;
+    font-size: 20px;
     font-family: "Open Sans",sans-serif;;
     font-weight: 600;
     color: #1c1819;
@@ -1228,7 +1228,7 @@ export default {
 
 /* Стиль - для кнопок - О квартире */
 .btn__item{
-    font-size: 1.1em;
+    font-size: 17px;
     display: flex;
     justify-content: space-between;
     max-width: 500px;
@@ -1247,7 +1247,7 @@ export default {
 /*Для кнопок - скачать, поделиться */
 .ads_header-btn{
     color: rgb(93, 111, 106);
-    padding: 5px 10px;
+    padding: 10px 15px;
     background: #F5F5F5;
     border-radius: 10px;
     cursor: pointer;
