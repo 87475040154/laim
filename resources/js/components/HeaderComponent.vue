@@ -22,7 +22,7 @@
                         <div v-if="authStore.check" class="d-flex gap-3 align-center justify-end">
 
                             <!-- Мои обьявлениями -->
-                            <v-btn icon size="x-small" color="blue-grey" variant="tonal"
+                            <v-btn icon size="x-small" color="teal-lighten-1" variant="tonal"
                                    @click="$router.push({name:'userAds', params: {author_id: authStore.user.id, table_name: $route.params.table_name, page: 1}})"
                             >
                                 <v-badge v-if="getProjectDataStore.countReturnAds > 0" floating :content="getProjectDataStore.countReturnAds" color="error">
@@ -34,7 +34,7 @@
                             </v-btn>
 
                             <!-- Чаты -->
-                            <v-btn icon size="x-small" color="blue-grey" variant="tonal"
+                            <v-btn icon size="x-small" color="teal-lighten-1" variant="tonal"
                                    @click="$router.push('/chat/null/'+ $route.params.table_name)"
                             >
                                 <v-badge floating v-if="getProjectDataStore.countNewMessage > 0" :content="getProjectDataStore.countNewMessage" color="error" style="margin-botom: -5px">
@@ -45,7 +45,7 @@
                             </v-btn>
 
                             <!-- Мой аккаунт- Имя пользователя - Показать если авторизован -->
-                            <v-btn icon size="x-small" color="blue-grey" variant="tonal"
+                            <v-btn icon size="x-small" color="teal-lighten-1" variant="tonal"
                                    @click="$router.push('/myAccount/'+ $route.params.table_name)"
                             >
                                 <v-icon size="x-large">mdi-account-outline</v-icon>
