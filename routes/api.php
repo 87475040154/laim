@@ -34,25 +34,13 @@ Route::prefix('auth')->group(function () {
 });
 
 
-Route::post('/user/checkBueAds', [UserController::class, 'checkBueAds']);//Проверка покупки рекламы
-
 //ЗАЩИЩЕННЫЕ МАРШРУТЫ - для авторизованных пользователей
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user/getPayLink', [UserController::class, 'getPayLink']);//Маршрут получить ссылку для перехода на страницу оплаты
-
-    Route::post('/user/updateUserData', [UserController::class, 'updateUserData']);//Маршрут обновить-данные пользователя
 
     //Объявления
     Route::post('/addOrUpdateAds', [AdsController::class, 'addOrUpdateAds']);//Добавить | Редактировать объявление
     Route::delete('/deleteAds', [AdsController::class, 'deleteAds']); //Удалить объявление
     Route::post('/adsActiveToggle', [AdsController::class, 'adsActiveToggle']); //Запустить - остановить мое обьявление
-
-
-    //Маршрут добавить избранное
-    Route::post('/like', [AdsController::class, 'addLikeToggle']); //Добавить - убрать из понравившегося
-
-    //Маршрут отправить жалобу на объявление
-    Route::post('/addComplain', [AdsController::class, 'addComplain']); //Добавить жалобу на объявление
 
 
     //Маршрут Для СМС Чатов
@@ -67,6 +55,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/KZLocation/addLocation', [KZLocationController::class, 'addLocation']);//Добавить локацию Казахстана
     Route::put('/KZLocation/updateLocation', [KZLocationController::class, 'updateLocation']);//Редактировать локацию Казахстана
     Route::delete('/KZLocation/delete/{id}', [KZLocationController::class, 'deleteLocation']);//Удалить локацию
+
+
+    // Редактировать данные пользователя
+    Route::post('/user/updateUserData', [UserController::class, 'updateUserData']);//Маршрут обновить-данные пользователя
+
+    //Маршрут добавить избранное
+    Route::post('/like', [AdsController::class, 'addLikeToggle']); //Добавить - убрать из понравившегося
+
+    //Маршрут отправить жалобу на объявление
+    Route::post('/addComplain', [AdsController::class, 'addComplain']); //Добавить жалобу на объявление
+
+    // Покупка рекламы
+    Route::post('/user/addOrderDB', [UserController::class, 'addOrderDB']);//Маршрут - Добавим заказ в БД
 
 
 });
@@ -85,3 +86,7 @@ Route::post('/addAdsStatistic', [AdsController::class, 'addAdsStatistic']);//Д�
 
 //Локация Казахстана
 Route::get('/KZLocation/getLocations', [KZLocationController::class, 'getLocations']);//Получить Локации
+
+// Проверка покупки рекламы
+Route::post('/user/checkBueAds', [UserController::class, 'checkBueAds']);//Проверка покупки рекламы
+Route::delete('/user/deleteOrderDB', [UserController::class, 'deleteOrderDB']);//Удалить заказ с БД если при оплате произошла ошибка

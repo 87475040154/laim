@@ -135,7 +135,7 @@ class Kernel extends ConsoleKernel
 
         //------------------ УПРАВЛЕНИЕ РЕКЛАМОЙ ------------------//
 
-        // Поднять -- ТОП 8 - 8 раз в 24 часа каждые 3 часа -- Проверка каждые 5 минут ->everyFiveMinutes()
+        // Поднять -- ТОП 8 - Каждые 3 часа поднимаем в топ - На 24 часа -- Проверка каждые 5 минут ->everyFiveMinutes()
         $schedule->call(function () {
 
             // С каких таблиц выбрать записи
@@ -197,7 +197,7 @@ class Kernel extends ConsoleKernel
 
 
 
-        // Поднять -- Top x7 - Top x30 в топ и добавить в горячие - Проверка каждый час на 47 минуте ->hourlyAt(47)
+        // Поднять -- Top x7 - Top x30 в топ  - Проверка каждый час на 47 минуте ->hourlyAt(47)
         $schedule->call(function () {
 
             // С каких таблиц выбрать записи
@@ -268,44 +268,39 @@ class Kernel extends ConsoleKernel
                 // Отправим зарос на проверку оплаты
 
                 foreach ($bueAds_arr as $bueAds){
-                    // Если полачено поставим статус "Оплачено" или Ошибка
+                    // Получим объявление - на которое добавить рекламу
                     $className = 'App\Models\Ads\\' . $bueAds->table_name;
                     $ads = $className::find($bueAds->ads_id);
 
-                    //Добавим рекламу объявлению x30
-                    if ($bueAds->bue_ads_type == 'Top x30') {
-                        $ads->bueAds = Carbon::now();
-                        $ads->top = Carbon::now();
-                        $ads->top_x7 = Null;
-                        $ads->top_x30 = Carbon::now();
-                        $ads->save();
-                    }
-                    else if ($bueAds->bue_ads_type == 'Top x7') {
-                        $ads->bueAds = Carbon::now();
-                        $ads->top = Carbon::now();
-                        $ads->top_x7 = Carbon::now();
-                        $ads->top_x30 = Null;
-                        $ads->save();
-                    }
-                    else{
-                        $bueType = explode(',', $bueAds->bue_ads_type);
+                    $bueType = explode(',', $bueAds->bue_ads_type);
 
-                        foreach ($bueType as $type) {
-                            if ($type == 'Срочно торг') $ads->srochno_torg = 1;
-                            if ($type == 'Топ 24') {
-                                $ads->bueAds = Carbon::now();
-                                $ads->top = Carbon::now();
-                            }
-                            if ($type == 'Топ 8 раз') {
-                                $ads->bueAds = Carbon::now();
-                                $ads->top_8 = Carbon::now();
-                            }
+                    foreach ($bueType as $type) {
+                        if ($type == 'Top x30') {
+                            $ads->bueAds = Carbon::now();
+                            $ads->top = Carbon::now();
+                            $ads->top_x7 = Null;
+                            $ads->top_x30 = Carbon::now();
+                        };
+                        if ($type == 'Top x7') {
+                            $ads->bueAds = Carbon::now();
+                            $ads->top = Carbon::now();
+                            $ads->top_x7 = Carbon::now();
+                            $ads->top_x30 = Null;
+                        };
+                        if ($type == 'Срочно торг') $ads->srochno_torg = 1;
+                        if ($type == 'Топ 24') {
+                            $ads->bueAds = Carbon::now();
+                            $ads->top = Carbon::now();
                         }
-
-                        $ads->save();
+                        if ($type == 'Топ 8 раз') {
+                            $ads->bueAds = Carbon::now();
+                            $ads->top_8 = Carbon::now();
+                        }
                     }
 
-                    $bueAds->result = "Оплачено ";
+                    $ads->save();
+
+                    $bueAds->result = "Оплачено";
                     $bueAds->save();
                 }
 

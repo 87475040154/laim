@@ -84,7 +84,9 @@ export default {
                         tel: 'Номер телефона',
                         tel2: 'Номер телефона 2',
                         password: 'Пароль',
-                        message: 'Сообщение'
+                        message: 'Сообщение',
+                        card_number: 'Номер карты',
+                        card_expiry: 'Месяц / Год',
 
                     }
                 },
@@ -139,7 +141,9 @@ export default {
                         tel: 'Телефон нөмірі',
                         tel2: 'Телефон нөмірі 2',
                         password: 'Құпия сөз',
-                        message: 'Хабар'
+                        message: 'Хабар',
+                        card_number: 'Карта нөмірі',
+                        card_expiry: 'Ай / Жыл',
 
                     }
                 },
@@ -194,7 +198,9 @@ export default {
                         tel: 'Phone number',
                         tel2: 'Phone number 2',
                         password: 'Password',
-                        message: 'Message'
+                        message: 'Message',
+                        card_number: 'Card number',
+                        card_expiry: 'Month / Year',
 
                     }
                 }

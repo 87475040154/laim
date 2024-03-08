@@ -82,8 +82,8 @@ class UserController extends Controller
         return 'success';
     }
 
-    //Метод получить токен для перехода к оплате
-    public function getPayLink(Request $request)
+    //Метод - Добавить заказ в БД
+    public function addOrderDB(Request $request)
     {
 
         //Валидация входящих данных
@@ -97,11 +97,11 @@ class UserController extends Controller
         // Определим стоимость
         $bueAdsType = explode(',', $request->bue_ads_type);
         $summ = 0;
+
         if (in_array('Top x30', $bueAdsType)) $summ = 3500;
         if (in_array('Top x7', $bueAdsType)) $summ = 2100;
         if (in_array('Топ 24', $bueAdsType)) $summ += 300;
         if (in_array('Топ 8 раз', $bueAdsType)) $summ += 1900;
-        if (in_array('Горячие', $bueAdsType)) $summ += 240;
         if (in_array('Срочно торг', $bueAdsType)) $summ += 90;
 
         if($summ == 0)return response()->json(['message'=>'Ошибка! Выберите занова услугу для покупки!'], 422);
@@ -116,160 +116,79 @@ class UserController extends Controller
             'bue_ads_type'=>$request->bue_ads_type,
         ]);
 
+        return response()->json(['order'=>$bueAds], 200);
 
-        //Получим токен доступа для проведения платежа
-        try {
-
-            // Создаем экземпляр клиента Guzzle
-            $client = new Client();
-
-            // Данные для POST-запроса на получение токена
-            $data = [
-                'grant_type' => "client_credentials",
-                'scope' => "webapi usermanagement email_send verification statement statistics payment",
-                'client_id' => "test",
-                'client_secret' => "yF587AV9Ms94qN2QShFzVR3vFnWkhjbAK3sG",
-                'invoiceID' => sprintf("%'.06d", $bueAds->id),
-                'amount' => $bueAds->summ,
-                'currency' => "KZT",
-                'terminal' => "67e34d63-102f-4bd1-898e-370781d0074d",
-                'postLink' => $_SERVER['HTTP_HOST'] . "/api/user/checkBueAds",
-            ];
-
-            // Отправляем POST-запрос на URL для получения токена
-            $response = $client->post('https://testoauth.homebank.kz/epay2/oauth2/token', [
-                'form_params' => $data
-            ]);
-
-            // Получение тела ответа в виде строки
-            $body = $response->getBody()->getContents();
-
-            // Преобразуем JSON-строку в ассоциативный массив
-            $responseData = json_decode($body, true);
-
-            // Возвращаем данные в JSON-ответе, включая полученные данные и номер счета и сумму платежа
-            return response()->json([
-                'body' => $responseData, // token - доступа для проведения оплаты
-                'invoiceID' => sprintf("%'.06d", $bueAds->id), // преобразуем оплату с 1 на  000001
-                'amount' => $bueAds->summ
-            ], 200);
-
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 422);
-        }
     }
 
     // После оплаты автоматически будет вызываться этот метод системой оплаты куда передается информация об оплате
     public function checkBueAds(Request $request)
     {
 
-
-        //Проверим есть ли платеж с таким invoiceID в БД
-        $bueAds = BueAds::find(intval($request->invoiceID) );
-        $bueAds->status = $request->code;
-        $bueAds->save();
-        return;
+        //Получим - Запись заказа
+        $bueAds = BueAds::find($request->order_id);
 
         //Если платежа с таким invoiceID нет в БД то это ошибка
         if ($bueAds == null) return response()->json(['error' => 'Данного платежа нет в Базе данных, запросите новый платеж'], 422);
 
         //Если платеж есть но он уже получил статус ВЫполнено то тоже ошибка
-        if ($bueAds->result == 'Выполнено') return response()->json(['error' => 'Реклама уже применена'], 422);
+        if ($bueAds->result == 'Выполнено') return response()->json(['error' => 'На ваше объявление добавлена реклама!'], 422);
 
 
-        //Проверка платежа на достоверность в системе epay
-        try {
-
-            // Получение токена доступа
-            $client = new Client();
-            $data = [
-                'grant_type' => 'client_credentials',
-                'scope' => 'webapi usermanagement email_send verification statement statistics payment',
-                'client_id' => 'test',
-                'client_secret' => 'yF587AV9Ms94qN2QShFzVR3vFnWkhjbAK3sG',
-                'terminal' => '67e34d63-102f-4bd1-898e-370781d0074d',
-            ];
-            $response = $client->post('https://testoauth.homebank.kz/epay2/oauth2/token', [
-                'form_params' => $data
-            ]);
-            // Получение тела ответа в виде строки
-            $body = $response->getBody()->getContents();
-            // Преобразование ответа из JSON в ассоциативный массив
-            $responseData = json_decode($body, true);
-            // Получение актуального токена из ответа
-            $accessToken = $responseData['access_token'];
-
-            // Теперь проверим статус самой транзакции
-            $client = new Client();
-            // Данные для GET-запроса
-            $queryParams = [
-                'transactionId' => $request->invoiceID,
-            ];
-            $response = $client->get("https://testepay.homebank.kz/api/check-status/payment/transaction/$request->invoiceID", [
-                'headers' => [
-                    'Authorization' => "Bearer $accessToken", // Добавляем токен в заголовок Authorization
-                ],
-                'query' => $queryParams
-            ]);
-            // Получение тела ответа в виде строки
-            $body = $response->getBody()->getContents();
-            // Преобразование ответа из JSON в ассоциативный массив
-            $responseData = json_decode($body, true);
-
-            // Теперь в $responseData у вас содержится информация о статусе транзакции
-            // CHARGE - Если этот статус, то оплата прошла
-            if ($responseData['transaction']['statusName'] != 'CHARGE') {
-                return response()->json(['error' => 'Ошибка оплаты'], 422);
-            }
-
-        } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 422);
-        }
+        // Здесь - Нужно проверить платеж в системе на достоверность
 
 
-        //Если платеж прошел активируем подписку у пользователя
+
+        //Если платеж прошел - добавим рекламу на объявление
         $className = 'App\\' . $bueAds->table_name;
         $ads = $className::find($bueAds->ads_id);
 
 
-        //Добавим рекламу объявлению x30
-        if ($bueAds->bue_ads_type == 'Top x30') {
-            $ads->add_ads_top = Carbon::now();
-            $ads->top_x30 = Carbon::now();
-            $ads->save();
-        }
-
-        //Добавим рекламу объявлению x7
-        if ($bueAds->bue_ads_type == 'Top x7') {
-            $ads->add_ads_top = Carbon::now();
-            $ads->top_x7 = Carbon::now();
-            $ads->save();
-        }
-
-        //Реклама по 1
-        if ($bueAds->bue_ads_type != 'Top x30' && $bueAds->bue_ads_type != 'Top x7') {
-            $bueType = explode(',', $bueAds->bue_ads_type);
-
-            foreach ($bueType as $type) {
-                if ($type == 'Срочно торг') $ads->srochno_torg = 1;
-                if ($type == 'Топ 24') {
-                    $ads->add_ads_top = Carbon::now();
-                    $ads->top = Carbon::now();
-                }
-                if ($type == 'Топ 8 раз') {
-                    $ads->add_ads_top = Carbon::now();
-                    $ads->top_8 = Carbon::now();
-                }
+        foreach ($bueAds as $type) {
+            if ($type == 'Top x30') {
+                $ads->bueAds = Carbon::now();
+                $ads->top = Carbon::now();
+                $ads->top_x7 = Null;
+                $ads->top_x30 = Carbon::now();
+            };
+            if ($type == 'Top x7') {
+                $ads->bueAds = Carbon::now();
+                $ads->top = Carbon::now();
+                $ads->top_x7 = Carbon::now();
+                $ads->top_x30 = Null;
+            };
+            if ($type == 'Срочно торг') $ads->srochno_torg = 1;
+            if ($type == 'Топ 24') {
+                $ads->bueAds = Carbon::now();
+                $ads->top = Carbon::now();
             }
-
-            $ads->save();
+            if ($type == 'Топ 8 раз') {
+                $ads->bueAds = Carbon::now();
+                $ads->top_8 = Carbon::now();
+            }
         }
 
+        // Сохраняем объявление с рекламой
+        $ads->save();
 
-        //Изменить статус покупки
+        //Изменить статус заказа в БД
         $bueAds->result = 'Выполнено';
         $bueAds->save();
+
         return response()->json(['success' => 'success'], 200);
 
     }
+
+    //Метод - удалить заказ с БД, Если не прошла оплата
+    public function deleteOrderDB(Request $request){
+        // Получаем заказ по переданному ID и проверяем, существует ли он
+        $order = BueAds::find($request->order_id);
+        if (!$order) return response()->json(['error' => 'Заказ не найден'], 404);
+
+        // Удаляем заказ
+        $order->delete();
+
+        // Возвращаем успешный ответ
+        return response()->json(['message' => 'Заказ успешно удален'], 200);
+    }
+
 }

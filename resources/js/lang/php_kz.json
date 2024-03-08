@@ -617,8 +617,8 @@
     "bueAdsIndexGreenPainting": "Жасыл бояу",
     "bueAdsIndexPaidServicesWillHelpYouPassFaster": "Ақылы қызметтер тезірек тапсыруға көмектеседі",
     "bueAdsIndexTOPPromotionForADay": "Тәулігіне ТОП акциясы",
-    "bueAdsIndex8TimesInTheTOPFor": "24 сағат ішінде 8 рет ТОП үстіне көтеріледі",
-    "bueAdsIndexSendToTheTOP24Hours": "ТОП-қа жіберіңіз",
+    "bueAdsIndex8TimesInTheTOPFor": "Әр 3 сағат сайын ТОП-қа көтерілу",
+    "bueAdsIndexSendToTheTOP24Hours": "ТОП-қа 24 сағатқа жіберіңіз",
 
     "bueAdsIndexPutUrgentBargain": "'Шұғыл, сауда' қойыңыз",
     "bueAdsIndexPromoteFor": "Жылжыту",
@@ -630,6 +630,11 @@
     "bueAdsPayMethodPersonalAccount": "Жеке шот",
     "bueAdsPayMethodUnits": "Бірліктер",
     "bueAdsPayMethodError": "Қате! Қайталап көріңіз.",
+    "bueAdsPayMethodCardNumber": "Карта нөмірі",
+    "bueAdsPayMethodMonthYear": "АА / ЖЖ",
+    "bueAdsPayMethodCardHolderName": "Карта иесінің аты",
+    "bueAdsPayMethodToPay": "Төлеу",
+
 
 
     "bueResultBuyingAds": "Жарнама сатып алу",

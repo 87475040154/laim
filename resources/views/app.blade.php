@@ -27,12 +27,19 @@
     <!-- Главный js файл и Scss файл -->
     @vite(['resources/js/app.js'])
 
-    <!-- Библиотека для оплаты покупок через HALYK epaiment.kz -->
-    <script src="/js/halyk.js"></script>
-
     <!-- Передача значения config('app.url') в JavaScript -->
     <script>
         window.appUrl = "{{ config('app.url') }}";
+    </script>
+
+    <!-- Подключаю библиотеку JS SDK - Freedom Pay - для приема платежей-->
+    <script>
+        (function (f, p, s, d, k) {
+            d = f.createElement(p);
+            k = f.getElementsByTagName(p)[0];
+            d.src = 'https://cdn.freedompay.money/sdk/js-sdk-1.0.0.js';
+            k.parentNode.insertBefore(d, k);
+        })(document, 'script');
     </script>
 
 </head>

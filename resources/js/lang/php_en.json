@@ -614,8 +614,8 @@
     "bueAdsIndexGreenPainting": "Green painting",
     "bueAdsIndexPaidServicesWillHelpYouPassFaster": "Paid services will help you pass faster",
     "bueAdsIndexTOPPromotionForADay": "TOP promotion for a day",
-    "bueAdsIndex8TimesInTheTOPFor": "8 times in the TOP for",
-    "bueAdsIndexSendToTheTOP24Hours": "Send to the TOP",
+    "bueAdsIndex8TimesInTheTOPFor": "Rising to the TOP every 3 hours for",
+    "bueAdsIndexSendToTheTOP24Hours": "Send to TOP for 24 hours",
 
     "bueAdsIndexPutUrgentBargain": "Put 'Urgent, bargain'",
     "bueAdsIndexPromoteFor": "Promote for",
@@ -629,6 +629,11 @@
     "bueAdsPayMethodPersonalAccount": "Personal account",
     "bueAdsPayMethodUnits": "Units",
     "bueAdsPayMethodError": "Mistake! Try again.",
+    "bueAdsPayMethodCardNumber": "Card number",
+    "bueAdsPayMethodMonthYear": "MM / YY",
+    "bueAdsPayMethodCardHolderName": "Name of the cardholder",
+    "bueAdsPayMethodToPay": "To pay",
+
 
 
 

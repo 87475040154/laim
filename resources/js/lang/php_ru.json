@@ -614,8 +614,8 @@
     "bueAdsIndexGreenPainting": "Зелёная покраска",
     "bueAdsIndexPaidServicesWillHelpYouPassFaster": "Платные услуги помогут сдать быстрее",
     "bueAdsIndexTOPPromotionForADay": "Акция ТОП на сутки",
-    "bueAdsIndex8TimesInTheTOPFor": "8 раз в ТОП за",
-    "bueAdsIndexSendToTheTOP24Hours": "Отправить в ТОП",
+    "bueAdsIndex8TimesInTheTOPFor": "Поднятие в ТОП каждые 3 часа за",
+    "bueAdsIndexSendToTheTOP24Hours": "Отправить в ТОП на 24 часа",
     "bueAdsIndexPutUrgentBargain": "Поставить - Срочно, торг",
     "bueAdsIndexPromoteFor": "Продвинуть за",
     "bueAdsIndexSubmitWithoutPromotion": "Подать без продвижения",
@@ -629,6 +629,10 @@
     "bueAdsPayMethodPersonalAccount": "Личный счёт",
     "bueAdsPayMethodUnits": "Ед.",
     "bueAdsPayMethodError": "Ошибка! Попробуйте еще раз.",
+    "bueAdsPayMethodCardNumber": "Номер карты",
+    "bueAdsPayMethodMonthYear": "MM / ГГ",
+    "bueAdsPayMethodCardHolderName": "Имя владельца карты",
+    "bueAdsPayMethodToPay": "Оплатить",
 
 
     "bueResultBuyingAds": "Покупка рекламы",

@@ -46,16 +46,115 @@
                     <!--            </div>-->
 
                     <!-- Карта Visa -->
-                    <div @click="bueVisa" class="border-bottom p-2 px-3 row g-0 gap-3 align-center" role="button">
+                    <div v-if="!showFormVisaCard"
+                        @click="showFormVisaCard = !showFormVisaCard"
+                         class="border-bottom p-2 py-3 px-3 row g-0 gap-3 align-center"
+                         role="button"
+                    >
                         <div class="col-auto">
                             <img src="/public/img/siteImg/allImg/logo_visa.png" width="25" height="25" alt="Логотип">
                         </div>
                         <span class="col">{{ $t('bueAdsPayMethodVisaMasterCardCard') }}</span>
                     </div>
 
+                    <!-- Форма для ввода Номера карты - Visa -->
+                    <div v-if="showFormVisaCard">
+                        <!-- Форма Карты Visa -->
+                        <validation-observer tag="div" ref="form" v-slot="{ handleSubmit }">
+                            <form @submit="handleSubmit($event, addOrderDB)" class="form p-2 text-center">
+
+                                <!-- Поле - Номер карты -->
+                                <validation-provider rules="required|min:1|length:19"
+                                                     name="card_number" v-slot="{ errors, field }"
+                                >
+                                    <!-- Input -->
+                                    <v-text-field
+                                        v-model="card_number" v-bind="field"
+                                        name="card_number" :label="$t('bueAdsPayMethodCardNumber')"
+                                        type="text" maxlength="19" inputmode="numeric"
+                                        variant="outlined" color="blue-darken-2"
+                                        :error-messages="errors"
+                                        v-mask="'#### #### #### ####'"
+                                        prepend-inner-icon="mdi-credit-card"
+                                    ></v-text-field>
+                                </validation-provider>
+
+
+                                <!-- ММ / ГГ и CVV -->
+                                <div class="d-flex flex-row gap-2">
+
+                                    <!-- ММ / ГГ -->
+                                    <validation-provider rules="required|min:5"
+                                                         name="card_expiry" v-slot="{ errors, field }"
+                                    >
+                                        <!-- Input -->
+                                        <v-text-field
+                                            v-model="card_expiry" v-bind="field"
+                                            name="card_expiry" :label="$t('bueAdsPayMethodMonthYear')"
+                                            type="text" inputmode="numeric"
+                                            variant="outlined" color="blue-darken-2"
+                                            :error-messages="errors[0]"
+                                            maxlength="5"
+                                            v-mask="'##/##'"
+                                        ></v-text-field>
+                                    </validation-provider>
+
+                                    <!-- Поле - CVV код -->
+                                    <validation-provider rules="required|numeric|length:3"
+                                                         name="cvv" v-slot="{ errors, field}"
+                                    >
+                                        <!-- Input -->
+                                        <v-text-field
+                                            v-model="card_cvv" v-bind="field"
+                                            name="card_cvv" label="CVV"
+                                            type="text" maxlength="3"
+                                            inputmode="numeric"
+
+                                            variant="outlined" color="blue-darken-2"
+                                            :error-messages="errors[0]"
+                                            v-mask="'###'"
+                                        ></v-text-field>
+                                    </validation-provider>
+
+
+                                </div>
+
+
+                                <!-- Поле - Имя владельца карты -->
+                                <validation-provider rules="required|max:255"
+                                                     name="name" v-slot="{ errors, field}"
+                                >
+                                    <!-- Input -->
+                                    <v-text-field
+                                        v-model="card_holder_name" v-bind="field"
+                                        name="card_holder_name" :label="$t('bueAdsPayMethodCardHolderName')"
+                                        type="text"
+                                        variant="outlined" color="blue-darken-2"
+                                        :error-messages="errors[0]"
+                                    ></v-text-field>
+
+                                </validation-provider>
+
+                                <!-- Кнопка отправки формы -->
+                                <v-btn type="submit" elevation="1" dark block size="x-large" style="background: rgb(16, 163, 127);" class="my-2 text-white text-body-1" :disabled="query">
+                                    <span v-if="query" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    <span>{{ $t('bueAdsPayMethodToPay') }}</span>
+                                </v-btn>
+
+                            </form>
+                        </validation-observer>
+
+
+                    </div>
+
+                    <!-- Тег с id - Если нужна будет проверка карты - от самой SDK-->
+                    <div id="3dsForm"></div>
 
                     <!-- Личный счёт -->
-                    <div class="border-bottom p-2 px-3 row g-0 gap-3 align-center" role="button">
+                    <div v-if="!showFormVisaCard"
+                        class="border-bottom p-2 py-3 px-3 row g-0 gap-3 align-center"
+                        role="button"
+                    >
                         <div class="col-auto">
                             <img src="/public/img/siteImg/allImg/logo.svg" width="25" height="25" alt="Логотип">
                         </div>
@@ -79,8 +178,12 @@ import { useAuthStore } from "../../../../stores/auth";
 import { useCheckInternetStore } from "../../../../stores/checkInternet";
 import { useUpdateDateLocaleStore} from "../../../../stores/updateDateLocale";
 
+
+import {mask} from 'vue-the-mask' //Пакет для изменения данных при вводе в поле, маска
 export default {
     name: "BueAdsPayMethod",
+
+    directives: {mask},
 
     data(){
         return {
@@ -90,6 +193,18 @@ export default {
             updateDateLocaleStore: useUpdateDateLocaleStore(),
 
             bueAdsPayMethodAnimation: false,
+
+            query: false,
+
+            //Показать форму для ввода данных карты visa для оплаты
+            showFormVisaCard: false,
+
+            // Сама карта
+            card_number: '',
+            card_holder_name: '',
+            card_expiry: '', // Сначала добавлю сюда ММ/ГГ
+            card_cvv: '',
+
         }
     },
 
@@ -104,69 +219,118 @@ export default {
 
     methods: {
 
-        // Покупка через карту - используем сервис epayment.kz
-       async bueVisa(){
+        //Метод - Добавить заказ в БД и сделать попытку оплаты
+        async addOrderDB(){
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           await this.checkInternetStore.checkInternet()
+            await this.checkInternetStore.checkInternet()
             if(!this.checkInternetStore.online)return;
 
+            this.query = true;
 
-            // Получить ссылку для перехода к оплате
-            axios.get('/user/getPayLink', {
-                params: {
-                    author_id: this.authStore.user.id,
-                    author_email: this.authStore.user.email,
-                    ads_id: this.$route.params.ads_id,
-                    table_name: this.$route.params.table_name,
-                    bue_ads_type: this.$route.params.bueAdsType
-                }
+            // Занесем заказ в БД и вернем id - заказа
+            axios.post('/user/addOrderDB',{
+                author_id: this.authStore.user.id,
+                author_email: this.authStore.user.email,
+                ads_id: this.$route.params.ads_id,
+                table_name: this.$route.params.table_name,
+                bue_ads_type: this.$route.params.bueAdsType
             })
                 .then((response)=>{
-                    //Вызовим метод перехода на страницу оплаты
-                    this.handlePayment(response.data.body, response.data.invoiceID, response.data.amount);
+
+                    //Метод оплаты чере Карту - Freedom Pay
+                    this.doPaymentFreedomPay(response.data.order);
+
                 })
                 .catch((errors)=>{
-                    // Если возникла ошибка при получении ссылки на оплату, покажем уведомление
+                    // Если возникла ошибка при добавлении заказа в БД
                     Swal.fire({
                         title: this.$t('bueAdsPayMethodError'),
                         text: errors.response.data.message
                     })
-                })
 
+                    this.query = false;
+                })
         },
 
-        //Метод непосредственно перехода на страницу оплаты
-        handlePayment(token, invoiceID, amount) {
-            if (typeof halyk !== 'undefined' && typeof halyk.pay === 'function') {
+        // Метод - Оплата через карту - Freedom Pay
+        async doPaymentFreedomPay(order){
 
-                // Создаем объект с параметрами платежа
-                var paymentObject = {
-                    invoiceId: invoiceID,
-                    backLink: SiteDomain + "/bueAdsResult/success",
-                    failureBackLink: SiteDomain + "/bueAdsResult/error",
-                    postLink: SiteDomain + '/api/user/checkBueAds',
-                    language: this.lang,
-                    description: "Покупка рекламы для продвижения",
-                    accountId: "testuser1",
-                    terminal: "67e34d63-102f-4bd1-898e-370781d0074d",
-                    amount: amount,
-                    data: "{\"statement\":{\"name\":\"Arman Ali\",\"invoiceID\":\"" + invoiceID + "\"}}",
-                    currency: "KZT",
-                    phone: this.authStore.user.tel,
-                    email: this.authStore.user.email,
-                    cardSave: true //Параметр должен передаваться как Boolean
-                };
+            // Данные платежа - Номер, сумма и тд.
+            const JSPaymentOptions = {
+                order_id: order.id, // должен быть уникальным на каждый запрос
+                auto_clearing: 0,
+                amount: order.summ, //Сумма
+                currency: "KZT",
+                description: "Покупка продвижение объявления",
+                test: 1,
+                options: {
+                    custom_params: {},
+                    user: {
+                        email: this.authStore.user.email,
+                        phone: this.authStore.user.tel,
+                    }
+                },
+            };
 
-                // Передаем токен в объект платежа
-                paymentObject.auth = token;
+            // Данные банковской карты
+            const JSTransactionOptionsBankCard = {
+                type: 'bank_card',
+                options: {
+                    card_number: this.card_number.replace(/\s/g, ''),
+                    card_holder_name: this.card_holder_name,
+                    card_exp_month: this.card_expiry.split('/')[0],
+                    card_exp_year: this.card_expiry.split('/')[1],
+                    card_cvv: this.card_cvv
+                }
+            };
 
-                // Вызываем метод halyk.pay() с объектом платежа
-                halyk.pay(paymentObject);
+            try {
 
-            } else {
-                console.error('Failed to load halyk.pay() method or halyk.js library.');
+                let JSPayResult = await FreedomPaySDK.charge(
+                    JSPaymentOptions, JSTransactionOptionsBankCard
+                );
+
+                if (JSPayResult.payment_status === "need_confirm") {
+                    console.log('need_confirm')
+
+                    JSPayResult = await FreedomPaySDK.confirmInIframe(JSPayResult, "3dsForm");
+                }
+
+                // открыть страницу результата платежа и т д
+                // ...
+                console.log(JSPayResult);
+
+                this.query = false;
+
+            } catch(JSErrorObject) {
+
+                this.query = false;
+
+                // Если возникла ошибка при попытке оплаты
+                Swal.fire({
+                    title: this.$t('bueAdsPayMethodError'),
+                    text: 'Попробуйте еще раз!'
+                })
+
+                // Удалим заказ с БД, чтоб не было переполнения
+                this.deleteOrderDB(order)
+
             }
+        },
+
+        deleteOrderDB(order){
+            // Определяем URL с параметрами
+            let url = `/user/deleteOrderDB?order_id=${order.id}`;
+
+            // Выполняем запрос DELETE
+            axios.delete(url)
+                .then((response) => {
+                    console.log('Заказ удален!');
+                })
+                .catch((error) => {
+                    console.log('Заказ не удален!');
+                });
         }
 
     },
@@ -176,6 +340,10 @@ export default {
 
         this.bueAdsPayMethodAnimation = true;
         document.querySelector(':root').classList.add('PATCH_modal'); //Отменим прокрутку под этим компонентом
+
+        // Добавляем публичный ключ - и токен для проведения оплаты через Freedom
+        // FreedomPaySDK.setup('fOyOn4KIDqGVFA2z', 'mytoken');
+        // console.log(FreedomPaySDK)
     },
 
 
@@ -275,6 +443,13 @@ export default {
     width: 100%;
     font-size: 1.1em;
     padding-bottom: 20px;
+}
+
+.form{
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
 }
 
 /*При экранее более 992px */
