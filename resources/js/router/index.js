@@ -142,7 +142,7 @@ const routes = [
                             //Настройки
                             {
                                 path: 'myAccountSettings',
-                                component: ()=> import('../components/allComponents/user/myAccountSettings.vue'),
+                                component: ()=> import('../components/allComponents/user/MyAccountSettings.vue'),
                                 name: "myAccountSettings",
                                 meta: {
                                     auth: true,
