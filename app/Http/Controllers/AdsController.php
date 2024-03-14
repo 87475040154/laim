@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ads\ArhiveAds;
 use App\Models\Ads\Business;
 use App\Models\Ads\Dom;
 use App\Models\Ads\GeneralAds;
@@ -15,15 +14,15 @@ use App\Models\Ads\Prombaza;
 use App\Models\Ads\Snimu;
 use App\Models\Ads\Zdanie;
 use App\Models\AdsView;
-use App\Models\AdsViewStatistic;
+use App\Models\AdsViewTel;
 use App\Models\Like;
 use App\Models\User;
-use App\Models\View;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+
 
 class AdsController extends Controller
 {
@@ -67,7 +66,7 @@ class AdsController extends Controller
     public function addOrUpdateAds(Request $request){
 
 
-        //Проверка  капчи на сервере мы сравниваем токен который получили на фронтенде и сравниваем с бекендом
+        //Проверка  капчи Google recaptcha - на сервере мы сравниваем токен который получили на фронтенде и сравниваем с бекендом
         if (config('recaptcha.enabled') && !$this->checkRecaptcha($request->recaptcha_token, $request->ip())) {
             return response()->json(['error' => 'Неверная капча - перезагрузите страницу'], 422);
         }
@@ -99,7 +98,6 @@ class AdsController extends Controller
 
         // Специфичные правила
         $tableSpecificRules = [];
-        $model = null;
         switch ($request->table_name) {
             case 'Kvartira':
                 $tableSpecificRules = [
@@ -116,7 +114,6 @@ class AdsController extends Controller
                     'bezopasnost.*'=> 'nullable|string|min:1|max:2000',
                     'raznoe.*'=> 'nullable|string|min:1|max:2000',
                 ];
-                $model = ($request->addOrUpdate == 'add') ? new Kvartira() : Kvartira::find($request->id);
                 break;
             case 'Obshejitie':
                 $tableSpecificRules = [
@@ -134,7 +131,6 @@ class AdsController extends Controller
                     'bezopasnost.*'=> 'nullable|string|min:1|max:2000',
                     'raznoe.*'=> 'nullable|string|min:1|max:2000',
                 ];
-                $model = ($request->addOrUpdate == 'add') ? new Obshejitie() : Obshejitie::find($request->id);
                 break;
             case 'Dom':
                 $tableSpecificRules = [
@@ -156,7 +152,6 @@ class AdsController extends Controller
                     'bezopasnost.*'=> 'nullable|string|min:1|max:2000',
                     'raznoe.*'=> 'nullable|string|min:1|max:2000',
                 ];
-                $model = ($request->addOrUpdate == 'add') ? new Dom() : Dom::find($request->id);
                 break;
             case 'Ofis':
                 $tableSpecificRules = [
@@ -174,7 +169,6 @@ class AdsController extends Controller
                     'bezopasnost.*'=> 'nullable|string|min:1|max:2000',
                     'raznoe.*'=> 'nullable|string|min:1|max:2000',
                 ];
-                $model = ($request->addOrUpdate == 'add') ? new Ofis() : Ofis::find($request->id);
                 break;
             case 'Zdanie':
                 $tableSpecificRules = [
@@ -183,7 +177,6 @@ class AdsController extends Controller
                     'ploshad_uchastka'=> 'required|numeric|min:1|max:99999',
                     'bezopasnost.*'=> 'nullable|string|min:1|max:2000',
                 ];
-                $model = ($request->addOrUpdate == 'add') ? new Zdanie() : Zdanie::find($request->id);
                 break;
             case 'Magazin':
                 $tableSpecificRules = [
@@ -201,7 +194,6 @@ class AdsController extends Controller
                     'bezopasnost.*'=> 'nullable|string|min:1|max:2000',
                     'raznoe.*'=> 'nullable|string|min:1|max:2000',
                 ];
-                $model = ($request->addOrUpdate == 'add') ? new Magazin() : Magazin::find($request->id);
                 break;
             case 'Prombaza':
                 $tableSpecificRules = [
@@ -217,7 +209,6 @@ class AdsController extends Controller
                     'kommunikacii.*'=> 'nullable|string|min:1|max:2000',
                     'raznoe.*'=> 'nullable|string|min:1|max:2000',
                 ];
-                $model = ($request->addOrUpdate == 'add') ? new Prombaza() : Prombaza::find($request->id);
                 break;
             case 'Prochaya':
                 $tableSpecificRules = [
@@ -228,7 +219,6 @@ class AdsController extends Controller
                     'raspolojenie.*'=> 'required|string|min:1|max:1000',
                     'kommunikacii.*'=> 'nullable|string|min:1|max:2000',
                 ];
-                $model = ($request->addOrUpdate == 'add') ? new Prochaya() : Prochaya::find($request->id);
                 break;
             case 'Business':
                 $tableSpecificRules = [
@@ -240,7 +230,6 @@ class AdsController extends Controller
                     'raspolojenie.*'=> 'required|string|min:1|max:1000',
                     'kommunikacii.*'=> 'nullable|string|min:1|max:2000',
                 ];
-                $model = ($request->addOrUpdate == 'add') ? new Business() : Business::find($request->id);
                 break;
             case 'Snimu':
                 $tableSpecificRules = [
@@ -251,7 +240,6 @@ class AdsController extends Controller
                     'kommunikacii.*'=> 'nullable|string|min:1|max:2000',
                     'bezopasnost.*'=> 'required|string|min:1|max:1000',
                 ];
-                $model = ($request->addOrUpdate == 'add') ? new Snimu() : Snimu::find($request->id);
                 break;
             default:
                 return response()->json(['error' => 'Неизвестное имя таблицы'], 422);
@@ -263,64 +251,48 @@ class AdsController extends Controller
         // Валидируем данные с формы
         $request->validate($validationRules);
 
-        // Проверка на доступ к редактированию
-        if ($request->role == 'admin' && (!$model || empty($model))) {
-            return response()->json(['error' => 'У вас нет доступа к редактированию данного объявления'], 422);
-        }
-        if ($request->addOrUpdate == 'update' && $request->role == 'user' && $model->author_id != $request->author_id) {
-            return response()->json(['error' => 'У вас нет доступа к редактированию данного объявления'], 422);
+
+        // Kvartira, Obshejitie  и тд.
+        $modelClass = 'App\Models\Ads\\' . $request->table_name;
+
+        if ($request->addOrUpdate == 'add') {
+            $model = new $modelClass;
+        } else {
+            $model = $modelClass::find($request->id);
+
+            if (!$model || ($request->role == 'user' && $model->author_id != $request->author_id)) {
+                return response()->json(['error' => 'У вас нет доступа к редактированию данного объявления'], 422);
+            }
         }
 
         //Если проверки пройденны то добавим или обновим объявление через статический общий медоб
         $ads = GeneralAds::addOrUpdateAds( $model, $request->all() );
-
-        $ads->images = explode(',', $ads->images);
-        isset($ads->mebel_arr) && $ads->mebel_arr != null?$ads->mebel_arr = explode(',', $ads->mebel_arr):$ads->mebel_arr = [];
-        isset($ads->raznoe) && $ads->raznoe != null?$ads->raznoe = explode(',', $ads->raznoe):$ads->raznoe = [];
-        isset($ads->bezopasnost) && $ads->bezopasnost != null ? $ads->bezopasnost = explode(',', $ads->bezopasnost): $ads->bezopasnost = [];
-        isset($ads->raspolojenie) && $ads->raspolojenie != null?$ads->raspolojenie = explode(',', $ads->raspolojenie): $ads->raspolojenie = [];
-        isset($ads->kommunikacii) && $ads->kommunikacii != null?$ads->kommunikacii = explode(',', $ads->kommunikacii):$ads->kommunikacii = [];
-
-
         return response()->json(['ads'=>$ads], 200);
     }
 
 
-
-    // Метод - Получить все объявления из одной таблицы пагинацией 30шт
+    // Метод - Получить объявления из БД пагинацией
     public function getAllAds(Request $request){
 
-        //С какой таблицы получаем
-        $modelClass = 'App\Models\Ads\\' . $request->table_name;
+        $modelClass = 'App\Models\Ads\\' . $request->table_name; // Kvartira, Obshejitie
         $query = $modelClass::query();
 
-        // Данные фильтра
-        $filter = $request->filter;
-
-        // Если ищем мои ЛАЙК
+        // Если получить только МОИ ИЗБРАННЫЕ объявления
         if(isset($request->getMyLikeAds) && $request->getMyLikeAds == 'Получить мои лайки'){
 
-            // Получите пользователя
             $user = User::find($request->user_id);
 
-            // Получите лайки пользователя с заданным likeable_type (modelClass)
-            $likedAds = $user->likedAds->where('likeable_type', $modelClass);
+            // Получим лайки данного пользователя с таблицы likes
+            $likedAdIds = $user->likedAds
+                ->where('likeable_type', $modelClass)
+                ->sortByDesc('id')->pluck('likeable_id')->toArray();
 
-            // Получите ID объявлений, на которых стоит лайк пользователя
-            $likedAdIds = $likedAds->pluck('likeable_id')->toArray();
-
-            // Фильтрация объявлений по ID и типу лайкнутого объекта
-            $query = $query->whereIn('id', $likedAdIds);
-
+            $arrIdStr = implode(",", $likedAdIds);
+            $query->whereIn('id', $likedAdIds)
+                ->orderByRaw("FIELD(id, $arrIdStr)"); // Отсортируем по положению в массиве id
         }
 
-        // Если ищем АРХИВНЫЕ
-        if($request->filter != 'Фильтр не применен' && $request->filter['arhiv'] != '' && $request->getMyLikeAds == 'Не получать мои лайки'){
-            $query = ArhiveAds::query(); //Получить объявления из таблицы arhiveAds
-            $query->where('table_name', $request->table_name); //Это чтоб если мы заказываем архив для квартир или объявлений
-        }
-
-        // Если применен фильтр
+        // Отсортируем объявления по фильтру
         $filter = $request->filter;
         if ($filter != 'Фильтр не применен') {
             // По каким полям сортировка
@@ -357,70 +329,70 @@ class AdsController extends Controller
         }
 
 
-        //Если запрос объявлений для Yandex Cluster - с координатами расположения
+        // Если запрос объявлений для Yandex Cluster - Получим объявления с выбранной локацией и фильтром
         if(isset($request->getCoordinates)){
 
-            //Получить или активные или по фильтру
-            if($filter == 'Фильтр не применен'){
-                $ads_arr = $query->where('control', '=','Активно')->select(['id', 'tip_obekta','table_name', 'lat', 'lon', 'cena'])->get();
-            }else{
-                if($filter['arhiv'] != ''){
-                    $ads_arr = $query->select(['id','ads_id', 'table_name', 'lat', 'lon', 'cena'])->get();
-                }else{
-                    $ads_arr = $query->select(['id', 'table_name', 'lat', 'lon', 'cena'])->get();
-                }
-            }
+            $control = $filter['arhiv'] == '' ? 'Активно' : 'В архиве';
 
+            //Получить или активные или архивные
+            $ads_arr = $query->where('control', $control)->select(['id', 'lat', 'lon', 'cena'])->get();
 
             //Вернем найденные объявления
             return response()->json(['ads'=>$ads_arr], 200);
         }
-        //Если запрос уже при клике на кластер - то получим данные объявлений входящих в этот кластер
+
+        //Если запрос при клике на сам кластер - то получим данные объявлений входящих в этот кластер
         if(isset($request->getAdsYandexClusterer)){
-            $ads_arr = $query->find($request->arr_ads_id);
+            // Получим объявления по ID
+            $query->whereIn('id', $request->arr_ads_id)
+                ->orderBy('bueAds', 'desc')
+                ->orderBy('updated_at', 'desc')
+                ->select(['id', 'author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30','bueAds','updated_at', 'created_at']);
+
+            $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(20) : $query->paginate(20);
         }
 
         //Если запрос получить мои лайки
         if($request->getMyLikeAds == 'Получить мои лайки'){
-            $query->latest();
-            $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(30) : $query->paginate(30);
+            $query->select(['id','author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30', 'created_at']);
+            $ads_arr = $query->paginate(20);
         }
 
-        //Если запрос моих архивных
+        //Если запрос архивных
         if($filter != 'Фильтр не применен' && $filter['arhiv'] != '' && $request->getMyLikeAds == 'Не получать мои лайки' && !isset($request->getAdsYandexClusterer)){
-            $query->latest();
-            $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(30) : $query->paginate(30);
+            $query->where('control', 'В архиве')
+            ->latest()
+            ->select(['id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images','updated_at', 'created_at']);
+
+            $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(20) : $query->paginate(20);
         }
 
         //Если запрос только активных объявлений
-        if(!isset($request->getCoordinates) && !isset($request->getAdsYandexClusterer) && $request->getMyLikeAds == 'Не получать мои лайки' && $filter == 'Фильтр не применен'
-            || !isset($request->getCoordinates) && !isset($request->getAdsYandexClusterer) && $request->getMyLikeAds == 'Не получать мои лайки' && $filter != 'Фильтр не применен' && $filter['arhiv'] == ''){
-
-            //Получим связанные лайки предварительная загрузка
+        if(!isset($request->getCoordinates) && !isset($request->getAdsYandexClusterer) &&
+            $request->getMyLikeAds == 'Не получать мои лайки' &&
+            ($filter == 'Фильтр не применен' ||
+                ($filter != 'Фильтр не применен' && $filter['arhiv'] == '')
+            )){
             // Дополнительные условия и сортировка
-            $query->where('control', 'Активно');
-            $query->with(['likes' => function ($query) use ($request) {
-                $query->where('author_id', $request->user_id);
-            }])
-                ->orderBy('bueAds', 'desc') // Сначала выводим объявления на которых есть реклама
-                ->orderBy('updated_at', 'desc') // Затем получим все остальные
-                ->select(['id', 'zagolovok', 'table_name', 'cena', 'oblast', 'gorod', 'raion', 'ulica', 'nomer_doma', 'images', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30','bueAds','updated_at', 'created_at']);
+            $query->where('control', 'Активно')
+                ->orderBy('bueAds', 'desc')
+                ->orderBy('updated_at', 'desc')
+                ->select(['id','author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30','bueAds','updated_at', 'created_at']);
 
-            $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(30) : $query->paginate(30);
+            $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(20) : $query->paginate(20);
 
         }
 
         // Перебираем объявления и добавляем дополнительные данные
         foreach ($ads_arr as $ads) {
-            // Разбиваем поле "images" на массив по запятым
-            $ads->images = explode(',', $ads->images);
 
             // Проверяем наличие лайка пользователя
             $ads->userLike = ($request->getMyLikeAds == 'Получить мои лайки')
                 || $ads->likes->firstWhere('author_id', $request->user_id) !== null;
+
         }
 
-        //Вернуть найденные объявления
+        //Вернуть найденные объявления - для курсорной пагинации при первой загрузке
         $countAds = 'null';
         if(isset($request->countAds) && $request->cursorPaginate == 'true'){
             $countAds = $query->count();
@@ -431,61 +403,42 @@ class AdsController extends Controller
     //Метод получить 1-но объявление если оно активно для любого пользователя
     public function getOneAds(Request $request){
 
-        //Получим объявление с БД
-        $modelClassName = 'App\Models\Ads\\' . $request->table_name;
-        // Получим лайки через связь и саму запись
-        $ads = $modelClassName::with('likes')->find($request->ads_id);
+        // С какой таблицы получить объявление Kvartiras, Obshejities
+        $modelClass = 'App\Models\Ads\\' . $request->table_name;
 
-        //Если объявление Удалено отправить уведомление
-        if($ads == null){
-            $ads = ArhiveAds::where('ads_id', $request->ads_id)->where('table_name', $request->table_name)->first();
-            if($ads == null )return response()->json(['error'=>'Данное объявление удалено'],422);
-        }
+        // Получим объявление по id
+        $ads = $modelClass::find($request->ads_id);
 
-        //Разобъем строковые данны на массив
-        $ads->images = explode(',', $ads->images);
-        isset($ads->mebel_arr) && $ads->mebel_arr != null?$ads->mebel_arr = explode(',', $ads->mebel_arr):$ads->mebel_arr = [];
-        isset($ads->raznoe) && $ads->raznoe != null?$ads->raznoe = explode(',', $ads->raznoe):$ads->raznoe = [];
-        isset($ads->bezopasnost) && $ads->bezopasnost != null ? $ads->bezopasnost = explode(',', $ads->bezopasnost): $ads->bezopasnost = [];
-        isset($ads->raspolojenie) && $ads->raspolojenie != null?$ads->raspolojenie = explode(',', $ads->raspolojenie): $ads->raspolojenie = [];
-        isset($ads->kommunikacii) && $ads->kommunikacii != null?$ads->kommunikacii = explode(',', $ads->kommunikacii):$ads->kommunikacii = [];
-
+        if($ads == null)return response()->json(['error'=>'Данное объявление удалено'],422);
 
         // Проверяем наличие лайка пользователя
         $ads->userLike = $ads->likes->firstWhere('author_id', $request->user_id) !== null;
-        $ads->countLike = $ads->likes->count(); //Количество лайков на объявлении
 
         return $ads;
     }
 
     //Метод получить все объявления пользователя
     public function getUserAds(Request $request){
+
         $user = User::find($request->author_id);
 
-        // Создайте массив с именами таблиц объявлений
+        // Массив с именами таблиц объявлений
         $tables = [
             'kvartiras', 'obshejities', 'doms', 'ofis', 'zdanies',
             'magazins', 'prombazas', 'prochayas', 'businesses', 'snimus'
         ];
 
-        // Создайте пустой массив для хранения объявлений и лайков
+        // Пустой массив для хранения объявлений и лайков
         $allRecords = [];
 
         // Переберите каждую таблицу и получите объявления пользователя и лайки
         foreach ($tables as $table) {
 
-            // Получите объявления пользователя для текущей таблицы и предварительно загрузите связанные лайки
-            $userAds = $user->{$table}()->with('likes')->get();
+            // Получим объявления пользователя для текущей таблицы
+            $userAds = $user->{$table}()->where('control', '!=', 'В архиве')->get();
 
-            // Преобразуйте поле "images" и другие поля и проверьте наличие лайка пользователя
+            // Проверяем наличие лайка пользователя на данных объявлениях
             $userAds->transform(function ($ads) use ($request){
-                $ads->images = explode(',', $ads->images);
-                $ads->mebel_arr = isset($ads->mebel_arr) ? explode(',', $ads->mebel_arr) : [];
-                $ads->raznoe = isset($ads->raznoe) ? explode(',', $ads->raznoe) : [];
-                $ads->bezopasnost = isset($ads->bezopasnost) ? explode(',', $ads->bezopasnost) : [];
-                $ads->raspolojenie = isset($ads->raspolojenie) ? explode(',', $ads->raspolojenie) : [];
-                $ads->kommunikacii = isset($ads->kommunikacii) ? explode(',', $ads->kommunikacii) : [];
-
                 $ads->userLike = $ads->likes->where('author_id', $request->author_id)->isNotEmpty();
                 return $ads;
             });
@@ -506,12 +459,9 @@ class AdsController extends Controller
     //Метод Toggle - Запустить - Остановить рекламирование
     public function adsActiveToggle(Request $request){
 
-        $ads_id = $request->ads_id;
-        $table_name = $request->table_name ;
-
         //Получим объявление
-        $className = 'App\Models\Ads\\' . $table_name;
-        $ads = $className::find($ads_id);
+        $className = 'App\Models\Ads\\' . $request->table_name;
+        $ads = $className::find($request->ads_id);
 
         if($ads == null) return response()->json(['error'=>'Объявление было удалено'], 422);
 
@@ -525,73 +475,83 @@ class AdsController extends Controller
     //Метод - Добавит статистику просмотра объявлению
     public function addAdsStatistic(Request $request)
     {
-        $modelClassName = 'App\\Models\\Ads\\' . $request->table_name;
+        $modelClassName = 'App\Models\Ads\\' . $request->table_name;
 
-        // Проверка наличия записи с учетом уникального индекса
-        $view = AdsView::firstOrNew([
+        $view = AdsView::firstOrCreate([
             'viewable_id' => $request->ads_id,
             'viewable_type' => $modelClassName,
             'author_id' => $request->user_id,
             'author_ip' => $this->getClientIp(),
         ]);
 
-        // Если запись не существует, то она будет создана
-        if (!$view->exists) {
-            $view->save();
-
-            $ads = $modelClassName::find($request->ads_id);
-
-            if ($ads) {
-                $ads->view += 1;
-                $ads->timestamps = false;
-                $ads->save();
-            }
-
-            return 'Статистика добавлена';
+        // Проверка была ли созданна запись
+        if (!$view->wasRecentlyCreated) {
+            return 'Статистика не добавлена';
         }
 
-        return 'Статистика не добавлена';
+        // Увеличим счетчик просмотра у объявления
+        $ads = $modelClassName::find($request->ads_id);
+        $ads->timestamps = false;
+        $ads->increment('view');
+
+        return 'Статистика добавлена';
+    }
+
+    public function addAdsViewTelStatistic(Request $request)
+    {
+        $modelClassName = 'App\Models\Ads\\' . $request->table_name;
+
+        $view = AdsViewTel::firstOrCreate([
+            'viewable_id' => $request->ads_id,
+            'viewable_type' => $modelClassName,
+            'author_id' => $request->user_id,
+            'author_ip' => $this->getClientIp(),
+        ]);
+
+        // Проверка создана ли запись
+        if (!$view->wasRecentlyCreated) {
+            return 'Статистика не добавлена';
+        }
+
+        // Увеличим счетчик просмотра телефона
+        $ads = $modelClassName::find($request->ads_id);
+        $ads->timestamps = false;
+        $ads->increment('viewTel');
+
+        return 'Статистика добавлена';
     }
 
     //Метод - Добавить жалобу на объявление
     public function addComplain(Request $request){
-        $ads_id = $request->ads_id;
-        $table_name = $request->table_name;
 
         // Получим объявление
-        $className = 'App\Models\Ads\\' . $table_name;
-        $ads = $className::find($ads_id);
+        $className = 'App\Models\Ads\\' . $request->table_name;
+        $ads = $className::find($request->ads_id);
 
         // Проверка существования и активности объявления
-        if (!$ads || $ads->control !== 'Активно') {
-            return response()->json(['error' => 'Данное объявление не активно'], 422);
-        }
+        if (!$ads || $ads->control !== 'Активно') return response()->json(['error' => 'Данное объявление не активно'], 422);
 
-        // Получим текущие жалобы
-        $complains = explode(',', $ads->complain);
 
         // Проверим, была ли жалоба уже отправлена данным пользователем
-        if (in_array($request->user_id, $complains)) {
+        if (in_array($request->user_id, $ads->complain)) {
             return response()->json(['error' => 'Вы уже оставили жалобу на данное объявление'], 422);
         }
 
         // Добавим новую жалобу
-        $complains[] = $request->user_id . ',' . $request->complain;
+        $ads->complain = array_merge($ads->complain, [$request->user_id, $request->complain]);
 
         // Проверим количество похожих жалоб
-        $similarComplaints = array_filter($complains, function ($complaint) use ($request) {
-            return strpos($complaint, $request->complain) !== false;
+        $similarComplaints = array_filter($ads->complain, function ($complain) use ($request) {
+            return strpos($complain, $request->complain) !== false;
         });
 
         // Если есть 5 похожих жалоб, делаем объявление неактивным
         if (count($similarComplaints) >= 4) {
-            $ads->complain = $request->complain;
+            $ads->complain = [$request->complain];
             $ads->control = 'Поступили жалобы';
-            $ads->timestamps = false;
-        } else {
-            $ads->complain = implode(',', $complains);
         }
 
+        $ads->timestamps = false;
         $ads->save();
 
         return 'Жалоба отправлена';
@@ -601,35 +561,30 @@ class AdsController extends Controller
     //Toggle лайк / Поставить лайк! - Удалить лайк!
     public function addLikeToggle(Request $request){
 
-        $author_id = $request->author_id;
-        $ads_id = $request->ads_id;
-        $table_name = $request->table_name;
-
-
-        $className = 'App\Models\Ads\\' . $table_name; // Для какой таблицы
-        $ads = $className::find($ads_id); //Найдем это объявление
+        $className = 'App\Models\Ads\\' . $request->table_name; // Для какой таблицы
+        $ads = $className::find($request->ads_id); //Найдем это объявление
 
         //Если объявление найденно
-        if ($ads) {
-            // Проверяем, есть ли уже лайк от пользователя
-            $like = Like::where('author_id', $author_id)
-                ->where('likeable_type', get_class($ads))
-                ->where('likeable_id', $ads->id)
-                ->first();
+        if (!$ads) return response()->json(['error' => 'Объявление не найдено или не активно'], 422);
 
-            if ($like) {// Если лайк уже есть, удаляем его
-                $like->delete();
-                return 'Удалено из избранного';
-            }
-            else { // Если лайка нет, создаем его
-                $like = new Like();
-                $like->author_id = $author_id;
-                $like->likeable()->associate($ads); //Полиморфная связь добавит в колонки  id и путь к таблице например App\Models\Ads\Kvartiras
-                $like->save();
-                return 'Добавлено в избранное';
-            }
-        } else {
-            return response()->json(['error' => 'Объявление не найдено или не активно'], 422);
+        // Найти или создать новую
+        $like = Like::firstOrNew([
+            'author_id' => $request->author_id,
+            'likeable_type' => $className,
+            'likeable_id' => $request->ads_id,
+        ]);
+
+        if ($like->exists) {// Если лайк уже есть, удаляем его
+            $like->delete();
+            $ads->timestamps = false;
+            $ads->decrement('countLike');
+            return 'Удалено из избранного';
+        }
+        else { // Если лайка нет, создаем его
+            $like->save();
+            $ads->timestamps = false;
+            $ads->increment('countLike');
+            return 'Добавлено в избранное';
         }
     }
 
@@ -647,21 +602,18 @@ class AdsController extends Controller
         // Удалим статистику просмотров views
         $ads->views()->delete();
 
-        // Удалим Лайки данного объявления like
-        $ads->likes()->delete();
+        // Удалим статистику просмотров телефона views
+        $ads->viewTels()->delete();
 
-        // Добавим данное объявление в таблицу Архив
-        $archive = new ArhiveAds();
-        $archive->fill($ads->toArray());
-        $archive->ads_id = $ads->id;
-        $archive->delete = Carbon::now();
-        $archive->save();
+        // Удалим Лайки данного объявления like
+//        $ads->likes()->delete();
 
         // У автора отнимем к-во объявлений
         User::find($ads->author_id)->decrement('count_ads');
 
-        // Удалим объявление с самой таблицы
-        $ads->delete();
+        // Архивируем объявление
+        $ads->control = 'В архиве';
+        $ads->save();
 
         return 'success';
     }

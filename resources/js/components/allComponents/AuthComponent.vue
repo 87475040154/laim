@@ -295,6 +295,7 @@ export default {
                 password: '',
                 agree: true,
                 recaptcha_token: '',
+                path: this.$route.path
             }),
             success: '', //После успешной регистрации
             error: '', //Если есть ошибки
@@ -403,6 +404,7 @@ export default {
 
             axios.post('/auth/sendLinkForgotPassword', {
                 'email': this.form.email,
+                'path': this.$route.path,
                 'recaptcha_token': this.form.recaptcha_token,
             })
                 .then((response)=>{
@@ -556,7 +558,6 @@ export default {
         let app = this;
 
         document.querySelector(':root').classList.add('PATCH_modal');
-
 
         //Если запрос на изменение пароля
         if(app.$route.query.resetPasswordToken != undefined){

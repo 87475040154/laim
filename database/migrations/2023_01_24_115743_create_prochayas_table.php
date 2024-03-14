@@ -40,13 +40,13 @@ return new class extends Migration
             $table->string('ulica');
             $table->string('nomer_doma');
 
-            $table->string('images')->default('no-image');
+            $table->json('images')->nullable();
 
             $table->string('sostoyanie')->nullable();
             $table->string('internet')->nullable();
 
-            $table->string('raspolojenie')->nullable();
-            $table->text('kommunikacii')->nullable();
+            $table->json('raspolojenie')->nullable();
+            $table->json('kommunikacii')->nullable();
 
             $table->text('text_obyavleniya');
             $table->string('ownerOrRealtor');
@@ -57,16 +57,16 @@ return new class extends Migration
 
             //Управление
             $table->string('control')->default('Активно'); //Активно, не активно
-            $table->text('complain')->nullable();
-            $table->dateTime('delete')->nullable();
+            $table->json('complain')->nullable();
 
             //Статистика - Просмотры лайки
             $table->integer('view')->default(0);
+            $table->integer('viewTel')->default(0);
             $table->integer('countLike')->default(0);
 
             //Рекламные услуги
             $table->boolean('srochno_torg')->default(false); //Добавить метку срочно - Торг
-            $table->dateTime('bueAds')->nullable(); // Указать что на данное объявление куплена реклама, для дальнейшей сортировки при получении объявлений
+            $table->dateTime('bueAds')->default('2020-12-12 12:12:12'); // Указать что на данное объявление куплена реклама, для дальнейшей сортировки при получении объявлений
             $table->dateTime('top')->nullable(); // Отправить в ТОП на 24 часа,
             $table->dateTime('top_8')->nullable(); // Отправить в ТОП на 24 часа и 8 поднятий в верх Топа,
             $table->dateTime('top_x7')->nullable(); // Отпраить в топ на 7 дней -  top x7 ,
@@ -98,6 +98,9 @@ return new class extends Migration
             $table->index('top_x7');
             $table->index('top_x30');
             $table->index('updated_at');
+
+            // Создание составного индекса
+            $table->index(['bueAds', 'updated_at']);
         });
     }
 

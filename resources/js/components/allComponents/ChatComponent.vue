@@ -32,7 +32,8 @@
                         <v-icon size="x-large" style="font-size: 3em" class="mx-1 text-grey-lighten-2">mdi-account-circle</v-icon>
 
                         <!-- Имя | В сети -->
-                        <div role="button" @click=" $router.push({name:'userAds', params: {table_name: 'Kvartira', author_id: user_data.id, page:1}})">
+                        <div role="button"
+                             @click=" $router.push({name:'userAds', params: {table_name: 'Kvartira', author_id: user_data.id, page:1}})">
 
                             <!-- Имя пользователя -->
                             <div>
@@ -82,7 +83,7 @@
                             <div class="col-auto"><i class="bi bi-person-circle" style="font-size: 2em"></i></div>
 
                             <!-- Имя отправителя / Последнее СМС -->
-                            <div @click="$router.push('/chat/' + chat.id +'/'+ $route.params.table_name)" class="col mx-2" role="button">
+                            <div @click="$router.push({name: 'chat', params: {id: chat.id}})" class="col mx-2" role="button">
 
                                 <!-- Имя отпровителя написавшего мне и сколько новых от него смс -->
                                 <div>
@@ -138,8 +139,8 @@
                                     <v-card max-width="600" style="box-shadow: none; border: 1px solid #dce1e6; border-radius: 12px"
                                             class="mx-3 my-3 mx-sm-auto"
                                             :class="{
-                                                'bg-green-lighten-4': ads.top_x7 != undefined && ads.top_x7 != null,
-                                                'bg-red-lighten-4': ads.top_x30 != undefined && ads.top_x30 != null,
+                                                'bg-green-lighten-5': ads.top_x7 != undefined && ads.top_x7 != null,
+                                                'bg-red-lighten-5': ads.top_x30 != undefined && ads.top_x30 != null,
                                             }"
                                     >
 
@@ -154,7 +155,7 @@
                                                     {{ $t('adsPreviewComponentUrgentBargaining') }}
                                                 </div>
 
-                                                <img v-if="ads.images[0] != 'no-image'" @click="$router.push('/imageChat/'+ $route.params.table_name), imageStore.showImages({images: ads.images,index: 0, allImg: true})" class="rounded-sm" :src=" '/img/adsImg/' + ads.images[0] " style="width: 100%; height: 150px; object-fit: cover; object-position: center" alt="Фото недвижимости">
+                                                <img v-if="ads.images.length > 0" @click="$router.push({name: 'chatImage'}), imageStore.showImages({images: ads.images,index: 0, allImg: true})" class="rounded-sm" :src=" '/img/adsImg/' + ads.images[0] " style="width: 100%; height: 150px; object-fit: cover; object-position: center" alt="Фото недвижимости">
                                                 <img v-else src="/public/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" style="width: 100%; height: 150px;">
 
                                             </div>
@@ -162,7 +163,7 @@
                                             <!--Блок - Описание объявления -->
                                             <div class="col pl-2">
 
-                                                <div @click="$router.push({name: 'oneAds' ,params: {table_name: ads.table_name, ads_id: ads.ads_id == undefined ? ads.id: ads.ads_id }})"
+                                                <div @click="$router.push({name: 'chatOneAds' ,params: {ads_id: ads.ads_id }})"
                                                      role="button" class="d-flex align-start flex-column" style="height: 115px"
                                                 >
 
@@ -472,14 +473,14 @@
                                     <div class="col-auto rounded-3" style="max-width: 80%; padding: 3px 7px 3px 7px; background: #d9fdd3;">
 
                                         <!-- Вывод прикрепленных  фото - Слайдер фото - Swiper  -->
-                                        <div v-if="message.ads_id == null && message.images[0] != 'no-image'" class="col-auto my-1 position-relative" style="width: 150px; height: 100px">
+                                        <div v-if="message.ads_id == null && message.images.length > 0" class="col-auto my-1 position-relative" style="width: 150px; height: 100px">
 
                                             <swiper :modules="modules" :mousewheel="true" :slides-per-view="1"
                                                     :space-between="0" :pagination="{type: 'fraction'}">
 
                                                 <!-- Сам слайд Фото -->
                                                 <swiper-slide v-for="(img, i) in message.images" :key="i">
-                                                    <img @click="$router.push('/imageChat'+ $route.params.table_name), imageStore.showImages({images: message.images,index: i, chatImg: true})" class="rounded-t-sm" :src=" '/img/messageImg/' + img " style="width: 100%; height: 90px; object-fit: cover; object-position: center" alt="Фото недвижимости">
+                                                    <img @click="$router.push({name: 'chatImage'}), imageStore.showImages({images: message.images,index: i, chatImg: true})" class="rounded-t-sm" :src=" '/img/messageImg/' + img " style="width: 100%; height: 90px; object-fit: cover; object-position: center" alt="Фото недвижимости">
                                                 </swiper-slide>
                                             </swiper>
 
@@ -503,14 +504,14 @@
                                     <div class="col-auto rounded-3 position-relative" style="max-width: 80%; padding: 3px 7px; background: #ffffff;">
 
                                         <!-- Вывод прикрепленных  фото - Слайдер фото - Swiper  -->
-                                        <div v-if="message.ads_id == null && message.images[0] != 'no-image'" class="col-auto my-1 position-relative" style="width: 150px; height: 100px">
+                                        <div v-if="message.ads_id == null && message.images.length > 0" class="col-auto my-1 position-relative" style="width: 150px; height: 100px">
 
                                             <swiper :modules="modules" :mousewheel="true" :slides-per-view="1"
                                                     :space-between="0" :pagination="{type: 'fraction'}">
 
                                                 <!-- Сам слайд Фото -->
                                                 <swiper-slide v-for="(img, i) in message.images" :key="i">
-                                                    <img @click="$router.push('/imageChat/'+ $route.params.table_name), imageStore.showImages({images: message.images,index: i, chatImg: true})" class="rounded-t-sm" :src=" '/img/messageImg/' + img " style="width: 100%; height: 90px; object-fit: cover; object-position: center" alt="Фото недвижимости">
+                                                    <img @click="$router.push({name: 'chatImage'}), imageStore.showImages({images: message.images,index: i, chatImg: true})" class="rounded-t-sm" :src=" '/img/messageImg/' + img " style="width: 100%; height: 90px; object-fit: cover; object-position: center" alt="Фото недвижимости">
                                                 </swiper-slide>
                                             </swiper>
 
@@ -752,7 +753,6 @@ export default defineComponent({
 
         //Получить все сообщения 1-го чата
         async getAllMessage(chat_id, one_upload = true, send_message = false){
-            this.query = true;
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
             await this.checkInternetStore.checkInternet()
@@ -770,7 +770,6 @@ export default defineComponent({
                     sender_id: this.authStore.user.id,
                 }})
                 .then(response=>{
-                    this.query = false;
 
                     //Занашу в массив всю переписку и данны с кем переписка
                     this.all_messages = response.data.messages;
@@ -789,9 +788,6 @@ export default defineComponent({
                         this.getProjectDataStore.updateCountNewMessage(chat.count_new_message);
                     }
 
-                })
-                .catch(errors=>{
-                    this.query = false;
                 })
         },
 

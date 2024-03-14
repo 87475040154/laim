@@ -89,12 +89,6 @@ class ChatController extends Controller
                 'open_date' => now(),
             ]);
 
-
-        // Разбиваем строку фото на массив в каждом сообщении
-        $messages->each(function ($message) {
-            $message->images = explode(",", $message->images);
-        });
-
         // Получаем данные друга (получателя)
         $recipient_data = User::find($recipient_id);
 
@@ -115,9 +109,8 @@ class ChatController extends Controller
                 if ($message->delete_recipient == true) {
 
                     // Удалить сообщение и его изображения
-                    if ($message->images != 'no-image') {
-                        $image_names = explode(',', $message->images);
-                        foreach ($image_names as $name) {
+                    if (count($message->images) > 0) {
+                        foreach ($message->images as $name) {
                             Storage::delete('/img/messageImg/' . $name);
                         }
                     }
@@ -132,9 +125,8 @@ class ChatController extends Controller
                 if ($message->delete_sender == true) {
 
                     // Удалить сообщение и его изображения
-                    if ($message->images != 'no-image') {
-                        $image_names = explode(',', $message->images);
-                        foreach ($image_names as $name) {
+                    if (count($message->images) > 0) {
+                        foreach ($message->images as $name) {
                             Storage::delete('/img/messageImg/' . $name);
                         }
                     }

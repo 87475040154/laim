@@ -41,7 +41,7 @@ class ProjectDataController extends Controller
             ->where('open_recipient', false)
             ->where('delete_recipient', false)->count();
 
-        $countReturnAds= 0; //На доработке или с жалобами для автора
+        $countReturnAds= 0; // с жалобами для автора
 
         //Если это пользователь защел то узнаем сколько обьявлений на которые есть жалобы
         if($request->role == 'user'){

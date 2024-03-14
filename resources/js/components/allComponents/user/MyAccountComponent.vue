@@ -62,7 +62,7 @@
 
                     <!-- Правила размещения объявлений / Пользовательское соглашение / Выход -->
                     <div class="myAccount__lings-block">
-                        <div @click="$router.push('/settings/'+ $route.params.table_name)" class="myAccount__ling">
+                        <div @click="$router.push({name: 'myAccountSettings'})" class="myAccount__ling">
                             <v-icon icon="mdi-cog-outline px-4"></v-icon>
                             <span class="myAccount__ling-text">{{ $t('myAccountSettings') }}</span>
                         </div>
@@ -166,6 +166,12 @@ export default {
         async logout(){
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
             await this.checkInternetStore.checkInternet()
+
+            // Убедитесь, что 'ls' инициализирована перед использованием метода getItem()
+            if (localStorage.getItem('getMyLikeAds') !== undefined) {
+                localStorage.removeItem('getMyLikeAds');
+            }
+
             this.authStore.logout();
         }
     },

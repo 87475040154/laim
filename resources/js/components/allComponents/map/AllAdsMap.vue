@@ -1,5 +1,5 @@
 <template>
-    <!-- КОМПОНЕНТ - ЯНДЕКС КЛАСТЕР - ВЫВОД ОБЪЕКТОВ НА КАРТЕ -->
+    <!-- КОМПОНЕНТ - ВЫВОД ОБЪЕКТОВ НА КАРТЕ - ЯНДЕКС КЛАСТЕР -->
 
     <!-- Обвертка - Компонента -->
     <div class="yandexMapCluster__wrapper">
@@ -9,25 +9,25 @@
 
             <!-- Кнопка - Назад -->
             <v-btn size="x-small" class="border" icon dark @click="$router.back()" style="position: absolute; top: 10px; left: 10px; z-index: 5">
-                <v-icon size="large">mdi-arrow-left</v-icon>
+                <v-icon size="x-large">mdi-arrow-left</v-icon>
             </v-btn>
 
             <!-- Body -->
             <div class="yandexMapCluster__body">
 
-                <!-- Показать объявления на карте -->
+                <!-- Компонент яндекс карты -->
                 <YandexMap :settings="settings" :coordinates="coordinates" :zoom="zoom" :options="{maxZoom: 15}" >
 
+                    <!-- Компонент кластера -->
                     <YandexClusterer @vue:mounted="onClustererMounted" :options="{ preset: 'islands#darkBlueClusterIcons', openBalloonOnClick: false}">
                         <YandexMarker v-for="(ads, index) in ads_arr"
                                       :key="`1-marker-${index}`"
                                       :coordinates="[ads.lat, ads.lon]"
                                       :marker-id="`1-marker-${index}`"
                                       :options="{ preset: 'islands#darkBlueStretchyIcon'}"
-                                      :properties="{iconContent: ads.cena + 'тг', id: ads.ads_id == undefined ? ads.id: ads.ads_id, table_name: ads.table_name}"
-                                      @click="showAds(ads.ads_id == undefined ? ads.id: ads.ads_id)"
+                                      :properties="{iconContent: ads.cena + 'тг', id: ads.id}"
+                                      @click="showAds(ads.id)"
                         >
-
                         </YandexMarker >
                     </YandexClusterer>
 
@@ -39,7 +39,7 @@
 
     </div>
 
-    <!-- Вывожу - внутренние страницы -->
+    <!-- Вывожу - внутренние страницы - Это превью одного объявления или массив превью обьявлений -->
     <router-view></router-view>
 
 </template>
@@ -52,7 +52,6 @@ import { useCheckInternetStore } from "../../../stores/checkInternet";
 
 //Импортируем - Компонент - Yandex map - Карта Яндекс
 import { YandexMap, YandexMarker, YandexClusterer } from 'vue-yandex-maps'
-
 
 export default {
     name: "Index",
@@ -77,52 +76,37 @@ export default {
                 version: '2.1'
             },
             zoom: 0, //Динамически увеличиваем zoom на карте в зависимости что выбранно - Весь Казахстан, Область, город, или район
-            coordinates : [],//После определения координват занесем их сюда
-            filter: '', //Получаем данные с фильтра если он применен
+            coordinates : [],//После определения координат занесем их сюда - эти координаты мы берем от выбранной локации
 
-            ads_arr: [], //Массив квартир которые нужно нанести на карту
+            ads_arr: [], //Массив объявлений которые нужно нанести на карту
         }
     },
 
     methods: {
 
-        //Открыть окно с картой
+        // Метод открыть карту на весь экран
         showCluster(){
-            //Если применен фильтр и есть выбранная локация укажем zoom и координаты
-            if(localStorage.getItem ('filter=' + this.$route.params.table_name) != undefined) {
-                this.filter = JSON.parse(localStorage.getItem('filter=' + this.$route.params.table_name));
-                if(this.filter.oblast != null){
+            // Получим фильтр
+            let filter = JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name));
 
-                    //Если в локации выбранна вся область
-                    if(this.filter.gorod == null && this.filter.raion == null){
-                        this.zoom = 7;
-                    }
+            // Укажем zoom и координаты
 
-                    //Если выбран город
-                    if(this.filter.gorod != null && this.filter.raion == null){
-                        this.zoom = 11;
-                    }
-
-                    //Если выбран район
-                    if(this.filter.raion != null){
-                        this.zoom = 12;
-                    }
-
-                    this.coordinates = [this.filter.lat, this.filter.lon]
-
-                }
-
-                //Если локация не выбранна занесем координаты казахстана
-                else{
-                    this.zoom = 4;
-                    this.coordinates = [48.136207, 67.153559];
-                }
+            //Если в локации выбранна вся область
+            if(filter.gorod == null && filter.raion == null){
+                this.zoom = 7;
             }
-            //Если фильтр не применен занесем просто координаты Казахстана
-            else{
-                this.zoom = 4;
-                this.coordinates = [48.136207, 67.153559];
+
+            //Если выбран город
+            if(filter.gorod != null && filter.raion == null){
+                this.zoom = 11;
             }
+
+            //Если выбран район
+            if(filter.raion != null){
+                this.zoom = 12;
+            }
+
+            this.coordinates = [filter.lat, filter.lon]
 
             //Получим все квартиры с БД для отображения на карте
             this.getAds();
@@ -133,20 +117,16 @@ export default {
 
             this.query = true;
 
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           await this.checkInternetStore.checkInternet()
-            if(!this.checkInternetStore.online){
-                this.query = false;
-                return
-            }
+           //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
+           await this.checkInternetStore.checkInternet();
 
-            //Получаю объявления
+            //Получаю объявления по выбранной локации
             axios.get('/getAllAds', {
 
                 params: {
-                    user_id: useAuthStore().check ? useAuthStore().user.id : 0,
+                    user_id: useAuthStore().user.id ?? 0,
                     table_name: this.$route.params.table_name,
-                    filter: this.filter != '' ? this.filter : 'Фильтр не применен',
+                    filter: JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name)) ??  'Фильтр не применен',
                     getMyLikeAds: localStorage.getItem('getMyLikeAds') != undefined ?'Получить мои лайки': 'Не получать мои лайки',//Не получать мои лайки
                     getCoordinates: true //Передадим информацию что получить объявления для cluster
                 }
@@ -160,7 +140,7 @@ export default {
                 })
         },
 
-        //Клик по множественному кластеру
+        // Клик по множественному кластеру, открыть превью всех объявлений из данного кластера
         onClustererMounted(e) {
 
             // При монтировании навесим событие прослушивания
@@ -175,51 +155,41 @@ export default {
                         arr_id.push(elem.properties._data.id);
                     })
 
-                    //Узнаем тип объекта
-                    let table_name = data.properties._data.geoObjects[0].properties._data.table_name;
-
-                    //Получим объявления
+                    //Показать объявлений
                     this.showAds(arr_id)
 
                 }
-
-
             });
         },
 
-        //Показать 1 объявление или массив
+        // Показать 1 объявление при клике на цену или массив при клике на кластер
         showAds(ads_id){
-            //Заносим id одного объявления если клик по маркеру или массив если по кластеру
 
-            let id_arr = [];
-            if(typeof ads_id != Array)id_arr.push(ads_id);
+            //Если клик по 1 объявлению а не по кластеру
+            if(typeof ads_id == 'number') ads_id = [ads_id];
 
-            localStorage.setItem('mapClusterAdsId', JSON.stringify(id_arr.length >0? id_arr: ads_id))
-            this.$router.push('/mapClusterShowAds/'+ this.$route.params.table_name)
+            localStorage.setItem('mapClusterAdsId', JSON.stringify(ads_id))
+            this.$router.push({name: 'allAdsMapPreviewAds', params: { pages: 1 } })
         }
 
     },
 
     async mounted(){
-        let app = this;
         await this.showCluster();
-
         document.querySelector(':root').classList.add('PATCH_modal');
     },
 
     beforeRouteLeave(to, from, next) {
         document.querySelector(':root').classList.remove('PATCH_modal');
-
         next();
     }
-
-
 
 }
 </script>
 
 
 <style>
+
 /*В этот контейнер монтируется - Яндекс карта */
 .yandex-container {
     width: 100%;
@@ -280,7 +250,4 @@ export default {
 .yandexMapCluster__body {
     flex-grow: 1; /* Растянем этот блок на всю оставшуюся высоту экрана */
 }
-
-
-
 </style>

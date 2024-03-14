@@ -191,6 +191,7 @@ export default {
             //Проверяем и получаем капчу и отпровляем данные на сервер для регистрации
             this.$recaptchaLoaded().then(()=>{
                 this.$recaptcha('login').then((token)=>{
+
                     this.form.recaptcha_token = token;
                     this.form.post('/user/updateUserData').then((response)=>{
                         this.query = false;

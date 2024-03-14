@@ -21,45 +21,20 @@ class UploadImage extends Model
     public static function uploadImage($record, $newImages, $oldImageNames)
     {
 
-        //Удалим старые фото с сервера и БД если в $oldImageNames не переданны имена старых фото
-        if ($oldImageNames == '') {
+        //Удалим с сервера только те фото которых нет в переданном старом массиве
+        foreach ($record->images as $name) {
 
-            //Получим из Базы Данных имена всех старых фото и разобъем на массив - это фото с нашей записи которую мы получили с бд
-            $image_names = explode(',', $record->images);
-
-            //Если есть имена и это не запись no-image то удалим
-            if (count($image_names) > 0 && $image_names[0] != 'no-image') {
-                foreach ($image_names as $name) {
-                    Storage::delete('/img/adsImg/' . $name);
-                }
+            //Это проверка есть ли данное имя в массиве
+            if (!in_array($name, $oldImageNames)) {
+                Storage::delete('/img/adsImg/' . $name);
             }
-
-            //И занесем запись, эта запись нужна чтоб в дальнейщем в объявлении отследить что у объявления нет фото
-            $record->images = 'no-image';
-
         }
 
-        //Удалим только те которые не переданны
-        if($oldImageNames != ''){
-
-            //Получим с Базы Данных имена старых фото, и разобъем строку на массив
-            $image_names = explode(',', $record->images);
-
-            //Удалим с сервера только те фото которых нет в переданном старом массиве
-            foreach ($image_names as $name) {
-
-                //Это проверка есть ли данное имя в массиве
-                if ($name != 'no-image' && !in_array($name, $oldImageNames)) {
-                    Storage::delete('/img/adsImg/' . $name);
-                }
-            }
-
-            //Занесем имена старых фото в Базу Данных разбив на строку
-            $record->images = implode(',', $oldImageNames);
-        }
+        //Занесем имена старых фото в Базу Данных разбив на строку
+        $record->images = $oldImageNames;
 
         //Если есть новые фото загрузим их на сервер
-        if ($newImages != '') {
+        if (count($newImages) > 0 ) {
 
             //Загрузим новые фото на сервер
             foreach ($newImages as $image) {
@@ -69,28 +44,18 @@ class UploadImage extends Model
             }
 
             //Если есть имена старых фото то объеденим имена новых и старых фото в 1 массив по порядку
-            if ($oldImageNames != '') {
-
-                $counter = 0;
-                foreach ($oldImageNames as $old_name) {
-                    if ($old_name == null) {
-                        $oldAndNewImgNames[] = $new_image_names[$counter];
-                        $counter++;
-                    } else {
-                        $oldAndNewImgNames[] = $old_name;
-                    }
+            $counter = 0;
+            foreach ($oldImageNames as $old_name) {
+                if ($old_name == null) {
+                    $oldAndNewImgNames[] = $new_image_names[$counter];
+                    $counter++;
+                } else {
+                    $oldAndNewImgNames[] = $old_name;
                 }
-
-                //И теперь занесем в бд имена новых и старых фото разбив на строку
-                $record->images = implode(',', $oldAndNewImgNames);
-
             }
 
-            //Если нет переданных старых фото то просто занесем в бд имена новых
-            if($oldImageNames == '') {
-                $record->images = implode(',', $new_image_names);
-            }
-
+            //И теперь занесем в бд имена новых и старых фото разбив на строку
+            $record->images = $oldAndNewImgNames;
         }
 
         return;

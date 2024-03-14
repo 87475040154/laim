@@ -38,7 +38,7 @@ return new class extends Migration
             $table->integer('cena')->nullable();
             $table->string('cena_tip')->nullable();
             $table->string('period_arendi')->nullable();
-            $table->string('images')->default('no-image');
+            $table->json('images')->nullable();
             $table->string('gorod')->nullable();
             $table->string('ulica')->nullable();
             $table->string('nomer_doma')->nullable();

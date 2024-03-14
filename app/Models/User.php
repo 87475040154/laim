@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Ads\ArhiveAds;
+
 use App\Models\Ads\Business;
 use App\Models\Ads\Dom;
 use App\Models\Ads\Kvartira;
@@ -69,11 +68,6 @@ class User extends Authenticatable
         return $this->hasMany(Snimu::class, 'author_id');
     }
 
-    public function arhivs()
-    {
-        return $this->hasMany(ArhiveAds::class, 'author_id');
-    }
-
 
     // Отношение для связи с моделью Like
     public function likedAds()
@@ -84,7 +78,13 @@ class User extends Authenticatable
     // Отношение для связи с моделью View
     public function viewAds()
     {
-        return $this->hasMany(View::class, 'author_id');
+        return $this->hasMany(AdsView::class, 'author_id');
+    }
+
+    // Отношение для связи с моделью View
+    public function viewAdsTel()
+    {
+        return $this->hasMany(AdsViewTel::class, 'author_id');
     }
 
 

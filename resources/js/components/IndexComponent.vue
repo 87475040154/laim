@@ -1,6 +1,6 @@
 <template>
 
-    <!-- Вывод внутренних - дочерних  компонентов например: Фильтр, язык и тд. -->
+    <!-- Вывод - дочерних  компонентов например: Фильтр, язык и тд. -->
     <div style="position: relative; z-index: 2">
         <router-view></router-view>
     </div>
@@ -16,7 +16,7 @@
             <div>{{ $t('indexFound') }} {{count_ads}}</div>
 
             <!-- Кнопка фильтр -->
-            <div @click="$router.push('/filter/' + $route.params.table_name)" role="button">
+            <div @click="$router.push({name: 'filter'})" role="button">
                 {{ $t('indexFilter') }}
                 <v-badge floating v-if="countFilter > 0" :content="countFilter" color="error">
                     <i class="bi bi-hdd-stack-fill"></i>
@@ -28,7 +28,7 @@
 
             <!-- Кнопка показать мои лайки  -->
             <div>
-                <v-icon @click="authStore.check ? getMyLike(): $router.push('/auth')"
+                <v-icon @click="authStore.check ? getMyLike(): $router.push({name: $route.name + 'Auth'})"
                         :icon="getMyLikeAds ? 'mdi-heart' : 'mdi-heart-outline'"
                         :class="{'text-red':getMyLikeAds}"
                         class="icon__heart"
@@ -38,32 +38,22 @@
 
             <!-- Выбор языка -->
             <div role="button">
-                <span @click="$router.push({name: 'lang', params: {table_name: $route.params.table_name, page: $route.params.page}})">{{ updateDateLocaleStore.lang == 'kz' ? 'Қаз': '' }}</span>
-                <span @click="$router.push({name: 'lang', params: {table_name: $route.params.table_name, page: $route.params.page}})">{{ updateDateLocaleStore.lang == 'ru' ? 'Рус': '' }}</span>
-                <span @click="$router.push({name: 'lang', params: {table_name: $route.params.table_name, page: $route.params.page}})">{{ updateDateLocaleStore.lang == 'en' ? 'Eng': '' }}</span>
+                <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocaleStore.lang == 'kz' ? 'Қаз': '' }}</span>
+                <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocaleStore.lang == 'ru' ? 'Рус': '' }}</span>
+                <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocaleStore.lang == 'en' ? 'Eng': '' }}</span>
 
                 <v-tooltip activator="parent" location="bottom">{{ $t('indexChangeLanguage') }}</v-tooltip>
             </div>
 
         </div>
 
-        <!-- Gif Load  - Если объявления еще не загрузились -->
-        <div v-if="query" class="d-flex justify-content-center py-1">
-            <div class="spinner-border spinner-border-sm" style="color: var(--app-text-color)" role="status"></div>
-        </div>
 
         <!-- Компонент превью объявлений -->
         <ads-preview-component  :ads_arr="ads_arr.data" :getMyLikeAds="getMyLikeAds" @get-ads-cursor-paginate="getAdsMobileCursorPaginate"></ads-preview-component>
 
-        <!-- Для мобильных устройств - Курсорная прокрутка -->
-        <div v-if="authStore.desktopOrMobile == 'Mobile'">
-            <div ref="scrollObserver"></div>
-
-            <!-- Gif Load  - Если объявления еще не загрузились -->
-            <div v-if="queryCursorPaginate" class="d-flex justify-content-center py-1">
-                <div class="spinner-border spinner-border-sm" style="color: var(--app-text-color)" role="status"></div>
-            </div>
-
+        <!-- Gif Load  - Если объявления еще не загрузились -->
+        <div v-if="query" class="d-flex justify-content-center py-1">
+            <div class="spinner-border spinner-border-sm" style="color: var(--app-text-color)" role="status"></div>
         </div>
 
         <!-- Если объявления не найденны покажется текст -->
@@ -72,7 +62,7 @@
         </div>
 
         <!-- Кнопка -  установить приложение laim.kz  -->
-        <div v-if="appInstallStore.app != '' && showBtnAppInstall && $route.name != 'userAds'" class="m-3 mx-sm-auto" style="max-width: 600px">
+        <div v-if="appInstallStore.app != '' && showBtnAppInstall && $route.name == 'allAds'" class="m-3 mx-sm-auto" style="max-width: 600px">
             <v-btn @click="appInstallStore.install()" block  color="white" class="text-body-2">
                 <img src="/public/img/siteImg/allImg/logo.svg" width="25" height="25" alt="logo" class="rounded-3">
                 {{  $t('indexInstallLime') }}
@@ -83,7 +73,7 @@
         <v-btn rounded="xl" height="45" class="text-caption mb-5 mb-lg-0 text-dark"
                style="position:fixed; bottom: 20px; right: 20px; background: rgb(246 196 13)"
                v-if="showMapButton"
-               @click="$router.push('/mapCluster/' + $route.params.table_name)"
+               @click="$router.push({name: 'allAdsMap'})"
         >
             <i class="bi bi-geo-alt px-1"></i>
             {{  $t('indexOnTheMap') }}
@@ -101,7 +91,6 @@
         </div>
 
     </div>
-
 
 </template>
 
@@ -158,12 +147,9 @@ export default {
             //Кнопка объекты на карте - Показать если есть выбранная локация области
             showMapButton: false,
 
-            //Для курсорной навигации на Мобильных устройствах
-            queryCursorPaginate: false,
-
+            //Для курсорной навигации на Мобильных устройствах - Иногда применяю обычную
             nextCursor: '',
-            prevCursor: '',
-
+            page: 2
         }
     },
 
@@ -172,7 +158,7 @@ export default {
         //Отслеживаем изменение маршрута
         '$route' (to, from) {
 
-            //Если переходим по меню
+            //Если переходим по меню или пагинации
             if(to.name == 'allAds' && from.name == 'allAds'){
                 //Получим объявления в зависимости от категории меню
                 this.getAds()
@@ -191,6 +177,7 @@ export default {
 
         //Метод - Получить объявления обычной постраничной навигацией для Desktop
         async getAds() {
+
             this.query = true;
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
@@ -201,9 +188,6 @@ export default {
             !this.authStore.check ? this.getMyLikeAds = false : '';
             this.showBtnAppInstall = false;
 
-            //Получим данны фильтра с LocaleStorage если он применен
-            let filter = localStorage.getItem ("filter=" + this.$route.params.table_name ) == undefined ? '' : JSON.parse(localStorage.getItem ("filter=" + this.$route.params.table_name ));
-
             //Получаю объявления
             axios.get('getAllAds', {
 
@@ -211,7 +195,7 @@ export default {
                     page: this.$route.params.page,
                     user_id: useAuthStore().check ? useAuthStore().user.id : 0,
                     table_name: this.$route.params.table_name,
-                    filter: filter == '' ? 'Фильтр не применен' : filter,
+                    filter: JSON.parse(localStorage.getItem ("filter=" + this.$route.params.table_name )) ?? 'Фильтр не применен',
                     getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
                     cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true,
                     countAds: true
@@ -220,17 +204,14 @@ export default {
             })
                 .then(response => {
                     this.query = false;
+
                     this.ads_arr = response.data.ads;
-                    response.data.ads.total != undefined ? this.count_ads = response.data.ads.total:'';
-                    response.data.countAds != 'null' ? this.count_ads = response.data.countAds :'';
+                    this.count_ads = response.data.ads.total ?? response.data.countAds;
                     if(response.data.ads.total > 0)this.showBtnAppInstall = true
+                    this.nextCursor = response.data.ads.next_cursor ?? this.getMyLikeAds ?'fds':null ;
 
-                    this.nextCursor = response.data.ads.next_cursor;
-
-
-                    //Метод проверить колличество - Фильтра
-                    this.filterLength(filter);
-
+                    //Метод добавит длину фильтра
+                    this.filterLength();
                 })
                 .catch((errors)=>{
                     this.query = false;
@@ -239,38 +220,49 @@ export default {
 
         },
 
-        // Метод получения объявлений на мобильных устройствах - курсорной погинацией
+        // Метод получения объявлений на мобильных устройствах - курсорной погинацией - и иногда обычной
         getAdsMobileCursorPaginate() {
-            if( this.query || this.queryCursorPaginate || this.nextCursor == null )return;
+            if( this.query || this.nextCursor == null )return;
 
-            let filter = localStorage.getItem("filter=" + this.$route.params.table_name) == undefined ? '' : JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name));
-            this.queryCursorPaginate = true;
+            this.query = true;
 
             axios.get('getAllAds', {
                 params: {
                     cursor: this.nextCursor,
+                    page: this.page,
                     user_id: useAuthStore().check ? useAuthStore().user.id : 0,
                     table_name: this.$route.params.table_name,
-                    filter: filter == '' ? 'Фильтр не применен' : filter,
+                    filter: JSON.parse(localStorage.getItem("filter=" + this.$route.params.table_name)) ?? 'Фильтр не применен',
                     getMyLikeAds: this.getMyLikeAds ? 'Получить мои лайки' : 'Не получать мои лайки',
                     cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true
                 }
             })
                 .then(response => {
+                    this.query = false;
 
                     //Канкатенируем старые обьявления с новыми полученными
                     this.ads_arr.data = [...this.ads_arr.data, ...response.data.ads.data];
 
                     // Добавим данные для пагинации
-                    this.nextCursor = response.data.ads.next_cursor;
-                    this.prevCursor = response.data.ads.prev_cursor;
+                    if(response.data.ads.next_cursor != undefined ){
+                        this.nextCursor = response.data.ads.next_cursor;
+                    }else{
+                        // В случаях где не подходит курсорная мы будем применять обычную
+                        if(response.data.ads.current_page < response.data.ads.last_page){
+                            this.nextCursor = 'next';
+                            this.page++;
+                        }else{
+                            //Если окончание пагинации
+                            this.nextCursor = null;
+                            this.page = 2;
+                        }
+                    }
 
-                    // Метод проверить количество - Фильтра
-                    this.filterLength(filter);
+                    // Метод узнать количество - Фильтра
+                    this.filterLength();
 
-                    this.queryCursorPaginate = false;
                 }).catch(()=>{
-                this.queryCursorPaginate = false;
+                this.query = false;
             })
         },
 
@@ -278,12 +270,17 @@ export default {
         getMyLike(){
             this.getMyLikeAds = this.getMyLikeAds ? false : true;
             this.getMyLikeAds ? localStorage.setItem('getMyLikeAds', true) : localStorage.removeItem('getMyLikeAds')
-            this.getAds()
+            if(this.$route.params.page == 1){
+                this.getAds();
+            }else{
+                this.$router.push({name: 'allAds', params: {table_name: this.$route.params.table_name, page: 1}})
+            }
         },
 
         //Метод - Узнаем длину фильтра, тоесть сколько указанно критерий в фильтре
-        filterLength(filter){
-            if(filter == ''){
+        filterLength(){
+            let filter = JSON.parse(localStorage.getItem ("filter=" + this.$route.params.table_name ));
+            if(filter == undefined){
                 this.countFilter = 0;
                 this.showMapButton = false;
                 return;

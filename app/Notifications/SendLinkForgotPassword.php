@@ -12,15 +12,17 @@ class SendLinkForgotPassword extends Notification
     use Queueable;
 
     public $token = '';
+    public $path = '';
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($token)
+    public function __construct($token, $path)
     {
         $this->token =  $token;
+        $this->path =  $path;
     }
 
     /**
@@ -46,7 +48,7 @@ class SendLinkForgotPassword extends Notification
             ->subject('Востановление пароля laim.kz')
             ->greeting('Востановление пароля')
             ->line('Нажмите на кнопку ниже')
-            ->action('Сменить пароль', url('/auth?resetPasswordToken='.$this->token))
+            ->action('Сменить пароль', url($this->path.'?resetPasswordToken='.$this->token))
             ->line('На сайте laim.kz был создан запрос на востановление пароля, если это были не вы, то будьте осторожны кто то пытается войти на сайт под вашими данными');
     }
 

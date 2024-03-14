@@ -16,6 +16,16 @@ class Chat extends Model
         'cena','cena_tip','period_arendi','images','gorod','ulica','nomer_doma', 'ownerOrRealtor', 'control', 'ads_created'
     ];
 
+    // Преобразуем масив в json и обратно при занесении данных в БД и при получении из нее автоматически
+    protected $casts = [
+        'images' => 'array',
+    ];
+
+    // По умолчанию заносим пустой массив в БД если не переданны данные
+    protected $attributes = [
+        'images' => '[]',
+    ];
+
     public static function add($data){
 
         //Провеим есть ли переписка с данным пользователем чтобы обозначить ветку чата chat = 1 тоесть
@@ -49,7 +59,7 @@ class Chat extends Model
                 $new_image_names[] = $fileName;
             }
 
-            $message->images = implode(',', $new_image_names);
+            $message->images = $new_image_names;
         }
 
         //Если есть объявление по которому переписка
@@ -67,7 +77,7 @@ class Chat extends Model
             $message->cena = $data['ads']['cena'];
             $message->cena_tip = array_key_exists('cena_tip', $data['ads']) ? $data['ads']['cena_tip'] : null;
             $message->period_arendi = array_key_exists('period_arendi', $data['ads']) ? $data['ads']['period_arendi'] : null;
-            $message->images = implode(',', $data['ads']['images']);
+            $message->images = $data['ads']['images'];
             $message->gorod = $data['ads']['gorod'];
             $message->ulica = array_key_exists('ulica', $data['ads']) ? $data['ads']['ulica'] : null;
             $message->nomer_doma = array_key_exists('nomer_doma', $data['ads']) ? $data['ads']['nomer_doma'] : null;

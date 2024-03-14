@@ -38,7 +38,7 @@
 
                 </div>
 
-                <!-- Body - что сдать?-->
+                <!-- Body -->
                 <div class="oneAdsBottom__body">
 
                     <!-- Кнопки номер телефона и Whatsapp-->
@@ -46,7 +46,7 @@
 
                         <!-- Кнопки - Tel, whatsapp - 1 - Если отправленно с контактами автора-->
                         <div>
-                            <a v-if="$route.query.tel == undefined"  :href="'https://api.whatsapp.com/send?phone='+ads.tel+'&text=' + $t('oneAdsBottomOffCanvasGoodDayForRent')  + 'https://laim.kz/oneAds/'+ $route.params.table_name + '/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
+                            <a v-if="$route.query.tel == undefined"  :href="'https://api.whatsapp.com/send?phone='+ads.tel+'&text=' + SiteDomain +'/allAds/'+ $route.params.table_name + '/1/allAdsOneAds/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
                             <a :href="'tel: '+ String($route.query.tel || ads.tel)" class="btn bg-blue text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px">
                                 <i class="bi bi-telephone-fill pr-2"></i>
                                 <small> {{ $route.query.tel || ads.tel }}</small>
@@ -55,7 +55,7 @@
 
                         <!-- Кнопки - Tel, whatsapp - 2 -->
                         <div v-if="$route.query.tel == undefined" class="mt-2">
-                            <a v-if="ads.tel2 != null" :href="'https://api.whatsapp.com/send?phone='+ads.tel2+'&text=' + $t('oneAdsBottomOffCanvasGoodDayForRent') + 'https://laim.kz/oneAds/'+ $route.params.table_name + '/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
+                            <a v-if="ads.tel2 != null" :href="'https://api.whatsapp.com/send?phone='+ads.tel2+'&text=' + SiteDomain +'/allAds/'+ $route.params.table_name + '/1/allAdsOneAds/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
                             <a v-if="ads.tel2 != null" :href="'tel:'+ads.tel2" class="btn bg-blue text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px">
                                 <i class="bi bi-telephone-fill pr-2"></i>
                                 <small>{{ String(ads.tel2) }}</small>
@@ -139,7 +139,7 @@
                         </div>
 
                         <!-- Поделиться с моим номером телефона -->
-                        <div v-if="$route.query.tel == undefined" @click="authStore.check ? linkShare('С моим номером') : $router.push('/auth')" class="p-2 py-3" role="button">
+                        <div v-if="$route.query.tel == undefined" @click="authStore.check ? linkShare('С моим номером') : $router.push({name: $route.name + 'Auth'})" class="p-2 py-3" role="button">
                             <i class="bi bi-share mx-1"></i>
                             {{ $t('oneAdsBottomOffCanvasShareWithMyPhoneNumber') }}
                         </div>
@@ -156,10 +156,12 @@
 
             </div>
 
-
         </div>
 
     </transition>
+
+    <!-- Дочерние компоненты -->
+    <router-view></router-view>
 
 </template>
 
@@ -180,7 +182,7 @@ import {useUpdateDateLocaleStore} from "../../../stores/updateDateLocale";
 import NavigatorShare from 'vue-navigator-share'
 
 export default {
-    name: "OneAdsBottomOffcanvas",
+    name: "OneAdsBottomOffCanvas",
 
 
     components: {
@@ -310,7 +312,7 @@ export default {
             //Поделиться с номером телефона автора
             if(type == 'С номером автора'){
                 navigator.share({
-                    url: 'https://laim.kz/oneAds/' + this.ads.table_name + '/' + this.ads.id
+                    url: SiteDomain +'/allAds/' + this.ads.table_name + '/1/allAdsOneAds/' + this.ads.id
                 })
             }
 
@@ -318,7 +320,7 @@ export default {
             if(type == 'С моим номером'){
                 let tel = new URL(window.location).searchParams.has('tel') ? new URL(window.location).searchParams.get('tel') : this.authStore.user.tel
                 navigator.share({
-                    url:  'https://laim.kz/oneAds/' + this.ads.table_name + '/' + this.ads.id + '?tel=' + tel
+                    url:  SiteDomain + '/allAds/' + this.ads.table_name + '/1/allAdsOneAds/' + this.ads.id + '?tel=' + tel
                 })
             }
 

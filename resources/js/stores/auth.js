@@ -9,7 +9,6 @@ export const useAuthStore = defineStore('auth', {
 
     //Свойства
     state: ()=>({
-        AUTH_READY: false,
         CHECK_AUTH : false,
         USER_DATA : {},
 
@@ -18,7 +17,6 @@ export const useAuthStore = defineStore('auth', {
 
     //Получаем доступ к свойствам
     getters: {
-        auth_ready: ( state )=> state.AUTH_READY,
         check: ( state )=> state.CHECK_AUTH,
         user: ( state )=> state.USER_DATA,
 
@@ -32,7 +30,6 @@ export const useAuthStore = defineStore('auth', {
             axios.get('/sanctum/csrf-cookie').then(response => {
                 axios.get('/auth/user')
                     .then(response=>{
-                        this.AUTH_READY = true;
                         this.CHECK_AUTH = true;
                         this.USER_DATA = response.data.user;
 
@@ -40,12 +37,10 @@ export const useAuthStore = defineStore('auth', {
                         useGetProjectDataStore().getProjectData();
                     })
                     .catch(errors=>{
-                        this.AUTH_READY = true;
                         this.CHECK_AUTH = false;
                         this.USER_DATA = {};
                     })
             }).catch(errors=>{
-                this.AUTH_READY = true;
                 this.CHECK_AUTH = false;
                 this.USER_DATA = {};
             })
@@ -78,7 +73,14 @@ export const useAuthStore = defineStore('auth', {
         desktopOrMob(type){
             this.DESKTOP_OR_MOBILE = type;
         }
-    }
+    },
+
+    persist: {
+        enabled: true,
+        strategies: [
+            { storage: sessionStorage, paths: ['CHECK_AUTH',] },
+        ],
+    },
 
 } )
 

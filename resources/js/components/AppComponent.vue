@@ -7,7 +7,7 @@
     </div>
 
     <!-- Компонент Шаблон -->
-    <div v-if="authStore.auth_ready" :class="{'dark-theme':appInstallStore.theme == 'dark-theme'}" style="background: var(--app-bg-color); display: flex; flex-direction: column; min-height: 100vh;">
+    <div :class="{'dark-theme':appInstallStore.theme == 'dark-theme'}" style="background: var(--app-bg-color); display: flex; flex-direction: column; min-height: 100vh;">
 
         <!-- Компоненты - HEADER | MAIN | FOOTER -->
         <header-component></header-component>

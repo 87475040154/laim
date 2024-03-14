@@ -83,6 +83,7 @@ Route::get('/getAllAds', [AdsController::class, 'getAllAds']);//Получить
 Route::get('/getUserAds', [AdsController::class, 'getUserAds']);//Получить все объявления пользователя
 Route::get('/getOneAds', [AdsController::class, 'getOneAds']);//Получить 1 объявление
 Route::post('/addAdsStatistic', [AdsController::class, 'addAdsStatistic']);//Добавим статистику на объявление
+Route::post('/addAdsViewTelStatistic', [AdsController::class, 'addAdsViewTelStatistic']);//Добавим статистику на просмотр телефона
 
 //Локация Казахстана
 Route::get('/KZLocation/getLocations', [KZLocationController::class, 'getLocations']);//Получить Локации

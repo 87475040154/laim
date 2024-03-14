@@ -80,7 +80,7 @@
             </div>
 
             <!-- Мои объявления -->
-            <div  class="footer__mobile-link" @click="authStore.check ?$router.push({name:'userAds', params: {author_id: authStore.user.id, table_name: $route.params.table_name, page: 1}}) : $router.push('/auth')">
+            <div  class="footer__mobile-link" @click="authStore.check ?$router.push({name:'userAds', params: {author_id: authStore.user.id}}) : $router.push({name: $route.name + 'Auth'})">
                 <v-badge floating v-if="authStore.check && getProjectDataStore.countReturnAds > 0" :content="getProjectDataStore.countReturnAds" color="error">
                     <i class="bi bi-megaphone"></i>
                 </v-badge>
@@ -89,12 +89,12 @@
             </div>
 
             <!-- Сдать -->
-            <div  class="footer__mobile-link" @click="authStore.check ? $router.push('/addAdsMenu/' + $route.params.table_name) : $router.push('/auth')">
+            <div  class="footer__mobile-link" @click="authStore.check ? $router.push({name: 'addAdsMenu'}) : $router.push({name: $route.name + 'Auth'})">
                 <v-icon style="font-size: 2em; color: #10a37f">mdi-plus-box</v-icon>
             </div>
 
             <!-- Чаты -->
-            <div  class="footer__mobile-link" @click="authStore.check ? $router.push('/chat/null/'+ $route.params.table_name) : $router.push('/auth')">
+            <div  class="footer__mobile-link" @click="authStore.check ? $router.push({ name: 'chat', params: {id: 'null'} }) : $router.push({name: $route.name + 'Auth'})">
                 <v-badge v-if="authStore.check && getProjectDataStore.countNewMessage > 0" :content="getProjectDataStore.countNewMessage" color="error">
                     <i class="bi bi-envelope"></i>
                 </v-badge>
@@ -104,7 +104,7 @@
             </div>
 
             <!-- Мой аккаунт -->
-            <div  class="footer__mobile-link" @click="authStore.check ? $router.push('/myAccount/'+ $route.params.table_name) : $router.push('/auth')">
+            <div  class="footer__mobile-link" @click="authStore.check ? $router.push({name: 'myAccount'}) : $router.push({name: $route.name + 'Auth'})">
                 <v-icon>{{authStore.check ? 'mdi-account': 'mdi-account-arrow-right'}}</v-icon>
                 <div style="font-size: 0.5em; line-height: 8px">
                     {{authStore.check ? authStore.user.name: $t('footerLogin')}}

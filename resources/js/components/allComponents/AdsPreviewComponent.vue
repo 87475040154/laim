@@ -43,7 +43,7 @@
                                 {{ $t('adsPreviewComponentUrgentBargaining') }}
                             </div>
 
-                            <img v-if="ads.images[0] != 'no-image'" @click="$router.push({name: 'image', params: {table_name: ads.table_name, page: $route.params.page}}), imageStore.showImages({images: ads.images,index: 0, allImg: true})" class="ads__preview-img rounded-2" :src=" '/img/adsImg/' + ads.images[0] " style="width: 100%; height: 150px; object-fit: cover; object-position: center" alt="Фото недвижимости">
+                            <img v-if="ads.images.length > 0" @click="showImage(ads)" class="ads__preview-img rounded-2" :src=" '/img/adsImg/' + ads.images[0] " style="width: 100%; height: 150px; object-fit: cover; object-position: center" alt="Фото недвижимости">
                             <img v-else src="/public/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" style="width: 100%; height: 150px" class="ads__preview-img">
 
                             <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
@@ -494,14 +494,14 @@
 
                                 <!-- Кнопка лайк -->
                                 <span>
-                            <v-icon :color="ads.userLike ? 'red' : 'grey-lighten-3'"
-                                    class="icon__heart mx-1"
-                                    @click="authStore.check ? addLikeToggle(index, ads): $router.push('/auth')"
-                            >
-                            mdi-heart
-                            </v-icon>
-                            <v-tooltip activator="parent" location="bottom">{{ $t('AdsPreviewAddFavorites') }}</v-tooltip>
-                        </span>
+                                    <v-icon :color="ads.userLike ? 'red' : 'grey-lighten-3'"
+                                            class="icon__heart mx-1"
+                                            @click="authStore.check ? addLikeToggle(index, ads): $router.push({name: $route.name + 'Auth'})"
+                                    >
+                                    mdi-heart
+                                    </v-icon>
+                                    <v-tooltip activator="parent" location="bottom">{{ $t('AdsPreviewAddFavorites') }}</v-tooltip>
+                                </span>
 
 
                             </div>
@@ -522,7 +522,7 @@
                             <!-- Кнопка сдать быстрее -->
                             <v-btn dark color="blue-darken-2"
                                    size="x-large"
-                                   @click="$router.push('/bueAds/' + ads.author_id + '/' + ads.table_name + '/1/' + ads.id)"
+                                   @click="$router.push({ name: $route.name + 'BueAds', params: {ads_id: ads.id} } )"
                                    class="text-body-1"
                                    style="min-width: 170px"
                             >
@@ -564,7 +564,7 @@
                                         <v-btn dark icon
                                                size="x-large"
                                                color="blue-darken-2"
-                                               @click="$router.push({name: 'addAds', params: {table_name: ads.table_name, id: ads.id, step:1}})"
+                                               @click="$router.push({name: $route.name + 'AddAds', params: {id: ads.id, step:1}})"
                                         >
                                             <i class="bi bi-pencil-square"></i>
                                         </v-btn>
@@ -599,7 +599,6 @@
 
                     </div>
 
-
                     <!-- Жалобы на объявления - Если поступили 5 жалоб - Они видны автору - Объявление отправиться на доработку  -->
                     <div v-if="authStore.check && authStore.user.id == ads.author_id && $route.name == 'userAds'">
 
@@ -607,12 +606,12 @@
                             <i class="bi bi-exclamation-octagon"></i>
                             {{ $t('adsPreviewComponentReturnForRevision')}}
                             <div>{{ $t('adsPreviewComponentCause') }} :
-                                <span v-if="ads.complain == 'Объявление не актуально'">{{ $t('oneAdsBottomOffCanvasTheAdIsNotRelevant') }}</span>
-                                <span v-if="ads.complain == 'Ошибка в цене'">{{ $t('oneAdsBottomOffCanvasPriceError') }}</span>
-                                <span v-if="ads.complain == 'Некорректные фотографии'">{{ $t('oneAdsBottomOffCanvasIncorrectPhotos') }}</span>
-                                <span v-if="ads.complain == 'Ответил риелтор'">{{ $t('oneAdsBottomOffCanvasTheRealtorReplied') }}</span>
-                                <span v-if="ads.complain == 'Телефон не отвечает'">{{ $t('oneAdsBottomOffCanvasThePhoneIsNotAnswering') }}</span>
-                                <span v-if="ads.complain == 'Обман или ложное объявление'">{{ $t('oneAdsBottomOffCanvasDeceptionOrFalseAnnouncement') }}</span>
+                                <span v-if="ads.complain[0] == 'Объявление не актуально'">{{ $t('oneAdsBottomOffCanvasTheAdIsNotRelevant') }}</span>
+                                <span v-if="ads.complain[0] == 'Ошибка в цене'">{{ $t('oneAdsBottomOffCanvasPriceError') }}</span>
+                                <span v-if="ads.complain[0] == 'Некорректные фотографии'">{{ $t('oneAdsBottomOffCanvasIncorrectPhotos') }}</span>
+                                <span v-if="ads.complain[0] == 'Ответил риелтор'">{{ $t('oneAdsBottomOffCanvasTheRealtorReplied') }}</span>
+                                <span v-if="ads.complain[0] == 'Телефон не отвечает'">{{ $t('oneAdsBottomOffCanvasThePhoneIsNotAnswering') }}</span>
+                                <span v-if="ads.complain[0] == 'Обман или ложное объявление'">{{ $t('oneAdsBottomOffCanvasDeceptionOrFalseAnnouncement') }}</span>
                             </div>
                         </div>
 
@@ -639,6 +638,7 @@ import { useGetProjectDataStore } from "../../stores/getProjectData";
 import { useAdsStore } from "../../stores/ads";
 import {useUpdateDateLocaleStore} from "../../stores/updateDateLocale";
 
+// Компонент динамический скроллер - Скрывает лишние элементы из DOM
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
@@ -710,7 +710,14 @@ export default {
 
             localStorage.setItem('oneAdsIndex', index)
             localStorage.setItem('oneAds', JSON.stringify(ads))
-            this.$router.push({name: 'oneAds' ,params: {table_name: ads.table_name, ads_id: ads.ads_id == undefined ? ads.id: ads.ads_id }})
+
+            this.$router.push({name: this.$route.name + "OneAds" ,params: {ads_id: ads.id }})
+        },
+
+        // Показать фото
+        showImage(ads){
+            this.imageStore.showImages({images: ads.images,index: 0, allImg: true})
+            this.$router.push({name: this.$route.name + "Image"});
         },
 
         //Метод - Рекламировать или Остановить - рекламу объявления
@@ -761,7 +768,7 @@ export default {
             axios.post('/like',{
                 author_id: this.authStore.user.id,
                 table_name: ads.table_name,
-                ads_id: ads.ads_id == undefined ? ads.id : ads.ads_id
+                ads_id: ads.id
             })
                 .then(response=>{
                     this.query = false;

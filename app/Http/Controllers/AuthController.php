@@ -162,7 +162,7 @@ class AuthController extends Controller
         ]);
 
         //Отправлю на емайл ссылку активации, email и пароль   // Добавление задачи в очередь
-        Queue::push(new SendEmailVerificationQueue($user, $token));
+        Queue::push(new SendEmailVerificationQueue($user, $token, $request->path));
 
         return 'success';
     }
@@ -220,7 +220,7 @@ class AuthController extends Controller
             $user->save();
 
             // Отправка письма через очередь
-            Queue::push(new SendEmailVerificationQueue($user, $token));
+            Queue::push(new SendEmailVerificationQueue($user, $token, $request->path));
 
             return response()->json(['message'=>'success'],200);
         }
@@ -248,7 +248,7 @@ class AuthController extends Controller
             $user->save();
 
             // Отправка письма через очередь
-            Queue::push(new SendLinkForgotPasswordQueue($user, $token));
+            Queue::push(new SendLinkForgotPasswordQueue($user, $token, $request->path));
 
             return response()->json(['message'=>'success'],200);
         }

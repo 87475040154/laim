@@ -3,6 +3,7 @@
 namespace App\Models\Ads;
 
 use App\Models\AdsView;
+use App\Models\AdsViewTel;
 use App\Models\Like;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,8 +18,26 @@ class Kvartira extends Model
     public $fillable = [
         'author_id', 'zagolovok', 'period_arendi', 'kolichestvo_komnat', 'cena', 'etag','etagnost','ploshad_obshaya',
         'ploshad_kuhni', 'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie', 'internet',
-        'sanuzel', 'balkon', 'parkovka', 'mebel', 'pol', 'text_obyavleniya',
-        'ownerOrRealtor', 'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'goryachie', 'top_x7', 'top_x30'
+        'sanuzel', 'balkon', 'parkovka', 'mebel', 'pol','mebel_arr','raznoe','bezopasnost', 'text_obyavleniya',
+        'ownerOrRealtor', 'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
+    ];
+
+    // Преобразуем масив в json и обратно при занесении данных в БД и при получении из нее автоматически
+    protected $casts = [
+        'images' => 'array',
+        'mebel_arr' => 'array',
+        'raznoe' => 'array',
+        'bezopasnost' => 'array',
+        'complain' => 'array',
+    ];
+
+    // По умолчанию заносим пустой массив в БД если не переданны данные
+    protected $attributes = [
+        'images' => '[]',
+        'mebel_arr' => '[]',
+        'raznoe' => '[]',
+        'bezopasnost' => '[]',
+        'complain' => '[]',
     ];
 
 
@@ -41,5 +60,11 @@ class Kvartira extends Model
 
     }
 
+    // Полиморфное отношение с таблицей ViewTel
+    public function viewTels(): MorphMany
+    {
+        return $this->morphMany(AdsViewTel::class, 'viewable');
+
+    }
 
 }

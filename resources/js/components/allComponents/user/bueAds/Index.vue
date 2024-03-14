@@ -236,7 +236,7 @@ background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(26,135,175,1) 0%, 
 
                         <!-- Кнопка опубликовать без - рекламы -->
                         <div v-else class="px-3 pb-3">
-                            <v-btn @click="$router.replace('/userAds/Kvartira/'+authStore.user.id + '/1')"
+                            <v-btn @click="$router.back()"
                                    size="x-large"
                                    color="blue-darken-2"
                                    block
@@ -285,13 +285,24 @@ export default {
 
             //Покупка рекламных услуг
             bueAdsType: ['Топ 24'],
-
             summ: '',
 
             query: false
         }
     },
 
+    watch: {
+        //Отслеживаем изменение маршрута
+        '$route' (to) {
+
+            //Если переходим по меню или пагинации
+            if(to.name == 'userAdsBueAds'){
+                this.bueAdsType = [];
+                this.summ = ''
+            }
+
+        },
+    },
 
     computed:{
 
@@ -333,8 +344,7 @@ export default {
                 }
             }
 
-            this.$router.push('/bueAdsPayMethod/' + this.authStore.user.id + '/'+ this.$route.params.table_name + '/1/' + this.$route.params.ads_id
-            + '/' + this.bueAdsType)
+            this.$router.push({name: this.$route.name + 'PayMethod', params: {bueAdsType: this.bueAdsType.join(',')}});
         },
 
     },

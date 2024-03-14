@@ -12,7 +12,7 @@
     <transition name="yandexMapClusterShowAds__animation-wrapper">
 
         <!-- Обвертка - Компонента -->
-        <div v-if="yandexMapClusterShowAdsAnimation" class="yandexMapClusterShowAds__wrapper">
+        <div v-if="yandexMapClusterShowAdsAnimation" class="yandexMapClusterShowAds__wrapper" >
 
             <!-- Сам блок -->
             <div class="yandexMapClusterShowAds__block">
@@ -34,7 +34,26 @@
                 <div class="yandexMapClusterShowAds__body">
 
                     <!-- Компонент для отображения превью всех полученных объявлений  -->
-                    <ads-preview-component :ads_arr="ads"></ads-preview-component>
+                    <ads-preview-component  :ads_arr="ads_arr.data"  @get-ads-cursor-paginate="getAdsMobileCursorPaginate"></ads-preview-component>
+
+                    <!-- Gif Load  - Если объявления еще не загрузились -->
+                    <div v-if="query" class="d-flex justify-content-center py-1">
+                        <div class="spinner-border spinner-border-sm" style="color: var(--app-text-color)" role="status"></div>
+                    </div>
+
+                    <!-- Блок с пагинацией  - покажется если найденно более 30 объявлений -->
+                    <div v-if="authStore.desktopOrMobile == 'Desktop'" class="mt-3" >
+
+                        <!-- Экран более - 768 px-->
+                        <Bootstrap5Pagination :align="'center'" :limit="3" :data="ads_arr"
+                                              @pagination-change-page="(page)=> $router.push({name: 'allAdsMapPreviewAds', params: { pages: page } })"
+                                              class="d-none d-md-flex"
+                        ></Bootstrap5Pagination>
+
+                    </div>
+
+                    <!-- Дочерние компоненты -->
+                    <router-view></router-view>
 
                 </div>
 
@@ -52,23 +71,18 @@
 import {useAuthStore} from "../../../stores/auth";
 import { useCheckInternetStore } from "../../../stores/checkInternet";
 
-
-//Импортируем - Компонент Слайдер фото - Swiper
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Pagination, Mousewheel } from 'swiper';
-import 'swiper/scss';
-import 'swiper/scss/pagination';
-import 'swiper/scss/mousewheel';
-
 //Импортируем Компоненты
 import adsPreviewComponent from "../../allComponents/AdsPreviewComponent.vue";
+
+//Пакет для пагинации Laravel + Vue
+import { Bootstrap5Pagination } from 'laravel-vue-pagination';
 
 export default {
     name: "YandexMapClusterShowAds",
 
     components: {
-        Swiper, SwiperSlide,//Компоненты - Слайдера для фото
         adsPreviewComponent,
+        Bootstrap5Pagination
     },
 
     data(){
@@ -80,50 +94,99 @@ export default {
 
             yandexMapClusterShowAdsAnimation: false,
 
-            ads: [],
+            query: false,
 
-            modules: [Pagination, Mousewheel], //Подключаем дополнительные модули к слайдеру SWIPER,
+            ads_arr: {},
 
+            //Для курсорной навигации на Мобильных устройствах
+            nextCursor: '',
         }
+    },
+
+    watch: {
+
+        //Отслеживаем изменение маршрута
+        '$route' (to, from) {
+
+            //Если переходим по пагинации
+            if(to.name == 'allAdsMapPreviewAds' && from.name == 'allAdsMapPreviewAds'){
+                this.getAds()
+            }
+
+        },
+
     },
 
     methods: {
 
         //Получить массив объявлений при клике на кластер
-       async getAllAds() {
+       async getAds() {
 
-            this.query = true;
+           this.query = true;
 
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           await this.checkInternetStore.checkInternet()
-            if(!this.checkInternetStore.online){
-                this.query = false;
-                return
-            }
+           //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
+           await this.checkInternetStore.checkInternet();
 
-            this.ads = [];
-
+           //Обнулим данные
+           this.ads_arr = {};
 
             //Получаю объявления
             axios.get('/getAllAds', {
 
                 params: {
-                    page: 1,
+                    page: this.$route.params.pages,
                     user_id: useAuthStore().check ? useAuthStore().user.id : 0,
                     table_name: this.$route.params.table_name,
                     filter: 'Фильтр не применен',
                     getMyLikeAds: 'Не получать мои лайки',
+                    cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true,
                     arr_ads_id: JSON.parse(localStorage.getItem("mapClusterAdsId")),
                     getAdsYandexClusterer: true
                 }
             })
                 .then(response => {
                     this.query = false;
-                    this.ads = response.data.ads;
+                    this.ads_arr = response.data.ads;
+
+                    this.nextCursor = response.data.ads.next_cursor;
                 })
                 .catch((errors)=>{
                     this.query = false;
                 })
+        },
+
+        // Метод получения объявлений на мобильных устройствах - курсорной погинацией
+        getAdsMobileCursorPaginate() {
+
+            if( this.query || this.nextCursor == null )return;
+
+            this.query = true;
+
+            axios.get('getAllAds', {
+                params: {
+                    cursor: this.nextCursor,
+                    user_id: useAuthStore().check ? useAuthStore().user.id : 0,
+                    table_name: this.$route.params.table_name,
+                    filter: 'Фильтр не применен',
+                    getMyLikeAds: 'Не получать мои лайки',
+                    cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true,
+                    arr_ads_id: JSON.parse(localStorage.getItem("mapClusterAdsId")),
+                    getAdsYandexClusterer: true
+                }
+            })
+                .then(response => {
+
+                    //Канкатенируем старые обьявления с новыми полученными
+                    this.ads_arr.data = [...this.ads_arr.data, ...response.data.ads.data];
+
+                    // Добавим данные для пагинации
+                    this.nextCursor = response.data.ads.next_cursor;
+
+                    this.query = false;
+
+                }).catch(()=>{
+                this.query = false;
+            })
         },
 
     },
@@ -134,12 +197,9 @@ export default {
         document.querySelector(':root').classList.add('PATCH_modal');
 
         //Id объявлений для выбора по кластеру
-        if(localStorage.getItem('mapClusterAdsId') != undefined){
-            this.getAllAds();
-        }
-        else{
+        localStorage.getItem('mapClusterAdsId') != undefined ?
+            this.getAds() :
             this.$router.back();
-        }
 
     },
 
@@ -237,7 +297,5 @@ export default {
     flex-grow: 1;
     width: 100%;
 }
-
-
 
 </style>

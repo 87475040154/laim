@@ -279,7 +279,7 @@ export default {
             const currentRoute = this.$route.name;
             // Установите классы CSS в зависимости от текущего маршрута
             return {
-                'location__wrapper--addAds': currentRoute === 'addAdsFormLocation',
+                'location__wrapper--addAds': currentRoute !== 'filterLocation',
             };
         },
     },

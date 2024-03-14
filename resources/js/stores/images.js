@@ -60,6 +60,13 @@ export const useImagesStore = defineStore('images', {
             this.IMAGES = [];
         }
 
-    }
+    },
+
+    persist: {
+        enabled: true,
+        strategies: [
+            { storage: sessionStorage, paths: ['INDEX', 'IMAGES',] },
+        ],
+    },
 
 } )

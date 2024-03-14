@@ -57,7 +57,7 @@
                         <div class="d-flex">
 
                             <!-- Вывод выбранной локации - При клике открыть окно с локациями - получим области по умолчанию  -->
-                            <v-btn @click="$router.push({ name: 'location',  params: { tabele_name: $route.params.table_name, locationId: 'null', stepLocation:1 } })"
+                            <v-btn @click="$router.push({ name: 'filterLocation',  params: { locationId: 'null', stepLocation:1 } })"
                                    class="flex-fill text-body-2"
                                    :class="{'rounded-e-0' : KZLocationStore.location != ''}"
                                    color="blue"
@@ -749,7 +749,7 @@
                     </div>
 
                     <!-- Показать архивные -->
-                    <div class="form-group" v-if="$route.params.table_name != 'goryachie'">
+                    <div class="form-group">
 
                         <div class="form__title">
                             {{ $t('filterArchivedAnnouncements') }}

@@ -17,16 +17,18 @@ class SendLinkForgotPasswordQueue implements ShouldQueue
 
     protected $user;
     protected $token;
+    protected $path;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($user, $token)
+    public function __construct($user, $token, $path)
     {
         $this->user = $user;
         $this->token = $token;
+        $this->path = $path;
     }
 
     /**
@@ -37,6 +39,6 @@ class SendLinkForgotPasswordQueue implements ShouldQueue
     public function handle()
     {
         // Логика отправки уведомления (письма)
-        Notification::send($this->user, new SendLinkForgotPassword($this->token));
+        Notification::send($this->user, new SendLinkForgotPassword($this->token, $this->path));
     }
 }

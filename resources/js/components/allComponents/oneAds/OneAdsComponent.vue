@@ -27,13 +27,13 @@
                 <article>
 
                     <!-- Слайдер Фото - У слайдера высота зависит от высоты фото - height=300px-->
-                    <swiper @swiper="oneAdsSwiper" role="button" v-if="ads && ads.images && ads.images[0] !== 'no-image'" :modules="modules" :slides-per-view="1" :space-between="0"
+                    <swiper @swiper="oneAdsSwiper" role="button" v-if="ads && ads.images" :modules="modules" :slides-per-view="1" :space-between="0"
                             :keyboard="true" :pagination="{type: 'fraction'}"
                     >
 
                         <!-- Вывод самого слайда - то-есть 1-го фото -->
                         <swiper-slide v-for="(img, i) in ads.images" :key="i" class="px-lg-5 position-relative">
-                            <img @click="imageStore.showImages({images: ads.images,index: i, allImg: true}), $router.push('/imageOneAds/'+ $route.params.table_name)" :src="'/img/adsImg/' + img " style="width: 100%; height: 350px; object-fit: cover; object-position: center; border-radius: 3px 3px 0 0; box-shadow: 0 0 5px #e3e3e3; z-index: 0">
+                            <img @click="showImage(ads, i)" :src="'/img/adsImg/' + img " style="width: 100%; height: 350px; object-fit: cover; object-position: center; border-radius: 3px 3px 0 0; box-shadow: 0 0 5px #e3e3e3; z-index: 0">
 
                             <!-- Кнопки перетаскивания -->
                             <div class="swiper-button-next" @click="slidePrev()"></div>
@@ -49,7 +49,7 @@
                         <!-- Кнопка - Написать - для компьютера -->
                         <div class="ads_header-btn d-none d-lg-block"
                              v-if="$route.query.tel == undefined"
-                             @click="authStore.check ? showBottomOffCanvas('Написать'): $router.push('/auth')">
+                             @click="authStore.check ? showBottomOffCanvas('Написать'): $router.push({ name: $route.name + 'Auth' })">
                             <v-icon>mdi-message-processing</v-icon>
                         </div>
 
@@ -60,7 +60,7 @@
 
                         <!-- Кнопка - Скачать все фото -->
                         <div class="ads_header-btn"
-                             v-if="ads && ads.images && ads.images[0] !== 'no-image'"
+                             v-if="ads && ads.images && ads.images.length > 0"
                              @click="showBottomOffCanvas('Скачать или поделиться фото')"
                         >
                             <v-icon>mdi-cloud-download-outline</v-icon>
@@ -78,16 +78,16 @@
                         </div>
 
                         <!-- Кнопка лайк -->
-                        <div class="ads_header-btn" @click="authStore.check ? addLikeToggle(): $router.push('/auth')">
+                        <div class="ads_header-btn" @click="authStore.check ? addLikeToggle(): $router.push({name: $route.name + 'Auth'})">
                             {{ ads.countLike }}
                             <v-icon :class="{'text-red': ads.userLike}">mdi-heart</v-icon>
                         </div>
 
                         <!-- Выбор языка -->
                         <div class="ads_header-btn">
-                            <span @click="$router.push({name: 'langOneAds', params: {table_name: $route.params.table_name, ads_id: $route.params.ads_id}})">{{ updateDateLocale.lang == 'kz' ? 'Қаз': '' }}</span>
-                            <span @click="$router.push({name: 'langOneAds', params: {table_name: $route.params.table_name, ads_id: $route.params.ads_id}})">{{ updateDateLocale.lang == 'ru' ? 'Рус': '' }}</span>
-                            <span @click="$router.push({name: 'langOneAds', params: {table_name: $route.params.table_name, ads_id: $route.params.ads_id}})">{{ updateDateLocale.lang == 'en' ? 'Eng': '' }}</span>
+                            <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocale.lang == 'kz' ? 'Қаз': '' }}</span>
+                            <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocale.lang == 'ru' ? 'Рус': '' }}</span>
+                            <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocale.lang == 'en' ? 'Eng': '' }}</span>
                         </div>
 
                     </div>
@@ -142,7 +142,7 @@
 
                             <!-- Кнопка открыть карту на весь экран -->
                             <div style="position: absolute; top: 0; left: 0; right:0; bottom:0" role="button"
-                                 @click="$router.push({name: 'yandexMapOneAds', params: {'table_name': $route.params.table_name}, query: {lat: ads.lat, lon:ads.lon, image: ads.images[0]} })"
+                                 @click="$router.push({name: $route.name + 'Map', query: {lat: ads.lat, lon:ads.lon, image: ads.images[0]} })"
                             >
                             </div>
 
@@ -857,14 +857,14 @@
                 <div v-if="$route.query.tel == undefined">
 
                     <!-- Все объявления автора-->
-                    <v-btn @click=" $router.push({name:'userAds', params: {author_id: ads.author_id, table_name: ads.table_name, page: 1}})" color="blue-lighten-1" variant="text"  style="text-transform: capitalize">
+                    <v-btn :disabled="$route.name != 'allAdsOneAds'"  @click="$router.push({name: 'userAds', params: { author_id: ads.author_id }})" color="blue-lighten-1" variant="text"  style="text-transform: capitalize">
                         <i class="bi bi-person-workspace"></i>
                         {{ $t('oneAdsAds') }} <strong class="pl-1">{{ads.name}}</strong>
                     </v-btn>
 
                     <!-- Блок - Отправить жалобу на объявление -->
                     <v-btn dark saiz="small" variant="text" color="red-lighten-1"
-                           @click="authStore.check ? showBottomOffCanvas('Пожаловаться') : $router.push('/auth')"
+                           @click="authStore.check ? showBottomOffCanvas('Пожаловаться') : $router.push({name: $route.name + 'Auth'})"
                            style="text-transform: capitalize; color: #fa5555"
                     >
                         <i class="bi bi-exclamation-octagon"></i>
@@ -881,7 +881,7 @@
                 <!-- Кнопки  - позвонить / написать -->
                 <v-btn dark variant="flat" color="blue-darken-2" size="large" class="text-body-1" style="width: 100%; max-width: 170px"
                        v-if="$route.query.tel == undefined"
-                       @click="authStore.check ? showBottomOffCanvas('Написать'): $router.push('/auth')"
+                       @click="authStore.check ? showBottomOffCanvas('Написать'): $router.push({name: $route.name + 'Auth'})"
                 >
                     {{ $t('oneAdsWrite') }}
                 </v-btn>
@@ -1003,7 +1003,7 @@ export default {
 
                 //Фото значка расположения на карте
                 if(this.ads.lat != undefined){
-                    if(this.ads.images[0] == 'no-image'){
+                    if(this.ads.images.length == 0){
                         this.options.iconImageHref = '/img/siteImg/allImg/apartmens.jpg';
                     }else{
                         this.options.iconImageHref = '/img/adsImg/' + this.ads.images[0];
@@ -1014,9 +1014,6 @@ export default {
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
            await this.checkInternetStore.checkInternet()
-           if(!this.checkInternetStore.online)return;
-
-
 
             axios.get('/getOneAds', {
                 params:{
@@ -1033,7 +1030,7 @@ export default {
                     localStorage.setItem('oneAds', JSON.stringify(response.data))
 
                     //Фото значка расположения на карте
-                    if(this.ads.images[0] == 'no-image'){
+                    if(this.ads.images.length == 0){
                         this.options.iconImageHref = '/img/siteImg/allImg/apartmens.jpg';
                     }else{
                         this.options.iconImageHref = '/img/adsImg/' + this.ads.images[0];
@@ -1051,8 +1048,25 @@ export default {
                 })
         },
 
+        // Метод показать фото
+        showImage(ads, i){
+
+            this.imageStore.showImages({images: ads.images,index: i, allImg: true});
+            this.$router.push({name: this.$route.name + "Image"})
+        },
+
+        //Открыть нижний OffCanvas
+        showBottomOffCanvas(type){
+
+            if(type == 'Позвонить')this.addAdsViewTelStatistic()
+            this.$router.push({name: this.$route.name + "BottomOffCanvas", params:{type: type }, query:{tel: this.$route.query.tel}})
+        },
+
         //После просмотра объявления добавим статистику
         addAdsStatistic(){
+           //Если объявление в архиве не будем добавлять статистику
+            if(this.ads.control == 'В архиве')return
+
             axios.post('/addAdsStatistic', {
                 user_id: this.authStore.check ? this.authStore.user.id : 0,
                 ads_id: this.ads.id,
@@ -1060,6 +1074,21 @@ export default {
             })
                 .then((response)=>{
                     this.ads.view += 1;
+                })
+        },
+
+        //После просмотра телефона добавим статистику
+        async addAdsViewTelStatistic(){
+
+            //Если объявление в архиве не будем добавлять статистику
+           if(this.ads.control == 'В архиве')return
+
+            axios.post('/addAdsViewTelStatistic', {
+                user_id: this.authStore.check ? this.authStore.user.id : 0,
+                ads_id: this.ads.id,
+                table_name: this.ads.table_name,
+            })
+                .then((response)=>{
                 })
         },
 
@@ -1077,7 +1106,7 @@ export default {
             axios.post('/like',{
                 author_id: this.authStore.user.id,
                 table_name: this.ads.table_name,
-                ads_id: this.ads.ads_id == undefined ? this.ads.id: this.ads.ads_id,
+                ads_id: this.ads.id
 
             })
                 .catch(errors=>{
@@ -1093,10 +1122,6 @@ export default {
                 })
         },
 
-        //Открыть нижний OffCanvas
-        showBottomOffCanvas(type){
-            this.$router.push({name: 'oneAdsBottomOffCanvas', params:{table_name:this.$route.params.table_name, ads_id: this.$route.params.ads_id, type: type }, query:{tel: this.$route.query.tel}})
-        },
 
         // Слайдер
         //Инициализируем Слайдер 1

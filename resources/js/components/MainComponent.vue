@@ -1,7 +1,7 @@
 <template>
 
     <!-- В этом компоненте - Вывожу весь динамический контент -->
-    <main class="container-lg p-0 pb-5 pb-md-0 mb-5 mb-md-0">
+    <main class="container-lg p-0 pb-5 pb-lg-0 mb-5 mb-lg-0">
 
         <!-- Внутренние страницы -->
         <router-view></router-view>

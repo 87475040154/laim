@@ -49,8 +49,7 @@
                     <!-- Закрыть форму - или сохранить объявление -->
                     <div class="col-auto px-4">
 
-                        <!-- Звкрыть-->
-                        <!-- Кнопка назад -->
+                        <!-- Звкрыть Форму -->
                         <v-btn icon dark variant="text"
                                v-if="form.addOrUpdate == 'add'"
                                @click="$router.go(-$route.params.step)"
@@ -59,7 +58,10 @@
                         </v-btn>
 
                         <!-- Сохранить -->
-                        <v-btn @click="formValidate(true)" variant="text" v-if="form.addOrUpdate == 'update' && $route.params.step != 6" role="button" class="text-caption" :disabled="query">
+                        <v-btn v-if="form.addOrUpdate == 'update' && $route.params.step != 6"
+                               @click="formValidate(true)"
+                               variant="text" role="button" class="text-caption" :disabled="query"
+                        >
                             <v-progress-circular v-if="query" size="x-small" indeterminate color="white"></v-progress-circular>
                             {{ $t('addAdsSave') }}
                         </v-btn>
@@ -84,7 +86,7 @@
             <validation-observer as="div" class="addAds__body" id="addAds__body" ref="form" v-slot="{ handleSubmit }">
 
                 <!-- Уведомление что в localstorage есть начатое объявление - продолжить или подать новое -->
-                <div v-if="showLocaleStorageAds" class="text-center">
+                <div v-if="!showForm" class="text-center">
 
                     <!-- Заголовок -->
                     <h2 class="py-3 pt-5 fw-bold">{{ $t('addAdsDoYouHaveAnUnfinishedAd') }}</h2>
@@ -107,7 +109,7 @@
                 </div>
 
                 <!-- Форма подачи объявления -->
-                <form v-if="!showLocaleStorageAds" @submit="handleSubmit($event, addOrUpdateAds)" class="form addAds__form">
+                <form v-if="showForm" @submit="handleSubmit($event, addOrUpdateAds)" class="form addAds__form">
 
                     <!-- Верхний блок основная информации  -->
                     <div v-if="$route.params.step == 1" class="addAds__form-block">
@@ -1360,7 +1362,7 @@
                                     <v-btn size="x-small" icon @click="deleteImage(index)" style="position: absolute; top: 5px; right: 5px">
                                         <v-icon>mdi-delete</v-icon>
                                     </v-btn>
-                                    <img :src="img.previewImg" @click="$router.push('/imageAddAds/' + $route.params.table_name), imageStore.showImages({images: imageAndPreviewImage,index, addAdsImg:true})"  width="100" height="100" role="button">
+                                    <img :src="img.previewImg" @click="$router.push({name: $route.name + 'Image'}), imageStore.showImages({images: imageAndPreviewImage,index, addAdsImg:true})"  width="100" height="100" role="button">
                                 </div>
                             </draggable>
                         </div>
@@ -1377,7 +1379,7 @@
                         <div class="d-flex pb-3">
 
                             <!-- Вывод выбранной локации - При клике открыть окно с локациями - получим области по умолчанию  -->
-                            <v-btn @click="$router.push({ name: 'addAdsFormLocation',  params: {table_name: $route.params.table_name, id: $route.params.id, step: $route.params.step, locationId: 'null', stepLocation:1 } })"
+                            <v-btn @click="$router.push({ name: $route.name + 'Location',  params: { locationId: 'null', stepLocation:1 } })"
                                    class="flex-fill text-body-2"
                                    :class="{'rounded-e-0' : KZLocationStore.location != ''}"
                                    color="blue" size="x-large" rounded="0"
@@ -1644,7 +1646,7 @@
 
     </div>
 
-    <!-- Вывожу внутринние стрницы - Локация и тд. -->
+    <!-- Вывожу дочерние компоненты - Локация, Фото -->
     <router-view></router-view>
 
 </template>
@@ -1658,7 +1660,7 @@ import {useImagesStore} from "../../../stores/images";
 import {useKZLocationStore} from "../../../stores/KZLocation";
 import { useUpdateDateLocaleStore } from "../../../stores/updateDateLocale";
 
-//Пакет для перемещения картинок в массиве (по экрану)
+// VueDraggable Пакет для перемещения картинок в массиве (по экрану)
 import { defineComponent } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 
@@ -1666,13 +1668,14 @@ import { VueDraggableNext } from 'vue-draggable-next'
 import Form from 'vform'
 import { HasError } from 'vform/src/components/bootstrap5'
 
-//Импортирую - Дерективы для формата номера телефона и цены
-import { VueTelInput } from 'vue-tel-input';
-import 'vue-tel-input/vue-tel-input.css';
+//Импортирую - Дерективы для формата цены
 import { directive } from '@coders-tm/vue-number-format'
 
+// Компонент для номера телефона
+import { VueTelInput } from 'vue-tel-input';
+import 'vue-tel-input/vue-tel-input.css';
 
-//Импортирую - Yandex Карту
+// Компонент яндекс карта
 import { YandexMap, YandexMarker, loadYmap  } from 'vue-yandex-maps'
 
 export default defineComponent({
@@ -1699,9 +1702,9 @@ export default defineComponent({
             KZLocationStore: useKZLocationStore(),
             updateDateLocaleStore: useUpdateDateLocaleStore(),
 
-            //В какую таблицу добавить объявление
             query: false,
-            showLocaleStorageAds: false, //Для проверки есть ли в localStorage начатое объявление
+
+            showForm: true, //Показать форму или Кнопики, продолжить подать новое объявление
 
             //поля формы
             form: new Form({
@@ -1710,6 +1713,7 @@ export default defineComponent({
                 id: '', //id объявления
                 author_id: '',
 
+                table_name: '',
                 zagolovok: '',
                 tip_sdelki: '',
                 tip_obekta: '',
@@ -1786,8 +1790,6 @@ export default defineComponent({
             }),
             imageAndPreviewImage: [],
             form_valid: '', // Для вывода ошибки сверху кнопки
-            adsAdded: false, //Если объявление добавленно
-
 
             //Следим за изменением адреса - чтоб лишний раз не запрашивать координаты
             //При переходе на карту запишется первый адрес - при возврате запишется 2-й, и если они не совпадают то запросим новые координаты
@@ -1822,7 +1824,7 @@ export default defineComponent({
                 "minimumFractionDigits": ""
             },
 
-            //Компонент - Настройки для Яндекс карты по умолчанию
+            // Настройки компонента  для Яндекс карты по умолчанию
             showMap: false,
             settings :{
                 apiKey: '8740b571-75d9-47f0-a5c4-582b1feaf201',
@@ -1852,7 +1854,6 @@ export default defineComponent({
 
                 //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
                 await this.checkInternetStore.checkInternet()
-                if(!this.checkInternetStore.online)return;
 
 
                 if (this.address.count == 0){
@@ -1897,10 +1898,6 @@ export default defineComponent({
                 }
             }
 
-            //Перейдем на покупку рекламы, после добавления нового или сохранения страрого объявления
-            if( to.params.step == 1 && this.adsAdded ){
-                this.$router.replace('/bueAds/' + this.authStore.user.id + '/' + this.$route.params.table_name + '/1/' + this.$route.params.id)
-            }
         },
 
         // Отслеживаем изменение выбранной локации
@@ -1945,12 +1942,13 @@ export default defineComponent({
             //Если добавляем новое объявление
             if(this.$route.params.id == 'null') {
                 this.form.author_id = this.authStore.user.id;
+                this.form.table_name = this.$route.params.table_name;
                 this.form.name = this.authStore.user.name;
                 this.form.tel = this.authStore.user.tel;
                 this.form.tel2 = this.authStore.user.tel2;
 
-                //Cоздать новое или Продолжить заполнять старое
-                this.showLocaleStorageAds = false;
+                // Показать форму
+                this.showForm = true;
 
                 // Если выбрано добавить объявление из localeStorage - если нет то просто откроется форма для добавления нового
                 if (addLocaleStorageAds) {
@@ -1972,9 +1970,13 @@ export default defineComponent({
                     })
 
                     if(this.$route.params.step != 1){
-                        this.$router.replace('/addAds/'+this.$route.params.table_name+'/null/1');
+                        this.$router.replace({name: this.$route.name, params: {id: 'null', step:1}});
                     }
-                }else{
+                }
+                else{
+                    if(this.$route.params.step != 1){
+                        this.$router.replace({name: this.$route.name, params: {id: 'null', step:1}});
+                    }
                     // Cбросим локацию
                     this.KZLocationStore.removeLocation()
                 }
@@ -1985,7 +1987,6 @@ export default defineComponent({
 
                 //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
                 await this.checkInternetStore.checkInternet();
-                if(!this.checkInternetStore.online)return;
 
                 axios.get('/getOneAds', {
                     params:{
@@ -2008,7 +2009,7 @@ export default defineComponent({
                         })
 
                         //Добавим Фото
-                        if(this.form.images[0] != 'no-image'){
+                        if(this.form.images.length > 0){
                             this.form.images.forEach(img=>{
                                 let obj = {};
                                 obj.previewImg = '/img/adsImg/' + img
@@ -2052,10 +2053,6 @@ export default defineComponent({
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
             await this.checkInternetStore.checkInternet()
-            if(!this.checkInternetStore.online){
-                this.query = false;
-                return;
-            }
 
             //Проверка рекаптчи если есть соединение идем далее
             this.$recaptchaLoaded()
@@ -2064,7 +2061,6 @@ export default defineComponent({
                     //Если связь есть, то получим токен нашей капчи
                     this.$recaptcha('login')
                         .then((token)=>{
-                            this.form.table_name = this.$route.params.table_name
 
                             //Добавим токен рекапчи в запрос
                             this.form.recaptcha_token = token;
@@ -2097,19 +2093,23 @@ export default defineComponent({
                                     return objectToFormData(data)
                                 }]
                             })
-                                .then((response)=>{
+                                .then(async (response) => {
                                     this.query = false;
+                                    let ads = response.data.ads;
+                                    let step = Number(this.$route.params.step)-1;
 
-                                    this.adsAdded = true;
+                                    if(step > 0){
+                                        // Выполняем операцию перехода по истории маршрутов
+                                        await this.$router.go(-step);
 
-                                    //Перейдем на покупку рекламы
-                                    if(this.$route.params.step == 1){
-                                        this.$router.replace('/bueAds/' + this.authStore.user.id  + '/' + this.$route.params.table_name + '/1/' + this.$route.params.id)
+                                        // Ждем некоторое время перед заменой маршрута
+                                        setTimeout(() => {
+                                            // После завершения операции перехода по истории маршрутов выполняем замену маршрута
+                                            this.$router.replace({ name: 'userAdsBueAds', params: { author_id: ads.author_id, ads_id: ads.id } });
+                                        }, 200); // Увеличиваем задержку до 200 миллисекунд
                                     }else{
-                                        //Откроем блок для покупки рекламы мы следим за этим в Whatch
-                                        this.$router.go(-(this.$route.params.step - 1))
+                                        this.$router.replace({ name: 'userAdsBueAds', params: { author_id: ads.author_id, ads_id: ads.id } });
                                     }
-
 
                                 })
                                 .catch((error)=>{ //Если на сервере ошибка
@@ -2123,7 +2123,7 @@ export default defineComponent({
                                 })
 
                         })
-                        .catch(()=>{
+                        .catch(()=>{ //Если токен капчи не получен
                             this.query = false;
                             Swal.fire({
                                 icon: 'question',
@@ -2149,13 +2149,11 @@ export default defineComponent({
 
                         //Переход на следующий шаг - Если не сохраняем объявление после редактирования
                         if(!save){
-                            this.$router.push({name: this.$route.name, params: {table_name: this.$route.params.table_name, step: Number(this.$route.params.step) +1}})
+                            this.$router.push({name: this.$route.name, params: {step: Number(this.$route.params.step) +1}})
                         }
                         else{
-
                             //Tel 2
                             this.form.tel2 != null && this.form.tel2.length < 3 ? this.form.tel2 = '' : '';
-
                             this.addOrUpdateAds();
                         }
                     }else{
@@ -2232,7 +2230,7 @@ export default defineComponent({
 
         // Если у нас в хранилеще есть начатое объявление то покажем блок уведомления
         if(this.$route.params.id == 'null' && localStorage.getItem("newAdsData=" + this.$route.params.table_name) != undefined){
-            this.showLocaleStorageAds = true;
+            this.showForm = false;
         }else{
             this.openModal();
         }

@@ -15,7 +15,7 @@ class KvartiraTableSeeder extends Seeder
      */
     public function run()
     {
-        Kvartira::factory()->count(5000)->create();
+        Kvartira::factory()->count(60)->create();
     }
 
     //Чтоб запустить

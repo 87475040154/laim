@@ -168,14 +168,14 @@ export default {
         showForm(table_name){
 
             if(this.authStore.user.role == 'admin'){
-                this.$router.push('/addAds/'+table_name +'/null/1')
+                this.$router.push({ name: 'allAdsAddAds', params: {id: 'null', step: 1} })
             }
             else{
                 //Проверка - Если у пользователя 10 Объявлений то не открывать форму
                 if(this.authStore.user.count_ads >= 10){
                     this.error = true;
                 }else{
-                    this.$router.push('/addAds/'+table_name+'/null/1')
+                    this.$router.push({name: 'allAdsAddAds', params: {id: 'null', step: 1} })
                 }
             }
         },
@@ -338,13 +338,12 @@ export default {
     margin: auto;
     width: 80px;
     height: 80px;
-    background-color: #f2f3f5;
     border-radius: 12px;
     color: #232222;
     font-size: 1.1em;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
     cursor: pointer;
+    border: 1px solid #434343;
 }
 
 .icon__wrapper:hover {

@@ -26,33 +26,12 @@ class GeneralAds extends Model
         //Заполняю таблицу данными
         $ads->fill($adsData);
 
-        // Поля которые нужно разбить на строку
-        $fields = ['mebel_arr', 'raznoe', 'bezopasnost', 'raspolojenie', 'kommunikacii'];
-        foreach($fields as $field){
-            if(isset($adsData[$field])){
-                $ads->$field = implode(',', $adsData[$field]);
-            }
-        }
-
-        //ЗАГРУЗКА ФОТО
-        //Статический метод куда передаю экземпляр запси объявления, и новые фото или '', имена старых фото или '' он загрузит или удалит и вернет
+        //ЗАГРУЗКА ФОТО //Статический метод куда передаю экземпляр запси объявления, и новые фото или '', имена старых фото или '' он загрузит или удалит и вернет
         //Вернет $ads->images = implode(',', $images);
-        UploadImage::uploadImage($ads,  $adsData['images'] ?? '', $adsData['old_images'] ?? '');
+        UploadImage::uploadImage($ads,  $adsData['images'] ?? [], $adsData['old_images'] ?? []);
 
-
-
-        // Укажем что оно активно и без жалоб
-        $ads->control = 'Активно';
-        $ads->complain = '';
-
-        //Если это редактирование то отменим обновление поля updated_at, так как при выборе на главной странице я получаю объявления по этому полю
-        if($adsData['addOrUpdate'] == 'update'){
-            $ads->timestamps = false;
-            $ads->save();
-        }
-        //Если новое объявление, Добавим данные пользователю что он добавил новое объявление чтоб при подаче нового можно отследить сколько подал этот пользователь объявлений
-        else{
-
+        //Если Добавляем новое объявление
+        if($adsData['addOrUpdate'] == 'add'){
             $ads->save();
 
             $user = User::find($ads->author_id);
@@ -60,8 +39,12 @@ class GeneralAds extends Model
             $user->tel = $adsData['tel'];
             $user->tel2 = $adsData['tel2'];
             $user->save();
+        } else{
+            $ads->control = 'Активно';
+            $ads->complain = [];
+            $ads->timestamps = false;
+            $ads->save();
         }
-
 
         return $ads;
     }

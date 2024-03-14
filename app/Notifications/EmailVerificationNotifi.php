@@ -12,15 +12,17 @@ class EmailVerificationNotifi extends Notification implements ShouldQueue
 
     use Queueable;
     public $token = '';
+    public $path = '';
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($token)
+    public function __construct($token, $path)
     {
         $this->token = $token;
+        $this->path = $path;
     }
 
     /**
@@ -48,7 +50,7 @@ class EmailVerificationNotifi extends Notification implements ShouldQueue
             ->line('Добро пожловать в рекламное агентство')
 
             ->line('Для активации нажмите на кнопку ниже')
-            ->action('Активировать аккаунт', url('/auth?accountActivationToken=' . $this->token))
+            ->action('Активировать аккаунт', url($this->path.'?accountActivationToken=' . $this->token))
             ->line('Если вы не регистрировались на сайте laim.kz, то просто проигнорируйте данное письмо');
     }
 

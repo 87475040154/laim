@@ -161,7 +161,10 @@ window.objectToFormData = serialize;
 import Router from './router/index'
 
 //Подключаем пакет Pinia глобальный Store
-import { createPinia } from 'pinia';
+import { createPinia } from 'pinia'
+import piniaPersist from 'pinia-plugin-persist'
+const pinia = createPinia()
+pinia.use(piniaPersist)
 
 //Авторизация через Google, Apple
 import vue3GoogleLogin from 'vue3-google-login'
@@ -169,7 +172,7 @@ import vue3GoogleLogin from 'vue3-google-login'
 import { i18nVue } from 'laravel-vue-i18n'
 
 app.use(VeeValidatePlugin)
-    .use(createPinia())
+    .use(pinia)
     .use(Router)
     .use(vuetify)
     .use(vue3GoogleLogin, {
