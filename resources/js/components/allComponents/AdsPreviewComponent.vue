@@ -574,7 +574,7 @@
                                         <v-btn dark icon
                                                size="x-large"
                                                color="blue-darken-2"
-                                               @click="$router.push({name: $route.name + 'AddAds', params: {id: ads.id, step:1}})"
+                                               @click="$router.push({name: $route.name + 'AddAds', params: {table_name: ads.table_name, id: ads.id, step:1}})"
                                         >
                                             <i class="bi bi-pencil-square"></i>
                                         </v-btn>

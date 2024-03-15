@@ -168,14 +168,14 @@ export default {
         showForm(table_name){
 
             if(this.authStore.user.role == 'admin'){
-                this.$router.push({ name: 'allAdsAddAds', params: {id: 'null', step: 1} })
+                this.$router.push({ name: 'allAdsAddAds', params: {table_name: table_name, id: 'null', step: 1} })
             }
             else{
                 //Проверка - Если у пользователя 10 Объявлений то не открывать форму
                 if(this.authStore.user.count_ads >= 10){
                     this.error = true;
                 }else{
-                    this.$router.push({name: 'allAdsAddAds', params: {id: 'null', step: 1} })
+                    this.$router.push({name: 'allAdsAddAds', params: {table_name: table_name, id: 'null', step: 1} })
                 }
             }
         },

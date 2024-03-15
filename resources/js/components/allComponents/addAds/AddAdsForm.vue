@@ -2332,7 +2332,9 @@ export default defineComponent({
 }
 
 .form__input{
-
+    display: flex;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .form__item{
@@ -2344,6 +2346,7 @@ export default defineComponent({
     border-radius: 10px;
     color: rgb(51, 51, 51);
     font-size: 16px;
+    white-space: nowrap;
 }
 
 .item__active{
