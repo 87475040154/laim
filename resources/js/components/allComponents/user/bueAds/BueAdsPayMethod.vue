@@ -385,7 +385,12 @@ export default {
 
    async  mounted(){
 
-        // FREEDOM PAY - Добавляем публичный ключ - и токен для проведения оплаты через Freedom
+       this.bueAdsPayMethodAnimation = true;
+
+       document.querySelector(':root').classList.add('PATCH_modal'); //Отменим прокрутку под этим компонентом
+
+
+       // FREEDOM PAY - Добавляем публичный ключ - и токен для проведения оплаты через Freedom
         try {
             await FreedomPaySDK.setup("-----BEGIN PUBLIC KEY-----\n" +
                 "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtebJwl/B5+aHfAzxHyd7\n" +
