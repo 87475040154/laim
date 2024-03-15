@@ -28,9 +28,7 @@
     @vite(['resources/js/app.js'])
 
     <!-- Передача значения config('app.url') в JavaScript -->
-    <script>
-        window.appUrl = "{{ config('app.url') }}";
-    </script>
+    <script>window.appUrl = "{{ config('app.url') }}";</script>
 
     <!-- Подключаю библиотеку JS SDK - Freedom Pay - для приема платежей-->
     <script>
@@ -41,6 +39,9 @@
             k.parentNode.insertBefore(d, k);
         })(document, 'script');
     </script>
+
+    <!-- Плагин комментариев-->
+    <script defer src="https://cdn.commento.io/js/commento.js"></script>
 
 </head>
 <body>
