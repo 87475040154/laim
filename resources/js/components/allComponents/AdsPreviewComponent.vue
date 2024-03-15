@@ -195,7 +195,7 @@
                         <div class="col pl-2">
 
                             <!--Блок - Описание объявления -->
-                            <div @click="showOneAds(ads, index)" role="button" class="d-flex align-start flex-column" style="height: 115px">
+                            <div @click="showOneAds(ads, index)" role="button" class="d-flex align-start flex-column" style="min-height: 115px">
 
                                 <!-- Заголовок -->
                                 <div style="font-size: 17px; color: #4b4b4b">
