@@ -361,13 +361,13 @@ export default {
 
         // FREEDOM PAY - Добавляем публичный ключ - и токен для проведения оплаты через Freedom
         try {
-            await FreedomPaySDK.setup('2hbyMxtqNqpMjwIfzG1A7QLMjDsxLntW','MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtebJwl/B5+aHfAzxHyd7\n' +
+            await FreedomPaySDK.setup('MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtebJwl/B5+aHfAzxHyd7\n' +
                 'h/+pjeHUS9TC70VW5slcDsn5yGnE+xqrEB2HHLTHBehoYmGxEEGshjA7HQpZe4Be\n' +
                 'FZY+d7D6f6PE0nsxo0fbq6YI4kY7MQW/BTwAKCb5W328j0mZB3L10WBd7gQCKUCA\n' +
                 'TE9qFBF1g6k1lMcgLB+zMB1NmxrVolD3pZYUqogwXBrTDVJsV2PrIZYqlu2HSD7+\n' +
                 'HLRhX70ZxpGtWO6BxxpzZ+SUPk99YlYPfN95QsRDQV2M/4e5uZp82R3yFf64ZgzR\n' +
                 'F1YhKv6aIn30KGFu5ZnnqvGuCI+Qn1xr9Ig2QNPdvhjx9Vh83ItQgGsLFNUZ73RK\n' +
-                '7wIDAQAB');
+                '7wIDAQAB','2hbyMxtqNqpMjwIfzG1A7QLMjDsxLntW');
 
             this.test();
             console.log('SDK FreedomPay инициализирован');
