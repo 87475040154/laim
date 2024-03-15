@@ -24,6 +24,9 @@
     <link rel="apple-touch-icon" href="/img/siteImg/allImg/logo.svg">
     <link rel="manifest" href="/manifest.json">
 
+    <!-- Плагин комментариев-->
+    <script defer src="https://cdn.commento.io/js/commento.js"></script>
+
     <!-- Главный js файл и Scss файл -->
     @vite(['resources/js/app.js'])
 
@@ -40,8 +43,6 @@
         })(document, 'script');
     </script>
 
-    <!-- Плагин комментариев-->
-    <script defer src="https://cdn.commento.io/js/commento.js"></script>
 
 </head>
 <body>
