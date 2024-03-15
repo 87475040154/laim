@@ -333,24 +333,53 @@ export default {
         },
 
       async test(){
-           const JSTokenizeOptionsBankCard = {
-               type: 'bank_card',
-               options: {
-                   card_number: "4444444444446666",
-                   card_holder_name: "test",
-                   card_exp_month: "12",
-                   card_exp_year: "24"
-               }
-           };
+          const JSPaymentOptions = {
+              order_id: "1", // должен быть уникальным на каждый запрос
+              auto_clearing: 0,
+              amount: 20,
+              currency: "KZT",
+              description: "Описание заказа",
+              test: 1,
+              options: {
+                  custom_params: {},
+                  user: {
+                      email: "client@email.com",
+                      phone: "+77777777777"
+                  }
+              },
+          };
 
-           try {
-               const JSTokenResponse = await FreedomPaySDK.tokenize(JSTokenizeOptionsBankCard);
-               console.log(JSTokenResponse)
-               console.log('11111111111111')
-           } catch(JSErrorObject) {
-               console.log(JSErrorObject)
-               console.log('22222222222222')
-           }
+          const JSTransactionOptionsBankCard = {
+              type: 'bank_card',
+              options: {
+                  card_number: "4444444444446666",
+                  card_holder_name: "test",
+                  card_exp_month: "12",
+                  card_exp_year: "24",
+                  card_cvv: 123
+              }
+          };
+
+          try {
+
+              let JSPayResult = await FreedomPaySDK.charge(
+                  JSPaymentOptions, JSTransactionOptionsBankCard
+              );
+
+              if (JSPayResult.payment_status === "need_confirm") {
+
+                  JSPayResult = await FreedomPaySDK.confirmInIframe(JSPayResult, "3dsForm");
+              }
+
+              // открыть страницу результата платежа и т д
+              // ...
+              console.log(JSPayResult);
+
+
+          } catch(JSErrorObject) {
+              // Обработать JSErrorObject.response
+              console.log(JSErrorObject);
+          }
         }
     },
 
