@@ -22,7 +22,7 @@
                         <div v-if="authStore.check" class="d-flex gap-3 align-center justify-end">
 
                             <!-- Мои обьявлениями -->
-                            <v-btn icon size="x-small" color="teal-lighten-1" variant="tonal"
+                            <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal"
                                    @click="$router.push({name:'userAds', params: {author_id: authStore.user.id}})"
                             >
                                 <v-badge v-if="getProjectDataStore.countReturnAds > 0" floating :content="getProjectDataStore.countReturnAds" color="error">
@@ -34,10 +34,10 @@
                             </v-btn>
 
                             <!-- Чаты -->
-                            <v-btn icon size="x-small" color="teal-lighten-1" variant="tonal"
+                            <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal"
                                    @click="$router.push({name: 'chat', params: {id: 'null'}})"
                             >
-                                <v-badge floating v-if="getProjectDataStore.countNewMessage > 0" :content="getProjectDataStore.countNewMessage" color="error" style="margin-botom: -5px">
+                                <v-badge floating v-if="getProjectDataStore.countNewMessage > 0" :content="getProjectDataStore.countNewMessage" color="error">
                                     <v-icon class="mt-n2" size="large">mdi-email-outline</v-icon>
                                 </v-badge>
                                 <v-icon v-else size="large">mdi-email-outline</v-icon>
@@ -45,7 +45,7 @@
                             </v-btn>
 
                             <!-- Мой аккаунт- Имя пользователя - Показать если авторизован -->
-                            <v-btn icon size="x-small" color="teal-lighten-1" variant="tonal"
+                            <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal"
                                    @click="$router.push({name: 'myAccount'})"
                             >
                                 <v-icon size="x-large">mdi-account-outline</v-icon>

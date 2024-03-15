@@ -39,8 +39,6 @@
             k.parentNode.insertBefore(d, k);
         })(document, 'script');
     </script>
-
-
 </head>
 <body>
     <div id="app"></div>
