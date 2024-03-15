@@ -352,7 +352,7 @@ export default {
           const JSTransactionOptionsBankCard = {
               type: 'bank_card',
               options: {
-                  card_number: "4444444444446666",
+                  card_number: "4111111111111111",
                   card_holder_name: "test",
                   card_exp_month: "12",
                   card_exp_year: "24",
