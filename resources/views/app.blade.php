@@ -44,9 +44,6 @@
 </head>
 <body>
     <div id="app"></div>
-
-    <!-- Плагин комментариев-->
-    <script defer src="https://cdn.commento.io/js/commento.js"></script>
 </body>
 
 </html>
