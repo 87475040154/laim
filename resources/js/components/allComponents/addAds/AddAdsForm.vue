@@ -2327,15 +2327,16 @@ export default defineComponent({
     font-size: 1.1em;
     font-weight: 600;
     line-height: 1.5rem;
-    color: #8b9098
+    color: #8b9098;
+    font-family: 'Open-Sans', sans-serif;
 }
 
 .form__input{
-    display: flex!important;
-    flex-wrap: wrap!important;
+
 }
 
 .form__item{
+    display: block;
     background: #f2f3f5;
     cursor: pointer;
     padding: 13px 15px;
