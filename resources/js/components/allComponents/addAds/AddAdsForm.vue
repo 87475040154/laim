@@ -11,7 +11,7 @@
             <div class="addAds__header">
 
                 <!-- Кнопка Назад / Заголовок старницы - что сдать / Закрыть форму или сохранить -->
-                <div class="row g-0 align-center text-teal-lighten-3" style="background: var(--app-header-bg-color);">
+                <div class="row g-0 align-center text-white" style="background: var(--app-header-bg-color);">
 
                     <!-- Кнопка Назад -->
                     <div class="col-auto">
@@ -22,7 +22,7 @@
                     </div>
 
                     <!-- Заголовок старницы - что сдать  -->
-                    <div class="col fw-bold text-body-1">
+                    <div class="col text-body-1">
 
                             <span v-if="updateDateLocaleStore.lang != 'kz'">
                                 <span v-if="$route.params.table_name != 'Snimu'">{{ form.addOrUpdate == 'add' ? $t('addAdsPass') : $t('addAdsEdit') }}</span>
