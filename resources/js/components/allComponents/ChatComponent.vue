@@ -164,7 +164,7 @@
                                             <div class="col pl-2">
 
                                                 <div @click="$router.push({name: 'chatOneAds' ,params: {ads_id: ads.ads_id }})"
-                                                     role="button" class="d-flex align-start flex-column" style="height: 115px"
+                                                     role="button" class="d-flex align-start flex-column" style="min-height: 115px"
                                                 >
 
                                                     <!-- Заголовок -->
