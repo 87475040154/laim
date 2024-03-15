@@ -517,7 +517,7 @@
                     || authStore.check && authStore.user.role == 'admin' && ads.control != 'В архиве'"
                     >
 
-                        <div class="d-flex align-center">
+                        <div class="d-flex justify-content-between align-center">
 
                             <!-- Кнопка сдать быстрее -->
                             <v-btn dark color="blue-darken-2"
@@ -529,10 +529,20 @@
                                 {{ $t('adsPreviewComponentPassFaster') }}
                             </v-btn>
 
-                            <!-- Просмотров -->
-                            <div class="flex-grow-1 text-body-2 text-center">
-                                {{ads.view}}
-                                <v-icon class="mx-1">mdi-eye-outline</v-icon>
+                            <!-- Просмотров - Взяли номера -->
+                            <div class="dropup-center dropup">
+
+                                <!-- Кнопка - Окрыть скрытое меню -->
+                                <v-btn icon size="x-large" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <v-icon>mdi-finance</v-icon>
+                                </v-btn>
+
+                                <!-- Тело - Скрытого меню-->
+                                <div class="dropdown-menu p-3">
+                                    <h4 class="text-center fw-bold mb-3">{{ $t('AdsPreviewAddStatistics') }}</h4>
+                                    <div>{{ $t('AdsPreviewAddViewed') }} : <span class="fw-bold">{{ads.view}}</span></div>
+                                    <div class="mt-2">{{ $t('AdsPreviewAddGotTheNumber') }} : <span class="fw-bold">{{ads.viewTel}}</span></div>
+                                </div>
                             </div>
 
                             <!-- Блок - Управление объявлением - для автора и админа -->
