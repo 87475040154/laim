@@ -39,6 +39,10 @@
             k.parentNode.insertBefore(d, k);
         })(document, 'script');
     </script>
+
+    <!-- Монетизация от Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3161673862071295"
+            crossorigin="anonymous"></script>
 </head>
 <body>
     <div id="app"></div>

@@ -529,7 +529,7 @@
 
                                 <!-- Кнопка лайк -->
                                 <span>
-                                    <v-icon :color="ads.userLike ? 'red' : 'grey-lighten-2'"
+                                    <v-icon :color="ads.userLike ? 'red' : 'grey-lighten-1'"
                                             class="icon__heart mx-1"
                                             size="large"
                                             @click="authStore.check ? addLikeToggle(index, ads): $router.push({name: $route.name + 'Auth'})"
@@ -547,7 +547,7 @@
                     </div>
 
                     <!--  - Управление объявлением - Продвигать рекламу - Сдать быстрее -->
-                    <div class="px-md-2 py-1 bg-grey-lighten-2"
+                    <div class="px-md-2 py-1 m-lg-2 bg-grey-lighten-2"
                          v-if="authStore.check && authStore.user.id == ads.author_id
                     && $route.name == 'userAds' && ads.control != 'В архиве'
                     || authStore.check && authStore.user.role == 'admin' && ads.control != 'В архиве'"

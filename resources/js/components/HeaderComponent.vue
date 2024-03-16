@@ -35,7 +35,7 @@
 
                             <!-- Чаты -->
                             <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal" @click="$router.push({name: 'chat', params: {id: 'null'}})">
-                                <v-badge floating v-if="getProjectDataStore.countNewMessage > 0" :content="getProjectDataStore.countNewMessage" color="error">
+                                <v-badge v-if="getProjectDataStore.countNewMessage > 0" :content="getProjectDataStore.countNewMessage" color="error">
                                     <v-icon size="large">mdi-email-outline</v-icon>
                                 </v-badge>
                                 <v-icon v-else size="large" class="icon-with-badge">mdi-email-outline</v-icon>
