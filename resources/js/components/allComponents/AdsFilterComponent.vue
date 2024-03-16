@@ -1108,7 +1108,7 @@ export default {
     font-size: 1.1em;
     font-weight: 600;
     line-height: 1.5rem;
-    color: #8b9098
+    color: #1a1c1e;
 }
 
 /* Поле */
