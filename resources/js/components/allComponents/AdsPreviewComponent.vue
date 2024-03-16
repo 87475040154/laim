@@ -46,149 +46,40 @@
                             <img v-if="ads.images.length > 0" @click="showImage(ads)" class="ads__preview-img rounded-2" :src=" '/img/adsImg/' + ads.images[0] " style="width: 100%; height: 150px; object-fit: cover; object-position: center" alt="Фото недвижимости">
                             <img v-else src="/public/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" style="width: 100%; height: 150px" class="ads__preview-img">
 
-                            <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
+                            <!-- Кто автор - Хозяин - Риелтор - В архиве - Не активно - -->
                             <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
 
-                                <!-- ТОП 30 -->
-                                <v-menu open-on-hover>
-                                    <template v-slot:activator="{ props }">
-                                        <div v-if="ads.top_x30 != null" class="icon__crown" v-bind="props">
-                                            <v-icon icon="mdi-crown" size="x-small" color="white"></v-icon>
-                                        </div>
-                                    </template>
-                                    <!-- x30 просмотров на месяц -->
-                                    <div class="bueAds__card">
+                                <div v-if="ads.control == 'В архиве'" class="bg-red p-1 px-2 rounded-lg">
+                                    {{ $t('AdsPreviewAddArhive') }}
+                                </div>
+                                <div v-if="ads.control == 'Поступили жалобы' && ads.author_id == authStore.user.id" class="bg-red p-1 px-2 rounded-lg">
+                                    {{ $t('AdsPreviewAddComplain') }}
+                                </div>
+                                <div v-if="ads.control == 'Активно' && ads.author_id == authStore.user.id" class="bg-green p-1 px-2 rounded-lg">
+                                    {{ $t('AdsPreviewAddActive') }}
+                                </div>
+                                <div v-if="ads.control == 'Не активно'" class="bg-blue p-1 px-2 rounded-lg">
+                                    {{ $t('AdsPreviewAddNoActive') }}
+                                </div>
 
-                                        <!-- Заголовок - x30 просмотров на месяц -->
-                                        <div class="d-flex py-2">
-
-                                            <!-- Иконка -->
-                                            <div class="mx-2 d-flex justify-center align-center rounded-circle"
-                                                 style="width: 21px; height: 21px; background: red"
-                                            >
-                                                <v-icon icon="mdi-crown" size="x-small" color="white"></v-icon>
-                                            </div>
-
-                                            <!-- Текст заголовок -->
-                                            <h5 class="fw-bold px-1">{{ $t('bueAdsIndexx30ViewsPerMonth') }}</h5>
-
-                                        </div>
-
-                                        <!-- Текст описания -->
-                                        <div class="d-flex">
-                                            <v-icon icon="mdi-check mx-2"></v-icon>
-                                            <div class="text-grey">{{ $t('bueAdsIndex28DaysOfActivePromotion') }}</div>
-                                        </div>
-                                        <div class="d-flex py-2">
-                                            <v-icon icon="mdi-check mx-2"></v-icon>
-                                            <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <v-icon icon="mdi-check mx-2"></v-icon>
-                                            <div class="text-grey">{{ $t('bueAdsIndexRedPainting') }}</div>
-                                        </div>
-
-                                    </div>
-                                </v-menu>
-
-                                <!-- ТОП 7 -->
-                                <v-menu open-on-hover>
-                                    <template v-slot:activator="{ props }">
-                                        <div v-if="ads.top_x7 != null" class="icon__diamond" v-bind="props">
-                                            <v-icon icon="mdi-diamond" size="x-small" color="white"></v-icon>
-                                        </div>
-                                    </template>
-                                    <!-- x7 просмотров на неделю -->
-                                    <div class="bueAds__card">
-
-                                        <!-- Заголовок - x7 просмотров на неделю -->
-                                        <div class="d-flex py-2">
-
-                                            <!-- Иконка -->
-                                            <div class="mx-2 d-flex justify-center align-center rounded-circle"
-                                                 style="width: 21px; height: 21px; background: #10a37f"
-                                            >
-                                                <v-icon icon="mdi-diamond" size="x-small" color="white"></v-icon>
-                                            </div>
-
-                                            <!-- Текст заголовок -->
-                                            <h5 class="fw-bold px-1">{{ $t('bueAdsIndexx7ViewsPerWeek') }}</h5>
-
-                                        </div>
-
-                                        <!-- Текст описания -->
-                                        <div class="d-flex ">
-                                            <v-icon icon="mdi-check mx-2"></v-icon>
-                                            <div class="text-grey">{{ $t('bueAdsIndex7DaysOfActivePromotion') }}</div>
-                                        </div>
-                                        <div class="d-flex py-2">
-                                            <v-icon icon="mdi-check mx-2"></v-icon>
-                                            <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <v-icon icon="mdi-check mx-2"></v-icon>
-                                            <div class="text-grey">{{ $t('bueAdsIndexGreenPainting') }}</div>
-                                        </div>
-                                    </div>
-                                </v-menu>
-
-                                <!-- ТОП 24 час -->
-                                <v-menu open-on-hover>
-                                    <template v-slot:activator="{ props }">
-                                        <div v-if="ads.top != null" class="icon__triangle" v-bind="props">
-                                            <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>
-                                        </div>
-                                    </template>
-                                    <div class="bueAds__card">
-
-                                        <!-- ТОП 24 часа -->
-                                        <div class="d-flex align-center">
-
-                                            <!-- Иконка -->
-                                            <div class="mx-3 d-flex justify-center align-center rounded-circle"
-                                                 style="width: 21px; height: 21px; background: orange"
-                                            >
-                                                <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>
-                                            </div>
-
-                                            <!-- Описание -->
-                                            <div class="flex-grow-1 align-center" >
-                                                <div>{{ $t('bueAdsIndexSendToTheTOP24Hours') }}</div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </v-menu>
-
-                                <!-- 8 Раз в ТОП за 24 часа -->
-                                <v-menu open-on-hover>
-                                    <template v-slot:activator="{ props }">
-                                        <div v-if="ads.top_8 != null" class="icon__triangle icon__triangleTOP8" v-bind="props">
-                                            <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>
-                                        </div>
-                                    </template>
-                                    <div class="bueAds__card">
-
-                                        <!-- Поднятие в ТОП каждые 3 часа -->
-                                        <div class="d-flex align-center">
-
-                                            <!-- Иконка -->
-                                            <div class="mx-3 d-flex justify-center align-center rounded-circle"
-                                                 style="width: 21px; height: 21px; background: #710250"
-                                            >
-                                                <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>
-                                            </div>
-
-                                            <!-- Описание -->
-                                            <div class="flex-grow-1 align-center" >
-                                                <div>{{ $t('bueAdsIndexSendToTheTOP8') }}</div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </v-menu>
+                                <div v-if="ads.ownerOrRealtor == 'Хозяин' && ads.author_id != authStore.user.id && ads.control != 'В архиве'" class="bg-green p-1 px-2 rounded-lg">
+                                    <span v-if="updateDateLocale.lang == 'ru'"> {{ads.ownerOrRealtor}} </span>
+                                    <span v-if="updateDateLocale.lang == 'kz'"> Иесі </span>
+                                    <span v-if="updateDateLocale.lang == 'en'"> Owner </span>
+                                </div>
+                                <div v-if="ads.ownerOrRealtor == 'Риелтор' && ads.author_id != authStore.user.id && ads.control != 'В архиве'" class="bg-blue p-1 px-2 rounded-lg">
+                                    <span v-if="updateDateLocale.lang == 'ru'"> {{ads.ownerOrRealtor}} </span>
+                                    <span v-if="updateDateLocale.lang == 'kz'"> Риелтор </span>
+                                    <span v-if="updateDateLocale.lang == 'en'"> Realtor </span>
+                                </div>
+                                <div v-if="ads.ownerOrRealtor == 'Через риелтора' && ads.author_id != authStore.user.id && ads.table_name == 'Snimu' && ads.control != 'В архиве'" class="bg-blue p-1 px-2 rounded-lg">
+                                    <span v-if="updateDateLocale.lang == 'ru'"> Можно от риелтора </span>
+                                    <span v-if="updateDateLocale.lang == 'kz'"> Мүмкін риелтордан </span>
+                                    <span v-if="updateDateLocale.lang == 'en'"> It is possible from a realtor </span>
+                                </div>
 
                             </div>
+
                         </div>
 
                         <!--Блок - Описание объявления -->
@@ -492,10 +383,155 @@
 
                                 <v-spacer></v-spacer>
 
+                                <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
+                                <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
+
+                                    <!-- ТОП 30 -->
+                                    <v-menu open-on-hover>
+                                        <template v-slot:activator="{ props }">
+                                            <div v-if="ads.top_x30 != null" class="icon__crown" v-bind="props">
+                                                <v-icon icon="mdi-crown" size="x-small" color="white"></v-icon>
+                                            </div>
+                                        </template>
+                                        <!-- x30 просмотров на месяц -->
+                                        <div class="bueAds__card">
+
+                                            <!-- Заголовок - x30 просмотров на месяц -->
+                                            <div class="d-flex py-2">
+
+                                                <!-- Иконка -->
+                                                <div class="mx-2 d-flex justify-center align-center rounded-circle"
+                                                     style="width: 21px; height: 21px; background: red"
+                                                >
+                                                    <v-icon icon="mdi-crown" size="x-small" color="white"></v-icon>
+                                                </div>
+
+                                                <!-- Текст заголовок -->
+                                                <h5 class="fw-bold px-1">{{ $t('bueAdsIndexx30ViewsPerMonth') }}</h5>
+
+                                            </div>
+
+                                            <!-- Текст описания -->
+                                            <div class="d-flex">
+                                                <v-icon icon="mdi-check mx-2"></v-icon>
+                                                <div class="text-grey">{{ $t('bueAdsIndex28DaysOfActivePromotion') }}</div>
+                                            </div>
+                                            <div class="d-flex py-2">
+                                                <v-icon icon="mdi-check mx-2"></v-icon>
+                                                <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
+                                            </div>
+                                            <div class="d-flex">
+                                                <v-icon icon="mdi-check mx-2"></v-icon>
+                                                <div class="text-grey">{{ $t('bueAdsIndexRedPainting') }}</div>
+                                            </div>
+
+                                        </div>
+                                    </v-menu>
+
+                                    <!-- ТОП 7 -->
+                                    <v-menu open-on-hover>
+                                        <template v-slot:activator="{ props }">
+                                            <div v-if="ads.top_x7 != null" class="icon__diamond" v-bind="props">
+                                                <v-icon icon="mdi-diamond" size="x-small" color="white"></v-icon>
+                                            </div>
+                                        </template>
+                                        <!-- x7 просмотров на неделю -->
+                                        <div class="bueAds__card">
+
+                                            <!-- Заголовок - x7 просмотров на неделю -->
+                                            <div class="d-flex py-2">
+
+                                                <!-- Иконка -->
+                                                <div class="mx-2 d-flex justify-center align-center rounded-circle"
+                                                     style="width: 21px; height: 21px; background: #10a37f"
+                                                >
+                                                    <v-icon icon="mdi-diamond" size="x-small" color="white"></v-icon>
+                                                </div>
+
+                                                <!-- Текст заголовок -->
+                                                <h5 class="fw-bold px-1">{{ $t('bueAdsIndexx7ViewsPerWeek') }}</h5>
+
+                                            </div>
+
+                                            <!-- Текст описания -->
+                                            <div class="d-flex ">
+                                                <v-icon icon="mdi-check mx-2"></v-icon>
+                                                <div class="text-grey">{{ $t('bueAdsIndex7DaysOfActivePromotion') }}</div>
+                                            </div>
+                                            <div class="d-flex py-2">
+                                                <v-icon icon="mdi-check mx-2"></v-icon>
+                                                <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
+                                            </div>
+                                            <div class="d-flex">
+                                                <v-icon icon="mdi-check mx-2"></v-icon>
+                                                <div class="text-grey">{{ $t('bueAdsIndexGreenPainting') }}</div>
+                                            </div>
+                                        </div>
+                                    </v-menu>
+
+                                    <!-- ТОП 24 час -->
+                                    <v-menu open-on-hover>
+                                        <template v-slot:activator="{ props }">
+                                            <div v-if="ads.top != null" class="icon__triangle" v-bind="props">
+                                                <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>
+                                            </div>
+                                        </template>
+                                        <div class="bueAds__card">
+
+                                            <!-- ТОП 24 часа -->
+                                            <div class="d-flex align-center">
+
+                                                <!-- Иконка -->
+                                                <div class="mx-3 d-flex justify-center align-center rounded-circle"
+                                                     style="width: 21px; height: 21px; background: orange"
+                                                >
+                                                    <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>
+                                                </div>
+
+                                                <!-- Описание -->
+                                                <div class="flex-grow-1 align-center" >
+                                                    <div>{{ $t('bueAdsIndexSendToTheTOP24Hours') }}</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </v-menu>
+
+                                    <!-- 8 Раз в ТОП за 24 часа -->
+                                    <v-menu open-on-hover>
+                                        <template v-slot:activator="{ props }">
+                                            <div v-if="ads.top_8 != null" class="icon__triangle icon__triangleTOP8" v-bind="props">
+                                                <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>
+                                            </div>
+                                        </template>
+                                        <div class="bueAds__card">
+
+                                            <!-- Поднятие в ТОП каждые 3 часа -->
+                                            <div class="d-flex align-center">
+
+                                                <!-- Иконка -->
+                                                <div class="mx-3 d-flex justify-center align-center rounded-circle"
+                                                     style="width: 21px; height: 21px; background: #710250"
+                                                >
+                                                    <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>
+                                                </div>
+
+                                                <!-- Описание -->
+                                                <div class="flex-grow-1 align-center" >
+                                                    <div>{{ $t('bueAdsIndexSendToTheTOP8') }}</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </v-menu>
+
+                                </div>
+
                                 <!-- Кнопка лайк -->
                                 <span>
-                                    <v-icon :color="ads.userLike ? 'red' : 'grey-lighten-3'"
+                                    <v-icon :color="ads.userLike ? 'red' : 'grey-lighten-2'"
                                             class="icon__heart mx-1"
+                                            size="large"
                                             @click="authStore.check ? addLikeToggle(index, ads): $router.push({name: $route.name + 'Auth'})"
                                     >
                                     mdi-heart
@@ -721,7 +757,7 @@ export default {
             localStorage.setItem('oneAdsIndex', index)
             localStorage.setItem('oneAds', JSON.stringify(ads))
 
-            this.$router.push({name: this.$route.name + "OneAds" ,params: {ads_id: ads.id }})
+            this.$router.push({name: this.$route.name + "OneAds" ,params: {ads_id: ads.id, table_name: ads.table_name }})
         },
 
         // Показать фото

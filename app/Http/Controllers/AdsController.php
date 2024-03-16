@@ -347,14 +347,14 @@ class AdsController extends Controller
             $query->whereIn('id', $request->arr_ads_id)
                 ->orderBy('bueAds', 'desc')
                 ->orderBy('updated_at', 'desc')
-                ->select(['id', 'author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30','bueAds','updated_at', 'created_at']);
+                ->select(['id', 'author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images','control','ownerOrRealtor','srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30','bueAds','updated_at', 'created_at']);
 
             $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(20) : $query->paginate(20);
         }
 
         //Если запрос получить мои лайки
         if($request->getMyLikeAds == 'Получить мои лайки'){
-            $query->select(['id','author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30', 'created_at']);
+            $query->select(['id','author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images','control','ownerOrRealtor', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30', 'created_at']);
             $ads_arr = $query->paginate(20);
         }
 
@@ -362,7 +362,7 @@ class AdsController extends Controller
         if($filter != 'Фильтр не применен' && $filter['arhiv'] != '' && $request->getMyLikeAds == 'Не получать мои лайки' && !isset($request->getAdsYandexClusterer)){
             $query->where('control', 'В архиве')
             ->latest()
-            ->select(['id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images','updated_at', 'created_at']);
+            ->select(['id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images','control','ownerOrRealtor','updated_at', 'created_at']);
 
             $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(20) : $query->paginate(20);
         }
@@ -377,7 +377,7 @@ class AdsController extends Controller
             $query->where('control', 'Активно')
                 ->orderBy('bueAds', 'desc')
                 ->orderBy('updated_at', 'desc')
-                ->select(['id','author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30','bueAds','updated_at', 'created_at']);
+                ->select(['id','author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images','control','ownerOrRealtor', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30','bueAds','updated_at', 'created_at']);
 
             $ads_arr = $request->cursorPaginate == 'true' ? $query->cursorPaginate(20) : $query->paginate(20);
 

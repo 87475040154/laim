@@ -26,7 +26,7 @@
                                    @click="$router.push({name:'userAds', params: {author_id: authStore.user.id}})"
                             >
                                 <v-badge v-if="getProjectDataStore.countReturnAds > 0" floating :content="getProjectDataStore.countReturnAds" color="error">
-                                    <v-icon class="mt-n2" size="x-large">mdi-bullhorn-outline</v-icon>
+                                    <v-icon size="x-large">mdi-bullhorn-outline</v-icon>
                                 </v-badge>
                                 <v-icon v-else  size="x-large">mdi-bullhorn-outline</v-icon>
 
@@ -34,13 +34,11 @@
                             </v-btn>
 
                             <!-- Чаты -->
-                            <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal"
-                                   @click="$router.push({name: 'chat', params: {id: 'null'}})"
-                            >
+                            <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal" @click="$router.push({name: 'chat', params: {id: 'null'}})">
                                 <v-badge floating v-if="getProjectDataStore.countNewMessage > 0" :content="getProjectDataStore.countNewMessage" color="error">
-                                    <v-icon class="mt-n2" size="large">mdi-email-outline</v-icon>
+                                    <v-icon size="large">mdi-email-outline</v-icon>
                                 </v-badge>
-                                <v-icon v-else size="large">mdi-email-outline</v-icon>
+                                <v-icon v-else size="large" class="icon-with-badge">mdi-email-outline</v-icon>
                                 <v-tooltip activator="parent" location="bottom">{{ $t('headerChats') }}</v-tooltip>
                             </v-btn>
 

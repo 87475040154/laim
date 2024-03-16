@@ -2333,12 +2333,11 @@ export default defineComponent({
 
 .form__input{
     display: flex;
-    max-width: 100%;
-    overflow-x: auto;
+    flex-wrap: wrap;
 }
 
 .form__item{
-    display: block;
+    flex-grow: 1;
     background: #f2f3f5;
     cursor: pointer;
     padding: 13px 15px;
