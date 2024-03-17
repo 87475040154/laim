@@ -665,18 +665,6 @@
 
                 </v-card>
 
-                <!-- Реклама от Google adsense-->
-                <!-- Вставляем рекламу после каждых 10 элементов или в конец, если меньше 10 элементов -->
-                <amp-ad width="100vw" height="320"
-                        type="adsense"
-                        data-ad-client="ca-pub-3161673862071295"
-                        data-ad-slot="2291121767"
-                        data-auto-format="rspv"
-                        data-full-width=""
-                        v-if="(index + 1) % 10 === 0 || (index === ads_arr.length - 1 && ads_arr.length < 10)">
-                    <div overflow=""></div>
-                </amp-ad>
-
             </DynamicScrollerItem>
 
         </template>

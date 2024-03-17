@@ -16,7 +16,7 @@
             <swiper  @swiper="onSwiper" :mousewheel="true" :slides-per-view="1" :space-between="0" :grabCursor="true"
                      :keyboard="true" :zoom="true" :thumbs="{ swiper: swiper2 }" :modules="modules"
                      @touchMoveOpposite="touchMove = 'Свайп'" @touchEnd="touchMove == 'Свайп' ? $router.back():''"
-                     class="mySwiper"
+                     :pagination="{ type: 'fraction'}" class="mySwiper"
             >
 
                 <!-- Вывод самого слайда - то-есть 1-го фото -->
@@ -28,17 +28,6 @@
                     <!-- Кнопки перетаскивания -->
                     <div class="swiper-button-next" @click="swiper1.slidePrev()"></div>
                     <div class="swiper-button-prev" @click="swiper1.slideNext()"></div>
-                </swiper-slide>
-
-            </swiper>
-
-            <!-- Слайдер - 2 -->
-            <swiper @swiper="onSwiper2"  :mousewheel="true" :slides-per-view="5"
-                    :space-between="0" :freeMode="true" :watchSlidesProgress="true" :modules="modules" class="mySwiper2">
-
-                <!-- Вывод самого слайда - то-есть 1-го фото -->
-                <swiper-slide  v-for="(img, i) in imageStore.images" :key="i">
-                    <img :src="img.previewImg" alt="Фото квартир">
                 </swiper-slide>
 
             </swiper>
@@ -62,7 +51,7 @@ import 'swiper/scss/free-mode';
 import 'swiper/scss/thumbs';
 import { Pagination, Mousewheel, Zoom, Keyboard, Thumbs, FreeMode} from 'swiper';
 
-//Модальное окно Bootstrap
+// Импортирую Store - общее состояние
 import {useImagesStore} from "../../stores/images";
 
 export default {
@@ -81,7 +70,6 @@ export default {
             //Настройки слайдера swiper
             touchMove: '',
             swiper1: null, //Первый слайдер
-            swiper2 : null, //Второй слайдер
             modules: [Pagination, Mousewheel, Zoom, Keyboard, FreeMode,Thumbs],
 
             isDragging: false, // Флаг для определения, идет ли перетаскивание
@@ -93,12 +81,6 @@ export default {
         onSwiper(swiper){
             this.swiper1 = swiper;
         },
-
-        //Второй слайдер
-        onSwiper2(swiper){
-            this.swiper2 = swiper;
-        },
-
     },
 
     mounted(){
@@ -119,6 +101,20 @@ export default {
 </script>
 
 <style scoped>
+/* Стили для слайдера */
+::v-deep(.swiper-pagination-fraction){
+    width: auto;
+    color: #ffffff;
+    background: none;
+    border-radius: 3px;
+    padding: 0 2px;
+    top: 15px;
+    right: auto;
+    left: 60px;
+    bottom: auto;
+    font-size: 1em;
+}
+
 .swiper-button-next, .swiper-button-prev{
     position: absolute;
     top:0;
@@ -195,25 +191,9 @@ export default {
 }
 
 .mySwiper {
-    height: 90%;
+    height: 100%;
     width: 100%;
     position: relative;
-}
-
-.mySwiper2 {
-    height: 10%;
-    box-sizing: border-box;
-    padding: 10px 0;
-}
-
-.mySwiper2 .swiper-slide {
-    width: 25%;
-    height: 100%;
-    opacity: 0.4;
-}
-
-.mySwiper2 .swiper-slide-thumb-active {
-    opacity: 1;
 }
 
 .swiper-slide img {
