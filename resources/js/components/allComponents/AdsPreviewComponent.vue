@@ -36,15 +36,15 @@
                     <div class="d-flex p-md-2">
 
                         <!-- Фото -->
-                        <div class="position-relative" role="button" style="width: 170px; max-height: 150px; overflow: hidden">
+                        <div class="image__block">
 
                             <!-- Срочно торг -->
                             <div v-if="ads.srochno_torg" style="position: absolute; top: 5px; left: 5px;" class="bg-yellow-darken-2 rounded-sm text-caption px-1">
                                 {{ $t('adsPreviewComponentUrgentBargaining') }}
                             </div>
 
-                            <img v-if="ads.images.length > 0" @click="showImage(ads)" class="ads__preview-img rounded-2" :src=" '/img/adsImg/' + ads.images[0] " style="width: 100%; height: 150px; object-fit: cover; object-position: center" alt="Фото недвижимости">
-                            <img v-else src="/public/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" style="width: 100%; height: 150px" class="ads__preview-img">
+                            <img v-if="ads.images.length > 0" @click="showImage(ads)" class="ads__preview-img rounded-2" :src=" '/img/adsImg/' + ads.images[0] " alt="Фото недвижимости">
+                            <img v-else src="/public/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" class="ads__preview-img">
 
                             <!-- Кто автор - Хозяин - Риелтор - В архиве - Не активно - -->
                             <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
@@ -916,16 +916,51 @@ export default {
     font-size: 0.7em;
 }
 
+.image__block{
+    position: relative;
+    width: 90px;
+    max-height: 90px;
+    overflow: hidden;
+}
+
+.ads__preview-img{
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+    object-position: center
+}
+
+@media screen and (min-width: 321px){
+    .image__block{
+        width: 130px;
+        max-height: 110px;
+    }
+
+    .ads__preview-img{
+        height: 110px;
+    }
+}
+
+@media screen and (min-width: 390px){
+    .image__block{
+        width: 170px;
+        max-height: 150px;
+    }
+
+    .ads__preview-img{
+        height: 150px;
+    }
+}
+
 
 /* Стили для иконок */
 .icon__crown, .icon__diamond, .icon__triangle{
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 5px;
     border-radius: 50%;
-    width: 21px;
-    height: 21px;
+    width: 19px;
+    height: 19px;
     background: red
 }
 .icon__crown{
