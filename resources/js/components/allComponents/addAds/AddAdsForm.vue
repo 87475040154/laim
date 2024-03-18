@@ -316,7 +316,7 @@
                         </div>
 
                         <!-- Количество комнат  -->
-                        <div v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Snimu'" class="form-group mt-3">
+                        <div v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Snimu'" class="form-group my-3">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $route.params.table_name == 'Ofis' ? $t('addAdsNumberOfCabinets') : $t('addAdsNumberOfRooms') }}</div>
@@ -1276,10 +1276,10 @@
 
 
                         <!-- Заголовок -->
-                        <h2 class="text-center py-2 pb-4 fw-bold">{{ updateDateLocaleStore.lang == 'ru' ? 'Текст объявления' : ''}}{{ updateDateLocaleStore.lang == 'kz' ? 'Хабарландыру мәтіні' : ''}}{{ updateDateLocaleStore.lang == 'en' ? 'Ad text' : ''}}</h2>
+                        <h2 class="text-center py-2 pb-4 fw-bold">{{ updateDateLocaleStore.lang == 'ru' ? 'Описание и цена' : ''}}{{ updateDateLocaleStore.lang == 'kz' ? 'Сипаттама және баға' : ''}}{{ updateDateLocaleStore.lang == 'en' ? 'Description and price' : ''}}</h2>
 
                         <!-- Цена в месяц - За кв.м, за все -->
-                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie' || $route.params.table_name == 'Magazin' || $route.params.table_name == 'Prombaza' || $route.params.table_name == 'Prochaya'" class="form-group">
+                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie' || $route.params.table_name == 'Magazin' || $route.params.table_name == 'Prombaza' || $route.params.table_name == 'Prochaya'" class="py-3">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $t('addAdsPricePerMonth') }}</div>
@@ -1304,7 +1304,7 @@
                         </div>
 
                         <!-- Цена -->
-                        <div class="form-group pt-4">
+                        <div class="py-3">
 
                             <validation-provider rules="required|min:3|max:11" v-model="form.cena" name="cena" v-slot="{ errors }" >
 
