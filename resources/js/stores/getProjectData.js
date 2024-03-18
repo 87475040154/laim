@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-
 import {useAuthStore} from "./auth";
 
 export const useGetProjectDataStore = defineStore('getProjectData', {
@@ -38,15 +37,6 @@ export const useGetProjectDataStore = defineStore('getProjectData', {
                     }
 
                 })
-                .catch(errors=>{
-
-                    //Зацикливаю вызов данной функции если пользователь онлайн
-                    if(useAuthStore().check){
-                        setTimeout(function(){
-                            this.getProjectData();
-                        }, 30000);
-                    }
-                })
         },
 
         //Обновить колличество новых смс
@@ -54,7 +44,10 @@ export const useGetProjectDataStore = defineStore('getProjectData', {
             this.COUNT_NEW_MESSAGE -= count;
         },
 
-    }
-
+    },
 } )
 
+// Вызываем метод getProjectData
+window.onload = function() {
+    useGetProjectDataStore().getProjectData();
+};

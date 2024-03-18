@@ -352,7 +352,7 @@ export default {
           const JSTransactionOptionsBankCard = {
               type: 'bank_card',
               options: {
-                  card_number: "4111111111111111",
+                  card_number: "4916307416334310",
                   card_holder_name: "test",
                   card_exp_month: "12",
                   card_exp_year: "24",
@@ -368,6 +368,7 @@ export default {
 
               if (JSPayResult.payment_status === "need_confirm") {
 
+                  console.log('dasdasdasdas');
                   JSPayResult = await FreedomPaySDK.confirmInIframe(JSPayResult, "3dsForm");
               }
 

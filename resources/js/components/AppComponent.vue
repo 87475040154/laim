@@ -59,10 +59,6 @@ export default {
 
     created() {
         let app = this;
-
-        //Получим данные пользователя если он авторизован
-        app.authStore.getUser();
-
     },
 
     mounted() {
@@ -76,11 +72,6 @@ export default {
         else {
             app.authStore.desktopOrMob('Desktop');
             document.getElementsByTagName('html')[0].classList.add('desktop__device');
-        }
-
-        //При перезагрузки страницы - вызоз на получение данных о проекте если пользователь авторизован - К-во новых смс, и если поступили 5 жалоб
-        if(this.authStore.check){
-            this.getProjectDataStore.getProjectData();
         }
 
         //Мультиязык

@@ -78,7 +78,7 @@ export const useAuthStore = defineStore('auth', {
     persist: {
         enabled: true,
         strategies: [
-            { storage: sessionStorage, paths: ['CHECK_AUTH',] },
+            { storage: sessionStorage, paths: ['CHECK_AUTH','USER_DATA'] },
         ],
     },
 

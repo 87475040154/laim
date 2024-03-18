@@ -33,6 +33,9 @@ class ProjectDataController extends Controller
 
         //Укажем когда пользователь был онлайн
         $user = User::find($request->user_id);
+       if($user == null)return response()->json(['error'=>'error'], 422);
+
+
         $user->last_active = now();
         $user->save();
 
