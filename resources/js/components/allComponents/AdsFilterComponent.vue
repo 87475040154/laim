@@ -1120,6 +1120,7 @@ export default {
 /* Кнопка */
 .form__item{
     flex-grow: 1;
+    width: 150px;
     background: #f2f3f5;
     cursor: pointer;
     padding: 15px 20px;

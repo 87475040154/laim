@@ -299,10 +299,10 @@
                             <validation-provider rules="required" v-model="form.period_arendi" name="period_arendi" v-slot="{ errors }">
 
                                 <div class="form__input">
-                                    <div @click="form.period_arendi = 'На длительно'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'На длительно'}" style="width: 150px"> {{ $t('addAdsForALongTime') }} </div>
-                                    <div @click="form.period_arendi = 'Посуточно'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'Посуточно'}" style="width: 150px"> {{ $t('addAdsDaily') }} </div>
-                                    <div @click="form.period_arendi = 'По часам'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'По часам'}" style="width: 150px"> {{ $t('addAdsByTheHour') }} </div>
-                                    <div @click="form.period_arendi = 'На подселение'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'На подселение'}" style="width: 150px"> {{ $t('addAdsForSharing') }} </div>
+                                    <div @click="form.period_arendi = 'На длительно'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'На длительно'}"> {{ $t('addAdsForALongTime') }} </div>
+                                    <div @click="form.period_arendi = 'Посуточно'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'Посуточно'}"> {{ $t('addAdsDaily') }} </div>
+                                    <div @click="form.period_arendi = 'По часам'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'По часам'}"> {{ $t('addAdsByTheHour') }} </div>
+                                    <div @click="form.period_arendi = 'На подселение'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'На подселение'}"> {{ $t('addAdsForSharing') }} </div>
                                 </div>
 
                                 <!-- Вывожу ошибки - veevalidate, vform -->
@@ -392,51 +392,6 @@
 
                         </div>
 
-                        <!-- Цена в месяц - За кв.м, за все -->
-                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie' || $route.params.table_name == 'Magazin' || $route.params.table_name == 'Prombaza' || $route.params.table_name == 'Prochaya'" class="form-group">
-
-                            <!-- Заголовок -->
-                            <div class="form__title">{{ $t('addAdsPricePerMonth') }}</div>
-
-                            <!-- Поле -->
-                            <validation-provider rules="required" v-model="form.cena_tip" name="cena_tip" v-slot="{ errors }">
-
-                                <div class="form__input">
-                                    <span @click="form.cena_tip = 'За все'" class="form__item" :class="{'item__active':form.cena_tip == 'За все'}">{{ $t('addAdsForEverything') }}</span>
-                                    <span @click="form.cena_tip = 'За кв.м'" class="form__item" :class="{'item__active':form.cena_tip == 'За кв.м'}">{{ $t('addAdsPerSqM') }}</span>
-                                </div>
-
-                                <!-- Вывожу ошибки - veevalidate, vform -->
-                                <div class="text__error">
-                                    <span >{{ errors[0] }}</span>
-                                    <has-error :form="form" field="cena_tip"></has-error>
-                                </div>
-
-                            </validation-provider>
-
-
-                        </div>
-
-                        <!-- Цена -->
-                        <div class="form-group pt-4">
-
-                            <validation-provider rules="required|min:3|max:11" v-model="form.cena" name="cena" v-slot="{ errors }" >
-
-                                <v-text-field
-                                    v-model="form.cena"
-                                    id="cena_field"
-                                    name="cena" type="text" :label="cena"
-                                    inputmode="numeric"
-                                    variant="outlined" color="blue"
-                                    v-number="number"
-
-                                    :error-messages="form.errors.has('cena') ? form.errors.get('cena'):'' || errors[0]"
-                                    @focus="form.errors.clear('cena')"
-                                ></v-text-field>
-
-                            </validation-provider>
-
-                        </div>
 
                         <!-- Этаж - Этажность -->
                         <div class="form-group row g-0 gap-3" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie'|| $route.params.table_name == 'Magazin'">
@@ -1322,6 +1277,52 @@
 
                         <!-- Заголовок -->
                         <h2 class="text-center py-2 pb-4 fw-bold">{{ updateDateLocaleStore.lang == 'ru' ? 'Текст объявления' : ''}}{{ updateDateLocaleStore.lang == 'kz' ? 'Хабарландыру мәтіні' : ''}}{{ updateDateLocaleStore.lang == 'en' ? 'Ad text' : ''}}</h2>
+
+                        <!-- Цена в месяц - За кв.м, за все -->
+                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie' || $route.params.table_name == 'Magazin' || $route.params.table_name == 'Prombaza' || $route.params.table_name == 'Prochaya'" class="form-group">
+
+                            <!-- Заголовок -->
+                            <div class="form__title">{{ $t('addAdsPricePerMonth') }}</div>
+
+                            <!-- Поле -->
+                            <validation-provider rules="required" v-model="form.cena_tip" name="cena_tip" v-slot="{ errors }">
+
+                                <div class="form__input">
+                                    <span @click="form.cena_tip = 'За все'" class="form__item" :class="{'item__active':form.cena_tip == 'За все'}">{{ $t('addAdsForEverything') }}</span>
+                                    <span @click="form.cena_tip = 'За кв.м'" class="form__item" :class="{'item__active':form.cena_tip == 'За кв.м'}">{{ $t('addAdsPerSqM') }}</span>
+                                </div>
+
+                                <!-- Вывожу ошибки - veevalidate, vform -->
+                                <div class="text__error">
+                                    <span >{{ errors[0] }}</span>
+                                    <has-error :form="form" field="cena_tip"></has-error>
+                                </div>
+
+                            </validation-provider>
+
+
+                        </div>
+
+                        <!-- Цена -->
+                        <div class="form-group pt-4">
+
+                            <validation-provider rules="required|min:3|max:11" v-model="form.cena" name="cena" v-slot="{ errors }" >
+
+                                <v-text-field
+                                    v-model="form.cena"
+                                    id="cena_field"
+                                    name="cena" type="text" :label="cena"
+                                    inputmode="numeric"
+                                    variant="outlined" color="blue"
+                                    v-number="number"
+
+                                    :error-messages="form.errors.has('cena') ? form.errors.get('cena'):'' || errors[0]"
+                                    @focus="form.errors.clear('cena')"
+                                ></v-text-field>
+
+                            </validation-provider>
+
+                        </div>
 
                         <!-- Поле -->
                         <validation-provider rules="required|min:1|max:2000" v-model="form.text_obyavleniya" name="text_obyavleniya" v-slot="{ errors }">
@@ -2338,6 +2339,7 @@ export default defineComponent({
 
 .form__item{
     flex-grow: 1;
+    width: 150px;
     background: #f2f3f5;
     cursor: pointer;
     padding: 13px 15px;
