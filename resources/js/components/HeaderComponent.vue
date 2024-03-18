@@ -25,25 +25,31 @@
                             <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal"
                                    @click="$router.push({name:'userAds', params: {author_id: authStore.user.id}})"
                             >
-                                <v-badge v-if="getProjectDataStore.countReturnAds > 0" floating :content="getProjectDataStore.countReturnAds" color="error">
-                                    <v-icon size="x-large">mdi-bullhorn-outline</v-icon>
-                                </v-badge>
-                                <v-icon v-else  size="x-large">mdi-bullhorn-outline</v-icon>
+                                <div class="rounded-lg text-white fw-bold"
+                                     style="position: absolute; top: -3px; right: -8px; background: #c00;; z-index:2; padding: 3px 5px"
+                                     v-if="getProjectDataStore.countReturnAds > 0"
+                                >
+                                   {{getProjectDataStore.countReturnAds}}
+                                </div>
+                                <v-icon size="x-large">mdi-bullhorn-outline</v-icon>
 
                                 <v-tooltip activator="parent" location="bottom">{{ $t('headerMy') }}</v-tooltip>
                             </v-btn>
 
                             <!-- Чаты -->
                             <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal" @click="$router.push({name: 'chat', params: {id: 'null'}})">
-                                <v-badge v-if="getProjectDataStore.countNewMessage > 0" :content="getProjectDataStore.countNewMessage" color="error">
-                                    <v-icon size="large">mdi-email-outline</v-icon>
-                                </v-badge>
-                                <v-icon v-else size="large" class="icon-with-badge">mdi-email-outline</v-icon>
+                                <div class="rounded-lg text-white fw-bold"
+                                     style="position: absolute; top: -3px; right: -8px; background: #c00;; z-index:2; padding: 3px 5px"
+                                     v-if="getProjectDataStore.countNewMessage > 0"
+                                >
+                                    {{getProjectDataStore.countNewMessage}}
+                                </div>
+                                <v-icon size="large" class="icon-with-badge">mdi-email-outline</v-icon>
                                 <v-tooltip activator="parent" location="bottom">{{ $t('headerChats') }}</v-tooltip>
                             </v-btn>
 
                             <!-- Мой аккаунт- Имя пользователя - Показать если авторизован -->
-                            <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal"
+                            <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal" class="position-relative"
                                    @click="$router.push({name: 'myAccount'})"
                             >
                                 <v-icon size="x-large">mdi-account-outline</v-icon>
@@ -52,7 +58,6 @@
 
                         </div>
                     </div>
-
 
                     <!-- Кнопка Подать Объявление -->
                     <div class="mx-3">

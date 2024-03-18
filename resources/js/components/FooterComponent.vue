@@ -81,10 +81,16 @@
 
             <!-- Мои объявления -->
             <div  class="footer__mobile-link" @click="authStore.check ?$router.push({name:'userAds', params: {author_id: authStore.user.id}}) : $router.push({name: $route.name + 'Auth'})">
-                <v-badge floating v-if="authStore.check && getProjectDataStore.countReturnAds > 0" :content="getProjectDataStore.countReturnAds" color="error">
-                    <i class="bi bi-megaphone"></i>
-                </v-badge>
-                <i v-else class="bi bi-megaphone"></i>
+
+
+                <i class="bi bi-megaphone position-relative">
+                    <div class="rounded-lg text-white fw-bold"
+                         style="position: absolute; top: -10px; right: -15px; background: #c00; padding: 0px 6px; font-size: 12px"
+                         v-if="getProjectDataStore.countReturnAds > 0"
+                    >
+                        {{getProjectDataStore.countReturnAds}}
+                    </div>
+                </i>
                 <div style="font-size: 0.5em; line-height: 8px">{{ $t('footerMy') }}</div>
             </div>
 
@@ -95,10 +101,14 @@
 
             <!-- Чаты -->
             <div  class="footer__mobile-link" @click="authStore.check ? $router.push({ name: 'chat', params: {id: 'null'} }) : $router.push({name: $route.name + 'Auth'})">
-                <v-badge v-if="authStore.check && getProjectDataStore.countNewMessage > 0" :content="getProjectDataStore.countNewMessage" color="error">
-                    <i class="bi bi-envelope"></i>
-                </v-badge>
-                <i v-else class="bi bi-envelope"></i>
+                <i class="bi bi-envelope position-relative">
+                    <div class="rounded-lg text-white fw-bold"
+                         style="position: absolute; top: -10px; right: -15px; background: #c00; padding: 0px 6px; font-size: 12px"
+                         v-if="getProjectDataStore.countNewMessage > 0"
+                    >
+                        {{getProjectDataStore.countNewMessage}}
+                    </div>
+                </i>
                 <div style="font-size: 0.5em; line-height: 8px">{{ $t('footerChats') }}</div>
 
             </div>
