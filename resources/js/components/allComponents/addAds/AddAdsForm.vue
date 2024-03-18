@@ -1456,7 +1456,7 @@
                                     <!-- Input -->
                                     <v-text-field
                                         v-model="form.nomer_doma" type="text"
-                                        name="nomer_doma" :label="$t('addAdsHouse')"
+                                        name="nomer_doma" :label="$t('addAdsHouseText')"
                                         variant="outlined" color="blue"
                                         :error-messages="form.errors.has('nomer_doma') ? form.errors.get('nomer_doma'):'' || errors[0]"
                                         @input="form.errors.clear('nomer_doma')"
