@@ -123,7 +123,7 @@
 
                                 <v-text-field
                                     v-model="form.zagolovok"
-                                    name="zagolovok" :label="$t('addAdsTitleAdd')"
+                                    name="zagolovok" :label="$t('addAdsTitle')"
                                     type="text"
                                     counter maxlength="40"
                                     variant="outlined" color="blue"
@@ -360,7 +360,7 @@
                         </div>
 
                         <!-- Магазин - Местоположение -->
-                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Magazin'" class="form-group">
+                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Magazin'" class="form-group py-2">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $t('addAdsLocation') }}</div>
