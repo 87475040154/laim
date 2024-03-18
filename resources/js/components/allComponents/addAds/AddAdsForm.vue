@@ -2354,6 +2354,7 @@ export default defineComponent({
     color: rgb(51, 51, 51);
     font-size: 16px;
     white-space: nowrap;
+    overflow: hidden;
 }
 
 .item__active{

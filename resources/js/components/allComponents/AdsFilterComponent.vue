@@ -1128,6 +1128,7 @@ export default {
     border-radius: 10px;
     color: rgb(51, 51, 51);
     font-size: 16px;
+    overflow: hidden;
 }
 
 /* Выбранная кнопка */
