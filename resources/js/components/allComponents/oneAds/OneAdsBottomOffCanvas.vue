@@ -28,7 +28,7 @@
                     <h4 v-if="$route.params.type == 'Скачать или поделиться фото'">{{ $t('oneAdsBottomOffCanvasDownloadPhotos') }}</h4>
                     <h4 v-if="$route.params.type == 'Поделиться объявлением'">{{ $t('oneAdsBottomOffCanvasShareAnAd') }}</h4>
 
-                    <!-- Кнопка назад -->
+                    <!-- Кнопка закрыть блок -->
                     <v-btn role="button" icon size="small" variant="text"
                            class="mx-1"
                            style="position: absolute; top: 5px; right: 5px"
@@ -242,7 +242,7 @@ export default {
 
             this.query = true;
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           await this.checkInternetStore.checkInternet()
+           this.checkInternetStore.checkInternet()
 
             this.form.sender_id = this.authStore.user.id;
             this.form.recipient_id = this.ads.author_id;
@@ -278,7 +278,7 @@ export default {
            this.query = true;
 
            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           await this.checkInternetStore.checkInternet()
+           this.checkInternetStore.checkInternet()
 
             axios.post('/addComplain', {
                 ads_id: this.ads.id,
@@ -308,7 +308,7 @@ export default {
         async linkShare(type) {
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
             //Поделиться с номером телефона автора
             if(type == 'С номером автора'){
@@ -331,7 +331,7 @@ export default {
         async downloadImage(){
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
             this.ads.images.forEach(elem=>{
                 let link = document.createElement("a");
@@ -344,7 +344,7 @@ export default {
         async shareImage(){
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
             let files = [];
             for (const item of this.ads.images) {

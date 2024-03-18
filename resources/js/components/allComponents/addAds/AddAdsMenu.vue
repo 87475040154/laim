@@ -190,7 +190,7 @@ export default {
         document.querySelector(':root').classList.add('PATCH_modal'); // Отменим прокрутку под компонентом
 
         //Получим новые данные User
-        await this.checkInternetStore.checkInternet()
+        this.checkInternetStore.checkInternet()
         this.authStore.getUser();
 
         if(this.authStore.user.role == 'user' && this.authStore.user.count_ads >= 10){

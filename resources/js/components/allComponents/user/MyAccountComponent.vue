@@ -138,7 +138,7 @@ export default {
         async downloadDogovorArendy(){
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
             let link = document.createElement("a");
             link.setAttribute("href",'/docs_pdf/dogovor_arendy.pdf');
@@ -150,7 +150,7 @@ export default {
         async shareDogovorArendy(){
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
             const response = await fetch("/docs_pdf/dogovor_arendy.pdf");
             const buffer = await response.arrayBuffer();
@@ -165,7 +165,7 @@ export default {
         //Метод выхода с аккаунта
         async logout(){
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
             // Убедитесь, что 'ls' инициализирована перед использованием метода getItem()
             if (localStorage.getItem('getMyLikeAds') !== undefined) {

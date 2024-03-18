@@ -184,7 +184,7 @@ export default {
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
             this.query = true;
-           await this.checkInternetStore.checkInternet()
+           this.checkInternetStore.checkInternet()
 
             this.form.user_id = this.authStore.user.id;
 

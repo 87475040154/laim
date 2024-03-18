@@ -118,7 +118,7 @@ export default {
             this.query = true;
 
            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           await this.checkInternetStore.checkInternet();
+           this.checkInternetStore.checkInternet();
 
             //Получаю объявления по выбранной локации
             axios.get('/getAllAds', {

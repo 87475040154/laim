@@ -125,7 +125,7 @@ export default {
            this.query = true;
 
            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           await this.checkInternetStore.checkInternet();
+           this.checkInternetStore.checkInternet();
 
            //Обнулим данные
            this.ads_arr = {};
@@ -159,6 +159,9 @@ export default {
         getAdsMobileCursorPaginate() {
 
             if( this.query || this.nextCursor == null )return;
+
+            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
+            this.checkInternetStore.checkInternet();
 
             this.query = true;
 

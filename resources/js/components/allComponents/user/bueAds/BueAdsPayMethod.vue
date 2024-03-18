@@ -220,8 +220,7 @@ export default {
         async addOrderDB(){
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
-            if(!this.checkInternetStore.online)return;
+            this.checkInternetStore.checkInternet()
 
             this.query = true;
 
@@ -237,7 +236,7 @@ export default {
 
                     //Метод оплаты чере Карту - Freedom Pay
                     this.doPaymentFreedomPay(response.data.order);
-
+                    this.query = false;
                 })
                 .catch((errors)=>{
                     // Если возникла ошибка при добавлении заказа в БД

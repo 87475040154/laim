@@ -68,13 +68,13 @@
                                 <!-- Вывод выбранной локации -->
                                 <div v-if="KZLocationStore.location != ''">
                                     <div class="mb-1">
-                                        {{KZLocationStore.oblast}}
+                                        {{ KZLocationStore.translateLocation({oblast: KZLocationStore.location.oblast}).oblast }}
                                     </div>
                                     <span v-if="KZLocationStore.location.gorod != null">
-                                        {{KZLocationStore.gorod}}
+                                        {{ KZLocationStore.translateLocation({gorod: KZLocationStore.location.gorod}).gorod }}
                                     </span>
-                                    <span v-if="KZLocationStore.location.raion != null">,
-                                        {{KZLocationStore.raion}}
+                                    <span v-if="KZLocationStore.location.raion != null">
+                                        , {{ KZLocationStore.translateLocation({raion: KZLocationStore.location.raion}).raion }}
                                     </span>
                                 </div>
 

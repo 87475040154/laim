@@ -18,7 +18,14 @@ export const useUpdateDateLocaleStore = defineStore('updateDateLocale', {
         updateLang(lang){
            this.LANG = lang;
         }
-    }
+    },
+
+    persist: {
+        enabled: true,
+        strategies: [
+            { storage: localStorage, paths: ['LANG'] },
+        ],
+    },
 
 } )
 

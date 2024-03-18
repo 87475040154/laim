@@ -19,7 +19,11 @@
                 <!-- Header -->
                 <div class="lang__header">
 
-                    <!-- Кнопка назад -->
+                    <h4 v-if="lang == 'ru' ">Выберите язык</h4>
+                    <h4 v-if="lang == 'kz' ">Тілді таңдаңыз</h4>
+                    <h4 v-if="lang == 'en' ">Choose language</h4>
+
+                    <!-- Кнопка закрыть блок -->
                     <v-btn role="button" icon size="small" variant="text"
                            class="mx-1"
                            style="position: absolute; top: 5px; right: 5px"

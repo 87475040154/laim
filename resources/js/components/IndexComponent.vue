@@ -153,7 +153,7 @@ export default {
         }
     },
 
-    watch: {
+     watch: {
 
         //Отслеживаем изменение маршрута
         '$route' (to, from) {
@@ -169,19 +169,26 @@ export default {
         //Отслеживаем примение фильтра
         'filterStore.make_filter'() {
             this.count_ads = 0;
-            this.getAds();
+            if(this.$route.params.page == 1){
+                this.getAds();
+            }else{
+                setTimeout(()=>{
+                    this.$router.replace({name: 'allAds', params: {table_name: this.$route.params.table_name, page: 1}})
+                },500)
+            }
+
         }
     },
 
     methods: {
 
         //Метод - Получить объявления обычной постраничной навигацией для Desktop
-        async getAds() {
+        getAds() {
 
             this.query = true;
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet();
+            this.checkInternetStore.checkInternet();
 
             //Обнулим данные
             this.ads_arr = {};
@@ -223,6 +230,9 @@ export default {
         // Метод получения объявлений на мобильных устройствах - курсорной погинацией - и иногда обычной
         getAdsMobileCursorPaginate() {
             if( this.query || this.nextCursor == null )return;
+
+            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
+            this.checkInternetStore.checkInternet();
 
             this.query = true;
 
@@ -318,7 +328,6 @@ export default {
                 this.showMapButton = false;
             }
         },
-
     },
 
     mounted(){

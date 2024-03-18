@@ -290,7 +290,7 @@ export default {
         async getLocations(location){
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
             location == 'null'? location = null: '';
 
@@ -350,7 +350,7 @@ export default {
 
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
 
             //Узнаем и добавим координаты перед занесением
@@ -392,7 +392,7 @@ export default {
             this.query = true;
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
 
             this.form.put('/KZLocation/updateLocation')
@@ -444,7 +444,7 @@ export default {
                     this.query = true;
 
                     //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-                    await this.checkInternetStore.checkInternet()
+                    this.checkInternetStore.checkInternet()
 
                     axios.delete('/KZLocation/delete/' + location_id)
                         .then(response=>{

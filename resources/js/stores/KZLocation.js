@@ -6,17 +6,11 @@ export const useKZLocationStore= defineStore('KZLocation', {
     //Свойства
     state: ()=>({
         LOCATION: '',
-        OBLAST: '',
-        GOROD: '',
-        RAION: ''
     }),
 
     //Получаем доступ к свойствам
     getters: {
         location: ( state )=> state.LOCATION,
-        oblast: ( state )=> state.OBLAST,
-        gorod: ( state )=> state.GOROD,
-        raion: ( state )=> state.RAION,
     },
 
     actions: {
@@ -24,15 +18,19 @@ export const useKZLocationStore= defineStore('KZLocation', {
         //Занесем
         addLocation(location){
             this.LOCATION = location;
-            this.translateLocation(location)
         },
 
         // Перевести локации
-        async translateLocation(location){
+        translateLocation(location){
             const lang = useUpdateDateLocaleStore().lang;
+
+            let oblast_translate = '';
+            let gorod_translate = '';
+            let raion_translate = '';
+
             if(location.oblast != null){
                 if(lang == 'ru'){
-                    this.OBLAST = location.oblast;
+                    oblast_translate = location.oblast;
                 }
                 if(lang == 'kz'){
                     const oblastTranslations = {
@@ -57,7 +55,7 @@ export const useKZLocationStore= defineStore('KZLocation', {
                         'Туркестанская обл.': 'Түркістан обл.',
                         'Улытауская обл.': 'Ұлытау обл.'
                     };
-                    this.OBLAST = oblastTranslations[location.oblast];
+                    oblast_translate = oblastTranslations[location.oblast];
                 }
                 if(lang == 'en'){
                     const oblastTranslations = {
@@ -82,12 +80,12 @@ export const useKZLocationStore= defineStore('KZLocation', {
                         'Туркестанская обл.': 'Turkestan region',
                         'Улытауская обл.': 'Ulytau region'
                     };
-                    this.OBLAST = oblastTranslations[location.oblast];
+                    oblast_translate = oblastTranslations[location.oblast];
                 }
             }
             if(location.gorod != null){
                 if(lang == 'ru'){
-                    this.GOROD = location.gorod;
+                    gorod_translate = location.gorod;
                 }
                 if(lang == 'kz'){
                     const gorodTranslations = {
@@ -200,7 +198,7 @@ export const useKZLocationStore= defineStore('KZLocation', {
                         'Каражал': 'Қаражал',
                         'Сатпаев': 'Сәтбаев',
                     };
-                    this.GOROD = gorodTranslations[location.gorod];
+                    gorod_translate = gorodTranslations[location.gorod];
                 }
                 if(lang == 'en'){
                     const gorodTranslations = {
@@ -313,12 +311,12 @@ export const useKZLocationStore= defineStore('KZLocation', {
                         'Каражал': 'Karazhal',
                         'Сатпаев': 'Satpaev'
                     };
-                    this.GOROD = gorodTranslations[location.gorod];
+                    gorod_translate = gorodTranslations[location.gorod];
                 }
             }
             if(location.raion != null){
                 if(lang == 'ru'){
-                    this.RAION = location.raion;
+                    raion_translate = location.raion;
                 }
                 if(lang == 'kz'){
                     const raionTranslations = {
@@ -343,7 +341,7 @@ export const useKZLocationStore= defineStore('KZLocation', {
                         'Казыбек би р-н': 'Қазыбек би ау.',
                         'Алихана Бокейханова р-н': 'Әлихан Бөкейханов ау.'
                     };
-                    this.RAION = raionTranslations[location.raion];
+                    raion_translate = raionTranslations[location.raion];
                 }
                 if(lang == 'en'){
                     const raionTranslations = {
@@ -368,11 +366,11 @@ export const useKZLocationStore= defineStore('KZLocation', {
                         'Казыбек би р-н': 'Kazybek bi district',
                         'Алихана Бокейханова р-н': 'Alikhana Bokeikhanov district'
                     };
-                    this.RAION = raionTranslations[location.raion];
+                    raion_translate = raionTranslations[location.raion];
                 }
             }
 
-            return {oblast: this.OBLAST, gorod: this.GOROD, raion: this.RAION}
+            return {oblast: oblast_translate, gorod: gorod_translate, raion: raion_translate}
         },
 
         //Занесем установшик

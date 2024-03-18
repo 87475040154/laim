@@ -338,7 +338,7 @@ export default {
             }
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
             //Проверяем и получаем рекаптчу и отпровляем данные на сервер
             this.$recaptchaLoaded().then(()=>{
@@ -452,7 +452,7 @@ export default {
        async accountActivation(accountActivationToken){
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
             axios.get('/sanctum/csrf-cookie').then(response => {
 
@@ -530,7 +530,7 @@ export default {
 
             this.query = true;
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
             //Авторизации Sanctum перед входом нужно получить доступ
             axios.get('/sanctum/csrf-cookie').then(response => {

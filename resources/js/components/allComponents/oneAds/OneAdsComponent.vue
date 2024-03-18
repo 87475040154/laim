@@ -154,10 +154,10 @@
                             <div class="ml-3">
                                 <span v-if="ads.table_name!='Snimu'"  style="text-transform: capitalize">{{ ads.ulica }}, {{ads.nomer_doma}}</span>
                                 <div class="text-grey">
-                                    {{ translateLoc('gorod', ads.gorod)}}
+                                    {{ KZLocationStore.translateLocation({gorod: ads.gorod}).gorod }}
 
                                     <span v-if="ads.raion != undefined && ads.raion != ''">,
-                                        {{ translateLoc('raion', ads.raion)}}
+                                        {{ KZLocationStore.translateLocation({raion: ads.raion}).raion }}
                                     </span>
                                 </div>
                             </div>
@@ -978,11 +978,6 @@ export default {
     },
 
     computed: {
-
-        gorod(type){
-            return type + '1111111';
-        },
-
         tipObekta(){
             if(this.ads.tip_obekta == 'Прочая'){
                 return this.ads.zagolovok;
@@ -1013,7 +1008,7 @@ export default {
             }
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           await this.checkInternetStore.checkInternet()
+           this.checkInternetStore.checkInternet()
 
             axios.get('/getOneAds', {
                 params:{
@@ -1096,7 +1091,7 @@ export default {
         async addLikeToggle(){
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
             if(!this.checkInternetStore.online)return;
 
             //Добавим лайк если будет ошибка то уберем
@@ -1135,11 +1130,6 @@ export default {
             this.swiper.slidePrev();
         },
 
-        // Перевод локации
-        translateLoc(type, location){
-            this.KZLocationStore.translateLocation({ [type]: location });
-            return this.KZLocationStore[type];
-        }
     },
 
 

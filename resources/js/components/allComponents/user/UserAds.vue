@@ -115,7 +115,7 @@ export default {
            this.query = true;
 
            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           await this.checkInternetStore.checkInternet();
+           this.checkInternetStore.checkInternet();
 
             this.ads_arr = {};
             this.user_data = '';

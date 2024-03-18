@@ -360,7 +360,7 @@
                         </div>
 
                         <!-- Магазин - Местоположение -->
-                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Magazin'" class="form-group py-2">
+                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Magazin'" class="form-group py-3">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $t('addAdsLocation') }}</div>
@@ -618,7 +618,7 @@
                         </div>
 
                         <!-- Интернет - Модем, Через TV кабель, проводной, оптика -->
-                        <div class="form-group">
+                        <div class="form-group" v-if="$route.params.table_name != 'Snimu'">
 
                             <div class="form__title">
                                 {{ $t('addAdsTheInternet') }}
@@ -1388,9 +1388,15 @@
 
                                 <!-- Вывод выбранной локации -->
                                 <div v-if="KZLocationStore.location.oblast != null">
-                                    <div class="mb-1">{{KZLocationStore.oblast}}</div>
-                                    <span v-if="KZLocationStore.location.gorod != null">{{KZLocationStore.gorod}}</span>
-                                    <span v-if="KZLocationStore.location.raion != null">{{KZLocationStore.raion}}</span>
+                                    <div class="mb-1">
+                                        {{ KZLocationStore.translateLocation({oblast: KZLocationStore.location.oblast}).oblast }}
+                                    </div>
+                                    <span v-if="KZLocationStore.location.gorod != null">
+                                        {{ KZLocationStore.translateLocation({gorod: KZLocationStore.location.gorod}).gorod }}
+                                    </span>
+                                    <span v-if="KZLocationStore.location.raion != null">
+                                        , {{ KZLocationStore.translateLocation({raion: KZLocationStore.location.raion}).raion }}
+                                    </span>
                                 </div>
 
                                 <!-- Весь Казахстан -->
@@ -1854,7 +1860,7 @@ export default defineComponent({
             if(from.params.step == 6 && to.params.step == 7){
 
                 //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-                await this.checkInternetStore.checkInternet()
+                this.checkInternetStore.checkInternet()
 
 
                 if (this.address.count == 0){
@@ -1987,7 +1993,7 @@ export default defineComponent({
             if(this.$route.params.id != 'null'){
 
                 //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-                await this.checkInternetStore.checkInternet();
+                this.checkInternetStore.checkInternet();
 
                 axios.get('/getOneAds', {
                     params:{
@@ -2053,7 +2059,7 @@ export default defineComponent({
             this.query = true;
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            await this.checkInternetStore.checkInternet()
+            this.checkInternetStore.checkInternet()
 
             //Проверка рекаптчи если есть соединение идем далее
             this.$recaptchaLoaded()
@@ -2171,7 +2177,7 @@ export default defineComponent({
 
         //Получить координаты при перемещении маркера по карте
         async getCoordinate(e) {
-           await this.checkInternetStore.checkInternet()
+           this.checkInternetStore.checkInternet()
            this.form.lat = e.get('coords')[0];
            this.form.lon = e.get('coords')[1];
            this.coordinates = e.get('coords');
