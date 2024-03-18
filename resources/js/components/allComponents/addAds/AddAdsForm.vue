@@ -1924,17 +1924,17 @@ export default defineComponent({
 
             if(this.form.period_arendi == 'На длительно' || this.form.period_arendi == 'На подселение'){
                 if(this.updateDateLocaleStore.lang == 'ru')return 'Цена / В месяц'
-                if(this.updateDateLocaleStore.lang == 'kz')return 'Бағасы / айына'
+                if(this.updateDateLocaleStore.lang == 'kz')return 'Баға / айына'
                 if(this.updateDateLocaleStore.lang == 'en')return 'Price / Per month'
             }
             if(this.form.period_arendi == 'Посуточно'){
                 if(this.updateDateLocaleStore.lang == 'ru')return 'Цена / В сутки'
-                if(this.updateDateLocaleStore.lang == 'kz')return 'Бағасы / тәулігіне'
+                if(this.updateDateLocaleStore.lang == 'kz')return 'Баға / тәулігіне'
                 if(this.updateDateLocaleStore.lang == 'en')return 'Price / Per day'
             }
             if(this.form.period_arendi == 'По часам'){
                 if(this.updateDateLocaleStore.lang == 'ru')return 'Цена / В час'
-                if(this.updateDateLocaleStore.lang == 'kz')return 'Бағасы / сағатына'
+                if(this.updateDateLocaleStore.lang == 'kz')return 'Баға / сағатына'
                 if(this.updateDateLocaleStore.lang == 'en')return 'Price / Per hour'
             }
 
