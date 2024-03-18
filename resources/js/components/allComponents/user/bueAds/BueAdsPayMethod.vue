@@ -341,7 +341,6 @@ export default {
               description: "Описание заказа",
               test: 1,
               options: {
-                  custom_params: {},
                   user: {
                       email: "client@email.com",
                       phone: "+77777777777"
@@ -368,7 +367,7 @@ export default {
 
               if (JSPayResult.payment_status === "need_confirm") {
 
-                  console.log('dasdasdasdas');
+                  console.log('need_confirm');
                   JSPayResult = await FreedomPaySDK.confirmInIframe(JSPayResult, "3dsForm");
               }
 
