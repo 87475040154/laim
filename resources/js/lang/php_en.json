@@ -635,22 +635,13 @@
     "bueAdsPayMethodQIWIWallet": "QIWI wallet",
     "bueAdsPayMethodPersonalAccount": "Personal account",
     "bueAdsPayMethodUnits": "Units",
-    "bueAdsPayMethodError": "Mistake! Try again.",
+    "bueAdsPayMethodError": "Mistake! Try again",
     "bueAdsPayMethodCardNumber": "Card number",
     "bueAdsPayMethodMonthYear": "MM / YY",
     "bueAdsPayMethodCardHolderName": "Name of the cardholder",
     "bueAdsPayMethodToPay": "To pay",
-
-
-
-
-
-    "bueResultBuyingAds": "Buying ads",
-    "bueResultAdvertisingIsActivated": "Advertising is activated",
-    "bueResultAnAdvertisementHasBeenAddedToYourAd": "An advertisement has been added to your ad",
-    "bueResultError": "Mistake",
-    "bueResultPaymentError": "Payment error",
-    "bueResultCreateANewPaymentRequest": "Create a new payment request"
+    "bueAdsPayMethodSuccessText1": "Payment successful",
+    "bueAdsPayMethodSuccessText2": "In the near future, promotion from lime.kz will be added to your ad"
 
 
 

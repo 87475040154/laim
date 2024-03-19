@@ -88,6 +88,6 @@ Route::post('/addAdsViewTelStatistic', [AdsController::class, 'addAdsViewTelStat
 //Локация Казахстана
 Route::get('/KZLocation/getLocations', [KZLocationController::class, 'getLocations']);//Получить Локации
 
-// Проверка покупки рекламы
-Route::post('/user/checkBueAds', [UserController::class, 'checkBueAds']);//Проверка покупки рекламы
+// Добавление продвижение - удаление заявки
+Route::post('/user/addAdsPromotion', [UserController::class, 'addAdsPromotion']);// Подключение продвижения
 Route::delete('/user/deleteOrderDB', [UserController::class, 'deleteOrderDB']);//Удалить заказ с БД если при оплате произошла ошибка

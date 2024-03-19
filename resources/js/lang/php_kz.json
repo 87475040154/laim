@@ -636,20 +636,14 @@
     "bueAdsPayMethodQIWIWallet": "QIWI-әмиян",
     "bueAdsPayMethodPersonalAccount": "Жеке шот",
     "bueAdsPayMethodUnits": "Бірліктер",
-    "bueAdsPayMethodError": "Қате! Қайталап көріңіз.",
+    "bueAdsPayMethodError": "Қате! Қайталап көріңіз",
     "bueAdsPayMethodCardNumber": "Карта нөмірі",
     "bueAdsPayMethodMonthYear": "АА / ЖЖ",
     "bueAdsPayMethodCardHolderName": "Карта иесінің аты",
     "bueAdsPayMethodToPay": "Төлеу",
+    "bueAdsPayMethodSuccessText1": "Төлем сәтті өтті",
+    "bueAdsPayMethodSuccessText2": "Жақын арада сіздің жарнамаңызға lime.kz жарнамасы қосылады"
 
-
-
-    "bueResultBuyingAds": "Жарнама сатып алу",
-    "bueResultAdvertisingIsActivated": "Жарнама іске қосылды",
-    "bueResultAnAdvertisementHasBeenAddedToYourAd": "Сіздің жарнамаңызға жарнама қосылды",
-    "bueResultError": "Қате",
-    "bueResultPaymentError": "Төлем қатесі",
-    "bueResultCreateANewPaymentRequest": "Жаңа төлем сұрауын жасаңыз"
 
 }
 

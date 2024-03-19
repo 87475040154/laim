@@ -124,8 +124,8 @@ class UserController extends Controller
 
     }
 
-    // После оплаты автоматически будет вызываться этот метод системой оплаты куда передается информация об оплате
-    public function checkBueAds(Request $request)
+    // Подключим рекламу к объявлению
+    public function addAdsPromotion(Request $request)
     {
 
         //Получим - Запись заказа
@@ -143,24 +143,24 @@ class UserController extends Controller
 
 
         //Если платеж прошел - добавим рекламу на объявление
-        $className = 'App\\' . $bueAds->table_name;
+        $className = 'App\\Models\Ads\\' . $bueAds->table_name;
         $ads = $className::find($bueAds->ads_id);
 
-        if ($bueAds == 'Top x30') {
+        if ($bueAds->bue_ads_type == 'Top x30') {
             $ads->bueAds = Carbon::now();
-            $ads->top = Carbon::now();
+            $ads->top = Null;
             $ads->top_x7 = Null;
             $ads->top_x30 = Carbon::now();
         }
-        else if ($bueAds == 'Top x7') {
+        else if ($bueAds->bue_ads_type == 'Top x7') {
             $ads->bueAds = Carbon::now();
-            $ads->top = Carbon::now();
+            $ads->top = Null;
             $ads->top_x7 = Carbon::now();
             $ads->top_x30 = Null;
         }
         else{
-            $bueAds = explode(',', $bueAds->bue_ads_type);
-            foreach ($bueAds as $type) {
+            $bueAdsType = explode(',', $bueAds->bue_ads_type);
+            foreach ($bueAdsType as $type) {
                 if ($type == 'Срочно торг') $ads->srochno_torg = 1;
                 if ($type == 'Топ 24') {
                     $ads->bueAds = Carbon::now();

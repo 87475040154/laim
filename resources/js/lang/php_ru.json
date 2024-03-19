@@ -635,17 +635,13 @@
     "bueAdsPayMethodQIWIWallet": "QIWI-кошелек",
     "bueAdsPayMethodPersonalAccount": "Личный счёт",
     "bueAdsPayMethodUnits": "Ед.",
-    "bueAdsPayMethodError": "Ошибка! Попробуйте еще раз.",
+    "bueAdsPayMethodError": "Ошибка! Попробуйте еще раз",
     "bueAdsPayMethodCardNumber": "Номер карты",
     "bueAdsPayMethodMonthYear": "MM / ГГ",
     "bueAdsPayMethodCardHolderName": "Имя владельца карты",
     "bueAdsPayMethodToPay": "Оплатить",
+    "bueAdsPayMethodSuccessText1": "Оплата прошла успешно",
+    "bueAdsPayMethodSuccessText2": "В ближайшее время на ваше объявление будет добавлено продвижение от lime.kz"
 
 
-    "bueResultBuyingAds": "Покупка рекламы",
-    "bueResultAdvertisingIsActivated": "Реклама активированна",
-    "bueResultAnAdvertisementHasBeenAddedToYourAd": "На ваше объявление была добавлена реклама",
-    "bueResultError": "Ошибка",
-    "bueResultPaymentError": "Ошибка оплаты",
-    "bueResultCreateANewPaymentRequest": "Создайте новый запрос на оплату"
 }

@@ -36,29 +36,8 @@
                 <!-- Body -->
                 <div class="bueAdsPayMethod__body">
 
-                    <!-- При успешной операции покажем этот код -->
-                    <div v-if="success" class="text-center">
-                        <div v-if="updateDateLocaleStore.lang == 'ru'">
-                            <h4>Поздравдяем!</h4>
-                            <div>Оплата прошла успешно</div>
-                            <div>В ближайшее время к вашему объявлению будет добавлено продвижение от lime.kz</div>
-                        </div>
-
-                        <div v-if="updateDateLocaleStore.lang == 'kz'">
-                            <h4>Құттықтаймыз!</h4>
-                            <div>Төлем сәтті өтті</div>
-                            <div>Жақын арада сіздің жарнамаңызға lime.kz жарнамасы қосылады</div>
-                        </div>
-
-                        <div v-if="updateDateLocaleStore.lang == 'en'">
-                            <h4>Congratulations!</h4>
-                            <div>Payment successful</div>
-                            <div>In the near future, promotion from lime.kz will be added to your ad</div>
-                        </div>
-                    </div>
-
                     <!-- Кнопка - Оплата через карту - Freedom Pay -->
-                    <div v-if="!showFormVisaCard && !success"
+                    <div v-if="!showFormVisaCard"
                         @click="showFormVisaCard = !showFormVisaCard"
                          class="border-bottom p-2 py-3 px-3 row g-0 gap-3 align-center"
                          role="button"
@@ -73,7 +52,7 @@
                     </div>
 
                     <!-- Кнопка - Оплата с Личного счёта -->
-                    <div v-if="!showFormVisaCard && !success"
+                    <div v-if="!showFormVisaCard"
                         class="border-bottom p-2 py-3 px-3 row g-0 gap-3 align-center"
                         role="button"
                     >
@@ -215,7 +194,6 @@ export default {
             bueAdsPayMethodAnimation: false,
 
             query: false,
-            success: false,
 
             //Показать форму для ввода данных карты visa для оплаты
             showFormVisaCard: false,
@@ -316,7 +294,16 @@ export default {
                 }
                 if(JSPayResult.payment_status === "success"){
                     this.showFormVisaCard = false;
-                    this.success = true;
+
+                    // Поздравляем
+                    Swal.fire({
+                        title: this.$t('bueAdsPayMethodSuccessText1'),
+                        text: this.$t('bueAdsPayMethodSuccessText2'),
+                    })
+
+                    this.addAdsPromotion(order);
+
+                    this.$router.go(-2)
 
                 }
                 if(JSPayResult.payment_status === "error"){
@@ -342,6 +329,13 @@ export default {
                 this.deleteOrderDB(order)
 
             }
+        },
+
+        //Добавить продвижение на объявление
+        addAdsPromotion(order){
+            axios.post('/user/addAdsPromotion', {
+                order_id: order.id,
+            })
         },
 
         deleteOrderDB(order){
