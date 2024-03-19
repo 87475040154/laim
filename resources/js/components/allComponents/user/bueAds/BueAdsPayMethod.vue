@@ -236,7 +236,7 @@ export default {
 
                     //Метод оплаты чере Карту - Freedom Pay
                     this.doPaymentFreedomPay(response.data.order);
-                    this.query = false;
+
                 })
                 .catch((errors)=>{
                     // Если возникла ошибка при добавлении заказа в БД
@@ -258,10 +258,9 @@ export default {
                 auto_clearing: 0, // Отчистить форму после оплаты
                 amount: order.summ, //Сумма
                 currency: "KZT",
-                description: "Покупка продвижение объявления",
+                description: "Покупка продвижения объявления",
                 test: 1, // 1 - Тестовый режим, 0- Боевой режим
                 options: {
-                    custom_params: {},
                     user: {
                         email: this.authStore.user.email,
                         phone: this.authStore.user.tel,
