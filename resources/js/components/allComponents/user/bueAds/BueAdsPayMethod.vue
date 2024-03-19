@@ -236,7 +236,6 @@ export default {
 
                     //Метод оплаты чере Карту - Freedom Pay
                     this.doPaymentFreedomPay(response.data.order);
-                    this.query = false;
                 })
                 .catch((errors)=>{
                     // Если возникла ошибка при добавлении заказа в БД
@@ -254,14 +253,13 @@ export default {
 
             // Данные платежа - Номер, сумма и тд.
             const JSPaymentOptions = {
-                order_id: order.id, // должен быть уникальным на каждый запрос
+                order_id: String(order.id), // должен быть уникальным на каждый запрос
                 auto_clearing: 0,
                 amount: order.summ, //Сумма
                 currency: "KZT",
                 description: "Покупка продвижение объявления",
                 test: 1,
                 options: {
-                    custom_params: {},
                     user: {
                         email: this.authStore.user.email,
                         phone: this.authStore.user.tel,
@@ -275,11 +273,13 @@ export default {
                 options: {
                     card_number: this.card_number.replace(/\s/g, ''),
                     card_holder_name: this.card_holder_name,
-                    card_exp_month: this.card_expiry.split('/')[0],
-                    card_exp_year: this.card_expiry.split('/')[1],
-                    card_cvv: this.card_cvv
+                    card_exp_month: String(this.card_expiry.split('/')[0]),
+                    card_exp_year: String(this.card_expiry.split('/')[1]),
+                    card_cvv: Number(this.card_cvv)
                 }
             };
+            console.log(JSPaymentOptions)
+            console.log(JSTransactionOptionsBankCard)
 
             try {
 
@@ -401,7 +401,7 @@ export default {
                 "7wIDAQAB\n" +
                 "-----END PUBLIC KEY-----",'2hbyMxtqNqpMjwIfzG1A7QLMjDsxLntW');
 
-            this.test();
+            // this.test();
             console.log('SDK FreedomPay инициализирован');
         } catch (error) {
             console.error('Ошибка при инициализации SDK FreedomPay:', error);
