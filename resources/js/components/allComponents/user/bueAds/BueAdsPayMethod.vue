@@ -236,7 +236,7 @@ export default {
 
                     //Метод оплаты чере Карту - Freedom Pay
                     this.doPaymentFreedomPay(response.data.order);
-
+                    this.query = false;
                 })
                 .catch((errors)=>{
                     // Если возникла ошибка при добавлении заказа в БД
@@ -254,13 +254,14 @@ export default {
 
             // Данные платежа - Номер, сумма и тд.
             const JSPaymentOptions = {
-                order_id: order.id, // ID - Нашего заказа с БД
-                auto_clearing: 0, // Отчистить форму после оплаты
+                order_id: order.id, // должен быть уникальным на каждый запрос
+                auto_clearing: 0,
                 amount: order.summ, //Сумма
                 currency: "KZT",
-                description: "Покупка продвижения объявления",
-                test: 1, // 1 - Тестовый режим, 0- Боевой режим
+                description: "Покупка продвижение объявления",
+                test: 1,
                 options: {
+                    custom_params: {},
                     user: {
                         email: this.authStore.user.email,
                         phone: this.authStore.user.tel,
@@ -293,13 +294,9 @@ export default {
                 }
 
                 // открыть страницу результата платежа и т д
-
-                // Если возникла ошибка при попытке оплаты
-                Swal.fire({
-                    text: 'Оплата прошла успешно !'
-                })
-
+                // ...
                 console.log(JSPayResult);
+                console.log('dffdsdfsdfs');
 
                 this.query = false;
 
@@ -333,6 +330,56 @@ export default {
                     console.log('Заказ не удален!');
                 });
         },
+
+      async test(){
+          const JSPaymentOptions = {
+              order_id: "1", // должен быть уникальным на каждый запрос
+              auto_clearing: 0,
+              amount: 20,
+              currency: "KZT",
+              description: "Описание заказа",
+              test: 1,
+              options: {
+                  user: {
+                      email: "client@email.com",
+                      phone: "+77777777777"
+                  }
+              },
+          };
+
+          const JSTransactionOptionsBankCard = {
+              type: 'bank_card',
+              options: {
+                  card_number: "4916307416334310",
+                  card_holder_name: "test",
+                  card_exp_month: "12",
+                  card_exp_year: "24",
+                  card_cvv: 123
+              }
+          };
+
+          try {
+
+              let JSPayResult = await FreedomPaySDK.charge(
+                  JSPaymentOptions, JSTransactionOptionsBankCard
+              );
+
+              if (JSPayResult.payment_status === "need_confirm") {
+
+                  console.log('need_confirm');
+                  JSPayResult = await FreedomPaySDK.confirmInIframe(JSPayResult, "3dsForm");
+              }
+
+              // открыть страницу результата платежа и т д
+              // ...
+              console.log(JSPayResult);
+
+
+          } catch(JSErrorObject) {
+              // Обработать JSErrorObject.response
+              console.log(JSErrorObject);
+          }
+        }
     },
 
    async  mounted(){
@@ -354,6 +401,7 @@ export default {
                 "7wIDAQAB\n" +
                 "-----END PUBLIC KEY-----",'2hbyMxtqNqpMjwIfzG1A7QLMjDsxLntW');
 
+            this.test();
             console.log('SDK FreedomPay инициализирован');
         } catch (error) {
             console.error('Ошибка при инициализации SDK FreedomPay:', error);
