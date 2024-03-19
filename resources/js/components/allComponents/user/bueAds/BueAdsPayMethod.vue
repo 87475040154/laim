@@ -36,8 +36,29 @@
                 <!-- Body -->
                 <div class="bueAdsPayMethod__body">
 
+                    <!-- При успешной операции покажем этот код -->
+                    <div v-if="success" class="text-center">
+                        <div v-if="updateDateLocaleStore.lang == 'ru'">
+                            <h4>Поздравдяем!</h4>
+                            <div>Оплата прошла успешно</div>
+                            <div>В ближайшее время к вашему объявлению будет добавлено продвижение от lime.kz</div>
+                        </div>
+
+                        <div v-if="updateDateLocaleStore.lang == 'kz'">
+                            <h4>Құттықтаймыз!</h4>
+                            <div>Төлем сәтті өтті</div>
+                            <div>Жақын арада сіздің жарнамаңызға lime.kz жарнамасы қосылады</div>
+                        </div>
+
+                        <div v-if="updateDateLocaleStore.lang == 'en'">
+                            <h4>Congratulations!</h4>
+                            <div>Payment successful</div>
+                            <div>In the near future, promotion from lime.kz will be added to your ad</div>
+                        </div>
+                    </div>
+
                     <!-- Кнопка - Оплата через карту - Freedom Pay -->
-                    <div v-if="!showFormVisaCard"
+                    <div v-if="!showFormVisaCard && !success"
                         @click="showFormVisaCard = !showFormVisaCard"
                          class="border-bottom p-2 py-3 px-3 row g-0 gap-3 align-center"
                          role="button"
@@ -52,7 +73,7 @@
                     </div>
 
                     <!-- Кнопка - Оплата с Личного счёта -->
-                    <div v-if="!showFormVisaCard"
+                    <div v-if="!showFormVisaCard && !success"
                         class="border-bottom p-2 py-3 px-3 row g-0 gap-3 align-center"
                         role="button"
                     >
@@ -69,6 +90,9 @@
                         <!-- Форма Карты Visa -->
                         <validation-observer tag="div" ref="form" v-slot="{ handleSubmit }">
                             <form @submit="handleSubmit($event, addOrderDB)" class="form p-2 text-center">
+
+                                <!-- Тег с id - Проверка 3D SECURITY Если нужна будет проверка карты - от самой SDK-->
+                                <div id="3dsForm"></div>
 
                                 <!-- Поле - Номер карты -->
                                 <validation-provider rules="required|min:1|length:19"
@@ -88,41 +112,44 @@
 
 
                                 <!-- ММ / ГГ и CVV -->
-                                <div class="d-flex flex-row gap-2">
+                                <div class="row g-0 gap-2">
 
                                     <!-- ММ / ГГ -->
-                                    <validation-provider rules="required|min:5"
-                                                         name="card_expiry" v-slot="{ errors, field }"
-                                    >
-                                        <!-- Input -->
-                                        <v-text-field
-                                            v-model="card_expiry" v-bind="field"
-                                            name="card_expiry" :label="$t('bueAdsPayMethodMonthYear')"
-                                            type="text" inputmode="numeric"
-                                            variant="outlined" color="blue-darken-2"
-                                            :error-messages="errors[0]"
-                                            maxlength="5"
-                                            v-mask="'##/##'"
-                                        ></v-text-field>
-                                    </validation-provider>
+                                    <div class="col">
+                                        <validation-provider rules="required|min:5"
+                                                             name="card_expiry" v-slot="{ errors, field }"
+                                        >
+                                            <!-- Input -->
+                                            <v-text-field
+                                                v-model="card_expiry" v-bind="field"
+                                                name="card_expiry" :label="$t('bueAdsPayMethodMonthYear')"
+                                                type="text" inputmode="numeric"
+                                                variant="outlined" color="blue-darken-2"
+                                                :error-messages="errors[0]"
+                                                maxlength="5"
+                                                v-mask="'##/##'"
+                                            ></v-text-field>
+                                        </validation-provider>
+                                    </div>
 
                                     <!-- Поле - CVV код -->
-                                    <validation-provider rules="required|numeric|length:3"
-                                                         name="cvv" v-slot="{ errors, field}"
-                                    >
-                                        <!-- Input -->
-                                        <v-text-field
-                                            v-model="card_cvv" v-bind="field"
-                                            name="card_cvv" label="CVV"
-                                            type="text" maxlength="3"
-                                            inputmode="numeric"
+                                    <div class="col">
+                                        <validation-provider rules="required|numeric|length:3"
+                                                             name="cvv" v-slot="{ errors, field}"
+                                        >
+                                            <!-- Input -->
+                                            <v-text-field
+                                                v-model="card_cvv" v-bind="field"
+                                                name="card_cvv" label="CVV"
+                                                type="text" maxlength="3"
+                                                inputmode="numeric"
 
-                                            variant="outlined" color="blue-darken-2"
-                                            :error-messages="errors[0]"
-                                            v-mask="'###'"
-                                        ></v-text-field>
-                                    </validation-provider>
-
+                                                variant="outlined" color="blue-darken-2"
+                                                :error-messages="errors[0]"
+                                                v-mask="'###'"
+                                            ></v-text-field>
+                                        </validation-provider>
+                                    </div>
 
                                 </div>
 
@@ -151,11 +178,7 @@
                             </form>
                         </validation-observer>
 
-
                     </div>
-
-                    <!-- Тег с id - Проверка 3D SECURITY Если нужна будет проверка карты - от самой SDK-->
-                    <div id="3dsForm"></div>
 
                 </div>
 
@@ -192,6 +215,7 @@ export default {
             bueAdsPayMethodAnimation: false,
 
             query: false,
+            success: false,
 
             //Показать форму для ввода данных карты visa для оплаты
             showFormVisaCard: false,
@@ -267,7 +291,7 @@ export default {
                 },
             };
 
-            // Данные банковской карты
+            // Данные банковской карты с которой будет списана плата - получаем из формы
             const JSTransactionOptionsBankCard = {
                 type: 'bank_card',
                 options: {
@@ -278,25 +302,29 @@ export default {
                     card_cvv: Number(this.card_cvv)
                 }
             };
-            console.log(JSPaymentOptions)
-            console.log(JSTransactionOptionsBankCard)
 
             try {
 
+                // Праведение платежа
                 let JSPayResult = await FreedomPaySDK.charge(
                     JSPaymentOptions, JSTransactionOptionsBankCard
                 );
 
+                // Если нужно прохождения 3DS проверки
                 if (JSPayResult.payment_status === "need_confirm") {
-                    console.log('need_confirm')
-
                     JSPayResult = await FreedomPaySDK.confirmInIframe(JSPayResult, "3dsForm");
+                }
+                if(JSPayResult.payment_status === "success"){
+                    this.showFormVisaCard = false;
+                    this.success = true;
+
+                }
+                if(JSPayResult.payment_status === "error"){
+                    console.log('Ошибка оплаты')
                 }
 
                 // открыть страницу результата платежа и т д
-                // ...
                 console.log(JSPayResult);
-                console.log('dffdsdfsdfs');
 
                 this.query = false;
 
@@ -308,7 +336,6 @@ export default {
                 // Если возникла ошибка при попытке оплаты
                 Swal.fire({
                     title: this.$t('bueAdsPayMethodError'),
-                    text: 'Попробуйте еще раз!'
                 })
 
                 // Удалим заказ с БД, чтоб не было переполнения
@@ -330,56 +357,6 @@ export default {
                     console.log('Заказ не удален!');
                 });
         },
-
-      async test(){
-          const JSPaymentOptions = {
-              order_id: "1", // должен быть уникальным на каждый запрос
-              auto_clearing: 0,
-              amount: 20,
-              currency: "KZT",
-              description: "Описание заказа",
-              test: 1,
-              options: {
-                  user: {
-                      email: "client@email.com",
-                      phone: "+77777777777"
-                  }
-              },
-          };
-
-          const JSTransactionOptionsBankCard = {
-              type: 'bank_card',
-              options: {
-                  card_number: "4916307416334310",
-                  card_holder_name: "test",
-                  card_exp_month: "12",
-                  card_exp_year: "24",
-                  card_cvv: 123
-              }
-          };
-
-          try {
-
-              let JSPayResult = await FreedomPaySDK.charge(
-                  JSPaymentOptions, JSTransactionOptionsBankCard
-              );
-
-              if (JSPayResult.payment_status === "need_confirm") {
-
-                  console.log('need_confirm');
-                  JSPayResult = await FreedomPaySDK.confirmInIframe(JSPayResult, "3dsForm");
-              }
-
-              // открыть страницу результата платежа и т д
-              // ...
-              console.log(JSPayResult);
-
-
-          } catch(JSErrorObject) {
-              // Обработать JSErrorObject.response
-              console.log(JSErrorObject);
-          }
-        }
     },
 
    async  mounted(){
@@ -401,7 +378,6 @@ export default {
                 "7wIDAQAB\n" +
                 "-----END PUBLIC KEY-----",'2hbyMxtqNqpMjwIfzG1A7QLMjDsxLntW');
 
-            // this.test();
             console.log('SDK FreedomPay инициализирован');
         } catch (error) {
             console.error('Ошибка при инициализации SDK FreedomPay:', error);

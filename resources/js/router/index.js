@@ -567,17 +567,6 @@ const routes = [
             },
 
 
-            //Результат покупки рекламы
-            {
-                path: '/bueAdsResult/:result',
-                component: ()=> import('../components/allComponents/user/bueAds/BueResult.vue'),
-                name: 'BueAdsResult',
-                meta: {
-                    title: 'Проверка платежа'
-                }
-            },
-
-
             //Правила использования - Политика конфиденциальности
 
             {
