@@ -2247,6 +2247,7 @@ export default defineComponent({
     background: #e5e5e5;
 }
 
+
 /*Добавим стили для полей vuetify - textarea и для label*/
 ::v-deep(.v-textarea--auto-grow .v-field__input) {
     overflow-y: auto!important;
