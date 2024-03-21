@@ -24,8 +24,8 @@
                 style="padding: 1px;"
             >
                 <!-- Сам блок с превью -->
-                <v-card max-width="650" style="background: #ffffff; box-shadow: none; border-radius: 6px"
-                        class="mx-3 my-2 mx-sm-auto ads__preview elevation-2"
+                <v-card max-width="650" style="background: #ffffff; box-shadow: 0 0 1px silver; border-radius: 6px"
+                        class="mx-3 my-2 mx-sm-auto ads__preview "
                 >
 
                     <!--  Описание объявления -->
