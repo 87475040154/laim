@@ -95,12 +95,12 @@
                     <div class="d-flex gap-2 align-center justify-center py-2">
 
                         <!-- Подать новое -->
-                        <v-btn @click="openModal(false)" variant="flat" size="x-large" class="text-white text-body-1" style="background: #10a37f; width: 160px">
+                        <v-btn @click="openModal(false)" variant="outlined" size="x-large" color="green-darken-2" class=" text-body-1" style="width: 160px">
                             {{ $t('addAdsSubmitANewOne') }}
                         </v-btn>
 
                         <!-- Продолжить заполнять старое -->
-                        <v-btn @click="openModal(true)" variant="flat" size="x-large" color="blue-darken-2" class="text-body-1" style="width:160px">
+                        <v-btn @click="openModal(true)" variant="outlined" size="x-large" color="blue-darken-2" class="text-body-1" style="width:160px">
                             {{ $t('addAdsContinue') }}
                         </v-btn>
 
