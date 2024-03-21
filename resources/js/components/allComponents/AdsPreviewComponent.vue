@@ -280,7 +280,7 @@
                         <div class="d-flex justify-content-between align-center">
 
                             <!-- Кнопка сдать быстрее -->
-                            <v-btn dark color="blue-grey-lighten-4"
+                            <v-btn dark color="grey-lighten-4"
                                    size="x-large"
                                    @click="$router.push({ name: $route.name + 'BueAds', params: {ads_id: ads.id} } )"
                                    class="text-body-1"
@@ -290,12 +290,12 @@
                             </v-btn>
 
                             <!-- Просмотров - Взяли номера -->
-                            <v-btn icon size="x-large" color="blue-grey-lighten-4" @click="showControlBlock('Статистика', ads,index)">
+                            <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Статистика', ads,index)">
                                 <v-icon>mdi-finance</v-icon>
                             </v-btn>
 
                             <!-- Блок - Управление объявлением - для автора и админа -->
-                            <v-btn icon size="x-large" color="blue-grey-lighten-4" @click="showControlBlock('Управление', ads, index)">
+                            <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Управление', ads, index)">
                                 <v-icon>mdi-dots-vertical</v-icon>
                             </v-btn>
 

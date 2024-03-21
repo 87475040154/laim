@@ -108,7 +108,7 @@ export default {
 }
 
 /* Уберем значки на карте - Например: как добраться, создать новую карту, кнопка увеличения уменьшения карты */
-.ymaps-2-1-79-controls__control_toolbar, .ymaps-2-1-79-gototech, .ymaps-2-1-79-controls__control, .ymaps-2-1-79-map-copyrights-promo{
+.ymaps-2-1-79-map-copyrights-promo{
     display: none!important;
 }
 
