@@ -277,7 +277,7 @@
                     || authStore.check && authStore.user.role == 'admin' && ads.control != 'В архиве'"
                     >
 
-                        <div class="d-flex justify-content-between align-center overflow-hidden position-relative">
+                        <div class="d-flex justify-content-between align-center">
 
                             <!-- Кнопка сдать быстрее -->
                             <v-btn dark color="blue-darken-2"
@@ -290,69 +290,15 @@
                             </v-btn>
 
                             <!-- Просмотров - Взяли номера -->
-                            <div class="dropup-center dropup">
-
-                                <!-- Кнопка - Окрыть скрытое меню -->
-                                <v-btn icon size="x-large" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <v-icon>mdi-finance</v-icon>
-                                </v-btn>
-
-                                <!-- Тело - Скрытого меню-->
-                                <div class="dropdown-menu p-3">
-                                    <h4 class="text-center fw-bold mb-3">{{ $t('AdsPreviewAddStatistics') }}</h4>
-                                    <div>{{ $t('AdsPreviewAddViewed') }} : <span class="fw-bold">{{ads.view}}</span></div>
-                                    <div class="mt-2">{{ $t('AdsPreviewAddGotTheNumber') }} : <span class="fw-bold">{{ads.viewTel}}</span></div>
-                                </div>
-                            </div>
+                            <v-btn icon size="x-large" @click="showControlBlock('Статистика', ads,index)">
+                                <v-icon>mdi-finance</v-icon>
+                            </v-btn>
 
                             <!-- Блок - Управление объявлением - для автора и админа -->
-                            <div class="dropstart">
 
-                                <!-- Кнопка - Окрыть скрытое меню -->
-                                <v-btn icon size="x-large" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <v-icon>mdi-dots-vertical</v-icon>
-                                </v-btn>
-
-                                <!-- Тело - Скрытого меню-->
-                                <div class="dropdown-menu p-0 border-none">
-                                    <div class="d-flex align-center justify-end gap-3 px-3 bg-grey-lighten-2"
-                                         style="width: 100vw; max-width: 600px"
-                                    >
-
-                                        <!-- Кнопка - Рекламировать или Отановить объявление -->
-                                        <v-btn dark
-                                               color="blue-darken-2"
-                                               class="text-body-1"
-                                               size="x-large"
-                                               @click="adsActiveToggle(index, ads.id, ads.table_name, ads.control)"
-                                               :disabled="query"
-                                        >
-                                            {{ads.control == 'Активно' ? $t('adsPreviewComponentStop') : $t('adsPreviewComponentToAdvertise')}}
-                                        </v-btn>
-
-                                        <!-- Кнопка - Редактировать обьявление -->
-                                        <v-btn dark icon
-                                               size="x-large"
-                                               color="blue-darken-2"
-                                               @click="$router.push({name: $route.name + 'AddAds', params: {table_name: ads.table_name, id: ads.id, step:1}})"
-                                        >
-                                            <i class="bi bi-pencil-square"></i>
-                                        </v-btn>
-
-                                        <!-- Кнопка - Удалить объявление -->
-                                        <v-btn dark icon
-                                               size="x-large"
-                                               color="blue-darken-2"
-                                               @click="deleteAds(index, ads.id, ads.table_name, ads.control)"
-                                               :disabled="query"
-                                        >
-                                            <i class="bi bi-trash"></i>
-                                        </v-btn>
-
-                                    </div>
-                                </div>
-
-                            </div>
+                            <v-btn icon size="x-large" @click="showControlBlock('Управление', ads, index)">
+                                <v-icon>mdi-dots-vertical</v-icon>
+                            </v-btn>
 
                         </div>
 
@@ -396,6 +342,110 @@
     </DynamicScroller>
 
 
+<!--    Управление объявлением-->
+    <!-- Backdrop -->
+    <transition name="adsPreviewControl__animation-backdrop">
+        <div v-if="adsPreviewControlAnimation" class="adsPreviewControl__backdrop" @click="adsPreviewControlAnimation = false"></div>
+    </transition>
+
+    <!-- Обвертка - Компонента -->
+    <transition name="adsPreviewControl__animation-wrapper">
+
+        <!-- Обвертка - Компонента -->
+        <div v-if="adsPreviewControlAnimation" class="adsPreviewControl__wrapper">
+
+            <!-- Сам блок -->
+            <div class="adsPreviewControl__block">
+
+                <!-- Header -->
+                <div class="adsPreviewControl__header">
+
+                    <!-- Заголовок -->
+                    <div v-if="controlBlockType == 'Управление' && !deleteAdsBlock">{{ $t('AdsPreviewAddControl') }}</div>
+                    <div v-if="controlBlockType == 'Статистика' && !deleteAdsBlock">{{ $t('AdsPreviewAddStatistics') }}</div>
+                    <div v-if="deleteAdsBlock">{{ $t('adsPreviewComponentSendToArchive') }}</div>
+
+                    <!-- Кнопка назад -->
+                    <v-btn icon dark variant="text"
+                           @click="adsPreviewControlAnimation = false"
+                           style="position: absolute; top: 0; right: 10px;"
+                    >
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+
+                </div>
+
+                <!-- Body -->
+                <div class="adsPreviewControl__body text-center">
+
+                    <!-- Редактировать - Остановить - Удалить -->
+                    <div v-if="controlBlockType == 'Управление' && !deleteAdsBlock" class="text-center">
+                        <!-- Кнопка - Рекламировать или Отановить объявление -->
+                        <v-btn dark
+                               color="blue-darken-2"
+                               class="text-body-1 my-2"
+                               size="x-large"
+                               @click="adsActiveToggle(index, ads.id, ads.table_name, ads.control)"
+                               :disabled="query"
+                        >
+                            {{ads.control == 'Активно' ? $t('adsPreviewComponentStop') : $t('adsPreviewComponentToAdvertise')}}
+                        </v-btn>
+
+                        <!-- Кнопка - Редактировать обьявление -->
+                        <v-btn dark
+                               color="blue-darken-2"
+                               class="text-body-1 mx-2 my-2"
+                               size="x-large"
+                               @click="$router.push({name: $route.name + 'AddAds', params: {table_name: ads.table_name, id: ads.id, step:1}})"
+                        >
+                            <i class="bi bi-pencil-square"></i> {{ $t('adsPreviewComponentEdit') }}
+                        </v-btn>
+
+                        <!-- Кнопка - Удалить объявление -->
+                        <v-btn dark
+                               color="blue-darken-2"
+                               class="text-body-1 my-2"
+                               size="x-large"
+                               @click="deleteAdsBlock = true"
+                        >
+                            <i class="bi bi-trash"></i>
+                            {{ $t('adsPreviewComponentDelete') }}
+                        </v-btn>
+                    </div>
+
+                    <!-- Блок статистика -->
+                    <div v-if="controlBlockType == 'Статистика' && !deleteAdsBlock">
+                        <div>{{ $t('AdsPreviewAddViewed') }} : <span class="fw-bold">{{ads.view}}</span></div>
+                        <div class="mt-2">{{ $t('AdsPreviewAddGotTheNumber') }} : <span class="fw-bold">{{ads.viewTel}}</span></div>
+                    </div>
+
+                    <!-- блок подтвердить удаление объявления -->
+                    <div v-if="deleteAdsBlock">
+                        <v-btn dark
+                               color="green"
+                               class="text-body-1 m-2"
+                               size="x-large"
+                               @click="deleteAds(index, ads.id, ads.table_name, ads.control)"
+                               :disabled="query">{{ $t('adsPreviewComponentYes') }}
+                        </v-btn>
+                        <v-btn dark
+                               color="grey"
+                               class="text-body-1 m-2"
+                               size="x-large"
+                               @click="deleteAdsBlock = false"
+                        >
+                            {{ $t('adsPreviewComponentNo') }}
+                        </v-btn>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </transition>
+
 </template>
 
 <script>
@@ -438,6 +488,12 @@ export default {
 
             ads_array: '',
             query: false,
+
+            adsPreviewControlAnimation: false,
+            controlBlockType: '',
+            ads: '',
+            index: '',
+            deleteAdsBlock: false
 
         }
     },
@@ -560,41 +616,33 @@ export default {
         },
 
         //Метод - Отправить в архив -  на 7 дней . Далее автоматом будет удалено
-        async deleteAds(index, ads_id, table_name){
-            Swal.fire({
-                title: this.$t('adsPreviewComponentSendToArchive'),
-                showCancelButton: true,
-                confirmButtonText: this.$t('adsPreviewComponentYes'),
-                cancelButtonText: this.$t('adsPreviewComponentNo')
-            })
-                .then(async (result) => {
-                    if (result.isConfirmed) {
-                        this.query = true;
+        deleteAds(index, ads_id, table_name){
+            this.query = true;
 
-                        //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-                        this.checkInternetStore.checkInternet()
+            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
+            this.checkInternetStore.checkInternet()
 
-                        axios.delete('/deleteAds', {params:{
-                                ads_id, table_name,
-                            }})
-                            .then((response)=>{
-                                this.query = false;
+            axios.delete('/deleteAds', {params:{
+                    ads_id, table_name,
+                }})
+                .then((response)=>{
+                    this.query = false;
 
-                                Toast.fire({
-                                    title: this.$t('adsPreviewComponentRemoved')
-                                })
+                    Toast.fire({
+                        title: this.$t('adsPreviewComponentRemoved')
+                    })
 
-                                //Уберем из массива данное объявление
-                                this.ads_arr.splice(index, 1);
+                    this.adsPreviewControlAnimation = false;
 
-                            })
-                            .catch((errors)=>{
-                                this.query = false;
-                                Toast.fire({
-                                    title: this.$t('adsPreviewComponentError')
-                                })
-                            })
-                    }
+                    //Уберем из массива данное объявление
+                    this.ads_arr.splice(index, 1);
+
+                })
+                .catch((errors)=>{
+                    this.query = false;
+                    Toast.fire({
+                        title: this.$t('adsPreviewComponentError')
+                    })
                 })
         },
 
@@ -607,19 +655,82 @@ export default {
             }
         },
 
+        // Показать блок управление объявлением
+        showControlBlock(type, ads, index){
+            this.controlBlockType = type;
+            this.ads = ads;
+            this.index = index;
+            this.adsPreviewControlAnimation = true;
+        }
     }
 
 }
 </script>
 
+<style>
+
+/* Анимация -- Backdrop  */
+.addAdsMenu__animation-backdrop-enter-active,
+.addAdsMenu__animation-backdrop-leave-active{
+    transition: opacity 0.3s ease;
+}
+
+
+.adsPreviewControl__animation-backdrop-enter-from,
+.adsPreviewControl__animation-backdrop-leave-to{
+    opacity: 0;
+}
+
+.adsPreviewControl__animation-backdrop-enter-to,
+.adsPreviewControl__animation-backdrop-leave-from{
+    opacity: 1;
+}
+
+/* Анимация для -- Wrapper */
+.adsPreviewControl__animation-wrapper-enter-active,
+.adsPreviewControl__animation-wrapper-leave-active{
+    transition: transform 0.3s ease;
+}
+
+.adsPreviewControl__animation-wrapper-enter-from {
+    transform: translateY(50%); /* Начальное положение при анимации скрытия */
+}
+
+.adsPreviewControl__animation-wrapper-leave-to {
+    transform: translateY(100%); /* Начальное положение при анимации скрытия */
+}
+
+.adsPreviewControl__animation-wrapper-enter-to,
+.adsPreviewControl__animation-wrapper-leave-from {
+    transform: translateY(0);/* Конечное положение при анимации появления */
+}
+
+/* При экране более 992px */
+@media screen and (min-width: 992px) {
+    .addAdsMenu__animation-wrapper-enter-from{
+        transform: translateX(50%); /* Начальное положение при анимации скрытия */
+    }
+
+    .addAdsMenu__animation-wrapper-leave-to {
+        transform: translateX(100%); /* Начальное положение при анимации скрытия */
+    }
+
+    .addAdsMenu__animation-wrapper-enter-to,
+    .addAdsMenu__animation-wrapper-leave-from {
+        transform: translateX(0);/* Конечное положение при анимации появления */
+    }
+
+}
+
+</style>
+
 <style scoped>
 
-/* Стиль для - виртуального скролла */
+/* Стиль для компонента - виртуального скролла */
 .scroller {
     width: 100%;
     height: 100%;
 }
-
 
 .ads__preview{
     user-select: none;
@@ -718,5 +829,51 @@ export default {
     background: #ffffff;
 }
 
+
+/* Стили для блока управление объявлением */
+.adsPreviewControl__backdrop{
+    position: fixed;
+    top: 0;
+    bottom:0;
+    right: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+}
+
+.adsPreviewControl__wrapper{
+    position: fixed;
+    bottom:0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    overflow-y: auto;
+    border-radius: 10px 10px 0 0;
+    background: #ffffff;
+    user-select: none;
+}
+
+.adsPreviewControl__block{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.adsPreviewControl__header{
+    width: 100%;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    position: relative;
+    background: #ffffff;
+    color: #000000;
+}
+
+.adsPreviewControl__body{
+    flex-grow: 1;
+}
 </style>
 

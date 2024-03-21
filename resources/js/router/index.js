@@ -96,6 +96,7 @@ const routes = [
                         ]
                     },
 
+
                     //Фильтр
                     {
                         path: 'filter',
