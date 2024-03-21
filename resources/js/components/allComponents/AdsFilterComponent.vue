@@ -1125,8 +1125,7 @@ export default {
 
 /* Выбранная кнопка */
 .item__active{
-    background: #2d81e1;
-    color: #ffffff;
+    border: 2px solid #2d81e1;
 }
 
 </style>
