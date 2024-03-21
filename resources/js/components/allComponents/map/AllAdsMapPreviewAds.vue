@@ -294,6 +294,7 @@ export default {
     justify-content: end;
     align-items: center;
     height: auto;
+    text-align: end;
 }
 
 .yandexMapClusterShowAds__body{
