@@ -114,27 +114,6 @@
                     <!-- Верхний блок основная информации  -->
                     <div v-if="$route.params.step == 1" class="addAds__form-block">
 
-
-                        <!-- Заголовок -->
-                        <div class="form-group mt-3">
-
-                            <!-- Input -->
-                            <validation-provider rules="required|min:1|max:40" v-model="form.zagolovok" name="zagolovok" v-slot="{ errors }">
-
-                                <v-text-field
-                                    v-model="form.zagolovok"
-                                    name="zagolovok" :label="$t('addAdsTitle')"
-                                    type="text"
-                                    counter maxlength="40"
-                                    variant="outlined" color="blue"
-                                    :error-messages="form.errors.has('zagolovok') ? form.errors.get('zagolovok'):'' || errors[0]"
-                                    @input="form.errors.clear('zagolovok')"
-                                ></v-text-field>
-
-                            </validation-provider>
-
-                        </div>
-
                         <!-- Для Бизнеса - Тип сделки - Сдам - продам  -->
                         <div v-if="$route.params.table_name == 'Business'" class="form-group">
 
@@ -1208,6 +1187,26 @@
 
                                     :error-messages="form.errors.has('cena') ? form.errors.get('cena'):'' || errors[0]"
                                     @focus="form.errors.clear('cena')"
+                                ></v-text-field>
+
+                            </validation-provider>
+
+                        </div>
+
+                        <!-- ПОЛЕ - Заголовок -->
+                        <div class="my-3">
+
+                            <!-- Input -->
+                            <validation-provider rules="required|min:1|max:40" v-model="form.zagolovok" name="zagolovok" v-slot="{ errors }">
+
+                                <v-text-field
+                                    v-model="form.zagolovok"
+                                    name="zagolovok" :label="$t('addAdsTitle')"
+                                    type="text"
+                                    counter maxlength="40"
+                                    variant="outlined" color="blue"
+                                    :error-messages="form.errors.has('zagolovok') ? form.errors.get('zagolovok'):'' || errors[0]"
+                                    @input="form.errors.clear('zagolovok')"
                                 ></v-text-field>
 
                             </validation-provider>

@@ -356,7 +356,7 @@
                             name="kolichestvo_komnat_ot" :label="$route.params.table_name !=='Ofisa'?$t('filterRoomsFrom'):$t('filterCabinetsFrom')"
                             type="text" maxlength="15"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                         <!-- Комнат до -->
@@ -365,7 +365,7 @@
                             name="kolichestvo_komnat_do" :label="$route.params.table_name !=='Ofisa'?$t('filterRoomsUpTo'):$t('filterCabinetsUpTo')"
                             type="text" maxlength="15"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                     </div>
@@ -396,7 +396,7 @@
                             name="cena_ot" :label="$t('filterPriceFrom')"
                             type="text"
                             inputmode="numeric" v-number="number"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                         <!-- Цена до -->
@@ -405,7 +405,7 @@
                             name="cena_do" :label="$t('filterPriceUpTo')"
                             type="text"
                             inputmode="numeric" v-number="number"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                     </div>
@@ -419,7 +419,7 @@
                             name="etag_ot" :label="$t('filterFloorFrom')"
                             type="text"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                         <!-- Этаж До -->
@@ -428,7 +428,7 @@
                             name="etag_do" :label="$t('filterFloorUpTo')"
                             type="text"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                     </div>
@@ -442,7 +442,7 @@
                             name="etagnost_ot" :label="$t('filterFloorsFrom')"
                             type="text"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                         <!-- Этажность До -->
@@ -451,7 +451,7 @@
                             name="etagnost_do" :label="$t('filterFloorsUpTo')"
                             type="text"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                     </div>
@@ -577,7 +577,7 @@
                             name="visota_potolkov_ot" :label="$t('filterCeilingHeightFrom')"
                             type="text"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                         <!-- Высота потолков До  -->
@@ -586,7 +586,7 @@
                             name="visota_potolkov_do" :label="$t('filterCeilingHeightUpTo')"
                             type="text"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                     </div>
@@ -600,7 +600,7 @@
                             name="ploshad_obshaya_ot" :label="$t('filterAreaFromM2')"
                             type="text"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                         <!-- Площадь до м2  -->
@@ -609,7 +609,7 @@
                             name="ploshad_obshaya_do" :label="$t('filterAreaUpToM2')"
                             type="text"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                     </div>
@@ -623,7 +623,7 @@
                             name="ploshad_uchastka_ot" :label="$t('filterPlotAreaAcresFrom')"
                             type="text"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                         <!-- Площадь участка - До  -->
@@ -632,7 +632,7 @@
                             name="ploshad_uchastka_do" :label="$t('filterPlotAreaAcresUpTo')"
                             type="text"
                             inputmode="numeric"
-                            variant="outlined" color="blue"
+                            variant="outlined"
                         ></v-text-field>
 
                     </div>
@@ -1087,7 +1087,6 @@ export default {
 .filter__body{
     flex-grow: 1;
     overflow-y: scroll;
-
 }
 
 .filter__footer{
