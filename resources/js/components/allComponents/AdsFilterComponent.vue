@@ -85,8 +85,8 @@
                         </div>
                     </div>
 
-                    <!-- Кто автор - Хозяин , Риелтор -->
-                    <div v-if="$route.params.table_name != 'Snimu'" class="form-group">
+                    <!-- Кто автор - Хозяин , Специалист -->
+                    <div class="form-group">
 
                         <!-- Заголовок -->
                         <div class="form__title">
@@ -96,8 +96,9 @@
                         <!-- Поле -->
                         <div class="form__input">
 
-                            <span  @click="form.ownerOrRealtor == 'Хозяин'?form.ownerOrRealtor = '':form.ownerOrRealtor = 'Хозяин'" class="form__item" :class="{'item__active':form.ownerOrRealtor == 'Хозяин'}">{{ $t('filterOwner') }}</span>
-                            <span  @click="form.ownerOrRealtor == 'Риелтор'?form.ownerOrRealtor = '':form.ownerOrRealtor = 'Риелтор'" class="form__item" :class="{'item__active':form.ownerOrRealtor == 'Риелтор'}">{{ $t('filterRealtor') }}</span>
+                            <span v-if="$route.params.table_name != 'Snimu'"  @click="form.ownerOrRealtor == 'Хозяин'?form.ownerOrRealtor = '':form.ownerOrRealtor = 'Хозяин'" class="form__item" :class="{'item__active':form.ownerOrRealtor == 'Хозяин'}">{{ $t('filterOwner') }}</span>
+                            <span v-if="$route.params.table_name != 'Snimu'"  @click="form.ownerOrRealtor == 'Специалист'?form.ownerOrRealtor = '':form.ownerOrRealtor = 'Специалист'" class="form__item" :class="{'item__active':form.ownerOrRealtor == 'Специалист'}">{{ $t('filterSpecialist') }}</span>
+                            <span v-if="$route.params.table_name == 'Snimu'" @click="form.ownerOrRealtor == 'Можно от специалиста'?form.ownerOrRealtor = '':form.ownerOrRealtor = 'Можно от специалиста'" class="form__item" :class="{'item__active':form.ownerOrRealtor == 'Можно от специалиста'}">{{ $t('filterItIsPossibleFromASpecialist') }}</span>
 
                         </div>
                     </div>

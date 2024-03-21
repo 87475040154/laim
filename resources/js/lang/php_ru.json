@@ -165,7 +165,8 @@
     "filterAllKazakhstan": "Весь Казахстан",
     "filterWhoIsAuthor": "Кто автор",
     "filterOwner": "Хозяин",
-    "filterRealtor": "Риелтор",
+    "filterSpecialist": "Специалист",
+    "filterItIsPossibleFromASpecialist": "Можно от Специалиста",
     "filterDealType": "Тип сделки",
     "filterSdam": "Сдам",
     "filterSell": "Продам",
@@ -299,7 +300,7 @@
 
 
     "oneAdsOwner" : "Хозяин",
-    "oneAdsRealtor" : "Специалист",
+    "oneAdsSpecialist" : "Специалист",
     "oneAdsCanBeFromASpecialist" : "Можно от специалиста",
     "oneAdsUrgentBargaining" : "Срочно торг",
     "oneAdsMonth" : "месяц",
@@ -571,7 +572,7 @@
     "addAdsContactDetails": "Контактные данные",
     "addAdsRealtorText": "Найти подходящий объект недвижимости в 90%  быстрее, выгодней, и легче если выбрать помощь специалистов.",
     "addAdsIAmTheOwner": "Я Хозяин",
-    "addAdsIAmARealtorSpecialist": "Я Риелтор / Специалист",
+    "addAdsIAmSpecialist": "Я Специалист",
     "addAdsItIsPossibleFromASpecialist": "Можно от Специалиста",
     "addAdsName": "Имя",
     "addAdsYourPhoneNumber": "Ваш телефон",

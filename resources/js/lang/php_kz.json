@@ -170,7 +170,8 @@
     "filterAllKazakhstan": "Бүкіл Қазақстан",
     "filterWhoIsAuthor": "Автор кім",
     "filterOwner": "Иесі",
-    "filterRealtor": "Маман",
+    "filterSpecialist": "Маман",
+    "filterItIsPossibleFromASpecialist": "Маманнан болуы мүмкін",
     "filterDealType": "Мәміле түрі",
     "filterSdam": "Жалға беремін",
     "filterSell": "Сатамын",
@@ -298,7 +299,7 @@
 
 
     "oneAdsOwner" : "Иесі",
-    "oneAdsRealtor" : "Маман",
+    "oneAdsSpecialist" : "Маман",
     "oneAdsCanBeFromASpecialist" : "Маманнан болуы мүмкін",
     "oneAdsUrgentBargaining" : "Жедел, сауда",
     "oneAdsMonth" : "айына",
@@ -574,7 +575,7 @@
     "addAdsContactDetails": "Байланыс деректері",
     "addAdsRealtorText": "Мамандардың көмегімен қолайлы мүлікті табу 90% жылдамырақ, тиімдірек және оңайырақ.",
     "addAdsIAmTheOwner": "Мен иесімін",
-    "addAdsIAmARealtorSpecialist": "Мен Маманмын",
+    "addAdsIAmSpecialist": "Мен Маманмын",
     "addAdsItIsPossibleFromASpecialist": "Маманнан болуы мүмкін",
     "addAdsName": "Аты",
     "addAdsYourPhoneNumber": "Сіздің телефоныңыз",

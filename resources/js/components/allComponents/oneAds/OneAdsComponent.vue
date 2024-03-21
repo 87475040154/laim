@@ -167,8 +167,8 @@
                         <v-btn variant="flat" color="grey-lighten-4" size="large" class="w-100 text-body-1 my-3 mt-4">
                             <span v-if="ads.control == 'Активно'">
                                 <span v-if="ads.ownerOrRealtor == 'Хозяин'">{{ $t('oneAdsOwner') }}</span>
-                                <span v-if="ads.ownerOrRealtor == 'Риелтор'">{{ $t('oneAdsRealtor') }}</span>
-                                <span v-if="ads.ownerOrRealtor == 'Через риелтора'">{{ $t('oneAdsCanBeFromASpecialist') }}</span>
+                                <span v-if="ads.ownerOrRealtor == 'Специалист'">{{ $t('oneAdsSpecialist') }}</span>
+                                <span v-if="ads.ownerOrRealtor == 'Можно от специалиста'">{{ $t('oneAdsCanBeFromASpecialist') }}</span>
                             </span>
                             <span v-else>
                                 <span v-if="updateDateLocale.lang == 'ru'">{{ads.control}}</span>

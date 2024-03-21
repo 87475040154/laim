@@ -42,7 +42,7 @@
                             <img v-if="ads.images.length > 0" @click="showImage(ads)" class="ads__preview-img rounded-2" :src=" '/img/adsImg/' + ads.images[0] " alt="Фото недвижимости">
                             <img v-else src="/public/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" class="ads__preview-img">
 
-                            <!-- Кто автор - Хозяин - Риелтор - В архиве - Не активно - -->
+                            <!-- Кто автор - Хозяин - Специалист - В архиве - Не активно - -->
                             <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
 
                                 <div v-if="ads.control == 'В архиве'" class="bg-red p-1 px-2 rounded-lg">
@@ -63,15 +63,15 @@
                                     <span v-if="updateDateLocale.lang == 'kz'"> Иесі </span>
                                     <span v-if="updateDateLocale.lang == 'en'"> Owner </span>
                                 </div>
-                                <div v-if="ads.ownerOrRealtor == 'Риелтор' && ads.author_id != authStore.user.id && ads.control != 'В архиве'" class="bg-blue p-1 px-2 rounded-lg">
+                                <div v-if="ads.ownerOrRealtor == 'Специалист' && ads.author_id != authStore.user.id && ads.control != 'В архиве'" class="bg-blue p-1 px-2 rounded-lg">
                                     <span v-if="updateDateLocale.lang == 'ru'"> {{ads.ownerOrRealtor}} </span>
-                                    <span v-if="updateDateLocale.lang == 'kz'"> Риелтор </span>
-                                    <span v-if="updateDateLocale.lang == 'en'"> Realtor </span>
+                                    <span v-if="updateDateLocale.lang == 'kz'"> Маман </span>
+                                    <span v-if="updateDateLocale.lang == 'en'"> Specialist </span>
                                 </div>
                                 <div v-if="ads.ownerOrRealtor == 'Через риелтора' && ads.author_id != authStore.user.id && ads.table_name == 'Snimu' && ads.control != 'В архиве'" class="bg-blue p-1 px-2 rounded-lg">
-                                    <span v-if="updateDateLocale.lang == 'ru'"> Можно от риелтора </span>
-                                    <span v-if="updateDateLocale.lang == 'kz'"> Мүмкін риелтордан </span>
-                                    <span v-if="updateDateLocale.lang == 'en'"> It is possible from a realtor </span>
+                                    <span v-if="updateDateLocale.lang == 'ru'"> Можно от специалиста </span>
+                                    <span v-if="updateDateLocale.lang == 'kz'"> Мүмкін маманнан </span>
+                                    <span v-if="updateDateLocale.lang == 'en'"> It is possible from a specialist </span>
                                 </div>
 
                             </div>

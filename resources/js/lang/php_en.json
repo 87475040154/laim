@@ -168,7 +168,8 @@
     "filterAllKazakhstan": "All Kazakhstan",
     "filterWhoIsAuthor": "Who is the author",
     "filterOwner": "The owner",
-    "filterRealtor": "Realtor",
+    "filterSpecialist": "Specialist",
+    "filterItIsPossibleFromASpecialist": "It is possible from a Specialist",
     "filterDealType": "Transaction type",
     "filterSdam": "Rent",
     "filterSell": "Sell",
@@ -295,7 +296,7 @@
 
 
     "oneAdsOwner" : "Owner",
-    "oneAdsRealtor" : "Realtor",
+    "oneAdsSpecialist" : "Specialist",
     "oneAdsCanBeFromASpecialist" : "It is possible from a specialist",
     "oneAdsUrgentBargaining" : "Urgent bargaining",
     "oneAdsMonth" : "month",
@@ -571,7 +572,7 @@
     "addAdsContactDetails": "Contact details",
     "addAdsRealtorText": "Finding the right property is 90% faster, more efficient and easier with the help of specialists.",
     "addAdsIAmTheOwner": "I am the Owner",
-    "addAdsIAmARealtorSpecialist": "I am a Realtor / Specialist",
+    "addAdsIAmSpecialist": "I am Specialist",
     "addAdsItIsPossibleFromASpecialist": "It is possible from a Specialist",
     "addAdsName": "Name",
     "addAdsYourPhoneNumber": "Your phone number",

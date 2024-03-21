@@ -1393,8 +1393,8 @@
                                 <div v-if="$route.params.table_name == 'Snimu'" class="alert alert-success py-1 text-body-1">{{ $t('addAdsRealtorText') }}</div>
                                 <div class="form__input my-3">
                                     <span v-if="$route.params.table_name != 'Snimu'" @click="form.ownerOrRealtor = 'Хозяин'" class="form__item" :class="{'item__active' : form.ownerOrRealtor == 'Хозяин'}">{{ $t('addAdsIAmTheOwner') }} </span>
-                                    <span v-if="$route.params.table_name != 'Snimu'" @click="form.ownerOrRealtor = 'Риелтор'" class="form__item" :class="{'item__active' : form.ownerOrRealtor == 'Риелтор'}">{{ $t('addAdsIAmARealtorSpecialist') }} </span>
-                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.ownerOrRealtor = 'Через риелтора'" class="form__item" :class="{'item__active' : form.ownerOrRealtor == 'Через риелтора'}">{{ $t('addAdsItIsPossibleFromASpecialist') }} </span>
+                                    <span v-if="$route.params.table_name != 'Snimu'" @click="form.ownerOrRealtor = 'Специалист'" class="form__item" :class="{'item__active' : form.ownerOrRealtor == 'Специалист'}">{{ $t('addAdsIAmSpecialist') }} </span>
+                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.ownerOrRealtor = 'Можно от специалиста'" class="form__item" :class="{'item__active' : form.ownerOrRealtor == 'Можно от специалиста'}">{{ $t('addAdsItIsPossibleFromASpecialist') }} </span>
                                 </div>
 
                                 <!-- Вывод ошибок -->
