@@ -16,7 +16,7 @@ class Prombaza extends Model
 
     public $fillable = [
         'author_id', 'zagolovok', 'tip_obekta', 'cena', 'cena_tip','ploshad_obshaya','ploshad_uchastka','tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica',
-        'nomer_doma', 'sostoyanie', 'internet', 'ploshad_proizvodstvennih_pomesheniy', 'visota_proizvodstvennih_pomesheniy',
+        'nomer_doma', 'sostoyanie', 'ploshad_proizvodstvennih_pomesheniy', 'visota_proizvodstvennih_pomesheniy',
         'ploshad_skladskih_pomesheniy', 'visota_skladskih_pomesheniy','ploshad_ofisnih_pomesheniy',
         'text_obyavleniya', 'raspolojenie','kommunikacii','raznoe',
         'ownerOrRealtor', 'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'

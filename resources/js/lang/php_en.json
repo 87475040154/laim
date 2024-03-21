@@ -160,17 +160,8 @@
 
 
 
-    "filterApartments": "Apartment Filter",
-    "filterHostel": "Hostel Filter",
-    "filterHouse": "Filter Houses",
-    "filterOffice": "Filter Offices",
-    "filterBuilding": "Filter Buildings",
-    "filterShop": "Shop Filter",
-    "FilterBase": "Prombase Filter",
-    "filterOther": "Other Filter",
-    "filterBusiness": "Business Filter",
-    "filterRent": "I rent Filter",
-    "filterFire": "Filter Hot",
+    "filter": "Filter",
+
 
     "filterReset": "Reset",
     "filterChooseCity": "Select a city",
@@ -611,12 +602,10 @@
     "bueAdsIndexx30ViewsPerMonth": "x30 views per month",
     "bueAdsIndex28DaysOfActivePromotion": "28 days of active promotion",
     "bueAdsIndexEveryDayInTheTOP": "Every day raising to the TOP",
-    "bueAdsIndexRedPainting": "Red painting",
     "bueAdsIndexEconomy": "Economy",
     "bueAdsIndexPromote": "Promote",
     "bueAdsIndexx7ViewsPerWeek": "x7 views per week",
     "bueAdsIndex7DaysOfActivePromotion": "7 days of active promotion",
-    "bueAdsIndexGreenPainting": "Green painting",
     "bueAdsIndexPaidServicesWillHelpYouPassFaster": "Paid services will help you pass faster",
     "bueAdsIndexTOPPromotionForADay": "TOP promotion for a day",
     "bueAdsIndex8TimesInTheTOPFor": "Rising to the TOP every 3 hours for",

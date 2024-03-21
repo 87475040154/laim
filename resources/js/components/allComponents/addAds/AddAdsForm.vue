@@ -617,42 +617,6 @@
 
                         </div>
 
-                        <!-- Интернет - Модем, Через TV кабель, проводной, оптика -->
-                        <div class="form-group" v-if="$route.params.table_name != 'Snimu'">
-
-                            <div class="form__title">
-                                {{ $t('addAdsTheInternet') }}
-                            </div>
-
-
-                            <validation-provider rules="required" v-model="form.internet" name="internet" v-slot="{ errors, valid, invalid, touched}">
-
-                                <div class="form__input">
-
-                                    <!-- Модем -->
-                                    <span @click="form.internet = 'Модем'" class="form__item" :class="{'item__active':form.internet == 'Модем'}">{{ $t('addAdsModem') }}</span>
-
-                                    <!-- Через TV кабель -->
-                                    <span @click="form.internet = 'Через TV кабель'" class="form__item" :class="{'item__active':form.internet == 'Через TV кабель'}">{{ $t('addAdsViaTVCable') }}</span>
-
-                                    <!-- Проводной -->
-                                    <span @click="form.internet = 'Проводной'" class="form__item" :class="{'item__active':form.internet == 'Проводной'}">{{ $t('addAdsWired') }}</span>
-
-                                    <!-- Нет -->
-                                    <span @click="form.internet = 'Нет'" class="form__item" :class="{'item__active':form.internet == 'Нет'}">{{ $t('addAdsNo') }}</span>
-
-                                </div>
-
-                                <!-- Вывожу ошибки - veevalidate, vform -->
-                                <div class="text__error">
-                                    <span >{{ errors[0] }}</span>
-                                    <has-error :form="form" field="internet"></has-error>
-                                </div>
-
-                            </validation-provider>
-
-                        </div>
-
                         <!-- Душ - В комнате, В секции, нет -->
                         <div class="form-group" v-if="$route.params.table_name == 'Obshejitie'" >
 
@@ -966,80 +930,6 @@
                                 <div class="text__error">
                                     <span >{{ errors[0] }}</span>
                                     <has-error :form="form" field="balkon"></has-error>
-                                </div>
-
-                            </validation-provider>
-
-                        </div>
-
-
-                        <!-- Парковка - Паркинг, Гараж, Рядом охраняемая стоянка -->
-                        <div class="form-group" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Magazin'">
-
-                            <div class="form__title">
-                                {{ $t('addAdsParkingSpace') }}
-                            </div>
-
-                            <validation-provider rules="required" v-model="form.parkovka" name="parkovka" v-slot="{ errors, valid, invalid, touched}">
-
-                                <div class="form__input">
-
-                                    <!-- Паркинг -->
-                                    <span @click="form.parkovka = 'Паркинг'" class="form__item" :class="{'item__active':form.parkovka == 'Паркинг'}">{{ $t('addAdsParking') }}</span>
-
-                                    <!-- Гараж -->
-                                    <span @click="form.parkovka = 'Гараж'" class="form__item" :class="{'item__active':form.parkovka == 'Гараж'}">{{ $t('addAdsGarage') }}</span>
-
-                                    <!-- Рядом охраняемая стоянка -->
-                                    <span @click="form.parkovka = 'Рядом охраняемая стоянка'" class="form__item" :class="{'item__active':form.parkovka == 'Рядом охраняемая стоянка'}">{{ $t('addAdsThereIsAGuardedParkingLotNearby') }}</span>
-
-                                </div>
-
-                                <!-- Вывожу ошибки - veevalidate, vform -->
-                                <div class="text__error">
-                                    <span >{{ errors[0] }}</span>
-                                    <has-error :form="form" field="parkovka"></has-error>
-                                </div>
-
-                            </validation-provider>
-
-                        </div>
-
-                        <!-- Пол - Линолеум, Паркет, Ламинат, дерево, ковролан, плитка -->
-                        <div class="form-group" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis'|| $route.params.table_name == 'Magazin'">
-
-                            <div class="form__title">
-                                {{ $t('addAdsFloorText') }}
-                            </div>
-
-                            <validation-provider rules="required" v-model="form.pol" name="pol" v-slot="{ errors, valid, invalid, touched}">
-
-                                <div class="form__input">
-
-                                    <!-- Линолеум-->
-                                    <span @click="form.pol = 'Линолеум'" class="form__item" :class="{'item__active':form.pol == 'Линолеум'}">{{ $t('addAdsLinoleum') }}</span>
-
-                                    <!-- Паркет -->
-                                    <span @click="form.pol = 'Паркет'" class="form__item" :class="{'item__active':form.pol == 'Паркет'}">{{ $t('addAdsParquet') }}</span>
-
-                                    <!-- Ламинат -->
-                                    <span @click="form.pol = 'Ламинат'" class="form__item" :class="{'item__active':form.pol == 'Ламинат'}">{{ $t('addAdsLaminateFlooring') }}</span>
-
-                                    <!-- Дерево -->
-                                    <span @click="form.pol = 'Дерево'" class="form__item" :class="{'item__active':form.pol == 'Дерево'}">{{ $t('addAdsTree') }}</span>
-
-                                    <!-- Ковролан -->
-                                    <span @click="form.pol = 'Ковролан'" class="form__item" :class="{'item__active':form.pol == 'Ковролан'}">{{ $t('addAdsCarpet') }}</span>
-
-                                    <!-- Плитка -->
-                                    <span @click="form.pol = 'Плитка'" class="form__item" :class="{'item__active':form.pol == 'Плитка'}">{{ $t('addAdsTile') }}</span>
-
-                                </div>
-
-                                <!-- Вывожу ошибки - veevalidate, vform -->
-                                <div class="text__error">
-                                    <span >{{ errors[0] }}</span>
-                                    <has-error :form="form" field="pol"></has-error>
                                 </div>
 
                             </validation-provider>
@@ -1757,7 +1647,6 @@ export default defineComponent({
 
                 //Характеристики
                 sostoyanie: '',
-                internet: '',
                 dush: '',
                 sanuzel: '',
                 otdelniy_vhod: '',
@@ -1767,9 +1656,7 @@ export default defineComponent({
                 otoplenie: '',
                 gaz: '',
                 balkon: '',
-                parkovka: '',
                 mebel: '',
-                pol: '',
 
                 //Промбаза
                 ploshad_proizvodstvennih_pomesheniy: '',

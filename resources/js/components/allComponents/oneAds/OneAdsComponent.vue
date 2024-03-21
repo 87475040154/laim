@@ -401,27 +401,6 @@
                                 <div v-if="ads.otdelniy_vhod != 'Нет'" >{{ $t('oneAdsThereIs') }}</div>
                             </div>
 
-                            <!-- Интернет -->
-                            <div class="btn__item" v-if="ads.internet != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsInternet') }}</div>
-
-                                <div v-if="ads.internet == 'Нет'">{{ $t('oneAdsNo') }}</div>
-
-                                <div v-if="ads.internet != 'Нет'">
-                                    <span v-if="updateDateLocale.lang == 'ru'">{{ads.internet}}</span>
-                                    <span v-if="updateDateLocale.lang == 'kz'">
-                                        {{ads.internet == 'Модем' ? 'Модем' :''}}
-                                        {{ads.internet == 'Через TV кабель' ? 'Теледидар кабелі арқылы' :''}}
-                                        {{ads.internet == 'Проводной' ? 'Сымды' :''}}
-                                    </span>
-                                    <span v-if="updateDateLocale.lang == 'en'">
-                                        {{ads.internet == 'Модем' ? 'Modem' :''}}
-                                        {{ads.internet == 'Через TV кабель' ? 'Via TV cable' :''}}
-                                        {{ads.internet == 'Проводной' ? 'Wired' :''}}
-                                    </span>
-                                </div>
-
-                            </div>
 
                             <!-- Душ -->
                             <div class="btn__item" v-if="ads.dush != undefined">
@@ -611,44 +590,6 @@
                                     {{ads.tip_stroeniya == 'Кирпич' ? 'Brick' :''}}
                                     {{ads.tip_stroeniya == 'Дерево' ? 'Tree' :''}}
                                     {{ads.tip_stroeniya == 'Другое' ? 'Other' :''}}
-                                </div>
-                            </div>
-
-                            <!-- Парковка -->
-                            <div class="btn__item" v-if="ads.parkovka != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsParking') }}</div>
-                                <div v-if="updateDateLocale.lang == 'ru'">{{ads.parkovka}}</div>
-                                <div v-if="updateDateLocale.lang == 'kz'">
-                                    {{ads.parkovka == 'Паркинг' ? 'Тұрақ' :''}}
-                                    {{ads.parkovka == 'Гараж' ? 'Гараж' :''}}
-                                    {{ads.parkovka == 'Рядом охраняемая стоянка' ? 'Жақын жерде күзетілетін тұрақ' :''}}
-                                </div>
-                                <div v-if="updateDateLocale.lang == 'en'">
-                                    {{ads.parkovka == 'Паркинг' ? 'Parking' :''}}
-                                    {{ads.parkovka == 'Гараж' ? 'Garage' :''}}
-                                    {{ads.parkovka == 'Рядом охраняемая стоянка' ? 'There is a guarded parking lot nearby' :''}}
-                                </div>
-                            </div>
-
-                            <!-- Пол -->
-                            <div class="btn__item" v-if="ads.pol != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsFloorText') }}</div>
-                                <div v-if="updateDateLocale.lang == 'ru'">{{ads.pol}}</div>
-                                <div v-if="updateDateLocale.lang == 'kz'">
-                                    {{ads.pol == 'Линолеум' ? 'Линолеум' :''}}
-                                    {{ads.pol == 'Паркет' ? 'Паркет' :''}}
-                                    {{ads.pol == 'Ламинат' ? 'Ламинат' :''}}
-                                    {{ads.pol == 'Дерево' ? 'Ағаш' :''}}
-                                    {{ads.pol == 'Ковролан' ? 'Кілем' :''}}
-                                    {{ads.pol == 'Плитка' ? 'Плитка' :''}}
-                                </div>
-                                <div v-if="updateDateLocale.lang == 'en'">
-                                    {{ads.pol == 'Линолеум' ? 'Linoleum' :''}}
-                                    {{ads.pol == 'Паркет' ? 'Parquet' :''}}
-                                    {{ads.pol == 'Ламинат' ? 'Laminate flooring' :''}}
-                                    {{ads.pol == 'Дерево' ? 'Tree' :''}}
-                                    {{ads.pol == 'Ковролан' ? 'Carpet' :''}}
-                                    {{ads.pol == 'Плитка' ? 'Tile' :''}}
                                 </div>
                             </div>
 

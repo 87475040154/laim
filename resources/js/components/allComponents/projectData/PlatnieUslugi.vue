@@ -29,10 +29,6 @@
                 <v-icon icon="mdi-check mx-2"></v-icon>
                 <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
             </div>
-            <div class="d-flex">
-                <v-icon icon="mdi-check mx-2"></v-icon>
-                <div class="text-grey">{{ $t('bueAdsIndexRedPainting') }}</div>
-            </div>
             <div class="d-flex text-center align-center py-2">
                 <div class="text-grey flex-grow-1" style="text-decoration: line-through">15 120 &#8376;</div>
                 <div class="flex-grow-1" style="font-size: 1.3em">3 500 &#8376;</div>
@@ -67,10 +63,6 @@
             <div class="d-flex py-2 ">
                 <v-icon icon="mdi-check mx-2"></v-icon>
                 <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
-            </div>
-            <div class="d-flex">
-                <v-icon icon="mdi-check mx-2"></v-icon>
-                <div class="text-grey">{{ $t('bueAdsIndexGreenPainting') }}</div>
             </div>
             <div class="d-flex text-center align-center py-2">
                 <div class="text-grey flex-grow-1" style="text-decoration: line-through">3 780 &#8376;</div>

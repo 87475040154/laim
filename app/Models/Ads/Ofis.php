@@ -16,8 +16,8 @@ class Ofis extends Model
 
     public $fillable = [
         'author_id', 'zagolovok', 'kolichestvo_komnat', 'cena','cena_tip', 'tip_ofisa', 'etag','etagnost','visota_potolkov',
-        'ploshad_obshaya', 'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie', 'mebel', 'internet',
-        'sanuzel', 'otdelniy_vhod', 'parkovka', 'pol', 'mebel_arr','raznoe','bezopasnost',
+        'ploshad_obshaya', 'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie', 'mebel',
+        'sanuzel', 'otdelniy_vhod', 'mebel_arr','raznoe','bezopasnost',
         'text_obyavleniya', 'ownerOrRealtor', 'name', 'tel','tel2'
         , 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
     ];

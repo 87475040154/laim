@@ -27,24 +27,15 @@
 
                     <!-- Заголовок что ищем - Квартиры, Общежития и тд. -->
                     <span class="text-body-1">
-                        <span v-if="$route.params.table_name == 'Kvartira'"> {{ $t('filterApartments')}} </span>
-                        <span v-if="$route.params.table_name == 'Obshejitie'"> {{ $t('filterHostel') }}</span>
-                        <span v-if="$route.params.table_name == 'Dom'"> {{ $t('filterHouse') }}</span>
-                        <span v-if="$route.params.table_name == 'Ofis'"> {{ $t('filterOffice') }}</span>
-                        <span v-if="$route.params.table_name == 'Zdanie'"> {{ $t('filterBuilding') }}</span>
-                        <span v-if="$route.params.table_name == 'Magazin'"> {{ $t('filterShop') }}</span>
-                        <span v-if="$route.params.table_name == 'Prombaza'"> {{ $t('filterBase') }}</span>
-                        <span v-if="$route.params.table_name == 'Prochaya'"> {{ $t('filterOther') }}</span>
-                        <span v-if="$route.params.table_name == 'Business'"> {{ $t('filterBusiness') }}</span>
-                        <span v-if="$route.params.table_name == 'Snimu'"> {{ $t('filterRent') }}</span>
-                        <span v-if="$route.params.table_name == 'goryachie'"> {{ $t('filterFire') }}</span>
+                        {{ $t('filter')}}
                     </span>
 
                     <v-spacer></v-spacer>
 
                     <!-- Кнопка сбросить ФИЛЬТР -->
-                    <v-btn size="x-small" variant="text" class="text-caption" @click="clearFilterFunc()">{{ $t('filterReset') }}</v-btn>
-
+                    <v-btn size="x-small" variant="text" class="text-caption" @click="clearFilterFunc()">
+                        {{ $t('filterReset') }}
+                    </v-btn>
 
                 </div>
 

@@ -17,8 +17,8 @@ class Magazin extends Model
     public $fillable = [
         'author_id', 'zagolovok', 'tip_obekta','deistvuushii_bisnes', 'cena', 'cena_tip','mestopolojenie',
         'etag','etagnost','ploshad_obshaya','tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon','ulica', 'nomer_doma',
-        'sostoyanie', 'mebel', 'internet', 'sanuzel', 'otdelniy_vhod', 'mebel_arr','raznoe','bezopasnost',
-        'parkovka', 'pol', 'text_obyavleniya', 'ownerOrRealtor', 'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
+        'sostoyanie', 'mebel', 'sanuzel', 'otdelniy_vhod', 'mebel_arr','raznoe','bezopasnost',
+        'text_obyavleniya', 'ownerOrRealtor', 'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
     ];
 
     // Преобразуем масив в json и обратно при занесении данных в БД и при получении из нее автоматически

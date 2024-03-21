@@ -80,7 +80,6 @@ class AdsController extends Controller
             "images.*"=> "nullable|file|mimes:jpg,jpeg,png,bmp,gif,svg,webp,heif|max:4000",
             'ploshad_obshaya'=> 'required|numeric|min:1|max:999999',
             'sostoyanie'=> 'nullable|string|min:1|max:255',
-            'internet'=> 'nullable|string|min:1|max:255',
             'oblast'=> 'required|string|min:1|max:255',
             'gorod'=> 'required|string|min:1|max:255',
             'raion'=> 'nullable|string|min:1|max:255',
@@ -108,9 +107,7 @@ class AdsController extends Controller
                     'ploshad_kuhni'=> 'nullable|numeric|min:1|max:999',
                     'sanuzel'=> 'nullable|string|min:1|max:255',
                     'balkon'=> 'nullable|string|min:1|max:255',
-                    'parkovka'=> 'nullable|string|min:1|max:255',
                     'mebel'=> 'nullable|string|min:1|max:255',
-                    'pol'=> 'nullable|string|min:1|max:255',
                     'bezopasnost.*'=> 'nullable|string|min:1|max:2000',
                     'raznoe.*'=> 'nullable|string|min:1|max:2000',
                 ];
@@ -126,8 +123,6 @@ class AdsController extends Controller
                     'sanuzel'=> 'required|string|min:1|max:255',
                     'dush'=> 'required|string|min:1|max:255',
                     'balkon'=> 'nullable|string|min:1|max:255',
-                    'parkovka'=> 'nullable|string|min:1|max:255',
-                    'pol'=> 'nullable|string|min:1|max:255',
                     'bezopasnost.*'=> 'nullable|string|min:1|max:2000',
                     'raznoe.*'=> 'nullable|string|min:1|max:2000',
                 ];
@@ -147,8 +142,6 @@ class AdsController extends Controller
                     'elektrichestvo'=> 'nullable|string|min:1|max:255',
                     'otoplenie'=> 'nullable|string|min:1|max:255',
                     'gaz'=> 'nullable|string|min:1|max:255',
-                    'parkovka'=> 'nullable|string|min:1|max:255',
-                    'pol'=> 'nullable|string|min:1|max:255',
                     'bezopasnost.*'=> 'nullable|string|min:1|max:2000',
                     'raznoe.*'=> 'nullable|string|min:1|max:2000',
                 ];
@@ -164,8 +157,6 @@ class AdsController extends Controller
                     'mebel'=> 'nullable|string|min:1|max:255',
                     'sanuzel'=> 'nullable|string|min:1|max:255',
                     'otdelniy_vhod'=> 'nullable|string|min:1|max:255',
-                    'parkovka'=> 'nullable|string|min:1|max:255',
-                    'pol'=> 'nullable|string|min:1|max:255',
                     'bezopasnost.*'=> 'nullable|string|min:1|max:2000',
                     'raznoe.*'=> 'nullable|string|min:1|max:2000',
                 ];
@@ -189,8 +180,6 @@ class AdsController extends Controller
                     'mebel'=> 'nullable|string|min:1|max:255',
                     'sanuzel'=> 'nullable|string|min:1|max:255',
                     'otdelniy_vhod'=> 'nullable|string|min:1|max:255',
-                    'parkovka'=> 'nullable|string|min:1|max:255',
-                    'pol'=> 'nullable|string|min:1|max:255',
                     'bezopasnost.*'=> 'nullable|string|min:1|max:2000',
                     'raznoe.*'=> 'nullable|string|min:1|max:2000',
                 ];

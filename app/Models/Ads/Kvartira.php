@@ -17,8 +17,8 @@ class Kvartira extends Model
 
     public $fillable = [
         'author_id', 'zagolovok', 'period_arendi', 'kolichestvo_komnat', 'cena', 'etag','etagnost','ploshad_obshaya',
-        'ploshad_kuhni', 'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie', 'internet',
-        'sanuzel', 'balkon', 'parkovka', 'mebel', 'pol','mebel_arr','raznoe','bezopasnost', 'text_obyavleniya',
+        'ploshad_kuhni', 'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie',
+        'sanuzel', 'balkon', 'mebel', 'mebel_arr','raznoe','bezopasnost', 'text_obyavleniya',
         'ownerOrRealtor', 'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
     ];
 

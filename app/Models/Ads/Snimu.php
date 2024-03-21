@@ -16,7 +16,7 @@ class Snimu extends Model
 
     public $fillable = [
         'author_id','tip_obekta', 'zagolovok', 'period_arendi','kolichestvo_komnat', 'cena', 'ploshad_obshaya',
-        'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'sostoyanie', 'internet','mebel',
+        'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'sostoyanie', 'mebel',
         'text_obyavleniya','kommunikacii','bezopasnost',
         'ownerOrRealtor', 'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
     ];

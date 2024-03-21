@@ -44,7 +44,6 @@ return new class extends Migration
 
             $table->string('sostoyanie')->nullable();
             $table->string('mebel')->nullable();
-            $table->string('internet')->nullable();
 
             $table->string('sanuzel')->nullable();
             $table->string('kanalizaciya')->nullable();
@@ -52,8 +51,6 @@ return new class extends Migration
             $table->string('elektrichestvo')->nullable();
             $table->string('otoplenie')->nullable();
             $table->string('gaz')->nullable();
-            $table->string('pol')->nullable();
-            $table->string('parkovka')->nullable();
 
             $table->json('mebel_arr')->nullable();
             $table->json('raznoe')->nullable();

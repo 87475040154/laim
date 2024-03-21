@@ -26,10 +26,6 @@
                 <!-- Сам блок с превью -->
                 <v-card max-width="650" style="background: #ffffff; box-shadow: none; border-radius: 6px"
                         class="mx-3 my-2 mx-sm-auto ads__preview"
-                        :class="{
-                    'bg-green-lighten-5': ads.top_x7 != undefined && ads.top_x7 != null,
-                    'bg-red-lighten-5': ads.top_x30 != undefined && ads.top_x30 != null,
-                }"
                 >
 
                     <!--  Описание объявления -->
@@ -156,10 +152,6 @@
                                                 <v-icon icon="mdi-check mx-2"></v-icon>
                                                 <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
                                             </div>
-                                            <div class="d-flex">
-                                                <v-icon icon="mdi-check mx-2"></v-icon>
-                                                <div class="text-grey">{{ $t('bueAdsIndexRedPainting') }}</div>
-                                            </div>
 
                                         </div>
                                     </v-menu>
@@ -197,10 +189,6 @@
                                             <div class="d-flex py-2">
                                                 <v-icon icon="mdi-check mx-2"></v-icon>
                                                 <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
-                                            </div>
-                                            <div class="d-flex">
-                                                <v-icon icon="mdi-check mx-2"></v-icon>
-                                                <div class="text-grey">{{ $t('bueAdsIndexGreenPainting') }}</div>
                                             </div>
                                         </div>
                                     </v-menu>

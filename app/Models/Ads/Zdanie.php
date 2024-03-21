@@ -16,7 +16,7 @@ class Zdanie extends Model
 
     public $fillable = [
         'author_id', 'zagolovok', 'cena', 'cena_tip', 'etagnost','visota_potolkov','ploshad_obshaya', 'ploshad_uchastka',
-        'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie', 'internet',
+        'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie',
         'text_obyavleniya','bezopasnost',
         'ownerOrRealtor', 'name', 'tel', 'tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
     ];

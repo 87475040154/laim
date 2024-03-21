@@ -41,7 +41,6 @@ return new class extends Migration
             $table->json('images')->nullable();
 
             $table->string('sostoyanie')->nullable();
-            $table->string('internet')->nullable();
 
             $table->string('ploshad_proizvodstvennih_pomesheniy')->nullable();
             $table->string('visota_proizvodstvennih_pomesheniy')->nullable();

@@ -17,7 +17,7 @@ class Dom extends Model
     public $fillable = [
         'author_id', 'zagolovok', 'tip_obekta', 'period_arendi', 'kolichestvo_komnat', 'cena', 'etagnost','ploshad_obshaya',
         'ploshad_kuhni','ploshad_uchastka', 'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie',
-        'internet', 'sanuzel', 'kanalizaciya','voda','elektrichestvo', 'otoplenie','gaz', 'mebel', 'parkovka','pol',
+        'sanuzel', 'kanalizaciya','voda','elektrichestvo', 'otoplenie','gaz', 'mebel',
         'mebel_arr','raznoe','bezopasnost',
         'text_obyavleniya', 'ownerOrRealtor', 'name', 'tel', 'tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
     ];

@@ -15,9 +15,9 @@ class Business extends Model
     use HasFactory;
 
     public $fillable = [
-        'author_id', 'tip_sdelki', 'zagolovok', 'deistvuushii_bisnes', 'cena', 'cena_tip', 'sfera_deyatelnosti', 'mestopolojenie','ploshad_obshaya',
-        'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie', 'internet',
-        'raspolojenie', 'kommunikacii',
+        'author_id', 'tip_sdelki', 'zagolovok', 'deistvuushii_bisnes', 'cena', 'cena_tip', 'sfera_deyatelnosti',
+        'mestopolojenie','ploshad_obshaya', 'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica',
+        'nomer_doma', 'sostoyanie', 'raspolojenie', 'kommunikacii',
         'text_obyavleniya', 'ownerOrRealtor', 'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
     ];
 

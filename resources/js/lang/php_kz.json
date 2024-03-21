@@ -161,17 +161,8 @@
 
 
 
-    "filterApartments": "Пәтер сүзгісі",
-    "filterHostel": "Жатақхана сүзгісі",
-    "filterHouse": "Үй сүзгісі",
-    "filterOffice": "Кеңсе сүзгісі",
-    "filterBuilding": "Ғимарат сүзгісі",
-    "filterShop": "Дүкен сүзгісі",
-    "filterBase": "База сүзгісі",
-    "filterOther": "Басқа сүзгі",
-    "filterBusiness": "Бизнес сүзгісі",
-    "filterRent": "Жалдаймын сүзгісі",
-    "filterFire": "Сүзгі Ыстық",
+    "filter": "Сүзгі",
+
 
 
     "filterReset": "Қалпына келтіру",
@@ -614,12 +605,10 @@
     "bueAdsIndexx30ViewsPerMonth": "Бір айға x30 қарау",
     "bueAdsIndex28DaysOfActivePromotion": "28 күндік белсенді жылжыту",
     "bueAdsIndexEveryDayInTheTOP": "Күн сайын ТОП-қа көтерілу",
-    "bueAdsIndexRedPainting": "Қызыл бояу",
     "bueAdsIndexEconomy": "Үнемдеу",
     "bueAdsIndexPromote": "Жылжыту",
     "bueAdsIndexx7ViewsPerWeek": "Бір аптаға x7 қарау",
     "bueAdsIndex7DaysOfActivePromotion": "7 күндік белсенді жылжыту",
-    "bueAdsIndexGreenPainting": "Жасыл бояу",
     "bueAdsIndexPaidServicesWillHelpYouPassFaster": "Ақылы қызметтер тезірек тапсыруға көмектеседі",
     "bueAdsIndexTOPPromotionForADay": "Тәулігіне ТОП акциясы",
     "bueAdsIndex8TimesInTheTOPFor": "Әр 3 сағат сайын ТОП-қа көтерілу",
