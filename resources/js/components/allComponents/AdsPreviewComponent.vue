@@ -277,7 +277,7 @@
                     || authStore.check && authStore.user.role == 'admin' && ads.control != 'В архиве'"
                     >
 
-                        <div class="d-flex justify-content-between align-center">
+                        <div class="d-flex justify-content-between align-center overflow-hidden position-relative">
 
                             <!-- Кнопка сдать быстрее -->
                             <v-btn dark color="blue-darken-2"
@@ -316,7 +316,7 @@
                                 <!-- Тело - Скрытого меню-->
                                 <div class="dropdown-menu p-0 border-none">
                                     <div class="d-flex align-center justify-end gap-3 px-3 bg-grey-lighten-2"
-                                         style="width: 90vw; max-width: 600px"
+                                         style="width: 100vw; max-width: 600px"
                                     >
 
                                         <!-- Кнопка - Рекламировать или Отановить объявление -->
@@ -472,7 +472,6 @@ export default {
 
         //Открыть 1-но объявление
         async showOneAds(ads,index){
-            this.query = true;
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
             this.checkInternetStore.checkInternet();
