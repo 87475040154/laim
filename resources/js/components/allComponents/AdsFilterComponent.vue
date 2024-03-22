@@ -51,7 +51,7 @@
                             <v-btn @click="$router.push({ name: 'filterLocation',  params: { locationId: 'null', stepLocation:1 } })"
                                    class="flex-fill text-body-2"
                                    :class="{'rounded-e-0' : KZLocationStore.location != ''}"
-                                   color="blue"
+                                   color="grey-lighten-3"
                                    size="x-large"
                                    rounded="0"
                             >
@@ -765,7 +765,7 @@
                            size="x-large"
                            block
                            class="text-body-1 text-white"
-                           style="background: #10a37f"
+                           style="background: rgb(30 119 230)"
                     >
                         {{ $t('filterShowResults') }}
                     </v-btn>

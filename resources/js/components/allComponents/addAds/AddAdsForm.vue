@@ -1272,7 +1272,7 @@
                             <v-btn @click="$router.push({ name: $route.name + 'Location',  params: { locationId: 'null', stepLocation:1 } })"
                                    class="flex-fill text-body-2"
                                    :class="{'rounded-e-0' : KZLocationStore.location != ''}"
-                                   color="blue" size="x-large" rounded="0"
+                                   color="grey-lighten-3" size="x-large" rounded="0"
                             >
 
                                 <!-- Вывод выбранной локации -->
