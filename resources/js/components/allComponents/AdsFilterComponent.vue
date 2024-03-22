@@ -1124,7 +1124,7 @@ export default {
 
 /* Выбранная кнопка */
 .item__active{
-    background: #cbf8cb;
+    background: #f0f7f0
 }
 
 

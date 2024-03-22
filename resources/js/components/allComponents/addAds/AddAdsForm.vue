@@ -304,7 +304,7 @@
 
                                 <!-- Кнопки - 1,2,3-->
                                 <div class="col-auto d-flex align-items-center gap-1 px-1" style="height: 55px">
-                                    <div v-for="n in 8" role="button" @click="form.kolichestvo_komnat = n" class="d-flex rounded-2 align-center justify-center" style="font-size: 1.1em; font-weight: bold; width: 50px; height: 50px; background: #ffffff; border: 1px solid #cecece" :class="{'bg-grey-lighten-3':this.form.kolichestvo_komnat == n}">
+                                    <div v-for="n in 8" role="button" @click="form.kolichestvo_komnat = n" class="d-flex rounded-2 align-center justify-center" style="font-size: 1.1em; font-weight: bold; width: 50px; height: 50px; background: #ffffff; border: 1px solid #cecece" :style="{ background: form.kolichestvo_komnat == n ? '#f0f7f0' : '' }">
                                         {{n}}
                                     </div>
                                 </div>
@@ -2256,7 +2256,7 @@ export default defineComponent({
 }
 
 .item__active{
-    background: #cbf8cb;
+    background: #f0f7f0
 }
 
 
