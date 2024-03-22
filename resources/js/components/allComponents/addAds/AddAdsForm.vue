@@ -2248,7 +2248,7 @@ export default defineComponent({
     cursor: pointer;
     padding: 13px 15px;
     margin: 2px 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     color: rgb(51, 51, 51);
     font-size: 16px;
     white-space: nowrap;
@@ -2256,7 +2256,7 @@ export default defineComponent({
 }
 
 .item__active{
-    background: #e5e5e5;
+    background: #cbf8cb;
 }
 
 

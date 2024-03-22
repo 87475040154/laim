@@ -1114,9 +1114,9 @@ export default {
     width: 150px;
     background: #f2f3f5;
     cursor: pointer;
-    padding: 15px 20px;
+    padding: 13px 15px;
     margin: 2px 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     color: rgb(51, 51, 51);
     font-size: 16px;
     overflow: hidden;
@@ -1124,7 +1124,7 @@ export default {
 
 /* Выбранная кнопка */
 .item__active{
-    background: #e5e5e5;
+    background: #cbf8cb;
 }
 
 
