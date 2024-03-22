@@ -511,13 +511,13 @@
                         <div class="form__input">
 
                             <!-- В комнате -->
-                            <span @click="form.dush == 'В комнате'?form.dush = '':form.dush = 'В комнате'" class="form__item" :class="{'item__active':form.dush == 'В комнате'}">{{  $t('filterInTheRoom') }}</span>
+                            <span @click="form.dush == 'В комнате'?form.dush = '':form.dush = 'В комнате'" class="form__item" :class="{'item__active':form.dush == 'В комнате'}"><v-icon color="green" v-if="form.dush == 'В комнате'">mdi-check-circle</v-icon>{{  $t('filterInTheRoom') }}</span>
 
                             <!-- В секции -->
-                            <span @click="form.dush == 'В секции'?form.dush = '':form.dush = 'В секции'" class="form__item" :class="{'item__active':form.dush == 'В секции'}">{{  $t('filterInSection') }}</span>
+                            <span @click="form.dush == 'В секции'?form.dush = '':form.dush = 'В секции'" class="form__item" :class="{'item__active':form.dush == 'В секции'}"><v-icon color="green" v-if="form.dush == 'В секции'">mdi-check-circle</v-icon>{{  $t('filterInSection') }}</span>
 
                             <!-- Нет -->
-                            <span @click="form.dush == 'Нет'?form.dush = '':form.dush = 'Нет'" class="form__item" :class="{'item__active':form.dush == 'Нет'}">{{  $t('filterNo') }}</span>
+                            <span @click="form.dush == 'Нет'?form.dush = '':form.dush = 'Нет'" class="form__item" :class="{'item__active':form.dush == 'Нет'}"><v-icon color="green" v-if="form.dush == 'Нет'">mdi-check-circle</v-icon>{{  $t('filterNo') }}</span>
 
                         </div>
 
@@ -533,35 +533,35 @@
                         <div class="form__input">
 
                             <!-- Квартира - Магазин | Раздельный -->
-                            <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel == 'Раздельный' ? form.sanuzel = '' : form.sanuzel = 'Раздельный'" class="form__item" :class="{'item__active':form.sanuzel == 'Раздельный'}">{{ $t('filterSeparated') }}</span>
+                            <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel == 'Раздельный' ? form.sanuzel = '' : form.sanuzel = 'Раздельный'" class="form__item" :class="{'item__active':form.sanuzel == 'Раздельный'}"><v-icon color="green" v-if="form.sanuzel == 'Раздельный'">mdi-check-circle</v-icon>{{ $t('filterSeparated') }}</span>
                             <!-- Совмещенный -->
-                            <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel == 'Совмещенный' ? form.sanuzel = '' : form.sanuzel = 'Совмещенный'" class="form__item" :class="{'item__active':form.sanuzel == 'Совмещенный'}">{{ $t('filterCombined') }}</span>
+                            <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel == 'Совмещенный' ? form.sanuzel = '' : form.sanuzel = 'Совмещенный'" class="form__item" :class="{'item__active':form.sanuzel == 'Совмещенный'}"><v-icon color="green" v-if="form.sanuzel == 'Совмещенный'">mdi-check-circle</v-icon>{{ $t('filterCombined') }}</span>
                             <!-- 2 с/у и более -->
-                            <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel == '2 с/у и более' ? form.sanuzel = '' : form.sanuzel = '2 с/у и более'" class="form__item" :class="{'item__active':form.sanuzel == '2 с/у и более'}">{{ $t('filter2SAnAndMore') }}</span>
+                            <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel == '2 с/у и более' ? form.sanuzel = '' : form.sanuzel = '2 с/у и более'" class="form__item" :class="{'item__active':form.sanuzel == '2 с/у и более'}"><v-icon color="green" v-if="form.sanuzel == '2 с/у и более'">mdi-check-circle</v-icon>{{ $t('filter2SAnAndMore') }}</span>
 
 
                             <!-- Общежитие- В комнате -->
-                            <span v-if="$route.params.table_name == 'Obshejitie'" @click="form.sanuzel == 'В комнате' ? form.sanuzel = '' : form.sanuzel = 'В комнате'" class="form__item" :class="{'item__active':form.sanuzel == 'В комнате'}">{{ $t('filterInTheRoom') }}</span>
+                            <span v-if="$route.params.table_name == 'Obshejitie'" @click="form.sanuzel == 'В комнате' ? form.sanuzel = '' : form.sanuzel = 'В комнате'" class="form__item" :class="{'item__active':form.sanuzel == 'В комнате'}"><v-icon color="green" v-if="form.sanuzel == 'В комнате'">mdi-check-circle</v-icon>{{ $t('filterInTheRoom') }}</span>
                             <!-- В секции -->
-                            <span v-if="$route.params.table_name == 'Obshejitie'" @click="form.sanuzel == 'В секции' ? form.sanuzel = '' : form.sanuzel = 'В секции'" class="form__item" :class="{'item__active':form.sanuzel == 'В секции'}">{{ $t('filterInSection') }}</span>
+                            <span v-if="$route.params.table_name == 'Obshejitie'" @click="form.sanuzel == 'В секции' ? form.sanuzel = '' : form.sanuzel = 'В секции'" class="form__item" :class="{'item__active':form.sanuzel == 'В секции'}"><v-icon color="green" v-if="form.sanuzel == 'В секции'">mdi-check-circle</v-icon>{{ $t('filterInSection') }}</span>
 
 
                             <!-- Дом / В доме -->
-                            <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel == 'В доме' ? form.sanuzel = '' : form.sanuzel = 'В доме'" class="form__item" :class="{'item__active':form.sanuzel == 'В доме'}">{{ $t('filterInTheHouse') }}</span>
+                            <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel == 'В доме' ? form.sanuzel = '' : form.sanuzel = 'В доме'" class="form__item" :class="{'item__active':form.sanuzel == 'В доме'}"><v-icon color="green" v-if="form.sanuzel == 'В доме'">mdi-check-circle</v-icon>{{ $t('filterInTheHouse') }}</span>
                             <!-- 2 с/у и более -->
-                            <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel == '2 с/у и более' ? form.sanuzel = '' : form.sanuzel = '2 с/у и более'" class="form__item" :class="{'item__active':form.sanuzel == '2 с/у и более'}">{{ $t('filter2SAnAndMore') }}</span>
+                            <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel == '2 с/у и более' ? form.sanuzel = '' : form.sanuzel = '2 с/у и более'" class="form__item" :class="{'item__active':form.sanuzel == '2 с/у и более'}"><v-icon color="green" v-if="form.sanuzel == '2 с/у и более'">mdi-check-circle</v-icon>{{ $t('filter2SAnAndMore') }}</span>
                             <!-- Во дворе -->
-                            <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel == 'Во дворе' ? form.sanuzel = '' : form.sanuzel = 'Во дворе'" class="form__item" :class="{'item__active':form.sanuzel == 'Во дворе'}">{{ $t('filterInTheCourtyard') }}</span>
+                            <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel == 'Во дворе' ? form.sanuzel = '' : form.sanuzel = 'Во дворе'" class="form__item" :class="{'item__active':form.sanuzel == 'Во дворе'}"><v-icon color="green" v-if="form.sanuzel == 'Во дворе'">mdi-check-circle</v-icon>{{ $t('filterInTheCourtyard') }}</span>
 
 
                             <!-- Офис | Есть -->
-                            <span v-if="$route.params.table_name == 'Ofis'" @click="form.sanuzel == 'Есть' ? form.sanuzel = '' : form.sanuzel = 'Есть'" class="form__item" :class="{'item__active':form.sanuzel == 'Есть'}">{{ $t('filterThereIs') }}</span>
+                            <span v-if="$route.params.table_name == 'Ofis'" @click="form.sanuzel == 'Есть' ? form.sanuzel = '' : form.sanuzel = 'Есть'" class="form__item" :class="{'item__active':form.sanuzel == 'Есть'}"><v-icon color="green" v-if="form.sanuzel == 'Есть'">mdi-check-circle</v-icon>{{ $t('filterThereIs') }}</span>
                             <!-- 2 с/у и более -->
-                            <span v-if="$route.params.table_name == 'Ofis'" @click="form.sanuzel == '2 с/у и более' ? form.sanuzel = '' : form.sanuzel = '2 с/у и более'" class="form__item" :class="{'item__active':form.sanuzel == '2 с/у и более'}">{{ $t('filter2SAnAndMore') }}</span>
+                            <span v-if="$route.params.table_name == 'Ofis'" @click="form.sanuzel == '2 с/у и более' ? form.sanuzel = '' : form.sanuzel = '2 с/у и более'" class="form__item" :class="{'item__active':form.sanuzel == '2 с/у и более'}"><v-icon color="green" v-if="form.sanuzel == '2 с/у и более'">mdi-check-circle</v-icon>{{ $t('filter2SAnAndMore') }}</span>
 
 
                             <!-- Для всех  -->
-                            <span @click="form.sanuzel == 'Нет' ? form.sanuzel = '' : form.sanuzel = 'Нет'" class="form__item" :class="{'item__active':form.sanuzel == 'Нет'}">{{ $t('filterNo') }}</span>
+                            <span @click="form.sanuzel == 'Нет' ? form.sanuzel = '' : form.sanuzel = 'Нет'" class="form__item" :class="{'item__active':form.sanuzel == 'Нет'}"><v-icon color="green" v-if="form.sanuzel == 'Нет'">mdi-check-circle</v-icon>{{ $t('filterNo') }}</span>
 
 
                         </div>
@@ -647,10 +647,10 @@
                         <!-- Поле -->
                         <div class="form__input">
 
-                            <span @click="form.tip_stroeniya == 'Панель'?form.tip_stroeniya = '':form.tip_stroeniya = 'Панель'" class="form__item" :class="{'item__active':form.tip_stroeniya == 'Панель'}">{{ $t('filterPanel') }}</span>
-                            <span @click="form.tip_stroeniya == 'Кирпич'?form.tip_stroeniya = '':form.tip_stroeniya = 'Кирпич'" class="form__item" :class="{'item__active':form.tip_stroeniya == 'Кирпич'}">{{ $t('filterBrick') }}</span>
-                            <span @click="form.tip_stroeniya == 'Дерево'?form.tip_stroeniya = '':form.tip_stroeniya = 'Дерево'" class="form__item" :class="{'item__active':form.tip_stroeniya == 'Дерево'}">{{ $t('filterTree') }}</span>
-                            <span @click="form.tip_stroeniya == 'Другое'?form.tip_stroeniya = '':form.tip_stroeniya = 'Другое'" class="form__item" :class="{'item__active':form.tip_stroeniya == 'Другое'}">{{ $t('filterOtherText') }}</span>
+                            <span @click="form.tip_stroeniya == 'Панель'?form.tip_stroeniya = '':form.tip_stroeniya = 'Панель'" class="form__item" :class="{'item__active':form.tip_stroeniya == 'Панель'}"><v-icon color="green" v-if="form.tip_stroeniya == 'Панель'">mdi-check-circle</v-icon>{{ $t('filterPanel') }}</span>
+                            <span @click="form.tip_stroeniya == 'Кирпич'?form.tip_stroeniya = '':form.tip_stroeniya = 'Кирпич'" class="form__item" :class="{'item__active':form.tip_stroeniya == 'Кирпич'}"><v-icon color="green" v-if="form.tip_stroeniya == 'Кирпич'">mdi-check-circle</v-icon>{{ $t('filterBrick') }}</span>
+                            <span @click="form.tip_stroeniya == 'Дерево'?form.tip_stroeniya = '':form.tip_stroeniya = 'Дерево'" class="form__item" :class="{'item__active':form.tip_stroeniya == 'Дерево'}"><v-icon color="green" v-if="form.tip_stroeniya == 'Дерево'">mdi-check-circle</v-icon>{{ $t('filterTree') }}</span>
+                            <span @click="form.tip_stroeniya == 'Другое'?form.tip_stroeniya = '':form.tip_stroeniya = 'Другое'" class="form__item" :class="{'item__active':form.tip_stroeniya == 'Другое'}"><v-icon color="green" v-if="form.tip_stroeniya == 'Другое'">mdi-check-circle</v-icon>{{ $t('filterOtherText') }}</span>
 
                         </div>
 
@@ -666,11 +666,11 @@
                         <div class="form__input">
 
                             <!-- Центральная -->
-                            <span @click="form.kanalizaciya == 'Центральная'?form.kanalizaciya = '':form.kanalizaciya = 'Центральная'" class="form__item" :class="{'item__active':form.kanalizaciya == 'Центральная'}">{{ $t('filterCentral') }}</span>
+                            <span @click="form.kanalizaciya == 'Центральная'?form.kanalizaciya = '':form.kanalizaciya = 'Центральная'" class="form__item" :class="{'item__active':form.kanalizaciya == 'Центральная'}"><v-icon color="green" v-if="form.kanalizaciya == 'Центральная'">mdi-check-circle</v-icon>{{ $t('filterCentral') }}</span>
                             <!-- Септик -->
-                            <span @click="form.kanalizaciya == 'Септик'?form.kanalizaciya = '':form.kanalizaciya = 'Септик'" class="form__item" :class="{'item__active':form.kanalizaciya == 'Септик'}">{{ $t('filterSepticTank') }}</span>
+                            <span @click="form.kanalizaciya == 'Септик'?form.kanalizaciya = '':form.kanalizaciya = 'Септик'" class="form__item" :class="{'item__active':form.kanalizaciya == 'Септик'}"><v-icon color="green" v-if="form.kanalizaciya == 'Септик'">mdi-check-circle</v-icon>{{ $t('filterSepticTank') }}</span>
                             <!-- Нет -->
-                            <span @click="form.kanalizaciya == 'Нет'?form.kanalizaciya = '':form.kanalizaciya = 'Нет'" class="form__item" :class="{'item__active':form.kanalizaciya == 'Нет'}">{{ $t('filterNo') }}</span>
+                            <span @click="form.kanalizaciya == 'Нет'?form.kanalizaciya = '':form.kanalizaciya = 'Нет'" class="form__item" :class="{'item__active':form.kanalizaciya == 'Нет'}"><v-icon color="green" v-if="form.kanalizaciya == 'Нет'">mdi-check-circle</v-icon>{{ $t('filterNo') }}</span>
 
                         </div>
                     </div>
@@ -685,13 +685,13 @@
                         <div class="form__input">
 
                             <!-- Центральная -->
-                            <span @click="form.voda == 'Центральная'?form.voda = '':form.voda = 'Центральная'" class="form__item" :class="{'item__active':form.voda == 'Центральная'}">{{ $t('filterCentral') }}</span>
+                            <span @click="form.voda == 'Центральная'?form.voda = '':form.voda = 'Центральная'" class="form__item" :class="{'item__active':form.voda == 'Центральная'}"><v-icon color="green" v-if="form.voda == 'Центральная'">mdi-check-circle</v-icon>{{ $t('filterCentral') }}</span>
 
                             <!-- Скважина -->
-                            <span @click="form.voda == 'Скважина'?form.voda = '':form.voda = 'Скважина'" class="form__item" :class="{'item__active':form.voda == 'Скважина'}">{{ $t('filterWell') }}</span>
+                            <span @click="form.voda == 'Скважина'?form.voda = '':form.voda = 'Скважина'" class="form__item" :class="{'item__active':form.voda == 'Скважина'}"><v-icon color="green" v-if="form.voda == 'Скважина'">mdi-check-circle</v-icon>{{ $t('filterWell') }}</span>
 
                             <!-- Нет -->
-                            <span @click="form.voda == 'Нет'?form.voda = '':form.voda = 'Нет'" class="form__item" :class="{'item__active':form.voda == 'Нет'}">{{ $t('filterNo') }}</span>
+                            <span @click="form.voda == 'Нет'?form.voda = '':form.voda = 'Нет'" class="form__item" :class="{'item__active':form.voda == 'Нет'}"><v-icon color="green" v-if="form.voda == 'Нет'">mdi-check-circle</v-icon>{{ $t('filterNo') }}</span>
 
                         </div>
                     </div>
@@ -706,22 +706,22 @@
                         <div class="form__input">
 
                             <!-- Центральное -->
-                            <span @click="form.otoplenie == 'Центральное'?form.otoplenie = '':form.otoplenie = 'Центральное'" class="form__item" :class="{'item__active':form.otoplenie == 'Центральное'}">{{ $t('filterCentralText') }}</span>
+                            <span @click="form.otoplenie == 'Центральное'?form.otoplenie = '':form.otoplenie = 'Центральное'" class="form__item" :class="{'item__active':form.otoplenie == 'Центральное'}"><v-icon color="green" v-if="form.otoplenie == 'Центральное'">mdi-check-circle</v-icon>{{ $t('filterCentralText') }}</span>
 
                             <!-- На газе -->
-                            <span @click="form.otoplenie == 'На газе'?form.otoplenie = '':form.otoplenie = 'На газе'" class="form__item" :class="{'item__active':form.otoplenie == 'На газе'}">{{ $t('filterOnGas') }}</span>
+                            <span @click="form.otoplenie == 'На газе'?form.otoplenie = '':form.otoplenie = 'На газе'" class="form__item" :class="{'item__active':form.otoplenie == 'На газе'}"><v-icon color="green" v-if="form.otoplenie == 'На газе'">mdi-check-circle</v-icon>{{ $t('filterOnGas') }}</span>
 
                             <!-- На твердом топливе -->
-                            <span @click="form.otoplenie == 'На твердом топливе'?form.otoplenie = '':form.otoplenie = 'На твердом топливе'" class="form__item" :class="{'item__active':form.otoplenie == 'На твердом топливе'}">{{ $t('filterSolidFuel') }}</span>
+                            <span @click="form.otoplenie == 'На твердом топливе'?form.otoplenie = '':form.otoplenie = 'На твердом топливе'" class="form__item" :class="{'item__active':form.otoplenie == 'На твердом топливе'}"><v-icon color="green" v-if="form.otoplenie == 'На твердом топливе'">mdi-check-circle</v-icon>{{ $t('filterSolidFuel') }}</span>
 
                             <!-- На жидком топливе -->
-                            <span @click="form.otoplenie == 'На жидком топливе'?form.otoplenie = '':form.otoplenie = 'На жидком топливе'" class="form__item" :class="{'item__active':form.otoplenie == 'На жидком топливе'}">{{ $t('filterLiquidFuel') }}</span>
+                            <span @click="form.otoplenie == 'На жидком топливе'?form.otoplenie = '':form.otoplenie = 'На жидком топливе'" class="form__item" :class="{'item__active':form.otoplenie == 'На жидком топливе'}"><v-icon color="green" v-if="form.otoplenie == 'На жидком топливе'">mdi-check-circle</v-icon>{{ $t('filterLiquidFuel') }}</span>
 
                             <!-- Смешанное -->
-                            <span @click="form.otoplenie == 'Смешанное'?form.otoplenie = '':form.otoplenie = 'Смешанное'" class="form__item" :class="{'item__active':form.otoplenie == 'Смешанное'}">{{ $t('filterMixed') }}</span>
+                            <span @click="form.otoplenie == 'Смешанное'?form.otoplenie = '':form.otoplenie = 'Смешанное'" class="form__item" :class="{'item__active':form.otoplenie == 'Смешанное'}"><v-icon color="green" v-if="form.vodotopleniea == 'Смешанное'">mdi-check-circle</v-icon>{{ $t('filterMixed') }}</span>
 
                             <!-- Без отопления -->
-                            <span @click="form.otoplenie == 'Без отопления'?form.otoplenie = '':form.otoplenie = 'Без отопления'" class="form__item" :class="{'item__active':form.otoplenie == 'Без отопления'}">{{ $t('filterWithoutHeating') }}</span>
+                            <span @click="form.otoplenie == 'Без отопления'?form.otoplenie = '':form.otoplenie = 'Без отопления'" class="form__item" :class="{'item__active':form.otoplenie == 'Без отопления'}"><v-icon color="green" v-if="form.otoplenie == 'Без отопления'">mdi-check-circle</v-icon>{{ $t('filterWithoutHeating') }}</span>
 
                         </div>
                     </div>
@@ -750,7 +750,7 @@
                         <div class="form__input">
 
                             <!-- Показать архивные объявления -->
-                            <span @click="form.arhiv == 'Показать' ? form.arhiv = '':form.arhiv = 'Показать'" class="form__item" :class="{'item__active':form.arhiv == 'Показать'}">{{ $t('filterShowArchivedAds') }}</span>
+                            <span @click="form.arhiv == 'Показать' ? form.arhiv = '':form.arhiv = 'Показать'" class="form__item" :class="{'item__active':form.arhiv == 'Показать'}"><v-icon color="green" v-if="form.arhiv == 'Показать'">mdi-check-circle</v-icon>{{ $t('filterShowArchivedAds') }}</span>
 
                         </div>
                     </div>
@@ -1126,5 +1126,6 @@ export default {
 .item__active{
     background: #e5e5e5;
 }
+
 
 </style>
