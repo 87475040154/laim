@@ -71,7 +71,7 @@
 
         <!-- Кнопка показать объекты на карте -->
         <v-btn rounded="xl" height="45" class="text-caption mb-5 mb-lg-0 text-dark"
-               style="position:fixed; bottom: 20px; right: 20px; background: rgb(246 196 13)"
+               style="position:fixed; bottom: 20px; right: 20px; background: #ffdb4d"
                v-if="showMapButton"
                @click="$router.push({name: 'allAdsMap'})"
         >
