@@ -2266,9 +2266,7 @@ export default defineComponent({
 }
 /*Сделать текст label жирным */
 ::v-deep(.v-label.v-field-label) {
-    font-size: 1em;
-    font-weight: 600;
-    font-family: 'Open-Sans', sans-serif;
+    font-size: 0.8em;
 }
 
 </style>
