@@ -113,7 +113,7 @@ class AuthController extends Controller
         $user = User::where('email', $email)->first();
         if($user == null){
             $user = User::create([
-                'name' => mb_convert_case($name, MB_CASE_TITLE, "UTF-8"),
+                'name' => mb_convert_case(explode(' ', $name)[0], MB_CASE_TITLE, "UTF-8"),
                 'email' => $email,
                 'email_verified_at'=>Carbon::now(),
                 'tel' => null,

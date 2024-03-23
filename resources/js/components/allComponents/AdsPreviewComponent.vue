@@ -24,9 +24,7 @@
                 style="padding: 1px;"
             >
                 <!-- Сам блок с превью -->
-                <v-card max-width="650" style="background: #ffffff; box-shadow: 0 0 1px silver; border-radius: 6px"
-                        class="mx-3 my-2 mx-sm-auto ads__preview "
-                >
+                <v-card class="mx-3 my-2 mx-sm-auto ads__preview ">
 
                     <!--  Описание объявления -->
                     <div class="d-flex p-md-2">
@@ -39,7 +37,7 @@
                                 {{ $t('adsPreviewComponentUrgentBargaining') }}
                             </div>
 
-                            <img v-if="ads.images.length > 0" @click="showImage(ads)" class="ads__preview-img rounded-2" :src=" '/img/adsImg/' + ads.images[0] " alt="Фото недвижимости">
+                            <img v-if="ads.images.length > 0" @click="showImage(ads)" class="ads__preview-img rounded-sm" :src=" '/img/adsImg/' + ads.images[0] " alt="Фото недвижимости">
                             <img v-else src="/public/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" class="ads__preview-img">
 
                             <!-- Кто автор - Хозяин - Специалист - В архиве - Не активно - -->
@@ -85,7 +83,7 @@
                             <div @click="showOneAds(ads, index)" role="button" class="d-flex align-start flex-column" style="min-height: 115px">
 
                                 <!-- Заголовок -->
-                                <div style="font-size: 17px; color: #4b4b4b">
+                                <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">
                                     {{ads.zagolovok}}
                                 </div>
 
@@ -733,7 +731,12 @@ export default {
 
 .ads__preview{
     user-select: none;
+    background: #ffffff;
+    box-shadow: 0 0 1px silver;
+    border-radius: 2px;
+    max-width: 600px;
 }
+
 
 /* Стили для слайдера */
 ::v-deep(.swiper-pagination-fraction){
@@ -775,7 +778,7 @@ export default {
 
 @media screen and (min-width: 390px){
     .image__block{
-        width: 170px;
+        width: 160px;
         max-height: 150px;
     }
 

@@ -455,7 +455,7 @@
 
                             <!-- Площадь кухни -->
                             <div class="col">
-                                <validation-provider v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom'" rules="integer|max_value:999" v-model="form.ploshad_kuhni" name="ploshad_kuhni" v-slot="{ errors }">
+                                <validation-provider v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom'" rules="numeric|min_value:1|max_value:999" v-model="form.ploshad_kuhni" name="ploshad_kuhni" v-slot="{ errors }">
 
                                     <!-- Input -->
                                     <v-text-field

@@ -598,7 +598,7 @@
                     </div>
 
                     <!-- Описание массивы -->
-                    <div class="p-2" style="text-align: justify">
+                    <div class="p-2">
 
                         <!-- Мебель и техника -->
                         <div v-if="ads.mebel_arr != undefined && ads.mebel_arr.length != 0" class="my-4">
