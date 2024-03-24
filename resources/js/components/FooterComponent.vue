@@ -78,7 +78,6 @@
                 </div>
 
             </div>
-
             <!-- Мои объявления -->
             <div  class="footer__mobile-link" @click="authStore.check ?$router.push({name:'userAds', params: {author_id: authStore.user.id}}) : $router.push({name: $route.name + 'Auth'})">
 
@@ -94,23 +93,16 @@
                 <div style="font-size: 0.5em; line-height: 8px">{{ $t('footerMy') }}</div>
             </div>
 
+
             <!-- Сдать -->
             <div  class="footer__mobile-link" @click="authStore.check ? $router.push({name: 'addAdsMenu'}) : $router.push({name: $route.name + 'Auth'})">
                 <v-icon style="font-size: 2em; color: #10a37f">mdi-plus-box</v-icon>
             </div>
 
-            <!-- Чаты -->
-            <div  class="footer__mobile-link" @click="authStore.check ? $router.push({ name: 'chat', params: {id: 'null'} }) : $router.push({name: $route.name + 'Auth'})">
-                <i class="bi bi-envelope position-relative">
-                    <div class="rounded-lg text-white fw-bold"
-                         style="position: absolute; top: -10px; right: -15px; background: #c00; padding: 0px 6px; font-size: 12px"
-                         v-if="getProjectDataStore.countNewMessage > 0"
-                    >
-                        {{getProjectDataStore.countNewMessage}}
-                    </div>
-                </i>
-                <div style="font-size: 0.5em; line-height: 8px">{{ $t('footerChats') }}</div>
 
+            <!-- Выбор языка -->
+            <div class="footer__mobile-link" role="button">
+                <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocaleStore.lang }}</span>
             </div>
 
             <!-- Мой аккаунт -->
@@ -133,6 +125,7 @@
 import { useAuthStore } from "../stores/auth";
 import { useAppInstallStore } from "../stores/AppInstall";
 import { useGetProjectDataStore } from "../stores/getProjectData";
+import {useUpdateDateLocaleStore} from "../stores/updateDateLocale";
 
 
 export default {
@@ -144,7 +137,7 @@ export default {
             authStore: useAuthStore(),
             appInstallStore: useAppInstallStore(),
             getProjectDataStore: useGetProjectDataStore(),
-
+            updateDateLocaleStore: useUpdateDateLocaleStore(),
             //Проверка прокрученна ли страница
             pageScrolled: false,
         }

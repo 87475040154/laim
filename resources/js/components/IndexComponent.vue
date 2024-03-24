@@ -36,14 +36,6 @@
                 <v-tooltip activator="parent" location="bottom">{{ $t('indexMyFavorites') }}</v-tooltip>
             </div>
 
-            <!-- Выбор языка -->
-            <div role="button">
-                <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocaleStore.lang == 'kz' ? 'Қаз': '' }}</span>
-                <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocaleStore.lang == 'ru' ? 'Рус': '' }}</span>
-                <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocaleStore.lang == 'en' ? 'Eng': '' }}</span>
-
-                <v-tooltip activator="parent" location="bottom">{{ $t('indexChangeLanguage') }}</v-tooltip>
-            </div>
 
         </div>
 

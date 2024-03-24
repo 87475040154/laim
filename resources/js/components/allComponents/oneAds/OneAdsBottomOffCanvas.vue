@@ -21,7 +21,7 @@
                 <div class="oneAdsBottom__header">
 
                     <!-- Заголовок - Имя автора | Причина жалобы и тд. -->
-                    <h4 v-if="$route.params.type == 'Позвонить' || $route.params.type == 'Написать'">
+                    <h4 v-if="$route.params.type == 'Позвонить' ">
                         <span>{{ads.name}}</span>
                     </h4>
                     <h4 v-if="$route.params.type == 'Пожаловаться'">{{ $t('oneAdsBottomOffCanvasCallReasonForComplaint') }}</h4>
@@ -61,42 +61,6 @@
                                 <small>{{ String(ads.tel2) }}</small>
                             </a>
                         </div>
-
-                    </div>
-
-                    <!--  Блок с Формой - Написать сообщение автору объявления  -->
-                    <div v-if="$route.params.type == 'Написать'" class="px-2">
-
-                        <!-- Блок написать сообщение -->
-                        <validation-observer as="div" ref="form" v-slot="{ handleSubmit }">
-                            <form @submit="handleSubmit($event, sendMessage)" class="d-flex align-items-center">
-
-                                <!-- Поле textarea -->
-                                <div class="form-group col">
-
-                                    <validation-provider rules="required|min:1|max:200" v-model="form.message" name="message" v-slot="{ errors }">
-
-                                        <v-textarea v-model="form.message"
-                                                    name="message" :label="$t('oneAdsBottomOffCanvasEnterAMessage')"
-                                                    variant="outlined" color="blue"
-                                                    auto-grow rows="1" max-rows="3"
-                                                    counter maxlength="200"
-
-                                                    :error-messages="form.errors.has('message') ? form.errors.get('message'):'' || errors[0]"
-                                                    @input="form.errors.clear('message')"
-                                        ></v-textarea>
-
-                                    </validation-provider>
-
-                                </div>
-
-                                <!-- Кнопка отправки -->
-                                <v-btn type="submit" icon :disabled="query" class="mb-3">
-                                    <i class="bi bi-send-fill text-teal-darken-2" style="font-size: 2em"></i>
-                                </v-btn>
-
-                            </form>
-                        </validation-observer>
 
                     </div>
 
@@ -203,15 +167,6 @@ export default {
             oneAdsBottomAnimation: false,
 
 
-            //Форма для отправки сообщения автору объявления
-            form: new Form({
-                sender_id: '',
-                recipient_id: '',
-                ads: '',
-                message: '',
-                recaptcha_token: ''
-            }),
-
             query: false,
             SiteDomain: SiteDomain
         }
@@ -229,49 +184,6 @@ export default {
     },
 
     methods:{
-
-        //Метод отправить сообщения
-       async sendMessage(){
-
-            //Если отправляет автор сам себе вернем ошибку
-            if(this.ads.author_id == this.authStore.user.id){
-                return Toast.fire({
-                    text: this.$t('oneAdsBottomOffCanvasError')
-                })
-            }
-
-            this.query = true;
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           this.checkInternetStore.checkInternet()
-
-            this.form.sender_id = this.authStore.user.id;
-            this.form.recipient_id = this.ads.author_id;
-            this.form.ads = this.ads;
-
-            this.form.post('/sendMessage')
-                .then(response=>{
-                    this.form.message = '';
-                    this.query = false;
-
-                    //отчистим форму от ошибок
-                    setTimeout(()=>{
-                        this.$refs.form.resetForm();
-                    },0)
-
-                    this.$router.back();
-
-
-                    Toast.fire({
-                        title: this.$t('oneAdsBottomOffCanvasSent'),
-                    })
-                })
-                .catch(errors=>{
-                    Toast.fire({
-                        title: this.$t('oneAdsBottomOffCanvasSendingError')
-                    })
-                    this.query = false;
-                })
-        },
 
         //Метод - Отправить жалобу на объявление
        async addComplain(complain){

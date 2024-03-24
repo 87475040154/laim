@@ -5,13 +5,11 @@ export const useGetProjectDataStore = defineStore('getProjectData', {
 
     //Свойства
     state: ()=>({
-        COUNT_NEW_MESSSAGE: 0, //Для автора
         COUNT_RETURN_ADS: 0, //Для автора сколько на дороботке или с жалобами
     }),
 
     //Получаем доступ к свойствам
     getters: {
-        countNewMessage: ( state )=> state.COUNT_NEW_MESSAGE,
         countReturnAds: ( state )=> state.COUNT_RETURN_ADS,
     },
 
@@ -26,7 +24,6 @@ export const useGetProjectDataStore = defineStore('getProjectData', {
             })
                 .then(response=>{
 
-                    this.COUNT_NEW_MESSAGE = response.data.countNewMessage;
                     this.COUNT_RETURN_ADS = response.data.countReturnAds;
 
                     //Зацикливаю вызов данной функции если пользователь онлайн
@@ -37,11 +34,6 @@ export const useGetProjectDataStore = defineStore('getProjectData', {
                     }
 
                 })
-        },
-
-        //Обновить колличество новых смс
-        updateCountNewMessage(count){
-            this.COUNT_NEW_MESSAGE -= count;
         },
 
     },

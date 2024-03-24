@@ -21,6 +21,11 @@
                     <div class="flex-grow-1">
                         <div v-if="authStore.check" class="d-flex gap-3 align-center justify-end">
 
+                            <!-- Выбор языка -->
+                            <div class="text-white fw-bold mx-2" role="button">
+                                <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocaleStore.lang }}</span>
+                            </div>
+
                             <!-- Мои обьявлениями -->
                             <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal"
                                    @click="$router.push({name:'userAds', params: {author_id: authStore.user.id}})"
@@ -34,18 +39,6 @@
                                 <v-icon size="x-large">mdi-bullhorn-outline</v-icon>
 
                                 <v-tooltip activator="parent" location="bottom">{{ $t('headerMy') }}</v-tooltip>
-                            </v-btn>
-
-                            <!-- Чаты -->
-                            <v-btn icon size="x-small" color="grey-lighten-1" variant="tonal" @click="$router.push({name: 'chat', params: {id: 'null'}})">
-                                <div class="rounded-lg text-white fw-bold"
-                                     style="position: absolute; top: -3px; right: -8px; background: #c00;; z-index:2; padding: 3px 5px"
-                                     v-if="getProjectDataStore.countNewMessage > 0"
-                                >
-                                    {{getProjectDataStore.countNewMessage}}
-                                </div>
-                                <v-icon size="large" class="icon-with-badge">mdi-email-outline</v-icon>
-                                <v-tooltip activator="parent" location="bottom">{{ $t('headerChats') }}</v-tooltip>
                             </v-btn>
 
                             <!-- Мой аккаунт- Имя пользователя - Показать если авторизован -->
@@ -168,6 +161,7 @@
 import { useAuthStore } from "../stores/auth";
 import { useGetProjectDataStore } from "../stores/getProjectData";
 import { useAppInstallStore } from "../stores/AppInstall";
+import {useUpdateDateLocaleStore} from "../stores/updateDateLocale";
 
 export default {
     name: "HeaderComponent",
@@ -181,6 +175,7 @@ export default {
             authStore: useAuthStore(),
             appInstallStore: useAppInstallStore(),
             getProjectDataStore: useGetProjectDataStore(),
+            updateDateLocaleStore: useUpdateDateLocaleStore(),
         }
     },
 

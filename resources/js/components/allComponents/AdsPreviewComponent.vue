@@ -18,8 +18,7 @@
             <DynamicScrollerItem
                 :item="ads"
                 :active="active"
-                :size-dependencies="[
-                  ]"
+                :size-dependencies="[]"
                 :data-index="index"
                 style="padding: 1px;"
             >

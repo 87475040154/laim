@@ -46,13 +46,6 @@
                     <!-- Блок - Скачать фото - Поделиться ссылкой, Поставить лайк, к-во просмотров -->
                     <div class="d-flex justify-end gap-2 px-lg-5 p-2">
 
-                        <!-- Кнопка - Написать - для компьютера -->
-                        <div class="ads_header-btn d-none d-lg-block"
-                             v-if="$route.query.tel == undefined"
-                             @click="authStore.check ? showBottomOffCanvas('Написать'): $router.push({ name: $route.name + 'Auth' })">
-                            <v-icon>mdi-message-processing</v-icon>
-                        </div>
-
                         <!-- Кнопка -  Позвонить - для компьютера -->
                         <div class="ads_header-btn d-none d-lg-block" @click="showBottomOffCanvas('Позвонить')">
                             <v-icon>mdi-phone</v-icon>
@@ -819,13 +812,7 @@
             <!-- footer -  Позвонить автору - Написать автору  -->
             <div class="oneAds__footer">
 
-                <!-- Кнопки  - позвонить / написать -->
-                <v-btn dark variant="flat" color="blue-darken-2" size="large" class="text-body-1" style="width: 100%; max-width: 170px"
-                       v-if="$route.query.tel == undefined"
-                       @click="authStore.check ? showBottomOffCanvas('Написать'): $router.push({name: $route.name + 'Auth'})"
-                >
-                    {{ $t('oneAdsWrite') }}
-                </v-btn>
+                <!-- Кнопки  - позвонить  -->
                 <v-btn dark variant="flat" size="large" class="text-body-1 text-white" style="width: 100%; max-width: 170px; background: #10a37f"
                        @click="showBottomOffCanvas('Позвонить')"
                 >
