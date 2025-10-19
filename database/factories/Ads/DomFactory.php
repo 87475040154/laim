@@ -51,7 +51,6 @@ class DomFactory extends Factory
             'raznoe'=> 'Кухня-студия,Кладовка',
             'bezopasnost'=> 'Домофон',
             'text_obyavleniya'=> fake()->text($maxNbChars = 1500),
-            'ownerOrRealtor'=> fake()->randomElement($array = array ('Хозяин','Риелтор')),
             'name'=> fake()->randomElement($array = array ('Исмаил','Алена','Руслан','Артём')),
             'tel'=> fake()->regexify("^[0-9]{3} [0-9]{3} [0-9]{4}$"),
             'raznoe'=> 'Сад,Баня,Бассейн',

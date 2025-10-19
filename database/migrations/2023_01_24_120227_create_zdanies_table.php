@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('author_id');
+            $table->string('tip_sdelki');
+
 
             $table->string('tip_obekta')->default('Здание');
             $table->string('table_name')->default('Zdanie');
@@ -27,8 +29,10 @@ return new class extends Migration
             $table->integer('etagnost');
             $table->string('visota_potolkov');
             $table->integer('ploshad_obshaya');
-            $table->integer('ploshad_uchastka');
+            $table->integer('ploshad_uchastka')->nullable();;
             $table->string('tip_stroeniya');
+            $table->integer('god_postroiki');
+
 
             $table->string('oblast');
             $table->string('gorod');
@@ -45,7 +49,6 @@ return new class extends Migration
             $table->json('bezopasnost')->nullable();
 
             $table->text('text_obyavleniya');
-            $table->string('ownerOrRealtor');
             $table->string('name');
             $table->string('tel');
             $table->string('tel2')->nullable();
@@ -82,10 +85,7 @@ return new class extends Migration
             $table->index('etagnost');
             $table->index('tip_stroeniya');
             $table->index('ploshad_obshaya');
-            $table->index('oblast');
-            $table->index('gorod');
             $table->index('raion');
-            $table->index('ownerOrRealtor');
             $table->index('sostoyanie');
             $table->index('bueAds');
             $table->index('top');
@@ -96,6 +96,8 @@ return new class extends Migration
 
             // Создание составного индекса
             $table->index(['bueAds', 'updated_at']);
+            $table->index(['oblast', 'gorod']);
+
         });
     }
 

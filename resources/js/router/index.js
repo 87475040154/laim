@@ -16,11 +16,11 @@ const routes = [
 
             //Вывод всех объявлений
             {
-                path: '/allAds/:table_name/:page',
+                path: '/allAds/:table_name',
                 component: () => import('../components/IndexComponent.vue'),
                 name: 'allAds',
                 meta: {
-                    title: 'Аренда недвижимости'
+                    title: 'Лайм Недвижимость в Казахстане'
                 },
 
                 children: [
@@ -76,7 +76,6 @@ const routes = [
                                         name: 'allAdsOneAdsBottomOffCanvasAuth',
                                         meta: {
                                             title: 'Вход на сайт',
-
                                         },
                                     },
                                 ]
@@ -109,7 +108,7 @@ const routes = [
                         children: [
                             //Локации
                             {
-                                path: 'filterLocation/:locationId/:stepLocation',
+                                path: 'filterLocation/:oblast/:gorod/:locationStep',
                                 component: ()=> import('../components/allComponents/KZLocationComponent.vue'),
                                 name: 'filterLocation',
                                 meta: {
@@ -292,7 +291,7 @@ const routes = [
                         children: [
                             //Локации
                             {
-                                path: 'allAdsAddAdsLocation/:locationId/:stepLocation',
+                                path: 'allAdsAddAdsLocation/:oblast/:gorod/:locationStep',
                                 component: ()=> import('../components/allComponents/KZLocationComponent.vue'),
                                 name: 'allAdsAddAdsLocation',
                                 meta: {
@@ -396,7 +395,7 @@ const routes = [
                                 children: [
                                     //Локации
                                     {
-                                        path: 'userAdsAddAdsLocation/:locationId/:stepLocation',
+                                        path: 'userAdsAddAdsLocation/:oblast/:gorod/:locationStep',
                                         component: ()=> import('../components/allComponents/KZLocationComponent.vue'),
                                         name: 'userAdsAddAdsLocation',
                                         meta: {
@@ -534,7 +533,7 @@ router.beforeEach( (to, from, next) => {
     let lang = getActiveLanguage();
     if(lang == 'ru')document.title = to.meta.title;
     if(lang == 'kz'){
-        if(to.meta.title == 'Аренда недвижимости')document.title = 'Жалға берілетін мүлік';
+        if(to.meta.title == 'Лайм Недвижимость в Казахстане')document.title = 'Лайм Қазақстандағы жылжымайтын мүлік';
         if(to.meta.title == 'Недвижимость')document.title = 'Жылжымайтын мүлік';
         if(to.meta.title == 'Фото')document.title = 'Фото';
         if(to.meta.title == 'Объект на карте')document.title = 'Картадағы нысан';
@@ -557,7 +556,8 @@ router.beforeEach( (to, from, next) => {
         if(to.meta.title == 'Проверка платежа')document.title = 'Төлемді тексеру';
     }
     if(lang == 'en'){
-        if(to.meta.title == 'Аренда недвижимости')document.title = 'Real estate rental';
+        if(to.meta.title == 'Лайм Недвижимость в Казахстане')document.title = '\n' +
+            'Лайм Real Estate in Kazakhstan';
         if(to.meta.title == 'Недвижимость')document.title = 'Real estate';
         if(to.meta.title == 'Фото')document.title = 'Photo';
         if(to.meta.title == 'Объект на карте')document.title = 'Object on the map';

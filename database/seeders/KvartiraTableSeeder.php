@@ -15,9 +15,8 @@ class KvartiraTableSeeder extends Seeder
      */
     public function run()
     {
-        Kvartira::factory()->count(60)->create();
+        Kvartira::factory()->count(4000)->create();
     }
-
     //Чтоб запустить
 //php artisan db:seed --class=KvartiraTableSeeder
 //php artisan make:factory

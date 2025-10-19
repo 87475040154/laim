@@ -13,7 +13,6 @@ class Like extends Model
     use HasFactory;
 
     protected $fillable = ['author_id', 'likeable_id', 'likeable_type'];
-    public $timestamps = false;
 
 
     //Связь с таблицей User

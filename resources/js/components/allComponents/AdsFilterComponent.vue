@@ -48,7 +48,7 @@
                         <div class="d-flex">
 
                             <!-- Вывод выбранной локации - При клике открыть окно с локациями - получим области по умолчанию  -->
-                            <v-btn @click="$router.push({ name: 'filterLocation',  params: { locationId: 'null', stepLocation:1 } })"
+                            <v-btn @click="$router.push({ name: 'filterLocation',  params: { oblast: 'null', gorod: 'null' ,locationStep: 1 } })"
                                    class="flex-fill text-body-2"
                                    :class="{'rounded-e-0' : KZLocationStore.location != ''}"
                                    color="grey-lighten-3"
@@ -85,26 +85,8 @@
                         </div>
                     </div>
 
-                    <!-- Кто автор - Хозяин , Специалист -->
+                    <!-- Тип сделки  - Арендовать - Купить  -->
                     <div class="form-group">
-
-                        <!-- Заголовок -->
-                        <div class="form__title">
-                            {{ $t('filterWhoIsAuthor') }}
-                        </div>
-
-                        <!-- Поле -->
-                        <div class="form__input">
-
-                            <span v-if="$route.params.table_name != 'Snimu'"  @click="form.ownerOrRealtor == 'Хозяин'?form.ownerOrRealtor = '':form.ownerOrRealtor = 'Хозяин'" class="form__item" :class="{'item__active':form.ownerOrRealtor == 'Хозяин'}"><v-icon color="green" v-if="form.ownerOrRealtor == 'Хозяин'">mdi-check-circle</v-icon>{{ $t('filterOwner') }}</span>
-                            <span v-if="$route.params.table_name != 'Snimu'"  @click="form.ownerOrRealtor == 'Специалист'?form.ownerOrRealtor = '':form.ownerOrRealtor = 'Специалист'" class="form__item" :class="{'item__active':form.ownerOrRealtor == 'Специалист'}"><v-icon color="green" v-if="form.ownerOrRealtor == 'Специалист'">mdi-check-circle</v-icon>{{ $t('filterSpecialist') }}</span>
-                            <span v-if="$route.params.table_name == 'Snimu'" @click="form.ownerOrRealtor == 'Можно от специалиста'?form.ownerOrRealtor = '':form.ownerOrRealtor = 'Можно от специалиста'" class="form__item" :class="{'item__active':form.ownerOrRealtor == 'Можно от специалиста'}"><v-icon color="green" v-if="form.ownerOrRealtor == 'Можно от специалиста'">mdi-check-circle</v-icon>{{ $t('filterItIsPossibleFromASpecialist') }}</span>
-
-                        </div>
-                    </div>
-
-                    <!-- Тип сделки  - Сдам продам - для Бизнеса  -->
-                    <div class="form-group" v-if="$route.params.table_name == 'Business'">
 
                         <!-- Заголовок -->
                         <div class="form__title">
@@ -113,13 +95,12 @@
 
                         <!-- Поле с кнопками -->
                         <div class="form__input">
-
-                            <span @click="form.tip_sdelki == 'Сдам'?form.tip_sdelki = '':form.tip_sdelki = 'Сдам'" class="form__item" :class="{'item__active':form.tip_sdelki == 'Сдам'}"><v-icon color="green" v-if="form.tip_sdelki == 'Сдам'">mdi-check-circle</v-icon>{{ $t('filterSdam') }}</span>
-                            <span @click="form.tip_sdelki == 'Продам'?form.tip_sdelki = '':form.tip_sdelki = 'Продам'" class="form__item" :class="{'item__active':form.tip_sdelki == 'Продам'}"><v-icon color="green" v-if="form.tip_sdelki == 'Продам'">mdi-check-circle</v-icon>{{ $t('filterSell') }}</span>
-
+                            <span @click="() => {if (form.tip_sdelki == 'Сдам') {form.tip_sdelki = '';form.period_arendi = '';} else {form.tip_sdelki = 'Сдам';}}" class="form__item" :class="{'item__active':form.tip_sdelki == 'Сдам'}"><v-icon color="green" v-if="form.tip_sdelki == 'Сдам'">mdi-check-circle</v-icon>{{ $t('filterRent') }}</span>
+                            <span @click="form.tip_sdelki == 'Продам' ?form.tip_sdelki = '': form.tip_sdelki = 'Продам',form.period_arendi = ''" class="form__item" :class="{'item__active':form.tip_sdelki == 'Продам'}"><v-icon color="green" v-if="form.tip_sdelki == 'Продам'">mdi-check-circle</v-icon>{{ $t('filterBuy') }}</span>
                         </div>
 
                     </div>
+
 
                     <!-- Для Офиса - Тип офиса  -->
                     <div class="form-group" v-if="$route.params.table_name == 'Ofis'">
@@ -143,7 +124,7 @@
                     </div>
 
                     <!-- Для Прочая недвижимость - Сфера деятельности -->
-                    <div class="form-group" v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Prochaya'">
+                    <div class="form-group" v-if="['Business','Prochaya'].includes($route.params.table_name)">
 
                         <!-- Заголовок -->
                         <div class="form__title">
@@ -228,7 +209,7 @@
                     </div>
 
                     <!-- Тип Объекта -->
-                    <div class="form-group" v-if=" $route.params.table_name == 'Dom' || $route.params.table_name == 'Magazin' || $route.params.table_name == 'Prombaza' || $route.params.table_name == 'Snimu' ">
+                    <div class="form-group" v-if="['Dom','Magazin','Prombaza'].includes($route.params.table_name)">
 
                         <!-- Заголовок -->
                         <div class="form__title">
@@ -285,7 +266,7 @@
                     </div>
 
                     <!-- Действующий бизнес - Да , нет -->
-                    <div class="form-group" v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Prochaya' || $route.params.table_name == 'Magazin'">
+                    <div class="form-group" v-if="['Business','Prochaya','Magazin'].includes($route.params.table_name)">
 
                         <!-- Заголовок -->
                         <div class="form__title">
@@ -302,7 +283,7 @@
                     </div>
 
                     <!-- Для Магазин - Местоположение -->
-                    <div class="form-group" v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Magazin'">
+                    <div class="form-group" v-if="['Business','Magazin'].includes($route.params.table_name)">
 
                         <!-- Заголовок -->
                         <div class="form__title">
@@ -328,7 +309,7 @@
                     </div>
 
                     <!-- Период аренды  -->
-                    <div class="form-group" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Snimu'">
+                    <div class="form-group" v-if="form.tip_sdelki=='Сдам' && ['Kvartira','Obshejitie','Dom'].includes($route.params.table_name)">
 
                         <!-- Заголовок -->
                         <div class="form__title">
@@ -348,7 +329,7 @@
                     </div>
 
                     <!-- Комнат - ОТ - До  -->
-                    <div class="form-group d-flex gap-3" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Snimu'">
+                    <div class="form-group d-flex gap-3" v-if="['Kvartira','Obshejitie','Dom','Ofis'].includes($route.params.table_name)">
 
                         <!-- Комнат от -->
                         <v-text-field
@@ -371,7 +352,7 @@
                     </div>
 
                     <!-- Цена в месяц - За кв.м, за все -->
-                    <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie' || $route.params.table_name == 'Magazin'|| $route.params.table_name == 'Prombaza' || $route.params.table_name == 'Prochaya'" class="form-group">
+                    <div v-if="['Business','Ofis','Zdanie','Magazin','Prombaza','Prochaya'].includes($route.params.table_name)" class="form-group">
 
                         <!-- Заголовок -->
                         <div class="form__title">
@@ -411,7 +392,7 @@
                     </div>
 
                     <!-- Этаж - От - Этаж до -->
-                    <div class="form-group d-flex gap-3" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Magazin'">
+                    <div class="form-group d-flex gap-3" v-if="['Kvartira','Obshejitie','Ofis','Magazin'].includes($route.params.table_name)">
 
                         <!-- Этаж От -->
                         <v-text-field
@@ -434,7 +415,7 @@
                     </div>
 
                     <!-- Этажность - От - Этажность до -->
-                    <div class="form-group d-flex gap-3" v-if="$route.params.table_name == 'Dom' || $route.params.table_name == 'Zdanie'">
+                    <div class="form-group d-flex gap-3" v-if="['Dom','Zdanie'].includes($route.params.table_name)">
 
                         <!-- Этажность От -->
                         <v-text-field
@@ -481,7 +462,7 @@
                     </div>
 
                     <!-- Мебель - Полностью, Частично, Нет -->
-                    <div v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis'|| $route.params.table_name == 'Magazin' || $route.params.table_name == 'Snimu'" class="form-group">
+                    <div v-if="['Kvartira','Obshejitie','Dom','Ofis','Magazin'].includes($route.params.table_name)" class="form-group">
 
                         <div class="form__title">
                             {{ $t('filterFurniture') }}
@@ -524,7 +505,7 @@
                     </div>
 
                     <!-- Санузел -->
-                    <div  class="form-group" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Magazin'">
+                    <div  class="form-group" v-if="['Kvartira','Obshejitie','Dom','Ofis','Magazin'].includes($route.params.table_name)">
 
                         <div class="form__title">
                             {{ $t('filterBathroom') }}
@@ -569,7 +550,7 @@
                     </div>
 
                     <!-- Высота потолков От - до -->
-                    <div class="form-group d-flex gap-3" v-if="$route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie'" >
+                    <div class="form-group d-flex gap-3" v-if="['Ofis','Zdanie'].includes($route.params.table_name)" >
 
                         <!-- Высота потолков От  -->
                         <v-text-field
@@ -615,7 +596,7 @@
                     </div>
 
                     <!-- Площадь участка - От - До -->
-                    <div class="form-group d-flex gap-3" v-if="$route.params.table_name == 'Dom' || $route.params.table_name == 'Zdanie'|| $route.params.table_name == 'Prombaza'|| $route.params.table_name == 'Prochaya'">
+                    <div class="form-group d-flex gap-3" v-if="['Dom','Zdanie','Prombaza','Prochaya'].includes($route.params.table_name)">
 
                         <!-- Площадь участка - От  -->
                         <v-text-field
@@ -638,7 +619,7 @@
                     </div>
 
                     <!-- Тип строения -->
-                    <div class="form-group" v-if="$route.params.table_name != 'Snimu' && $route.params.table_name != 'goryachie'">
+                    <div class="form-group">
 
                         <div class="form__title">
                             {{ $t('filterBuildingType') }}
@@ -655,6 +636,30 @@
                         </div>
 
                     </div>
+
+                    <!-- Год постройки - От - До -->
+                    <div class="form-group d-flex gap-3">
+
+                        <!-- Год постройки - От  -->
+                        <v-text-field
+                            v-model="form.god_postroiki_ot"
+                            name="god_postroiki_ot" :label="$t('filterYearOfConstructionFrom')"
+                            type="text"
+                            inputmode="numeric"
+                            variant="outlined"
+                        ></v-text-field>
+
+                        <!-- Площадь участка - До  -->
+                        <v-text-field
+                            v-model="form.god_postroiki_do"
+                            name="god_postroiki_do" :label="$t('filterYearBuiltBefore')"
+                            type="text"
+                            inputmode="numeric"
+                            variant="outlined"
+                        ></v-text-field>
+
+                    </div>
+
 
                     <!-- Для дома - Канализация - Центральная, Септик, Нет -->
                     <div v-if="$route.params.table_name == 'Dom'" class="form-group">
@@ -826,7 +831,6 @@ export default {
             //Форма для поиска
             form: new Form({
 
-                ownerOrRealtor: '',
                 tip_sdelki: '',
                 tip_obekta: '',
                 period_arendi: '',
@@ -856,6 +860,8 @@ export default {
                 ploshad_uchastka_do: '',
 
                 tip_stroeniya: '',
+                god_postroiki_ot: '',
+                god_postroiki_do: '',
 
                 sostoyanie: '',
                 mebel: '',
@@ -870,8 +876,6 @@ export default {
                 oblast: null,
                 gorod: null,
                 raion: null,
-                lat: null,
-                lon: null,
 
                 //Показать архивные объявления
                 arhiv: '',
@@ -908,15 +912,11 @@ export default {
                 this.form.oblast = this.KZLocationStore.location.oblast;
                 this.form.gorod = this.KZLocationStore.location.gorod;
                 this.form.raion = this.KZLocationStore.location.raion;
-                this.form.lat = this.KZLocationStore.location.lat;
-                this.form.lon = this.KZLocationStore.location.lon;
             }
             else{
                 this.form.oblast = null;
                 this.form.gorod = null;
                 this.form.raion = null;
-                this.form.lat = null;
-                this.form.lon = null;
             }
 
             localStorage.setItem('filter=' + this.$route.params.table_name, JSON.stringify(this.form));
@@ -938,8 +938,6 @@ export default {
                         oblast: filter.oblast,
                         gorod: filter.gorod,
                         raion: filter.raion,
-                        lat: filter.lat,
-                        lon: filter.lon,
                     })
                 }
             }
@@ -967,8 +965,6 @@ export default {
                     this.form.oblast = filter.oblast;
                     this.form.gorod = filter.gorod;
                     this.form.raion = filter.raion;
-                    this.form.lat = filter.lat;
-                    this.form.lon = filter.lon;
 
                     this.search();
                 }

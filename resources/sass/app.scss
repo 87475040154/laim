@@ -150,7 +150,7 @@ textarea, input, button{
     -webkit-overflow-scrolling: auto;
 }
 
-/* При экране менее 768px для mobile */
+/* При экране более 768px для mobile */
 @media screen and (min-width: 768px){
     .PATCH_modal {  // Отменяем прокрутку фона модальных окон
         padding-right: 8px!important;

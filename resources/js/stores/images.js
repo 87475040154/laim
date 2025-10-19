@@ -28,15 +28,6 @@ export const useImagesStore = defineStore('images', {
                 })
             }
 
-            //Если открываю фото с чатов
-            if(data.chatImg != undefined){
-                data.images.forEach(img=>{
-                    let obj = {};
-                    obj.previewImg = '/img/messageImg/' + img
-                    this.IMAGES.push(obj)
-                })
-            }
-
             //Если открываю фото с Загрузки Фото
             if(data.addAdsImg != undefined){
                 data.images.forEach(img=>{

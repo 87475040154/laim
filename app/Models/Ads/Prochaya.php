@@ -15,10 +15,10 @@ class Prochaya extends Model
     use HasFactory;
 
     public $fillable = [
-        'author_id', 'zagolovok', 'deistvuushii_bisnes', 'cena', 'cena_tip', 'sfera_deyatelnosti','ploshad_obshaya', 'ploshad_uchastka',
-        'tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie',
+        'author_id','tip_sdelki', 'zagolovok', 'deistvuushii_bisnes', 'cena', 'cena_tip', 'sfera_deyatelnosti','ploshad_obshaya', 'ploshad_uchastka',
+        'tip_stroeniya','god_postroiki', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie',
         'text_obyavleniya', 'raspolojenie','kommunikacii',
-        'ownerOrRealtor', 'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
+        'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
     ];
 
     // Преобразуем масив в json и обратно при занесении данных в БД и при получении из нее автоматически

@@ -115,7 +115,6 @@
 
 //Импортируем Store - Общее состояние
 import { useAuthStore } from "../../../stores/auth";
-import {useCheckInternetStore} from "../../../stores/checkInternet";
 import { useAppInstallStore } from "../../../stores/AppInstall";
 
 export default {
@@ -125,7 +124,6 @@ export default {
         return {
             //Store - Общее состояние
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
             appInstallStore: useAppInstallStore(),
 
             myAccountAnimation: false,
@@ -137,9 +135,6 @@ export default {
         //Метод  -  скачать Договор Аренды
         async downloadDogovorArendy(){
 
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
-
             let link = document.createElement("a");
             link.setAttribute("href",'/docs_pdf/dogovor_arendy.pdf');
             link.setAttribute("download", 'dogovor_arendy.pdf');
@@ -148,9 +143,6 @@ export default {
 
         //Метод  -  Поделиться Договором Аренды - Например в Whatsapp
         async shareDogovorArendy(){
-
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
 
             const response = await fetch("/docs_pdf/dogovor_arendy.pdf");
             const buffer = await response.arrayBuffer();
@@ -164,8 +156,6 @@ export default {
 
         //Метод выхода с аккаунта
         async logout(){
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
 
             // Убедитесь, что 'ls' инициализирована перед использованием метода getItem()
             if (localStorage.getItem('getMyLikeAds') !== undefined) {

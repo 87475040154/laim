@@ -15,6 +15,11 @@ class LikeTableSeeder extends Seeder
      */
     public function run()
     {
-        Like::factory()->count(50000)->create();
+        Like::factory()->count(60000)->create();
     }
+    //Чтоб запустить
+//php artisan db:seed --class=LikeTableSeeder
+//php artisan make:factory
+//php artisan make:seeder
 }
+

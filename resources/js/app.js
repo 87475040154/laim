@@ -168,7 +168,8 @@ pinia.use(piniaPersist)
 
 //Авторизация через Google, Apple
 import vue3GoogleLogin from 'vue3-google-login'
-//Для мультиязыка
+
+//Для мультиязыка приложения переводы берутся из папки resources/js/lang
 import { i18nVue } from 'laravel-vue-i18n'
 
 app.use(VeeValidatePlugin)
@@ -181,8 +182,8 @@ app.use(VeeValidatePlugin)
     .use(VueReCaptcha, { siteKey: '6Ld4nRkkAAAAABV1_7o0mAOBAHWa5hf1Y5Z7OEoB', loaderOptions: {useRecaptchaNet: true}})
     .use(i18nVue, {
         resolve: async lang => {
-            const langs = import.meta.glob('./lang/php_*.json');
-            return await langs[`./lang/php_${lang}.json`]();
+            const langs = import.meta.glob('./lang/*.json');
+            return await langs[`./lang/${lang}.json`]();
         }
     })
     .mount("#app")

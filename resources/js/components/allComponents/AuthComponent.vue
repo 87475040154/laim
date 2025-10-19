@@ -227,11 +227,10 @@
                             <GoogleLogin :callback="googleAuth" popup-type="TOKEN" prompt style="width: 100%">
                                 <v-btn variant="outlined"
                                        block
-                                       prepend-icon="mdi-google"
-                                       class="text-body-1"
+                                       class="google-login-button"
                                        size="x-large"
                                 >
-
+                                    <v-icon class="google-icon">mdi-google</v-icon>
                                     {{ $t('authGoogleLogin') }}
                                 </v-btn>
                             </GoogleLogin>
@@ -260,7 +259,6 @@ import 'vue-tel-input/vue-tel-input.css';
 
 //Импортирую Store - общее состояние
 import { useAuthStore } from "../../stores/auth";
-import { useCheckInternetStore} from "../../stores/checkInternet";
 import { useGetProjectDataStore} from "../../stores/getProjectData";
 import {useUpdateDateLocaleStore} from "../../stores/updateDateLocale";
 
@@ -280,7 +278,6 @@ export default {
         return {
             //Подключаю Store - Общее состояние
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
             getProjectDataStore: useGetProjectDataStore(),
             updateDateLocaleStore: useUpdateDateLocaleStore(),
 
@@ -336,9 +333,6 @@ export default {
                     this.showTelErrorMessage = false;
                 }
             }
-
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
 
             //Проверяем и получаем рекаптчу и отпровляем данные на сервер
             this.$recaptchaLoaded().then(()=>{
@@ -426,7 +420,7 @@ export default {
                 this.form.post('/auth/resetPassword').then((response)=>{
                     this.query = false;
                     this.authStore.getUser();//Получим Данные авторизованного пользователя
-                    this.$router.replace('/allAds/Kvartira/1');
+                    this.$router.replace('/allAds/Kvartira');
                 }).catch((error)=>{
                     this.query = false;
                     Toast.fire({
@@ -451,9 +445,6 @@ export default {
         //Метод активации аккаунта - И авторизации
        async accountActivation(accountActivationToken){
 
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
-
             axios.get('/sanctum/csrf-cookie').then(response => {
 
                 this.$recaptchaLoaded().then(()=>{
@@ -468,7 +459,7 @@ export default {
                             .then((response)=>{
                                 this.query = false;
                                 this.authStore.getUser();//Получим Данные авторизованного пользователя
-                                this.$router.replace('/allAds/Kvartira/1');
+                                this.$router.replace('/allAds/Kvartira');
                             })
                             .catch((error)=>{
                                 this.query = false;
@@ -529,8 +520,6 @@ export default {
             }
 
             this.query = true;
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
 
             //Авторизации Sanctum перед входом нужно получить доступ
             axios.get('/sanctum/csrf-cookie').then(response => {
@@ -639,4 +628,34 @@ export default {
     overflow-y: auto;
 }
 
+.google-login-button {
+    background-color: #ffffff; /* Белый фон */
+    border: 1px solid #d9d9d9; /* Лёгкая серая рамка */
+    color: #757575; /* Цвет текста */
+    font-weight: bold;
+    text-transform: none; /* Обычный текст, без верхнего регистра */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Иконка Google */
+.google-icon {
+    color: #4285f4; /* Синий цвет иконки Google */
+    margin-right: 8px; /* Отступ справа для разделения иконки и текста */
+    font-size: 1.25em;
+}
+
+/* Hover эффекты */
+.google-login-button:hover {
+    background-color: #f5f5f5; /* Светлый фон при наведении */
+    border-color: #c6c6c6;
+}
+
+/* Активное состояние */
+.google-login-button:active {
+    background-color: #e0e0e0; /* Более тёмный фон при нажатии */
+    border-color: #b3b3b3;
+}
 </style>

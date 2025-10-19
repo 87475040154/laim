@@ -35,7 +35,7 @@
     "indexFound": "Табылды",
     "indexFilter": "Сүзгі",
     "indexAdsNotFound": "Хабарландырулар табылмады",
-    "indexInstallLime": "laim.kz орнатыңыз",
+    "indexInstallLime": "Лайм.kz орнатыңыз",
     "indexOnTheMap": "Картада",
     "indexChangeLanguage": "Тіл таңдау",
     "indexMyFavorites": "Менің таңдаулыларым",
@@ -44,7 +44,7 @@
 
 
     "myAccountLeaseContract1": "Жалдау шарты",
-    "myAccountLeaseContract2": "Laim.kz сайтынан әмбебап келісімшарт",
+    "myAccountLeaseContract2": "Лайм.kz сайтынан әмбебап келісімшарт",
     "myAccountDownload": "Жүктеп алу",
     "myAccountShare": "Бөлісу",
     "myAccountSettings": "Параметрлер: Аты, Телефон, Құпиясөз",
@@ -85,7 +85,7 @@
 
     "userAdsOnline": "Желіде",
     "userAdsWas": "болды",
-    "userAdsOnLaimWith": "Lime.kz сайтында",
+    "userAdsOnLaimWith": "Лайм.kz сайтында",
     "userAdsAdsNotFound": "Хабарландырулар табылмады",
     "userAdsMenuApartments": "Пәтерлер",
     "userAdsMenuHostels": "Жатақха...",
@@ -100,10 +100,13 @@
 
 
     "KZLocationLocation": "Орналасқан жері",
-    "KZLocationChooseAnArea": "Аймақты таңдаңыз",
-    "KZLocationSelectWholeCity": "Бүкіл қаланы таңдаңыз",
-    "KZLocationOr": "Немесе",
-    "KZLocationSelectDistricts": "Аудандарды таңдаңыз",
+    "KZLocationSelectACity": "Қаланы таңдаңыз",
+    "KZLocationSelectDistrict": "Ауданды таңдаңыз",
+    "KZLocationPopularCities": "Танымал қалалар",
+    "KZLocationAllRegionsOfKazakhstan": "Қазақстанның барлық аймақтар",
+    "KZLocationDoNotSpecifyArea": "Ауданды көрсетпеңіз",
+    "KZLocationSearchByCityArea": "Қала, аудан бойынша іздеу",
+
 
 
 
@@ -158,13 +161,9 @@
     "filterReset": "Қалпына келтіру",
     "filterChooseCity": "Қаланы таңдаңыз",
     "filterAllKazakhstan": "Бүкіл Қазақстан",
-    "filterWhoIsAuthor": "Автор кім",
-    "filterOwner": "Иесі",
-    "filterSpecialist": "Маман",
-    "filterItIsPossibleFromASpecialist": "Маманнан болуы мүмкін",
     "filterDealType": "Мәміле түрі",
-    "filterSdam": "Жалға беремін",
-    "filterSell": "Сатамын",
+    "filterRent": "Жалға алу",
+    "filterBuy": "Сатып алу",
     "filterOfficeType": "Кеңсе түрі",
     "filterAny": "Кез келген",
     "filterInTheBusinessCenter": "Бизнес орталығында",
@@ -247,6 +246,8 @@
     "filterPlotAreaAcresFrom" : "Учаскенің ауданы соткадан бастап",
     "filterPlotAreaAcresUpTo" : "Учаскенің ауданы соткадан дейін",
     "filterBuildingType" : "Ғимарат түрі",
+    "filterYearOfConstructionFrom" : "Бастап салынған",
+    "filterYearBuiltBefore" : "Бұрын салынған жыл",
     "filterPanel" : "Панель",
     "filterBrick" : "Кірпіш",
     "filterTree" : "Ағаш",
@@ -282,8 +283,8 @@
 
 
     "platnieUslugi1": "Ақылы қызметтер",
-    "rules": "Laim.kz сайтының ережелері",
-    "policy": "Laim.kz қызметінің құпиялылық саясаты",
+    "rules": "Лайм.kz сайтының ережелері",
+    "policy": "Лайм.kz қызметінің құпиялылық саясаты",
 
 
 
@@ -349,6 +350,8 @@
     "oneAdsGas": "Газ",
     "oneAdsBalcony": "Балкон",
     "oneAdsBuildingType": "Ғимарат түрі",
+    "oneAdsYearOfConstruction": "Құрылыс жылы",
+
     "oneAdsParking": "Көлік тұрағы",
     "oneAdsFloorText": "Еден",
 
@@ -397,7 +400,7 @@
 
 
 
-    "addAdsMenuWhatToHandOver": "Нені тапсыру керек",
+    "addAdsMenuAdd": "Не қосу керек",
     "addAdsMenuLimit10Ads": "10 жарнаманы шектеңіз",
     "addAdsMenuLimit10Ads2": "Сіз 10 жарнама шегіне жеттіңіз. Жаңасын жіберу үшін бірінші ескі хабарландыруды жойыңыз.",
     "addAdsMenuApartment": "Пәтерді",
@@ -414,7 +417,7 @@
 
 
     "addAdsDoYouHaveAnUnfinishedAd": "Сізде аяқталмаған жарнама бар!",
-    "addAdsPass": "Тапсыру",
+    "addAdsAdd": "қосу ",
     "addAdsEdit": "Өңдеу",
     "addAdsRent": "Жалдаймын",
     "addAdsApartment": "Пәтерді ",
@@ -494,6 +497,7 @@
     "addAdsKitchenArea" : "Ас үй",
     "addAdsPlotAreaAcres" : "Учаскенің ауданы, сот.",
     "addAdsTypeOfBuilding" : "Ғимарат түрі",
+    "addAdsYearOfConstruction" : "Құрылыс жылы",
     "addAdsPanel" : "Панель",
     "addAdsBrick" : "Кірпіш",
     "addAdsTree" : "Ағаш",
@@ -614,10 +618,6 @@
     "addAdsAllKazakhstan": "Бүкіл Қазақстан",
     "addAdsStreetName": "Көше атауы",
     "addAdsContactDetails": "Байланыс деректері",
-    "addAdsRealtorText": "Мамандардың көмегімен қолайлы мүлікті табу 90% жылдамырақ, тиімдірек және оңайырақ.",
-    "addAdsIAmTheOwner": "Мен иесімін",
-    "addAdsIAmSpecialist": "Мен Маманмын",
-    "addAdsItIsPossibleFromASpecialist": "Маманнан болуы мүмкін",
     "addAdsName": "Аты",
     "addAdsYourPhoneNumber": "Сіздің телефоныңыз",
     "addAdsEnterThe2ndPhoneNumber": "2-ші телефон нөмірін енгізіңіз",
@@ -673,7 +673,7 @@
     "bueAdsPayMethodCardHolderName": "Карта иесінің аты",
     "bueAdsPayMethodToPay": "Төлеу",
     "bueAdsPayMethodSuccessText1": "Төлем сәтті өтті",
-    "bueAdsPayMethodSuccessText2": "Жақын арада сіздің жарнамаңызға lime.kz жарнамасы қосылады"
+    "bueAdsPayMethodSuccessText2": "Жақын арада сіздің жарнамаңызға Лайм.kz жарнамасы қосылады"
 
 
 }

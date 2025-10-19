@@ -34,22 +34,11 @@
                 <div class="yandexMapClusterShowAds__body">
 
                     <!-- Компонент для отображения превью всех полученных объявлений  -->
-                    <ads-preview-component  :ads_arr="ads_arr.data"  @get-ads-cursor-paginate="getAdsMobileCursorPaginate"></ads-preview-component>
+                    <ads-preview-component  :ads_arr="ads_arr"  @get-ads="getAds"></ads-preview-component>
 
                     <!-- Gif Load  - Если объявления еще не загрузились -->
                     <div v-if="query" class="d-flex justify-content-center py-1">
                         <div class="spinner-border spinner-border-sm" style="color: var(--app-text-color)" role="status"></div>
-                    </div>
-
-                    <!-- Блок с пагинацией  - покажется если найденно более 30 объявлений -->
-                    <div v-if="authStore.desktopOrMobile == 'Desktop'" class="mt-3" >
-
-                        <!-- Экран более - 768 px-->
-                        <Bootstrap5Pagination :align="'center'" :limit="3" :data="ads_arr"
-                                              @pagination-change-page="(page)=> $router.push({name: 'allAdsMapPreviewAds', params: { pages: page } })"
-                                              class="d-none d-md-flex"
-                        ></Bootstrap5Pagination>
-
                     </div>
 
                     <!-- Дочерние компоненты -->
@@ -69,20 +58,15 @@
 
 //Импортируем - Store - Наше хранилище доступное со всех компонентов
 import {useAuthStore} from "../../../stores/auth";
-import { useCheckInternetStore } from "../../../stores/checkInternet";
 
 //Импортируем Компоненты
 import adsPreviewComponent from "../../allComponents/AdsPreviewComponent.vue";
-
-//Пакет для пагинации Laravel + Vue
-import { Bootstrap5Pagination } from 'laravel-vue-pagination';
 
 export default {
     name: "YandexMapClusterShowAds",
 
     components: {
         adsPreviewComponent,
-        Bootstrap5Pagination
     },
 
     data(){
@@ -90,106 +74,59 @@ export default {
 
             //Подключаем - Store - Наше хранилище
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
 
             yandexMapClusterShowAdsAnimation: false,
 
             query: false,
+            ads_arr: [],
 
-            ads_arr: {},
-
-            //Для курсорной навигации на Мобильных устройствах
-            nextCursor: '',
+            //Для курсорной навигации
+            nextCursor: null,
+            isFirstLoad: true,
+            isLastLoad: false
         }
     },
 
-    watch: {
-
-        //Отслеживаем изменение маршрута
-        '$route' (to, from) {
-
-            //Если переходим по пагинации
-            if(to.name == 'allAdsMapPreviewAds' && from.name == 'allAdsMapPreviewAds'){
-                this.getAds()
-            }
-
-        },
-
-    },
 
     methods: {
 
         //Получить массив объявлений при клике на кластер
-       async getAds() {
-
-           this.query = true;
-
-           //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           this.checkInternetStore.checkInternet();
-
-           //Обнулим данные
-           this.ads_arr = {};
-
-            //Получаю объявления
-            axios.get('/getAllAds', {
-
-                params: {
-                    page: this.$route.params.pages,
-                    user_id: useAuthStore().check ? useAuthStore().user.id : 0,
-                    table_name: this.$route.params.table_name,
-                    filter: 'Фильтр не применен',
-                    getMyLikeAds: 'Не получать мои лайки',
-                    cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true,
-                    arr_ads_id: JSON.parse(localStorage.getItem("mapClusterAdsId")),
-                    getAdsYandexClusterer: true
-                }
-            })
-                .then(response => {
-                    this.query = false;
-                    this.ads_arr = response.data.ads;
-
-                    this.nextCursor = response.data.ads.next_cursor;
-                })
-                .catch((errors)=>{
-                    this.query = false;
-                })
-        },
-
-        // Метод получения объявлений на мобильных устройствах - курсорной погинацией
-        getAdsMobileCursorPaginate() {
-
-            if( this.query || this.nextCursor == null )return;
-
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet();
-
+        getAds() {
+            if (this.query) return;
             this.query = true;
 
-            axios.get('getAllAds', {
+            // Запрос объявлений
+            axios.get('getAllAdsInYandexCluster', {
                 params: {
                     cursor: this.nextCursor,
                     user_id: useAuthStore().check ? useAuthStore().user.id : 0,
                     table_name: this.$route.params.table_name,
-                    filter: 'Фильтр не применен',
-                    getMyLikeAds: 'Не получать мои лайки',
-                    cursorPaginate: this.authStore.desktopOrMobile == 'Desktop' ? false: true,
                     arr_ads_id: JSON.parse(localStorage.getItem("mapClusterAdsId")),
-                    getAdsYandexClusterer: true
                 }
             })
-                .then(response => {
-
-                    //Канкатенируем старые обьявления с новыми полученными
-                    this.ads_arr.data = [...this.ads_arr.data, ...response.data.ads.data];
-
-                    // Добавим данные для пагинации
-                    this.nextCursor = response.data.ads.next_cursor;
-
+                .then (response => {
                     this.query = false;
 
-                }).catch(()=>{
-                this.query = false;
-            })
+                    if (this.isFirstLoad) {
+                        // Это первая загрузка данных
+                        this.ads_arr = response.data.ads.data;
+                        this.isFirstLoad = false; // Сбрасываем флаг после первой загрузки
+                    }
+                    else if (this.nextCursor !== null) {
+                        // Если это не первая загрузка и еще есть данные
+                        this.ads_arr = [...this.ads_arr, ...response.data.ads.data];
+                    }
+
+                    if(response.data.ads.next_cursor == null){
+                        this.isLastLoad = true;
+                    }else{
+                        this.isLastLoad = false;
+                    }
+                    this.nextCursor = response.data.ads.next_cursor;
+                })
+                .catch(errors => {
+                    this.query = false; // Сбрасываем флаг при ошибке
+                });
         },
 
     },

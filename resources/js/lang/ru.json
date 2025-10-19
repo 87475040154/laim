@@ -1,3 +1,4 @@
+
 {
 
 
@@ -33,7 +34,7 @@
     "indexFound": "Найдено",
     "indexFilter": "Фильтр",
     "indexAdsNotFound": "Объявления не найденны",
-    "indexInstallLime": "Установить laim.kz",
+    "indexInstallLime": "Установить Лайм.kz",
     "indexOnTheMap": "На карте",
     "indexChangeLanguage": "Выбор языка",
     "indexMyFavorites": "Мои избранные",
@@ -42,7 +43,7 @@
 
 
     "myAccountLeaseContract1": "Договор аренды",
-    "myAccountLeaseContract2": "Универсальный договор от Laim.kz",
+    "myAccountLeaseContract2": "Универсальный договор от Лайм.kz",
     "myAccountDownload": "Скачать",
     "myAccountShare": "Поделиться",
     "myAccountSettings": "Настройки: Имя, Телефон, Пароль",
@@ -83,7 +84,7 @@
 
     "userAdsOnline": "В сети",
     "userAdsWas": "был(-а)",
-    "userAdsOnLaimWith": "На Laim.kz с",
+    "userAdsOnLaimWith": "На Лайм.kz с",
     "userAdsAdsNotFound": "Объявления не найденны",
     "userAdsMenuApartments": "Квартиры",
     "userAdsMenuHostels": "Общежития",
@@ -99,10 +100,12 @@
 
 
     "KZLocationLocation": "Местоположение",
-    "KZLocationChooseAnArea": "Выберите область",
-    "KZLocationSelectWholeCity": "Выбрать весь город",
-    "KZLocationOr": "Или",
-    "KZLocationSelectDistricts": "Выбрать районы",
+    "KZLocationSelectACity": "Выберите город",
+    "KZLocationSelectDistrict": "Выберите район",
+    "KZLocationPopularCities": "Популярные города",
+    "KZLocationAllRegionsOfKazakhstan": "Все регионы Казахстана",
+    "KZLocationDoNotSpecifyArea": "Не указывать район",
+    "KZLocationSearchByCityArea": "Поиск по городу, району",
 
 
 
@@ -153,13 +156,9 @@
     "filterReset": "Очистить",
     "filterChooseCity": "Выберите город",
     "filterAllKazakhstan": "Весь Казахстан",
-    "filterWhoIsAuthor": "Кто автор",
-    "filterOwner": "Хозяин",
-    "filterSpecialist": "Специалист",
-    "filterItIsPossibleFromASpecialist": "Можно от Специалиста",
     "filterDealType": "Тип сделки",
-    "filterSdam": "Сдам",
-    "filterSell": "Продам",
+    "filterRent": "Арендовать",
+    "filterBuy": "Купить",
     "filterOfficeType": "Тип офиса",
     "filterAny": "Любой",
     "filterInTheBusinessCenter": "В бизнес-центре",
@@ -241,6 +240,8 @@
     "filterPlotAreaAcresFrom" : "Площадь участка соток от",
     "filterPlotAreaAcresUpTo" : "Площадь участка соток до",
     "filterBuildingType" : "Тип строения",
+    "filterYearOfConstructionFrom" : "Год постройки от",
+    "filterYearBuiltBefore" : "Год постройки до",
     "filterPanel" : "Панель",
     "filterBrick" : "Кирпич",
     "filterTree" : "Дерево",
@@ -277,13 +278,8 @@
 
 
     "platnieUslugi1": "Платные услуги",
-
-
-
-    "rules": "Правила сайта Laim.kz",
-
-
-    "policy": "Политика конфиденциальности сервиса Laim.kz",
+    "rules": "Правила сайта Лайм.kz",
+    "policy": "Политика конфиденциальности сервиса Лайм.kz",
 
 
 
@@ -350,6 +346,9 @@
     "oneAdsGas": "Газ",
     "oneAdsBalcony": "Балкона",
     "oneAdsBuildingType": "Тип строения",
+    "oneAdsYearOfConstruction": "Год постройки",
+
+
     "oneAdsParking": "Парковка",
     "oneAdsFloorText": "Пол",
     "oneAdsFurnitureAndAppliances" : "Мебель и техника",
@@ -393,7 +392,7 @@
 
 
 
-    "addAdsMenuWhatToHandOver": "Что сдать",
+    "addAdsMenuAdd": "Что добавить",
     "addAdsMenuLimit10Ads": "Лимит 10 объявлений",
     "addAdsMenuLimit10Ads2": "Вы достигли лимита 10 объявлений, для начала удалите 1-но старое объявление, что-бы подать новое",
     "addAdsMenuApartment": "Квартиру",
@@ -411,7 +410,7 @@
 
 
     "addAdsDoYouHaveAnUnfinishedAd": "У Вас есть не законченное объявление!",
-    "addAdsPass": "Сдать ",
+    "addAdsAdd": "Добавить ",
     "addAdsEdit": "Редактировать ",
     "addAdsRent": "Сниму ",
     "addAdsApartment": "Квартиру",
@@ -491,6 +490,7 @@
     "addAdsKitchenArea" : "Кухня",
     "addAdsPlotAreaAcres" : "Площадъ участка, соток",
     "addAdsTypeOfBuilding" : "Тип строения",
+    "addAdsYearOfConstruction" : "Год постройки",
     "addAdsPanel" : "Панель",
     "addAdsBrick" : "Кирпич",
     "addAdsTree" : "Дерево",
@@ -610,10 +610,6 @@
     "addAdsAllKazakhstan": "Весь Казахстан",
     "addAdsStreetName": "Название улицы",
     "addAdsContactDetails": "Контактные данные",
-    "addAdsRealtorText": "Найти подходящий объект недвижимости в 90%  быстрее, выгодней, и легче если выбрать помощь специалистов.",
-    "addAdsIAmTheOwner": "Я Хозяин",
-    "addAdsIAmSpecialist": "Я Специалист",
-    "addAdsItIsPossibleFromASpecialist": "Можно от Специалиста",
     "addAdsName": "Имя",
     "addAdsYourPhoneNumber": "Ваш телефон",
     "addAdsEnterThe2ndPhoneNumber": "Введите 2-й номер телефона",
@@ -670,7 +666,7 @@
     "bueAdsPayMethodCardHolderName": "Имя владельца карты",
     "bueAdsPayMethodToPay": "Оплатить",
     "bueAdsPayMethodSuccessText1": "Оплата прошла успешно",
-    "bueAdsPayMethodSuccessText2": "В ближайшее время на ваше объявление будет добавлено продвижение от lime.kz"
+    "bueAdsPayMethodSuccessText2": "В ближайшее время на ваше объявление будет добавлено продвижение от Лайм.kz"
 
 
 }

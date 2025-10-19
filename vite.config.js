@@ -12,7 +12,6 @@ export default defineConfig({
         laravel([
             'resources/js/app.js',
         ]),
-        // Laravel >= 9
         i18n(),
     ],
     resolve: {

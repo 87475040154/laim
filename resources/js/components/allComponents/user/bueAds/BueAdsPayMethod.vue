@@ -44,7 +44,7 @@
                     >
                         <!-- Иконка справа-->
                         <div class="col-auto">
-                            <img src="/public/img/siteImg/allImg/logo_visa.png" width="25" height="25" alt="Логотип">
+                            <img src="/img/siteImg/allImg/logo_visa.png" width="25" height="25" alt="Логотип">
                         </div>
 
                         <!-- Текст -->
@@ -57,7 +57,7 @@
                         role="button"
                     >
                         <div class="col-auto">
-                            <img src="/public/img/siteImg/allImg/logo.svg" width="25" height="25" alt="Логотип">
+                            <img src="/img/siteImg/allImg/logo.svg" width="25" height="25" alt="Логотип">
                         </div>
                         <span class="col">{{ $t('bueAdsPayMethodPersonalAccount') }} ({{authStore.user.balance}} &#8376;)</span>
                     </div>
@@ -173,7 +173,6 @@
 
 //Импортирую Store - Общее состояние
 import { useAuthStore } from "../../../../stores/auth";
-import { useCheckInternetStore } from "../../../../stores/checkInternet";
 import { useUpdateDateLocaleStore} from "../../../../stores/updateDateLocale";
 
 
@@ -188,7 +187,6 @@ export default {
         return {
             //Подключаю Store
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
             updateDateLocaleStore: useUpdateDateLocaleStore(),
 
             bueAdsPayMethodAnimation: false,
@@ -220,9 +218,6 @@ export default {
 
         //Метод - Добавить заказ в БД и сделать попытку оплаты
         async addOrderDB(){
-
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
 
             this.query = true;
 

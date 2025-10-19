@@ -10,11 +10,12 @@ import {
 import { localize } from '@vee-validate/i18n';
 import ru from '@vee-validate/i18n/dist/locale/ru.json';
 import en from '@vee-validate/i18n/dist/locale/en.json';
-import kz from '../../../node_modules/@vee-validate/i18n/dist/locale/kz.json';
+import kz from '@vee-validate/i18n/dist/locale/kz.json';
 import { setLocale } from '@vee-validate/i18n';
 
 
 import * as rules from '@vee-validate/rules';
+
 
 
 export default {
@@ -53,6 +54,7 @@ export default {
                         ploshad_kuhni: 'Площадь кухни',
                         ploshad_uchastka: 'Площадь участка',
                         tip_stroeniya: 'Тип строения',
+                        god_postroiki: 'Год постройки',
                         sostoyanie: 'Состояние',
                         mebel: 'Мебель',
                         internet: 'Интернет',
@@ -87,7 +89,6 @@ export default {
                         message: 'Сообщение',
                         card_number: 'Номер карты',
                         card_expiry: 'Месяц / Год',
-
                     }
                 },
                 kz:{
@@ -110,6 +111,7 @@ export default {
                         ploshad_kuhni: 'Ас үй ауданы',
                         ploshad_uchastka: 'Учаскенің ауданы',
                         tip_stroeniya: 'Құрылым түрі',
+                        god_postroiki: 'Құрылыс жылы',
                         sostoyanie: 'Жағдайы',
                         mebel: 'Жиһаз',
                         internet: 'Интернет',
@@ -144,7 +146,6 @@ export default {
                         message: 'Хабар',
                         card_number: 'Карта нөмірі',
                         card_expiry: 'Ай / Жыл',
-
                     }
                 },
                 en:{
@@ -167,6 +168,7 @@ export default {
                         ploshad_kuhni: 'kitchen area',
                         ploshad_uchastka: 'Land area',
                         tip_stroeniya: 'Building type',
+                        god_postroiki: 'Year of construction',
                         sostoyanie: 'State',
                         mebel: 'Furniture',
                         internet: 'Internet',

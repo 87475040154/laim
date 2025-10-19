@@ -54,7 +54,6 @@ class Kernel extends ConsoleKernel
                 Prombaza::class,
                 Prochaya::class,
                 Business::class,
-                Snimu::class,
             ];
 
             foreach ($tables as $table) {
@@ -101,7 +100,6 @@ class Kernel extends ConsoleKernel
                 Prombaza::class,
                 Prochaya::class,
                 Business::class,
-                Snimu::class,
             ];
 
             foreach ($tables as $table) {
@@ -156,7 +154,6 @@ class Kernel extends ConsoleKernel
                 Prombaza::class,
                 Prochaya::class,
                 Business::class,
-                Snimu::class,
             ];
 
             //Перебирем и обновим
@@ -190,7 +187,6 @@ class Kernel extends ConsoleKernel
                 Prombaza::class,
                 Prochaya::class,
                 Business::class,
-                Snimu::class,
             ];
 
             foreach ($tables as $table) {
@@ -218,7 +214,6 @@ class Kernel extends ConsoleKernel
                 Prombaza::class,
                 Prochaya::class,
                 Business::class,
-                Snimu::class,
             ];
 
             foreach ($tables as $table) {
@@ -247,7 +242,6 @@ class Kernel extends ConsoleKernel
                 Prombaza::class,
                 Prochaya::class,
                 Business::class,
-                Snimu::class,
             ];
 
             //Перебирем и обновим
@@ -277,7 +271,6 @@ class Kernel extends ConsoleKernel
                 Prombaza::class,
                 Prochaya::class,
                 Business::class,
-                Snimu::class,
             ];
 
             foreach ($tables as $tableClass) {

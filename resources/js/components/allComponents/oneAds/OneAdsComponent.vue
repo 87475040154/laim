@@ -156,14 +156,9 @@
                             </div>
                         </div>
 
-                        <!-- Кто автор - Хозяин - Риелтор - В архиве -->
+                        <!-- В архиве -->
                         <v-btn variant="flat" color="grey-lighten-4" size="large" class="w-100 text-body-1 my-3 mt-4">
-                            <span v-if="ads.control == 'Активно'">
-                                <span v-if="ads.ownerOrRealtor == 'Хозяин'">{{ $t('oneAdsOwner') }}</span>
-                                <span v-if="ads.ownerOrRealtor == 'Специалист'">{{ $t('oneAdsSpecialist') }}</span>
-                                <span v-if="ads.ownerOrRealtor == 'Можно от специалиста'">{{ $t('oneAdsCanBeFromASpecialist') }}</span>
-                            </span>
-                            <span v-else>
+                            <span v-if="ads.control != 'Активно'">
                                 <span v-if="updateDateLocale.lang == 'ru'">{{ads.control}}</span>
                                 <span v-if="updateDateLocale.lang == 'kz'">
                                         <span v-if="ads.control == 'В архиве'">Мұрағатта</span>
@@ -569,7 +564,7 @@
                             </div>
 
                             <!-- Тип строения -->
-                            <div class="btn__item" v-if="ads.tip_stroeniya!=undefined && ads.table_name != 'Snimu'">
+                            <div class="btn__item" v-if="ads.tip_stroeniya!=undefined">
                                 <div class="btn__item-cat">{{ $t('oneAdsBuildingType') }}</div>
                                 <div v-if="updateDateLocale.lang == 'ru'">{{ads.tip_stroeniya}}</div>
                                 <div v-if="updateDateLocale.lang == 'kz'">
@@ -584,6 +579,12 @@
                                     {{ads.tip_stroeniya == 'Дерево' ? 'Tree' :''}}
                                     {{ads.tip_stroeniya == 'Другое' ? 'Other' :''}}
                                 </div>
+                            </div>
+
+                            <!-- Год постройки -->
+                            <div class="btn__item">
+                                <div class="btn__item-cat">{{ $t('oneAdsYearOfConstruction') }}</div>
+                                <div>{{ads.god_postroiki}}</div>
                             </div>
 
                         </div>
@@ -703,7 +704,7 @@
                         </div>
 
                         <!-- Коммуникации -->
-                        <div v-if="ads.kommunikacii != undefined && ads.kommunikacii != '' && ads.table_name != 'Snimu'" class="my-4">
+                        <div v-if="ads.kommunikacii != undefined && ads.kommunikacii != ''" class="my-4">
                             <div class="title mb-2">{{ $t('oneAdsCommunications') }}</div>
 
                             <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.kommunikacii.join(", ")}}</div>
@@ -732,7 +733,7 @@
                         </div>
 
                         <!-- Безопасность-->
-                        <div v-if="ads.bezopasnost != undefined && ads.bezopasnost != '' && ads.table_name != 'Snimu'" class="my-4">
+                        <div v-if="ads.bezopasnost != undefined && ads.bezopasnost != ''" class="my-4">
                             <div class="title mb-2">{{ $t('oneAdsSafety') }}</div>
 
                             <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.bezopasnost.join(", ")}}</div>
@@ -843,7 +844,6 @@ import 'swiper/scss/keyboard';
 
 //Импортирую Store - Общее состояние
 import { useAuthStore } from "../../../stores/auth";
-import { useCheckInternetStore } from "../../../stores/checkInternet";
 import {useImagesStore} from "../../../stores/images";
 import {useAdsStore} from "../../../stores/ads";
 import {useUpdateDateLocaleStore} from "../../../stores/updateDateLocale";
@@ -871,7 +871,6 @@ export default {
 
             //Подключаю Store - Общее состояние
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
             imageStore: useImagesStore(),
             adsStore: useAdsStore(),
             updateDateLocale: useUpdateDateLocaleStore(),
@@ -935,8 +934,6 @@ export default {
                 }
             }
 
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           this.checkInternetStore.checkInternet()
 
             axios.get('/getOneAds', {
                 params:{
@@ -1017,10 +1014,6 @@ export default {
 
         //Метод - Toggle поставить - убрать Лайк
         async addLikeToggle(){
-
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
-            if(!this.checkInternetStore.online)return;
 
             //Добавим лайк если будет ошибка то уберем
             this.ads.userLike = !this.ads.userLike;

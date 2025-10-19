@@ -76,28 +76,22 @@
 
 //Импортирую Store - Наше общее состояние
 import {useAuthStore} from "../../../stores/auth";
-import {useCheckInternetStore } from "../../../stores/checkInternet";
 
 //Импортирую компоненты
 import adsPreviewComponent from "../AdsPreviewComponent.vue";
 
-
-//Laravel Vue Pagination
-import { Bootstrap5Pagination } from 'laravel-vue-pagination';
 
 export default {
     name: "Index",
 
     components: {
         adsPreviewComponent,
-        Bootstrap5Pagination,
     },
 
     data(){
         return{
             //Подключаю Store - Наше общее состояние
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
 
             query: false,
 
@@ -113,9 +107,6 @@ export default {
         //Получение объявления пользователя или все объявления которые на проверке для админа
        async getAds() {
            this.query = true;
-
-           //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           this.checkInternetStore.checkInternet();
 
             this.ads_arr = {};
             this.user_data = '';
@@ -178,7 +169,6 @@ export default {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
 }
 
 .userAds__header {
@@ -193,6 +183,8 @@ export default {
 .userAds__body {
     flex-grow: 1; /* Растянем этот блок на всю оставшуюся высоту экрана */
     overflow-y: auto;
+    max-height: 100vh;
+    padding-bottom: 60px;
 }
 
 </style>

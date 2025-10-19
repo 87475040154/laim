@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('author_id');
+            $table->string('tip_sdelki');
 
             $table->string('tip_obekta')->default('Квартира');
             $table->string('table_name')->default('Kvartira');
@@ -30,6 +32,8 @@ return new class extends Migration
             $table->integer('ploshad_obshaya');
             $table->integer('ploshad_kuhni')->nullable();
             $table->string('tip_stroeniya');
+            $table->integer('god_postroiki');
+
 
             $table->string('oblast');
             $table->string('gorod');
@@ -52,7 +56,6 @@ return new class extends Migration
             $table->json('bezopasnost')->nullable();
 
             $table->text('text_obyavleniya');
-            $table->string('ownerOrRealtor');
             $table->string('name');
             $table->string('tel');
             $table->string('tel2')->nullable();
@@ -91,10 +94,7 @@ return new class extends Migration
             $table->index('etag');
             $table->index('etagnost');
             $table->index('ploshad_obshaya');
-            $table->index('oblast');
-            $table->index('gorod');
             $table->index('raion');
-            $table->index('ownerOrRealtor');
             $table->index('sostoyanie');
             $table->index('mebel');
             $table->index('bueAds');
@@ -104,7 +104,12 @@ return new class extends Migration
             $table->index('top_x30');
             $table->index('updated_at');
             // Создание составного индекса
+            $table->index(['control'], 'idx_control');
+//            $table->index(['oblast(30)', 'gorod(30)', 'tip_sdelki(1)','ownerOrRealtor(1)'], 'idx_combined_filter');
+            $table->index(['sostoyanie', 'mebel'], 'idx_combined_filter1');
+
             $table->index(['bueAds', 'updated_at']);
+            $table->index(['oblast', 'gorod']);
         });
     }
 

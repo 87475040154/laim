@@ -40,7 +40,7 @@
 
                         <div @click="getLang('kz'), $router.back()" class="lang__link">
 
-                            <img src="/public/img/siteImg/allImg/kz.png"
+                            <img src="/img/siteImg/allImg/kz.png"
                                  alt="Kazakhstan"
                                  width="24" />
                             <span class="lang__link-text px-2" :class="{'text-blue': lang == 'kz'}">Қазақ</span>
@@ -49,7 +49,7 @@
 
                         <div @click="getLang('ru'), $router.back()" class="lang__link">
 
-                            <img src="/public/img/siteImg/allImg/ru.png"
+                            <img src="/img/siteImg/allImg/ru.png"
                                  alt="Russia"
                                  width="24" />
                             <span class="lang__link-text px-2" :class="{'text-blue': lang == 'ru'}">Русский</span>
@@ -58,7 +58,7 @@
 
                         <div @click="getLang('en'), $router.back()" class="lang__link">
 
-                            <img src="/public/img/siteImg/allImg/gb.png"
+                            <img src="/img/siteImg/allImg/en.png"
                                  alt="United Kingdom"
                                  width="24" />
                             <span class="lang__link-text px-2" :class="{'text-blue': lang == 'en'}">English</span>
@@ -81,8 +81,9 @@
 
 <script>
 
-//Мультиязык Moment.js
+//Мультиязык
 import { loadLanguageAsync } from 'laravel-vue-i18n';
+
 import moment from "moment";
 
 // Импортирую store
@@ -105,10 +106,11 @@ export default {
     },
 
     methods: {
-        getLang(lang){
+        async getLang(lang){
 
             //Изменим локаль - Приложения ( Мои переводы )
-            loadLanguageAsync(lang)
+            await loadLanguageAsync(lang)
+
             this.lang = lang;
 
             // Занесем выбранную в хранилище

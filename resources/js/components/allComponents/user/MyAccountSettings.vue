@@ -131,7 +131,6 @@ import 'vue-tel-input/vue-tel-input.css';
 
 //Импортирую Store - Общее состояние
 import { useAuthStore } from "../../../stores/auth";
-import { useCheckInternetStore} from "../../../stores/checkInternet";
 
 
 export default {
@@ -147,7 +146,6 @@ export default {
 
             //Подключаю Store - Общее состояние
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
 
             settingsAnimation: false,
 
@@ -184,7 +182,6 @@ export default {
 
             //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
             this.query = true;
-           this.checkInternetStore.checkInternet()
 
             this.form.user_id = this.authStore.user.id;
 

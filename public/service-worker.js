@@ -19,7 +19,7 @@ const staticAssets = [
     '/img/siteImg/allImg/no-image-buildings.png',
     '/img/siteImg/allImg/kz.png',
     '/img/siteImg/allImg/ru.png',
-    '/img/siteImg/allImg/gb.png',
+    '/img/siteImg/allImg/en.png',
     '/favicon.ico',
     '/img/siteImg/menuImg/1.svg',
     '/img/siteImg/menuImg/2.svg',
@@ -31,9 +31,9 @@ const staticAssets = [
     '/img/siteImg/menuImg/8.svg',
 
     //Язык
-    '/lang/php_en.json',
-    '/lang/php_kz.json',
-    '/lang/php_ru.json',
+    '/lang/en.json',
+    '/lang/kz.json',
+    '/lang/ru.json',
 
     // Шрифты
     '/fonts/OpenSans/OpenSans-Regular.ttf',
@@ -200,10 +200,10 @@ self.addEventListener('fetch', async event=>{
 
         //Эти GET запросы мы отпровляем сразу в сеть - Так как нам нужны сразу свежие данные
         if(    pathname == '/api/getAllAds'
+            || pathname == '/api/getAllAdsYandexCluster'
+            || pathname == '/api/getAllAdsInYandexCluster'
             || pathname == '/api/getOneAds'
             || pathname == '/api/getUserAds'
-            || pathname == '/api/getAllMessages'
-            || pathname == '/api/getAllChats'
             || pathname == '/api/getProjectData'
         ){
             skipGetRequest = true;

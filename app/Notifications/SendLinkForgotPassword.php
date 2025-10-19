@@ -45,11 +45,11 @@ class SendLinkForgotPassword extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Востановление пароля laim.kz')
+            ->subject('Востановление пароля Лайм.kz')
             ->greeting('Востановление пароля')
             ->line('Нажмите на кнопку ниже')
             ->action('Сменить пароль', url($this->path.'?resetPasswordToken='.$this->token))
-            ->line('На сайте laim.kz был создан запрос на востановление пароля, если это были не вы, то будьте осторожны кто то пытается войти на сайт под вашими данными');
+            ->line('На сайте Лайм.kz был создан запрос на востановление пароля, если это были не вы, то будьте осторожны кто то пытается войти на сайт под вашими данными');
     }
 
     /**

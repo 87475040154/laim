@@ -57,10 +57,6 @@ export default {
         }
     },
 
-    created() {
-        let app = this;
-    },
-
     mounted() {
         let app = this;
 
@@ -77,6 +73,8 @@ export default {
         //Мультиязык
         localStorage.getItem('lang') != undefined ? loadLanguageAsync( localStorage.getItem('lang') ) : ''
 
+        // 🔌 Запуск автоматической проверки интернет соединения каждые 15 секунд
+        app.checkInternetStore.startAutoCheck();
 
         //Установка приложения PWA - Отловим и занесем это событие в Store что-бы в дальнейшем его использовать
         window.addEventListener('beforeinstallprompt', (e) => {

@@ -1,17 +1,17 @@
 <template>
 
-    <!-- Компонент вывод превью объявлений -->
-
     <!-- Это компонент для виртуального скрола- чтоб убрать лишнее элементы в DOM -->
     <DynamicScroller
-        v-if="ads_arr && ads_arr.length > 0"
+        v-if="ads_array && ads_array.length > 0"
+        ref="scroller"
         :page-mode="true"
+        :buffer =" 400 "
         class="scroller"
-        :items="ads_arr"
+        :items="ads_array"
         :min-item-size="100"
-        key-field="id"
-        @scroll-end="$emit('get-ads-cursor-paginate')"
-
+        key-field="uniqueKey"
+        :emitUpdate="true"
+        @update="getNewAds"
     >
 
         <template v-slot="{ item:ads, index, active }">
@@ -20,6 +20,7 @@
                 :active="active"
                 :size-dependencies="[]"
                 :data-index="index"
+                :key="ads.uniqueKey"
                 style="padding: 1px;"
             >
                 <!-- Сам блок с превью -->
@@ -37,38 +38,28 @@
                             </div>
 
                             <img v-if="ads.images.length > 0" @click="showImage(ads)" class="ads__preview-img rounded-sm" :src=" '/img/adsImg/' + ads.images[0] " alt="Фото недвижимости">
-                            <img v-else src="/public/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" class="ads__preview-img">
+                            <img v-else src="/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" class="ads__preview-img">
 
-                            <!-- Кто автор - Хозяин - Специалист - В архиве - Не активно - -->
+                            <!-- В архиве - Не активно - -->
                             <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
 
-                                <div v-if="ads.control == 'В архиве'" class="bg-red-lighten-1 p-1 px-2 rounded-lg">
+                                <div v-if="ads.control == 'В архиве'" class="bg-red-darken-1 p-1 px-2 rounded-lg">
                                     {{ $t('AdsPreviewAddArhive') }}
                                 </div>
-                                <div v-if="ads.control == 'Поступили жалобы' && ads.author_id == authStore.user.id" class="bg-red-lighten-1 p-1 px-2 rounded-lg">
+                                <div v-if="ads.control == 'Поступили жалобы' && ads.author_id == authStore.user.id" class="bg-red-darken-1 p-1 px-2 rounded-lg">
                                     {{ $t('AdsPreviewAddComplain') }}
                                 </div>
-                                <div v-if="ads.control == 'Активно' && ads.author_id == authStore.user.id" class="bg-green-lighten-1 p-1 px-2 rounded-lg">
+                                <div v-if="ads.control == 'Активно' && ads.author_id == authStore.user.id" class="bg-green-darken-1 p-1 px-2 rounded-lg">
                                     {{ $t('AdsPreviewAddActive') }}
                                 </div>
-                                <div v-if="ads.control == 'Не активно'" class="bg-blue-lighten-1 p-1 px-2 rounded-lg">
+                                <div v-if="ads.control == 'Не активно'" class="bg-blue-darken-1 p-1 px-2 rounded-lg">
                                     {{ $t('AdsPreviewAddNoActive') }}
                                 </div>
 
-                                <div v-if="ads.ownerOrRealtor == 'Хозяин' && ads.author_id != authStore.user.id && ads.control != 'В архиве'" class="bg-green-lighten-1 p-1 px-2 rounded-lg">
-                                    <span v-if="updateDateLocale.lang == 'ru'"> {{ads.ownerOrRealtor}} </span>
+                                <div v-if="ads.author_id != authStore.user.id && ads.control != 'В архиве'" class="bg-green-darken-1 p-1 px-2 rounded-lg">
+                                    <span v-if="updateDateLocale.lang == 'ru'"> Хозяин </span>
                                     <span v-if="updateDateLocale.lang == 'kz'"> Иесі </span>
                                     <span v-if="updateDateLocale.lang == 'en'"> Owner </span>
-                                </div>
-                                <div v-if="ads.ownerOrRealtor == 'Специалист' && ads.author_id != authStore.user.id && ads.control != 'В архиве'" class="bg-blue-lighten-1 p-1 px-2 rounded-lg">
-                                    <span v-if="updateDateLocale.lang == 'ru'"> {{ads.ownerOrRealtor}} </span>
-                                    <span v-if="updateDateLocale.lang == 'kz'"> Маман </span>
-                                    <span v-if="updateDateLocale.lang == 'en'"> Specialist </span>
-                                </div>
-                                <div v-if="ads.ownerOrRealtor == 'Через риелтора' && ads.author_id != authStore.user.id && ads.table_name == 'Snimu' && ads.control != 'В архиве'" class="bg-blue-lighten-1 p-1 px-2 rounded-lg">
-                                    <span v-if="updateDateLocale.lang == 'ru'"> Можно от специалиста </span>
-                                    <span v-if="updateDateLocale.lang == 'kz'"> Мүмкін маманнан </span>
-                                    <span v-if="updateDateLocale.lang == 'en'"> It is possible from a specialist </span>
                                 </div>
 
                             </div>
@@ -250,7 +241,7 @@
 
                                 <!-- Кнопка лайк -->
                                 <span>
-                                    <v-icon :color="ads.userLike ? 'red' : 'grey-lighten-1'"
+                                    <v-icon :color="ads.likes.length > 0 ? 'red' : 'grey-lighten-1'"
                                             class="icon__heart mx-1"
                                             size="large"
                                             @click="authStore.check ? addLikeToggle(index, ads): $router.push({name: $route.name + 'Auth'})"
@@ -338,7 +329,8 @@
     </DynamicScroller>
 
 
-<!--    Управление объявлением-->
+
+    <!--    Управление объявлением-->
     <!-- Backdrop -->
     <transition name="adsPreviewControl__animation-backdrop">
         <div v-if="adsPreviewControlAnimation" class="adsPreviewControl__backdrop" @click="adsPreviewControlAnimation = false"></div>
@@ -448,7 +440,6 @@
 
 //Импортирую Store - Общее состояние
 import { useAuthStore } from "../../stores/auth";
-import { useCheckInternetStore } from "../../stores/checkInternet";
 import { useImagesStore } from "../../stores/images";
 import { useAdsStore } from "../../stores/ads";
 import { useUpdateDateLocaleStore } from "../../stores/updateDateLocale";
@@ -461,14 +452,13 @@ import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 export default {
     name: "AdsPreviewComponent",
 
-    components: {
-        DynamicScroller,
-        DynamicScrollerItem
-    },
+    components: {DynamicScroller, DynamicScrollerItem},
 
     props: {
         ads_arr: Array,
         getMyLikeAds: Boolean, //Это нужно чтоб знать сейчас запрос избранного или нет если да то мы можем при отмене избранного удалить его из массива
+        parentQuery: Boolean,       // флаг, что идёт загрузка
+        isLastLoad: Boolean,  // флаг, что достигнут конец
     },
 
     data(){
@@ -476,41 +466,29 @@ export default {
 
             //Подключаю Store - Наше общее состояние
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
             imageStore: useImagesStore(),
             adsStore: useAdsStore(),
             updateDateLocale: useUpdateDateLocaleStore(),
             KZLocationStore: useKZLocationStore(),
 
-            ads_array: '',
+            ads_array: [],
+            debounceTimer: null, // Это ограничитель вызова update для получения объявлений типа setTimout
             query: false,
 
             adsPreviewControlAnimation: false,
             controlBlockType: '',
             ads: '',
             index: '',
-            deleteAdsBlock: false
+            deleteAdsBlock: false,
 
         }
     },
 
     watch: {
-        ads_arr(){
-            this.ads_array = this.ads_arr;
-        },
 
-        //Отслеживаем изменение маршрута - И обновляем данные 1-го
-        '$route' (to, from) {
-            if(to.name == 'allAds' || to.name == 'mapClusterShowAds'){
-
-                if(localStorage.getItem('oneAds') != undefined){
-                    this.ads_array[localStorage.getItem('oneAdsIndex')] = JSON.parse(localStorage.getItem('oneAds'));
-                    //Удалим
-                    localStorage.removeItem('oneAdsIndex')
-                    localStorage.removeItem('oneAds')
-                }
-
-            }
+        //Записываем объявления полученные через пропс
+        ads_arr(newAdsArr) {
+            this.ads_array = newAdsArr;
         },
 
         //Следим за сменой языка
@@ -522,13 +500,27 @@ export default {
 
     methods: {
 
+        // Метод отправить событие для получения новых объявлений за 10 до конца прокрутки
+        getNewAds(startIndex, endIndex) {
+
+            // Если до конца массива осталось <=10 элементов и не идет запрос и не конец списка
+            if (
+                this.ads_array.length - endIndex <= 10 &&
+                !this.parentQuery &&
+                !this.isLastLoad
+            ) {
+                console.log('dsadfsdf')
+
+                if (this.debounceTimer) clearTimeout(this.debounceTimer);
+
+                this.debounceTimer = setTimeout(() => {
+                    this.$emit('get-ads');
+                }, 300);
+            }
+        },
+
         //Открыть 1-но объявление
         async showOneAds(ads,index){
-
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet();
-
-            localStorage.setItem('oneAdsIndex', index)
             localStorage.setItem('oneAds', JSON.stringify(ads))
 
             this.$router.push({name: this.$route.name + "OneAds" ,params: {ads_id: ads.id, table_name: ads.table_name }})
@@ -543,10 +535,6 @@ export default {
         //Метод - Рекламировать или Остановить - рекламу объявления
         async adsActiveToggle(index, ads_id, table_name, ads_control){
             this.query = true;
-
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           this.checkInternetStore.checkInternet()
-
 
             axios.post('/adsActiveToggle', {
                 ads_id, table_name
@@ -579,11 +567,8 @@ export default {
 
             this.query = true;
 
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           this.checkInternetStore.checkInternet()
-
             //Для быстрого реагирования добавим без проверки и далее в проверке уже подтвердим
-            this.ads_arr[index].userLike = !this.ads_arr[index].userLike;
+            ads.likes = ads.likes.length > 0? []: ['Есть лайк'];
 
             axios.post('/like',{
                 author_id: this.authStore.user.id,
@@ -600,7 +585,7 @@ export default {
                     this.query = false;
 
                     //Toggle своиства избранного, меняем данные у данного объявления без перезагрузки
-                    this.ads_arr[index].userLike = !this.ads_arr[index].userLike;
+                    ads.likes = [];
 
                     //Если объявление уже стало не активно уведомим что не активно
                     Toast.fire({
@@ -614,9 +599,6 @@ export default {
         //Метод - Отправить в архив -  на 7 дней . Далее автоматом будет удалено
         deleteAds(index, ads_id, table_name){
             this.query = true;
-
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
 
             axios.delete('/deleteAds', {params:{
                     ads_id, table_name,
@@ -657,7 +639,8 @@ export default {
             this.ads = ads;
             this.index = index;
             this.adsPreviewControlAnimation = true;
-        }
+        },
+
     }
 
 }
@@ -806,7 +789,6 @@ export default {
 .icon__triangle{
     background: orange
 }
-
 .icon__triangleTOP8{
     background: #710250
 }
@@ -876,5 +858,6 @@ export default {
 .adsPreviewControl__body{
     flex-grow: 1;
 }
+
 </style>
 

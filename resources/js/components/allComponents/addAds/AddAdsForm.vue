@@ -24,10 +24,9 @@
                     <!-- Заголовок старницы - что сдать  -->
                     <div class="col text-body-1">
 
-                            <span v-if="updateDateLocaleStore.lang != 'kz'">
-                                <span v-if="$route.params.table_name != 'Snimu'">{{ form.addOrUpdate == 'add' ? $t('addAdsPass') : $t('addAdsEdit') }}</span>
-                                <span v-else>{{ $t('addAdsRent') }}</span>
-                            </span>
+                        <span v-if="updateDateLocaleStore.lang != 'kz'">
+                            <span>{{ form.addOrUpdate == 'add' ? $t('addAdsAdd') : $t('addAdsEdit') }}</span>
+                        </span>
 
                         <span v-if="$route.params.table_name == 'Kvartira'">{{ $t('addAdsApartment') }}</span>
                         <span v-if="$route.params.table_name == 'Obshejitie'">{{ $t('addAdsHostel') }}</span>
@@ -40,9 +39,8 @@
                         <span v-if="$route.params.table_name == 'Business'">{{ $t('addAdsBusiness') }}</span>
 
                         <span v-if="updateDateLocaleStore.lang == 'kz'">
-                                <span v-if="$route.params.table_name != 'Snimu'">{{ form.addOrUpdate == 'add' ? $t('addAdsPass') : $t('addAdsEdit') }}</span>
-                                <span v-else>{{ $t('addAdsRent') }}</span>
-                            </span>
+                            <span>{{ form.addOrUpdate == 'add' ? $t('addAdsAdd') : $t('addAdsEdit') }}</span>
+                        </span>
 
                     </div>
 
@@ -114,8 +112,8 @@
                     <!-- Верхний блок основная информации  -->
                     <div v-if="$route.params.step == 1" class="addAds__form-block">
 
-                        <!-- Для Бизнеса - Тип сделки - Сдам - продам  -->
-                        <div v-if="$route.params.table_name == 'Business'" class="form-group">
+                        <!-- Тип сделки - Сдам - продам  -->
+                        <div class="form-group">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $t('addAdsDealType') }}</div>
@@ -140,7 +138,7 @@
 
 
                         <!-- Сфера деятельности - Прочая недвижимость -->
-                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Prochaya'" class="form-group">
+                        <div v-if="['Business','Prochaya'].includes($route.params.table_name)" class="form-group">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $t('addAdsFieldOfActivity') }}</div>
@@ -202,7 +200,7 @@
                         </div>
 
                         <!-- Тип Объекта -->
-                        <div v-if="$route.params.table_name == 'Dom' || $route.params.table_name == 'Magazin' || $route.params.table_name == 'Prombaza' || $route.params.table_name == 'Snimu' " class="form-group">
+                        <div v-if="['Dom', 'Magazin','Prombaza'].includes($route.params.table_name)" class="form-group">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $t('addAdsObjectType') }}</div>
@@ -269,7 +267,8 @@
                         </div>
 
                         <!-- Период аренды  -->
-                        <div v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Snimu'" class="form-group">
+
+                        <div v-if="form.tip_sdelki === 'Сдам' && ['Kvartira', 'Obshejitie', 'Dom'].includes($route.params.table_name)" class="form-group">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $t('addAdsRentalPeriod') }}</div>
@@ -295,7 +294,7 @@
                         </div>
 
                         <!-- Количество комнат  -->
-                        <div v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Snimu'" class="form-group my-3">
+                        <div v-if="['Kvartira','Obshejitie','Dom','Ofis'].includes($route.params.table_name)" class="form-group my-3">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $route.params.table_name == 'Ofis' ? $t('addAdsNumberOfCabinets') : $t('addAdsNumberOfRooms') }}</div>
@@ -313,7 +312,7 @@
                         </div>
 
                         <!-- Действующий бизнес - Да , нет -->
-                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Prochaya' || $route.params.table_name == 'Magazin'" class="form-group">
+                        <div v-if="['Business','Prochaya','Magazin'].includes($route.params.table_name)" class="form-group">
 
                             <!-- Заголовок -->
                             <div class="form__title">
@@ -339,7 +338,7 @@
                         </div>
 
                         <!-- Магазин - Местоположение -->
-                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Magazin'" class="form-group py-3">
+                        <div v-if="['Business','Magazin'].includes($route.params.table_name)" class="form-group py-3">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $t('addAdsLocation') }}</div>
@@ -373,7 +372,7 @@
 
 
                         <!-- Этаж - Этажность -->
-                        <div class="form-group row g-0 gap-3" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie'|| $route.params.table_name == 'Magazin'">
+                        <div class="form-group row g-0 gap-3" v-if="['Kvartira','Obshejitie','Dom','Ofis','Zdanie','Magazin'].includes($route.params.table_name)">
 
                             <!-- Этаж -->
                             <div class="col" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Ofis'|| $route.params.table_name == 'Magazin'">
@@ -411,7 +410,7 @@
                         </div>
 
                         <!-- Высота потолков-->
-                        <div class="form-group" v-if="$route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie'">
+                        <div class="form-group" v-if="['Ofis','Zdanie'].includes($route.params.table_name)">
 
                             <!-- Поле -->
                             <div class="form__input">
@@ -474,10 +473,10 @@
                         </div>
 
                         <!-- Площадь участка -->
-                        <div class="form-group" v-if="$route.params.table_name == 'Dom' || $route.params.table_name == 'Zdanie'|| $route.params.table_name == 'Prombaza' || $route.params.table_name == 'Prochaya'">
+                        <div class="form-group" v-if="['Dom','Zdanie','Prombaza','Prochaya'].includes($route.params.table_name)">
 
                             <!-- Поле -->
-                            <validation-provider rules="required|integer|min_value:1|max_value:99999" v-model="form.ploshad_uchastka" name="ploshad_uchastka" v-slot="{ errors }">
+                            <validation-provider rules="integer|min_value:1|max_value:99999" v-model="form.ploshad_uchastka" name="ploshad_uchastka" v-slot="{ errors }">
 
                                 <!-- Input -->
                                 <v-text-field
@@ -495,7 +494,7 @@
                         </div>
 
                         <!-- Тип строения -->
-                        <div class="form-group" v-if="$route.params.table_name != 'Snimu'">
+                        <div class="form-group">
 
                             <!-- Заголовок -->
                             <div class="form__title">
@@ -521,6 +520,28 @@
                             </validation-provider>
 
                         </div>
+
+                        <!-- Год постройки -->
+                        <div class="form-group">
+
+                            <!-- Поле -->
+                            <validation-provider rules="required|integer|min_value:1|max_value:99999" v-model="form.god_postroiki" name="god_postroiki" v-slot="{ errors }">
+
+                                <!-- Input -->
+                                <v-text-field
+                                    v-model="form.god_postroiki"
+                                    name="god_postroiki" type="text" :label="$t('addAdsYearOfConstruction')"
+                                    inputmode="numeric"
+                                    variant="outlined" color="blue"
+                                    :error-messages="form.errors.has('god_postroiki') ? form.errors.get('god_postroiki'):'' || errors[0]"
+                                    @input="form.errors.clear('god_postroiki')"
+                                ></v-text-field>
+
+                            </validation-provider>
+
+
+                        </div>
+
 
                     </div>
 
@@ -563,7 +584,7 @@
                         </div>
 
                         <!-- Мебель - Полностью, Частично, Нет -->
-                        <div class="form-group" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis'|| $route.params.table_name == 'Magazin'|| $route.params.table_name == 'Snimu'">
+                        <div class="form-group" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis'|| $route.params.table_name == 'Magazin'">
 
                             <div class="form__title">
                                 {{ $t('addAdsFurniture') }}
@@ -1121,7 +1142,7 @@
                         </div>
 
                         <!-- Безопасность -->
-                        <div v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie' || $route.params.table_name == 'Magazin' || $route.params.table_name == 'Snimu'" class="form-group">
+                        <div v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie' || $route.params.table_name == 'Magazin'" class="form-group">
 
                             <div class="form__title">{{ $t('addAdsSecurity') }}</div>
 
@@ -1247,13 +1268,33 @@
 
                         <!-- Draggable - Отобразим превью фото перед загрузкой на сервер -->
                         <div id="draggable">
-                            <draggable class="d-flex flex-wrap justify-center gap-2" :list="imageAndPreviewImage" @end="draggableEnd" style="max-width: 100%">
-                                <div class="position-relative" v-for="(img, index) of imageAndPreviewImage" :key="index">
-                                    <v-btn size="x-small" icon @click="deleteImage(index)" style="position: absolute; top: 5px; right: 5px">
-                                        <v-icon>mdi-delete</v-icon>
-                                    </v-btn>
-                                    <img :src="img.previewImg" @click="$router.push({name: $route.name + 'Image'}), imageStore.showImages({images: imageAndPreviewImage,index, addAdsImg:true})"  width="100" height="100" role="button">
-                                </div>
+                            <draggable
+                                class="d-flex flex-wrap justify-center gap-2"
+                                :list="imageAndPreviewImage"
+                                @end="draggableEnd"
+                                item-key="index"
+                                style="max-width: 100%"
+                            >
+                                <template #item="{ element, index }">
+                                    <div class="position-relative">
+                                        <v-btn
+                                            size="x-small"
+                                            icon
+                                            @click="deleteImage(index)"
+                                            style="position: absolute; top: 5px; right: 5px"
+                                        >
+                                            <v-icon>mdi-delete</v-icon>
+                                        </v-btn>
+
+                                        <img
+                                            :src="element.previewImg"
+                                            @click="$router.push({ name: $route.name + 'Image' }), imageStore.showImages({ images: imageAndPreviewImage, index, addAdsImg: true })"
+                                            width="100"
+                                            height="100"
+                                            role="button"
+                                        />
+                                    </div>
+                                </template>
                             </draggable>
                         </div>
 
@@ -1269,7 +1310,7 @@
                         <div class="d-flex pb-3">
 
                             <!-- Вывод выбранной локации - При клике открыть окно с локациями - получим области по умолчанию  -->
-                            <v-btn @click="$router.push({ name: $route.name + 'Location',  params: { locationId: 'null', stepLocation:1 } })"
+                            <v-btn @click="$router.push({ name: $route.name + 'Location',  params: {oblast: 'null', gorod: 'null', locationStep:1 } })"
                                    class="flex-fill text-body-2"
                                    :class="{'rounded-e-0' : KZLocationStore.location != ''}"
                                    color="grey-lighten-3" size="x-large" rounded="0"
@@ -1320,7 +1361,7 @@
                         </validation-provider>
 
                         <!-- Поле - Улица номер дома -->
-                        <div v-if="$route.params.table_name != 'Snimu'" class="form__input row g-0 mt-4">
+                        <div class="form__input row g-0 mt-4">
 
                             <!-- Улица -->
                             <div class="col">
@@ -1382,30 +1423,6 @@
                         <h2 class="text-center py-2 pb-3 fw-bold">
                             {{ $t('addAdsContactDetails') }}
                         </h2>
-
-                        <!-- Вы хозяин / Риэлтор -->
-                        <div class="form-group">
-
-                            <!-- Input -->
-                            <validation-provider rules="required" v-model="form.ownerOrRealtor" name="ownerOrRealtor" v-slot="{ errors }">
-
-                                <div v-if="$route.params.table_name == 'Snimu'" class="alert alert-success py-1 text-body-1">{{ $t('addAdsRealtorText') }}</div>
-                                <div class="form__input my-3">
-                                    <span v-if="$route.params.table_name != 'Snimu'" @click="form.ownerOrRealtor = 'Хозяин'" class="form__item" :class="{'item__active' : form.ownerOrRealtor == 'Хозяин'}"><v-icon color="green" v-if="form.ownerOrRealtor == 'Хозяин'">mdi-check-circle</v-icon>{{ $t('addAdsIAmTheOwner') }} </span>
-                                    <span v-if="$route.params.table_name != 'Snimu'" @click="form.ownerOrRealtor = 'Специалист'" class="form__item" :class="{'item__active' : form.ownerOrRealtor == 'Специалист'}"><v-icon color="green" v-if="form.ownerOrRealtor == 'Специалист'">mdi-check-circle</v-icon>{{ $t('addAdsIAmSpecialist') }} </span>
-                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.ownerOrRealtor = 'Можно от специалиста'" class="form__item" :class="{'item__active' : form.ownerOrRealtor == 'Можно от специалиста'}"><v-icon color="green" v-if="form.ownerOrRealtor == 'Можно от специалиста'">mdi-check-circle</v-icon>{{ $t('addAdsItIsPossibleFromASpecialist') }} </span>
-                                </div>
-
-                                <!-- Вывод ошибок -->
-                                <div class="text__error">
-                                    <div>{{ errors[0] }}</div>
-                                    <has-error :form="form" field="ownerOrRealtor"></has-error>
-                                </div>
-
-
-                            </validation-provider>
-
-                        </div>
 
                         <!-- Имя -->
                         <div class="form-group">
@@ -1485,7 +1502,7 @@
                             <div class="m-2 d-flex">
                                 <i class="bi bi-geo-alt text-grey"></i>
                                 <div class="ml-3">
-                                    <span v-if="$route.params.table_name != 'Snimu'">{{ form.ulica }}, {{form.nomer_doma}}</span>
+                                    <span>{{ form.ulica }}, {{form.nomer_doma}}</span>
                                     <div class="text-grey">{{KZLocationStore.gorod}}</div>
                                 </div>
                             </div>
@@ -1551,14 +1568,12 @@
 <script>
 //Импортирую Store - Наше общее состояние
 import {useAuthStore} from "../../../stores/auth";
-import {useCheckInternetStore} from "../../../stores/checkInternet";
 import {useImagesStore} from "../../../stores/images";
 import {useKZLocationStore} from "../../../stores/KZLocation";
 import { useUpdateDateLocaleStore } from "../../../stores/updateDateLocale";
 
 // VueDraggable Пакет для перемещения картинок в массиве (по экрану)
-import { defineComponent } from 'vue'
-import { VueDraggableNext } from 'vue-draggable-next'
+import draggable from 'vuedraggable'
 
 //Импортирую Компонент - Валидация laravel VFORM
 import Form from 'vform'
@@ -1574,7 +1589,7 @@ import 'vue-tel-input/vue-tel-input.css';
 // Компонент яндекс карта
 import { YandexMap, YandexMarker, loadYmap  } from 'vue-yandex-maps'
 
-export default defineComponent({
+export default {
     name: "addAdsForm",
 
     directives: {
@@ -1584,7 +1599,7 @@ export default defineComponent({
     components: {
         HasError, // VForm - Валидация
         YandexMap, YandexMarker,// Карта яндекс
-        draggable: VueDraggableNext, // Для перемещения фото
+        draggable, // Для перемещения фото
         VueTelInput // Для номера телефона
     },
 
@@ -1593,7 +1608,6 @@ export default defineComponent({
 
             //Подключаю Store - Наше общее состояние
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
             imageStore: useImagesStore(),
             KZLocationStore: useKZLocationStore(),
             updateDateLocaleStore: useUpdateDateLocaleStore(),
@@ -1611,7 +1625,7 @@ export default defineComponent({
 
                 table_name: '',
                 zagolovok: '',
-                tip_sdelki: '',
+                tip_sdelki: 'Сдам',
                 tip_obekta: '',
                 period_arendi: 'На длительно',
                 kolichestvo_komnat: 1,
@@ -1622,6 +1636,7 @@ export default defineComponent({
                 cena_tip: 'За все',
                 mestopolojenie: '', //магазин
                 tip_stroeniya: 'Панель',
+                god_postroiki: '',
                 tip_ofisa: '',
                 visota_potolkov: 2.5,
                 etag: 1,
@@ -1675,7 +1690,6 @@ export default defineComponent({
                 text_obyavleniya: '',
 
                 //Контактные данные автора
-                ownerOrRealtor: '',
                 name: '',
                 tel: '',
                 tel2: '',
@@ -1745,10 +1759,6 @@ export default defineComponent({
             //Получим ГеоКоординаты расположение
             if(from.params.step == 6 && to.params.step == 7){
 
-                //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-                this.checkInternetStore.checkInternet()
-
-
                 if (this.address.count == 0){
                     this.address.adr1 = {
                         oblast: this.form.oblast,
@@ -1776,9 +1786,8 @@ export default defineComponent({
                 this.address.count == 0 ? this.address.count = 1:  this.address.count = 0;
 
 
-                //Если изменился получить новые координаты
-                if(this.address.adr1.oblast != this.address.adr2.oblast || this.address.adr1.gorod != this.address.adr2.gorod
-                    || this.address.adr1.raion != this.address.adr2.raion || this.address.adr1.ulica != this.address.adr2.ulica || this.address.adr1.nomer_doma != this.address.adr2.nomer_doma){
+                //Преобразуем объект в строку json и сравним отличаются ли 2 адреса друг от друга или нет
+                if(JSON.stringify(this.address.adr1) !== JSON.stringify(this.address.adr2)){
 
                     this.ymaps.geocode('Казахстан,' + this.form.oblast +','+this.form.gorod+','+this.form.ulica+','+this.form.nomer_doma).then((res)=>{
                         //Запишем в форму координаты
@@ -1796,10 +1805,10 @@ export default defineComponent({
         // Отслеживаем изменение выбранной локации
         async 'KZLocationStore.location'(){
             this.form.oblast = this.KZLocationStore.location.oblast,
-            this.form.gorod = this.KZLocationStore.location.gorod,
-            this.form.raion = this.KZLocationStore.location.raion,
-            this.form.lat = this.KZLocationStore.location.lat,
-            this.form.lon = this.KZLocationStore.location.lon
+                this.form.gorod = this.KZLocationStore.location.gorod,
+                this.form.raion = this.KZLocationStore.location.raion,
+                this.form.lat = this.KZLocationStore.location.lat,
+                this.form.lon = this.KZLocationStore.location.lon
         }
     },
 
@@ -1879,9 +1888,6 @@ export default defineComponent({
             // Если редактируем старое объявление
             if(this.$route.params.id != 'null'){
 
-                //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-                this.checkInternetStore.checkInternet();
-
                 axios.get('/getOneAds', {
                     params:{
                         ads_id: this.$route.params.id,
@@ -1944,9 +1950,6 @@ export default defineComponent({
         async addOrUpdateAds(){
 
             this.query = true;
-
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
 
             //Проверка рекаптчи если есть соединение идем далее
             this.$recaptchaLoaded()
@@ -2037,37 +2040,36 @@ export default defineComponent({
         // Проверка валидности ФОРМЫ - для перехода на следующий шаг.
         async formValidate(save = false){
             this.$refs.form.validate().then( async response =>{
-                    if(response.valid){
+                if(response.valid){
 
-                        this.form_valid = '';
+                    this.form_valid = '';
 
-                        //Переход на следующий шаг - Если не сохраняем объявление после редактирования
-                        if(!save){
-                            this.$router.push({name: this.$route.name, params: {step: Number(this.$route.params.step) +1}})
-                        }
-                        else{
-                            //Tel 2
-                            this.form.tel2 != null && this.form.tel2.length < 3 ? this.form.tel2 = '' : '';
-                            this.addOrUpdateAds();
-                        }
-                    }else{
-
-                        // Если не валидна - Добавим в нашу переменную смс об ошибке
-                        this.form_valid = Object.values(response.errors)[0];
-                        setTimeout(()=>{
-                            this.form_valid = '';
-                        },2000)
+                    //Переход на следующий шаг - Если не сохраняем объявление после редактирования
+                    if(!save){
+                        this.$router.push({name: this.$route.name, params: {step: Number(this.$route.params.step) +1}})
                     }
+                    else{
+                        //Tel 2
+                        this.form.tel2 != null && this.form.tel2.length < 3 ? this.form.tel2 = '' : '';
+                        this.addOrUpdateAds();
+                    }
+                }else{
 
-                })
+                    // Если не валидна - Добавим в нашу переменную смс об ошибке
+                    this.form_valid = Object.values(response.errors)[0];
+                    setTimeout(()=>{
+                        this.form_valid = '';
+                    },2000)
+                }
+
+            })
         },
 
         //Получить координаты при перемещении маркера по карте
         async getCoordinate(e) {
-           this.checkInternetStore.checkInternet()
-           this.form.lat = e.get('coords')[0];
-           this.form.lon = e.get('coords')[1];
-           this.coordinates = e.get('coords');
+            this.form.lat = e.get('coords')[0];
+            this.form.lon = e.get('coords')[1];
+            this.coordinates = e.get('coords');
         },
 
         //Метод - Загружаем Фото - Максимум 10 - если более то кнопка загрузки будет d-none
@@ -2156,7 +2158,7 @@ export default defineComponent({
         next();
     }
 
-})
+}
 
 </script>
 

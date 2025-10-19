@@ -61,7 +61,7 @@ export const useAuthStore = defineStore('auth', {
                 this.USER_DATA = {};
 
                 // Перенаправить пользователя на главную страницу
-                router.push('/allAds/Kvartira/1');
+                router.push('/allAds/Kvartira');
 
             } catch (error) {
                 // Обработать ошибку, если есть

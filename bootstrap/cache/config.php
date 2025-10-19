@@ -1,9 +1,9 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'Laim Аренда',
+    'name' => 'Лайм Недвижимость в Казахстане',
     'env' => 'local',
-    'debug' => true,
+    'debug' => false,
     'url' => 'http://127.0.0.1:8000',
     'asset_url' => NULL,
     'timezone' => 'Asia/Almaty',
@@ -201,7 +201,7 @@
         'driver' => 'octane',
       ),
     ),
-    'prefix' => 'laim_arenda_cache_',
+    'prefix' => 'laim_nedvizimost_v_kazaxstane_cache_',
   ),
   'cors' => 
   array (
@@ -300,7 +300,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'laim_arenda_database_',
+        'prefix' => 'laim_nedvizimost_v_kazaxstane_database_',
       ),
       'default' => 
       array (
@@ -641,7 +641,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'laim_arenda_session',
+    'cookie' => 'laim_nedvizimost_v_kazaxstane_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,
@@ -655,6 +655,117 @@
       0 => 'C:\\OpenServer\\domains\\laim-2.kz\\resources\\views',
     ),
     'compiled' => 'C:\\OpenServer\\domains\\laim-2.kz\\storage\\framework\\views',
+  ),
+  'debugbar' => 
+  array (
+    'enabled' => false,
+    'except' => 
+    array (
+      0 => 'telescope*',
+      1 => 'horizon*',
+    ),
+    'storage' => 
+    array (
+      'enabled' => true,
+      'open' => false,
+      'driver' => 'file',
+      'path' => 'C:\\OpenServer\\domains\\laim-2.kz\\storage\\debugbar',
+      'connection' => NULL,
+      'provider' => '',
+      'hostname' => '127.0.0.1',
+      'port' => 2304,
+    ),
+    'editor' => 'phpstorm',
+    'remote_sites_path' => '',
+    'local_sites_path' => '',
+    'include_vendors' => true,
+    'capture_ajax' => true,
+    'add_ajax_timing' => false,
+    'error_handler' => false,
+    'clockwork' => false,
+    'collectors' => 
+    array (
+      'phpinfo' => true,
+      'messages' => true,
+      'time' => true,
+      'memory' => true,
+      'exceptions' => true,
+      'log' => true,
+      'db' => true,
+      'views' => true,
+      'route' => true,
+      'auth' => false,
+      'gate' => true,
+      'session' => true,
+      'symfony_request' => true,
+      'mail' => true,
+      'laravel' => false,
+      'events' => false,
+      'default_request' => false,
+      'logs' => false,
+      'files' => false,
+      'config' => false,
+      'cache' => false,
+      'models' => true,
+      'livewire' => true,
+    ),
+    'options' => 
+    array (
+      'auth' => 
+      array (
+        'show_name' => true,
+      ),
+      'db' => 
+      array (
+        'with_params' => true,
+        'backtrace' => true,
+        'backtrace_exclude_paths' => 
+        array (
+        ),
+        'timeline' => false,
+        'duration_background' => true,
+        'explain' => 
+        array (
+          'enabled' => false,
+          'types' => 
+          array (
+            0 => 'SELECT',
+          ),
+        ),
+        'hints' => false,
+        'show_copy' => false,
+        'slow_threshold' => false,
+      ),
+      'mail' => 
+      array (
+        'full_log' => false,
+      ),
+      'views' => 
+      array (
+        'timeline' => false,
+        'data' => false,
+        'exclude_paths' => 
+        array (
+        ),
+      ),
+      'route' => 
+      array (
+        'label' => true,
+      ),
+      'logs' => 
+      array (
+        'file' => NULL,
+      ),
+      'cache' => 
+      array (
+        'values' => true,
+      ),
+    ),
+    'inject' => true,
+    'route_prefix' => '_debugbar',
+    'route_domain' => NULL,
+    'theme' => 'auto',
+    'debug_backtrace_limit' => 50,
   ),
   'flare' => 
   array (

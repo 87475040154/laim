@@ -46,20 +46,22 @@
 
                         <!-- Кнопки - Tel, whatsapp - 1 - Если отправленно с контактами автора-->
                         <div>
-                            <a v-if="$route.query.tel == undefined"  :href="'https://api.whatsapp.com/send?phone='+ads.tel+'&text=' + SiteDomain +'/allAds/'+ $route.params.table_name + '/1/allAdsOneAds/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
-                            <a :href="'tel: '+ String($route.query.tel || ads.tel)" class="btn bg-blue text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px">
-                                <i class="bi bi-telephone-fill pr-2"></i>
-                                <small> {{ $route.query.tel || ads.tel }}</small>
-                            </a>
-                        </div>
+                            <div>
+                                <a v-if="$route.query.tel == undefined"  :href="'https://api.whatsapp.com/send?phone='+ads.tel+'&text=' + SiteDomain +'/allAds/'+ $route.params.table_name + '/allAdsOneAds/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
+                                <a :href="'tel: '+ String($route.query.tel || ads.tel)" class="btn bg-blue text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px">
+                                    <i class="bi bi-telephone-fill pr-2"></i>
+                                    <small> {{ $route.query.tel || ads.tel }}</small>
+                                </a>
+                            </div>
 
-                        <!-- Кнопки - Tel, whatsapp - 2 -->
-                        <div v-if="$route.query.tel == undefined" class="mt-2">
-                            <a v-if="ads.tel2 != null" :href="'https://api.whatsapp.com/send?phone='+ads.tel2+'&text=' + SiteDomain +'/allAds/'+ $route.params.table_name + '/1/allAdsOneAds/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
-                            <a v-if="ads.tel2 != null" :href="'tel:'+ads.tel2" class="btn bg-blue text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px">
-                                <i class="bi bi-telephone-fill pr-2"></i>
-                                <small>{{ String(ads.tel2) }}</small>
-                            </a>
+                            <!-- Кнопки - Tel, whatsapp - 2 -->
+                            <div v-if="$route.query.tel == undefined" class="mt-2">
+                                <a v-if="ads.tel2 != null" :href="'https://api.whatsapp.com/send?phone='+ads.tel2+'&text=' + SiteDomain +'/allAds/'+ $route.params.table_name + '/allAdsOneAds/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
+                                <a v-if="ads.tel2 != null" :href="'tel:'+ads.tel2" class="btn bg-blue text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px">
+                                    <i class="bi bi-telephone-fill pr-2"></i>
+                                    <small>{{ String(ads.tel2) }}</small>
+                                </a>
+                            </div>
                         </div>
 
                     </div>
@@ -67,10 +69,10 @@
                     <!-- Отправить жалобы -->
                     <div v-if="$route.params.type=='Пожаловаться'" role="button">
 
+                        <div @click="addComplain('Ответил риелтор')" class="border-bottom p-2 py-3">{{ $t('oneAdsBottomOffCanvasTheRealtorReplied') }}</div>
                         <div @click="addComplain('Объявление не актуально')" class="border-bottom p-2 pb-3">{{ $t('oneAdsBottomOffCanvasTheAdIsNotRelevant') }}</div>
                         <div @click="addComplain('Ошибка в цене')" class="border-bottom p-2 py-3">{{ $t('oneAdsBottomOffCanvasPriceError') }}</div>
                         <div @click="addComplain('Некорректные фотографии')" class="border-bottom p-2 py-3">{{ $t('oneAdsBottomOffCanvasIncorrectPhotos') }}</div>
-                        <div @click="addComplain('Ответил риелтор')" class="border-bottom p-2 py-3">{{ $t('oneAdsBottomOffCanvasTheRealtorReplied') }}</div>
                         <div @click="addComplain('Телефон не отвечает')" class="border-bottom p-2 py-3">{{ $t('oneAdsBottomOffCanvasThePhoneIsNotAnswering') }}</div>
                         <div @click="addComplain('Обман или ложное объявление')" class="p-2 py-3">{{ $t('oneAdsBottomOffCanvasDeceptionOrFalseAnnouncement') }}</div>
 
@@ -138,7 +140,6 @@ import { Button, HasError, AlertError } from 'vform/src/components/bootstrap5'
 
 //Импортирую Store - Общее состояние
 import { useAuthStore } from "../../../stores/auth";
-import { useCheckInternetStore } from "../../../stores/checkInternet";
 import {useUpdateDateLocaleStore} from "../../../stores/updateDateLocale";
 
 
@@ -159,13 +160,11 @@ export default {
 
             //Подключаю Store - Наше общее состояние
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
             updateDateLocale: useUpdateDateLocaleStore(),
 
             ads: '', //Сюда занесем данные 1-го объявления
 
             oneAdsBottomAnimation: false,
-
 
             query: false,
             SiteDomain: SiteDomain
@@ -188,9 +187,6 @@ export default {
         //Метод - Отправить жалобу на объявление
        async addComplain(complain){
            this.query = true;
-
-           //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-           this.checkInternetStore.checkInternet()
 
             axios.post('/addComplain', {
                 ads_id: this.ads.id,
@@ -219,9 +215,6 @@ export default {
         //Метод поделиться ссылкой
         async linkShare(type) {
 
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
-
             //Поделиться с номером телефона автора
             if(type == 'С номером автора'){
                 navigator.share({
@@ -242,9 +235,6 @@ export default {
         //Метод скачать фото
         async downloadImage(){
 
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
-
             this.ads.images.forEach(elem=>{
                 let link = document.createElement("a");
                 link.setAttribute("href",'/img/adsImg/'+elem);
@@ -254,9 +244,6 @@ export default {
         },
         //Поделиться фото - напримерв Whatsapp
         async shareImage(){
-
-            //Проверка наличие интернета - Если нет то выведем alert в AppComponent.vue
-            this.checkInternetStore.checkInternet()
 
             let files = [];
             for (const item of this.ads.images) {

@@ -18,14 +18,13 @@
                 <!-- Header -->
                 <div class="addAdsMenu__header">
 
-                    <!-- Заголовок -->
-                    <div>{{ $t('addAdsMenuWhatToHandOver') }}</div>
+                    <!-- Заголовок - Что добавить -->
+                    <div class="header__title">{{ $t('addAdsMenuAdd') }}</div>
+
+                    <v-spacer></v-spacer>
 
                     <!-- Кнопка назад -->
-                    <v-btn icon dark variant="text"
-                           @click="$router.back()"
-                           style="position: absolute; top: 0; right: 10px;"
-                    >
+                    <v-btn icon dark variant="text" @click="$router.back()">
                         <v-icon class="d-none d-lg-block">mdi-arrow-right</v-icon>
                         <v-icon class="d-block d-lg-none">mdi-close</v-icon>
                     </v-btn>
@@ -49,7 +48,7 @@
                         <!-- Квартира -->
                         <div @click="showForm('Kvartira')">
                             <div class="icon__wrapper icon__wrapper-apartments">
-                                <img  src="/public/img/siteImg/menuImg/1.svg" alt="Квартиры" width="35" height="35">
+                                <img  src="/img/siteImg/menuImg/1.svg" alt="Квартиры" width="35" height="35">
                                 <small>{{ $t("addAdsMenuApartment")}}</small>
                             </div>
                         </div>
@@ -57,7 +56,7 @@
                         <!-- Общежития -->
                         <div @click="showForm('Obshejitie')">
                             <div class="icon__wrapper icon__wrapper-hostels">
-                                <img src="/public/img/siteImg/menuImg/2.svg" alt="Общежития" width="35" height="35">
+                                <img src="/img/siteImg/menuImg/2.svg" alt="Общежития" width="35" height="35">
                                 <small>{{ $t("addAdsMenuHostel")}}</small>
                             </div>
                         </div>
@@ -65,7 +64,7 @@
                         <!-- Дома-->
                         <div @click="showForm('Dom')">
                             <div class="icon__wrapper icon__wrapper-houses">
-                                <img src="/public/img/siteImg/menuImg/3.svg" alt="Дома" width="35" height="35">
+                                <img src="/img/siteImg/menuImg/3.svg" alt="Дома" width="35" height="35">
                                 <small>{{ $t("addAdsMenuHouse")}}</small>
                             </div>
                         </div>
@@ -73,7 +72,7 @@
                         <!-- Офиса -->
                         <div @click="showForm('Ofis')">
                             <div class="icon__wrapper icon__wrapper-offices">
-                                <img src="/public/img/siteImg/menuImg/4.svg" alt="Офиса" width="35" height="35">
+                                <img src="/img/siteImg/menuImg/4.svg" alt="Офиса" width="35" height="35">
                                 <small>{{ $t("addAdsMenuOffice")}}</small>
                             </div>
                         </div>
@@ -81,7 +80,7 @@
                         <!-- Здания -->
                         <div @click="showForm('Zdanie')">
                             <div class="icon__wrapper icon__wrapper-buildings">
-                                <img src="/public/img/siteImg/menuImg/5.svg" alt="Здания" width="35" height="35">
+                                <img src="/img/siteImg/menuImg/5.svg" alt="Здания" width="35" height="35">
                                 <small>{{ $t("addAdsMenuBuilding")}}</small>
                             </div>
                         </div>
@@ -89,7 +88,7 @@
                         <!-- Магазины -->
                         <div @click="showForm('Magazin')">
                             <div class="icon__wrapper icon__wrapper-shops">
-                                <img src="/public/img/siteImg/menuImg/6.svg" alt="Магазины" width="35" height="35">
+                                <img src="/img/siteImg/menuImg/6.svg" alt="Магазины" width="35" height="35">
                                 <small>{{ $t("addAdsMenuShop")}}</small>
                             </div>
                         </div>
@@ -97,7 +96,7 @@
                         <!-- Промбаза -->
                         <div @click="showForm('Prombaza')">
                             <div class="icon__wrapper icon__wrapper-bases">
-                                <img src="/public/img/siteImg/menuImg/7.svg" alt="Промбазы" width="35" height="35">
+                                <img src="/img/siteImg/menuImg/7.svg" alt="Промбазы" width="35" height="35">
                                 <small>{{ $t("addAdsMenuBase")}}</small>
                             </div>
                         </div>
@@ -105,7 +104,7 @@
                         <!-- Прочая -->
                         <div @click="showForm('Prochaya')">
                             <div class="icon__wrapper icon__wrapper-other">
-                                <img src="/public/img/siteImg/menuImg/8.svg" alt="Прочая недвижимость" width="35" height="35">
+                                <img src="/img/siteImg/menuImg/8.svg" alt="Прочая недвижимость" width="35" height="35">
                                 <small>{{ $t("addAdsMenuOther")}}</small>
                             </div>
                         </div>
@@ -115,14 +114,6 @@
                             <div class="icon__wrapper icon__wrapper-business">
                                 <i class="bi bi-briefcase-fill" style="color: rgb(118 118 118); font-size: 2em; line-height: 35px"></i>
                                 <small>{{ $t("addAdsMenuBusiness")}}</small>
-                            </div>
-                        </div>
-
-                        <!-- Сниму -->
-                        <div @click="showForm('Snimu')">
-                            <div class="icon__wrapper icon__wrapper-rent">
-                                <i class="bi bi-building-check" style="color: rgb(118 118 118); font-size: 1.6em; line-height: 35px"></i>
-                                <small>{{ $t("addAdsMenuRent")}}</small>
                             </div>
                         </div>
 
@@ -145,7 +136,6 @@
 
 //Импортирую Store
 import { useAuthStore } from "../../../stores/auth";
-import { useCheckInternetStore } from "../../../stores/checkInternet";
 
 export default {
     name: "AddAdsMenu",
@@ -154,7 +144,6 @@ export default {
         return {
             //Подключаю Store
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
 
             addAdsMenuAnimation: false,
 
@@ -190,7 +179,6 @@ export default {
         document.querySelector(':root').classList.add('PATCH_modal'); // Отменим прокрутку под компонентом
 
         //Получим новые данные User
-        this.checkInternetStore.checkInternet()
         this.authStore.getUser();
 
         if(this.authStore.user.role == 'user' && this.authStore.user.count_ads >= 10){
@@ -303,16 +291,19 @@ export default {
 }
 
 .addAdsMenu__header{
-    width: 100%;
-    height: 44px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.5em;
-    font-weight: bold;
     position: relative;
     background: #ffffff;
     color: #000000;
+}
+
+.header__title{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
 .addAdsMenu__body{
@@ -338,12 +329,13 @@ export default {
     margin: auto;
     width: 80px;
     height: 80px;
+    background-color: #fff;
     border-radius: 12px;
     color: #232222;
     font-size: 1.1em;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s;
     cursor: pointer;
-    border: 1px solid #434343;
 }
 
 .icon__wrapper:hover {

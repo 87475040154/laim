@@ -15,14 +15,19 @@ return new class extends Migration
     {
         Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('author_id'); // ID пользователя, который поставил лайк
-            $table->unsignedBigInteger('likeable_id'); // ID связанной записи (например, объявления)
-            $table->string('likeable_type'); // Тип связанной записи (например, тип модели объявления)
+
+            // Кто лайкнул
+            $table->unsignedBigInteger('author_id');
+
+            // Что лайкнули
+            $table->unsignedBigInteger('likeable_id');
+            $table->string('likeable_type', 80);
+
             $table->timestamps();
 
-            // Добавьте индексы для улучшения производительности
-            $table->index('author_id');
-            $table->index(['likeable_id', 'likeable_type']);
+            // 🔹 Индексы для ускорения выборок и фильтрации
+            $table->index(['author_id', 'likeable_type', 'likeable_id'], 'idx_likes_user_type_id');
+            $table->index(['likeable_type', 'likeable_id'], 'idx_likes_target');
         });
     }
 

@@ -33,7 +33,7 @@
     "indexFound": "Found",
     "indexFilter": "Filter",
     "indexAdsNotFound": "Ads not found",
-    "indexInstallLime": "Install laim.kz",
+    "indexInstallLime": "Install Лайм.kz",
     "indexOnTheMap": "On the map",
     "indexChangeLanguage": "Language selection",
     "indexMyFavorites": "My favorites",
@@ -42,7 +42,7 @@
 
 
     "myAccountLeaseContract1": "Lease agreement",
-    "myAccountLeaseContract2": "Universal agreement from Laim.kz",
+    "myAccountLeaseContract2": "Universal agreement from Лайм.kz",
     "myAccountDownload": "Download",
     "myAccountShare": "To share",
     "myAccountSettings": "Settings: Name, Phone, Password",
@@ -84,7 +84,7 @@
 
     "userAdsOnline": "Online",
     "userAdsWas": "was",
-    "userAdsOnLaimWith": "On Laim.kz with",
+    "userAdsOnLaimWith": "On Лайм.kz with",
     "userAdsAdsNotFound": "Ads not found",
     "userAdsMenuApartments": "Apartments",
     "userAdsMenuHostels": "Hostels",
@@ -100,10 +100,12 @@
 
 
     "KZLocationLocation": "Location",
-    "KZLocationChooseAnArea": "Select area",
-    "KZLocationSelectWholeCity": "Select entire city",
-    "KZLocationOr": "Or",
-    "KZLocationSelectDistricts": "Select districts",
+    "KZLocationSelectACity": "Select a city",
+    "KZLocationSelectDistrict": "Select a district",
+    "KZLocationPopularCities": "Popular cities",
+    "KZLocationAllRegionsOfKazakhstan": "All regions of Kazakhstan",
+    "KZLocationDoNotSpecifyArea": "Do not specify area",
+    "KZLocationSearchByCityArea": "Search by city, area",
 
 
 
@@ -155,13 +157,9 @@
     "filterReset": "Clear",
     "filterChooseCity": "Select a city",
     "filterAllKazakhstan": "All Kazakhstan",
-    "filterWhoIsAuthor": "Who is the author",
-    "filterOwner": "The owner",
-    "filterSpecialist": "Specialist",
-    "filterItIsPossibleFromASpecialist": "It is possible from a Specialist",
     "filterDealType": "Transaction type",
-    "filterSdam": "Rent",
-    "filterSell": "Sell",
+    "filterRent": "Rent",
+    "filterBuy": "Buy",
     "filterOfficeType": "Office type",
     "filterAny": "Any",
     "filterInTheBusinessCenter": "In a business center",
@@ -243,6 +241,8 @@
     "filterPlotAreaAcresFrom" : "Plot area of acres from",
     "filterPlotAreaAcresUpTo" : "Plot area of acres to",
     "filterBuildingType" : "Building type",
+    "filterYearOfConstructionFrom" : "Year of construction from",
+    "filterYearBuiltBefore" : "Year built before",
     "filterPanel" : "Panel",
     "filterBrick" : "Brick",
     "filterTree" : "Tree",
@@ -277,8 +277,8 @@
 
 
     "platnieUslugi1": "Paid services",
-    "rules": "Laim site rules.kz",
-    "policy": "Privacy Policy of the service Laim.kz ",
+    "rules": "Лайм.kz site rules.kz",
+    "policy": "Privacy Policy of the service Лайм.kz ",
 
 
 
@@ -345,6 +345,7 @@
     "oneAdsGas": "Gas",
     "oneAdsBalcony": "Balcony",
     "oneAdsBuildingType": "Building type",
+    "oneAdsYearOfConstruction": "Year of construction",
     "oneAdsParking": "Parking",
     "oneAdsFloorText": "Floor",
 
@@ -393,7 +394,7 @@
 
 
 
-    "addAdsMenuWhatToHandOver": "What to hand over",
+    "addAdsMenuAdd": "What to add",
     "addAdsMenuLimit10Ads": "Limit of 10 ads",
     "addAdsMenuLimit10Ads2": "You have reached the limit of 10 ads, first delete the 1st old ad to submit a new one",
     "addAdsMenuApartment": "Apartment",
@@ -410,7 +411,7 @@
 
 
     "addAdsDoYouHaveAnUnfinishedAd": "You have an unfinished ad!",
-    "addAdsPass": "Rent ",
+    "addAdsAdd": "Add ",
     "addAdsEdit": "Edit ",
     "addAdsRent": "Rent ",
     "addAdsApartment": "Apartment",
@@ -490,6 +491,7 @@
     "addAdsKitchenArea" : "Kitchen",
     "addAdsPlotAreaAcres" : "Plot area, acres",
     "addAdsTypeOfBuilding" : "Type of building",
+    "addAdsYearOfConstruction" : "Year of construction",
     "addAdsPanel" : "Panel",
     "addAdsBrick" : "Brick",
     "addAdsTree" : "Tree",
@@ -609,10 +611,6 @@
     "addAdsAllKazakhstan": "All Kazakhstan",
     "addAdsStreetName": "Street name",
     "addAdsContactDetails": "Contact details",
-    "addAdsRealtorText": "Finding the right property is 90% faster, more efficient and easier with the help of specialists.",
-    "addAdsIAmTheOwner": "I am the Owner",
-    "addAdsIAmSpecialist": "I am Specialist",
-    "addAdsItIsPossibleFromASpecialist": "It is possible from a Specialist",
     "addAdsName": "Name",
     "addAdsYourPhoneNumber": "Your phone number",
     "addAdsEnterThe2ndPhoneNumber": "Enter the 2nd phone number",
@@ -670,7 +668,7 @@
     "bueAdsPayMethodCardHolderName": "Name of the cardholder",
     "bueAdsPayMethodToPay": "To pay",
     "bueAdsPayMethodSuccessText1": "Payment successful",
-    "bueAdsPayMethodSuccessText2": "In the near future, promotion from lime.kz will be added to your ad"
+    "bueAdsPayMethodSuccessText2": "In the near future, promotion from Лайм.kz will be added to your ad"
 
 
 

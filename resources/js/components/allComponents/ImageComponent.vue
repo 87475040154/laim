@@ -12,7 +12,7 @@
                 <v-icon size="large">mdi-arrow-left</v-icon>
             </v-btn>
 
-            <!-- Слайдер - 1 -->
+            <!-- Слайдер -->
             <swiper  @swiper="onSwiper" :mousewheel="true" :slides-per-view="1" :space-between="0" :grabCursor="true"
                      :keyboard="true" :zoom="true" :thumbs="{ swiper: swiper2 }" :modules="modules"
                      @touchMoveOpposite="touchMove = 'Свайп'" @touchEnd="touchMove == 'Свайп' ? $router.back():''"

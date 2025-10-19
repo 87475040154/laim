@@ -26,98 +26,98 @@
                 <div class="bueAdsCard__wrapper">
 
                     <!-- x30 просмотров на месяц -->
-                    <div class="bueAds__card">
+<!--                    <div class="bueAds__card">-->
 
-                        <!-- Заголовок - x30 просмотров на месяц -->
-                        <div class="d-flex py-2">
+<!--                        &lt;!&ndash; Заголовок - x30 просмотров на месяц &ndash;&gt;-->
+<!--                        <div class="d-flex py-2">-->
 
-                            <!-- Иконка -->
-                            <div class="mx-2 d-flex justify-center align-center rounded-circle"
-                                 style="width: 21px; height: 21px; background: red"
-                            >
-                                <v-icon icon="mdi-crown" size="x-small" color="white"></v-icon>
-                            </div>
+<!--                            &lt;!&ndash; Иконка &ndash;&gt;-->
+<!--                            <div class="mx-2 d-flex justify-center align-center rounded-circle"-->
+<!--                                 style="width: 21px; height: 21px; background: red"-->
+<!--                            >-->
+<!--                                <v-icon icon="mdi-crown" size="x-small" color="white"></v-icon>-->
+<!--                            </div>-->
 
-                            <!-- Текст заголовок -->
-                            <h4 class="fw-bold px-1">{{ $t('bueAdsIndexx30ViewsPerMonth') }}</h4>
+<!--                            &lt;!&ndash; Текст заголовок &ndash;&gt;-->
+<!--                            <h4 class="fw-bold px-1">{{ $t('bueAdsIndexx30ViewsPerMonth') }}</h4>-->
 
-                        </div>
+<!--                        </div>-->
 
-                        <!-- Текст описания -->
-                        <div class="d-flex">
-                            <v-icon icon="mdi-check mx-2"></v-icon>
-                            <div class="text-grey">{{ $t('bueAdsIndex28DaysOfActivePromotion') }}</div>
-                        </div>
-                        <div class="d-flex py-2 ">
-                            <v-icon icon="mdi-check mx-2"></v-icon>
-                            <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
-                        </div>
-                        <div class="d-flex text-center align-center py-2">
-                            <div class="text-grey flex-grow-1" style="text-decoration: line-through">15 120 &#8376;</div>
-                            <div class="flex-grow-1" style="font-size: 1.3em">3 500 &#8376;</div>
-                            <div class="flex-grow-1 text-green">{{ $t('bueAdsIndexEconomy') }} 11 620 &#8376;</div>
-                        </div>
+<!--                        &lt;!&ndash; Текст описания &ndash;&gt;-->
+<!--                        <div class="d-flex">-->
+<!--                            <v-icon icon="mdi-check mx-2"></v-icon>-->
+<!--                            <div class="text-grey">{{ $t('bueAdsIndex28DaysOfActivePromotion') }}</div>-->
+<!--                        </div>-->
+<!--                        <div class="d-flex py-2 ">-->
+<!--                            <v-icon icon="mdi-check mx-2"></v-icon>-->
+<!--                            <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>-->
+<!--                        </div>-->
+<!--                        <div class="d-flex text-center align-center py-2">-->
+<!--                            <div class="text-grey flex-grow-1" style="text-decoration: line-through">15 120 &#8376;</div>-->
+<!--                            <div class="flex-grow-1" style="font-size: 1.3em">3 500 &#8376;</div>-->
+<!--                            <div class="flex-grow-1 text-green">{{ $t('bueAdsIndexEconomy') }} 11 620 &#8376;</div>-->
+<!--                        </div>-->
 
-                        <!-- Кнопка продвинуть -->
-                        <div class="px-3 py-1">
-                            <v-btn @click="showBottomOffcanvas('Top x30')"
-                                   size="x-large"
-                                   color="blue-darken-2"
-                                   block
-                                   class="text-body-1"
-                            >
-                                {{ $t('bueAdsIndexPromote') }}
-                            </v-btn>
-                        </div>
+<!--                        &lt;!&ndash; Кнопка продвинуть &ndash;&gt;-->
+<!--                        <div class="px-3 py-1">-->
+<!--                            <v-btn @click="showBottomOffcanvas('Top x30')"-->
+<!--                                   size="x-large"-->
+<!--                                   color="blue-darken-2"-->
+<!--                                   block-->
+<!--                                   class="text-body-1"-->
+<!--                            >-->
+<!--                                {{ $t('bueAdsIndexPromote') }}-->
+<!--                            </v-btn>-->
+<!--                        </div>-->
 
-                    </div>
+<!--                    </div>-->
 
                     <!-- x7 просмотров на неделю -->
-                    <div class="bueAds__card">
+<!--                    <div class="bueAds__card">-->
 
-                        <!-- Заголовок - x7 просмотров на неделю -->
-                        <div class="d-flex py-2">
+<!--                        &lt;!&ndash; Заголовок - x7 просмотров на неделю &ndash;&gt;-->
+<!--                        <div class="d-flex py-2">-->
 
-                            <!-- Иконка -->
-                            <div class="mx-2 d-flex justify-center align-center rounded-circle"
-                                 style="width: 21px; height: 21px; background: #10a37f"
-                            >
-                                <v-icon icon="mdi-diamond" size="x-small" color="white"></v-icon>
-                            </div>
+<!--                            &lt;!&ndash; Иконка &ndash;&gt;-->
+<!--                            <div class="mx-2 d-flex justify-center align-center rounded-circle"-->
+<!--                                 style="width: 21px; height: 21px; background: #10a37f"-->
+<!--                            >-->
+<!--                                <v-icon icon="mdi-diamond" size="x-small" color="white"></v-icon>-->
+<!--                            </div>-->
 
-                            <!-- Текст заголовок -->
-                            <h4 class="fw-bold px-1">{{ $t('bueAdsIndexx7ViewsPerWeek') }}</h4>
+<!--                            &lt;!&ndash; Текст заголовок &ndash;&gt;-->
+<!--                            <h4 class="fw-bold px-1">{{ $t('bueAdsIndexx7ViewsPerWeek') }}</h4>-->
 
-                        </div>
+<!--                        </div>-->
 
-                        <!-- Текст описания -->
-                        <div class="d-flex">
-                            <v-icon icon="mdi-check mx-2"></v-icon>
-                            <div class="text-grey">{{ $t('bueAdsIndex7DaysOfActivePromotion') }}</div>
-                        </div>
-                        <div class="d-flex py-2 ">
-                            <v-icon icon="mdi-check mx-2"></v-icon>
-                            <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>
-                        </div>
-                        <div class="d-flex text-center align-center py-2">
-                            <div class="text-grey flex-grow-1" style="text-decoration: line-through">3 780 &#8376;</div>
-                            <div class="flex-grow-1" style="font-size: 1.3em">2 100 &#8376;</div>
-                            <div class="flex-grow-1 text-green">{{ $t('bueAdsIndexEconomy') }} 1 680 &#8376;</div>
-                        </div>
+<!--                        &lt;!&ndash; Текст описания &ndash;&gt;-->
+<!--                        <div class="d-flex">-->
+<!--                            <v-icon icon="mdi-check mx-2"></v-icon>-->
+<!--                            <div class="text-grey">{{ $t('bueAdsIndex7DaysOfActivePromotion') }}</div>-->
+<!--                        </div>-->
+<!--                        <div class="d-flex py-2 ">-->
+<!--                            <v-icon icon="mdi-check mx-2"></v-icon>-->
+<!--                            <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>-->
+<!--                        </div>-->
+<!--                        <div class="d-flex text-center align-center py-2">-->
+<!--                            <div class="text-grey flex-grow-1" style="text-decoration: line-through">3 780 &#8376;</div>-->
+<!--                            <div class="flex-grow-1" style="font-size: 1.3em">2 100 &#8376;</div>-->
+<!--                            <div class="flex-grow-1 text-green">{{ $t('bueAdsIndexEconomy') }} 1 680 &#8376;</div>-->
+<!--                        </div>-->
 
-                        <!-- Кнопка продвинуть -->
-                        <div class="px-3 py-1">
-                            <v-btn @click="showBottomOffcanvas('Top x7')"
-                                   size="x-large"
-                                   color="blue-darken-2"
-                                   block
-                                   class="text-body-1"
-                            >
-                                {{ $t('bueAdsIndexPromote') }}
-                            </v-btn>
-                        </div>
+<!--                        &lt;!&ndash; Кнопка продвинуть &ndash;&gt;-->
+<!--                        <div class="px-3 py-1">-->
+<!--                            <v-btn @click="showBottomOffcanvas('Top x7')"-->
+<!--                                   size="x-large"-->
+<!--                                   color="blue-darken-2"-->
+<!--                                   block-->
+<!--                                   class="text-body-1"-->
+<!--                            >-->
+<!--                                {{ $t('bueAdsIndexPromote') }}-->
+<!--                            </v-btn>-->
+<!--                        </div>-->
 
-                    </div>
+<!--                    </div>-->
 
                     <!-- Продвинуть объявление - по 1 услуге -->
                     <div class="bueAds__card">
@@ -150,14 +150,16 @@ background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(26,135,175,1) 0%, 
                                 </div>
 
                                 <!-- Описание -->
-                                <div class="flex-grow-1 align-center" @click="bueAdsType.includes('Топ 8 раз') ? bueAdsType = bueAdsType.filter(function(f) { return f !== 'Топ 8 раз' }) : bueAdsType.unshift('Топ 8 раз') ">
+                                <!-- @click="bueAdsType.includes('Топ 8 раз') ? bueAdsType = bueAdsType.filter(function(f) { return f !== 'Топ 8 раз' }) : bueAdsType.unshift('Топ 8 раз') " -->
+                                <div class="flex-grow-1 align-center">
                                     <div>{{ $t('bueAdsIndexTOPPromotionForADay') }}</div>
                                     <div>{{ $t('bueAdsIndex8TimesInTheTOPFor') }} 1900 &#8376;</div>
                                 </div>
 
                                 <!-- Переключатель - Switch -->
                                 <div class="mx-2" style="height: 55px">
-                                    <v-switch v-model="bueAdsType" value="Топ 8 раз" color="teal-darken-2" inset></v-switch>
+                                    <!-- Нужно будет добавить  v-model="bueAdsType" -->
+                                    <v-switch value="Топ 8 раз" color="teal-darken-2" inset></v-switch>
                                 </div>
 
                             </div>
@@ -173,14 +175,16 @@ background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(26,135,175,1) 0%, 
                                 </div>
 
                                 <!-- Описание -->
-                                <div class="flex-grow-1 align-center" @click="bueAdsType.includes('Топ 24') ? bueAdsType = bueAdsType.filter(function(f) { return f !== 'Топ 24' }) : bueAdsType.unshift('Топ 24') ">
+                                <!--@click="bueAdsType.includes('Топ 24') ? bueAdsType = bueAdsType.filter(function(f) { return f !== 'Топ 24' }) : bueAdsType.unshift('Топ 24') " -->
+                                <div class="flex-grow-1 align-center" >
                                     <div>{{ $t('bueAdsIndexSendToTheTOP24Hours') }}</div>
                                     <div class="text-grey">300 &#8376;</div>
                                 </div>
 
                                 <!-- Переключатель - Switch-->
                                 <div class="mx-2"  style="height: 55px">
-                                    <v-switch v-model="bueAdsType" value="Топ 24" color="teal-darken-2" inset :disabled="bueAdsType.includes('Топ 8 раз')"></v-switch>
+                                    <!-- Нужно будет добавить  v-model="bueAdsType" -->
+                                    <v-switch value="Топ 24" color="teal-darken-2" inset :disabled="bueAdsType.includes('Топ 8 раз')"></v-switch>
                                 </div>
 
                             </div>
@@ -198,14 +202,16 @@ background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(26,135,175,1) 0%, 
 
 
                                 <!-- Описание -->
-                                <div class="flex-grow-1 align-center" @click="bueAdsType.includes('Срочно торг') ? bueAdsType = bueAdsType.filter(function(f) { return f !== 'Срочно торг' }) : bueAdsType.unshift('Срочно торг')">
+                                <!--@click="bueAdsType.includes('Срочно торг') ? bueAdsType = bueAdsType.filter(function(f) { return f !== 'Срочно торг' }) : bueAdsType.unshift('Срочно торг')" -->
+                                <div class="flex-grow-1 align-center">
                                     <div>{{ $t('bueAdsIndexPutUrgentBargain') }}</div>
                                     <div class="text-grey">90 &#8376;</div>
                                 </div>
 
                                 <!-- Переключатель - Switch -->
                                 <div class="mx-2" style="height: 55px">
-                                    <v-switch v-model="bueAdsType" value="Срочно торг" color="teal-darken-2" inset></v-switch>
+                                    <!-- Нужно будет добавить  v-model="bueAdsType" -->
+                                    <v-switch value="Срочно торг" color="teal-darken-2" inset></v-switch>
                                 </div>
 
                             </div>
@@ -260,7 +266,6 @@ import { mask } from 'vue-the-mask'
 
 //Импортирую Store - Общее состояние
 import { useAuthStore } from "../../../../stores/auth";
-import { useCheckInternetStore} from "../../../../stores/checkInternet";
 
 export default {
     name: "Index",
@@ -273,10 +278,9 @@ export default {
         return {
             //Подключаю Store
             authStore: useAuthStore(),
-            checkInternetStore: useCheckInternetStore(),
 
             //Покупка рекламных услуг
-            bueAdsType: ['Топ 24'],
+            bueAdsType: [],//Добавить Топ 24
             summ: '',
 
             query: false

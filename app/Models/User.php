@@ -63,10 +63,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Business::class, 'author_id');
     }
-    public function snimus()
-    {
-        return $this->hasMany(Snimu::class, 'author_id');
-    }
+
 
 
     // Отношение для связи с моделью Like

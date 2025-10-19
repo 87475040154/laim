@@ -15,11 +15,11 @@ class Prombaza extends Model
     use HasFactory;
 
     public $fillable = [
-        'author_id', 'zagolovok', 'tip_obekta', 'cena', 'cena_tip','ploshad_obshaya','ploshad_uchastka','tip_stroeniya', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica',
+        'author_id','tip_sdelki', 'zagolovok', 'tip_obekta', 'cena', 'cena_tip','ploshad_obshaya','ploshad_uchastka','tip_stroeniya','god_postroiki', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica',
         'nomer_doma', 'sostoyanie', 'ploshad_proizvodstvennih_pomesheniy', 'visota_proizvodstvennih_pomesheniy',
         'ploshad_skladskih_pomesheniy', 'visota_skladskih_pomesheniy','ploshad_ofisnih_pomesheniy',
         'text_obyavleniya', 'raspolojenie','kommunikacii','raznoe',
-        'ownerOrRealtor', 'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
+        'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
     ];
 
     // Преобразуем масив в json и обратно при занесении данных в БД и при получении из нее автоматически

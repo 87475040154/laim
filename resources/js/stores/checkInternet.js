@@ -1,81 +1,75 @@
 import { defineStore } from 'pinia'
-import { useUpdateDateLocaleStore } from "./updateDateLocale";
+import { useUpdateDateLocaleStore } from "./updateDateLocale"
 
 export const useCheckInternetStore = defineStore('checkInternet', {
-
-    //Свойства
-    state: ()=>({
+    state: () => ({
         ONLINE: true,
         SHOW_ALERT: false,
-        MESSAGE: ''
+        MESSAGE: '',
+        CHECK_INTERVAL: null,
+        FAIL_COUNT: 0,
     }),
 
-    //Получаем доступ к свойствам
     getters: {
-        online: ( state )=> state.ONLINE,
-        showAlert: ( state )=> state.SHOW_ALERT,
-        message: ( state )=> state.MESSAGE
+        online: (state) => state.ONLINE,
+        showAlert: (state) => state.SHOW_ALERT,
+        message: (state) => state.MESSAGE,
     },
 
     actions: {
+        // 🔄 Запуск проверки каждые 15 секунд
+        startAutoCheck() {
+            this.checkInternet()
+            this.CHECK_INTERVAL = setInterval(() => {
+                this.checkInternet()
+            }, 15000)
+        },
 
-        // Проверить интернет
-        checkInternet(){
-            const lang = useUpdateDateLocaleStore().lang;
+        // 🚨 Проверка интернет-соединения
+        async checkInternet() {
+            const lang = useUpdateDateLocaleStore().lang
 
-            // Сначала проверьте наличие интернет-соединения через navigator.onLine
-            if (navigator.onLine) {
-                axios.get('/checkInternet').then((response) => {
-                    this.ONLINE = true;
-                    this.SHOW_ALERT = false;
-                    return true;
-                }).catch((errors) => {
-                    this.ONLINE = false;
-                    this.SHOW_ALERT = true;
-
-                    if(errors.code == 'ERR_NETWORK'){
-                        if(lang === 'ru'){
-                            this.MESSAGE = 'Нет интернет соединения!';
-                        } else if(lang === 'kz'){
-                            this.MESSAGE = 'Интернет байланысы жоқ!';
-                        } else if(lang === 'en'){
-                            this.MESSAGE = 'No internet connection!';
-                        }
-                    }
-                    else{
-                        if (lang === 'ru') {
-                            this.MESSAGE = 'Сервер не отвечает! Ведутся технические работы.';
-                        } else if (lang === 'kz') {
-                            this.MESSAGE = 'Сервер жауап бермейді! Техникалық жұмыстар жүргізілуде.';
-                        } else if (lang === 'en') {
-                            this.MESSAGE = 'Server is not responding! Technical work is in progress.';
-                        }
-                    }
-                    return;
-                })
+            // 1️⃣ Проверяем статус браузера
+            if (!navigator.onLine) {
+                this.setOffline(lang, 'offline')
+                return
             }
-            else{
-                this.ONLINE = false;
-                this.SHOW_ALERT = true;
 
-                // Текст ошибки в зависимости от локали
-                if(lang === 'ru'){
-                    this.MESSAGE = 'Нет интернет соединения! Или ведутся технические работы.';
-                } else if(lang === 'kz'){
-                    this.MESSAGE = 'Интернет байланысы жоқ! Немесе техникалық жұмыстар жүргізілуде.';
-                } else if(lang === 'en'){
-                    this.MESSAGE = 'No internet connection! Or technical work is in progress.';
+            // 2️⃣ Проверяем доступ к ping.txt (настоящий интернет)
+            try {
+                const res = await fetch('/ping.txt?_=' + Date.now(), { cache: 'no-store' })
+
+                if (res.ok) {
+                    this.FAIL_COUNT = 0
+                    this.ONLINE = true
+                    this.SHOW_ALERT = false
+                } else {
+                    this.FAIL_COUNT++
+                    if (this.FAIL_COUNT >= 3) this.setOffline(lang, 'server')
                 }
-                return;
+            } catch {
+                this.FAIL_COUNT++
+                if (this.FAIL_COUNT >= 3) this.setOffline(lang, 'server')
             }
         },
 
-        //Закрыть алерт в AppComponent.vue
-        showAlertBlock(type){
-            this.SHOW_ALERT = type;
-        }
-    }
+        setOffline(lang, type) {
+            this.ONLINE = false
+            this.SHOW_ALERT = true
 
-} )
+            if (type === 'offline') {
+                if (lang === 'ru') this.MESSAGE = 'Нет интернет соединения!'
+                else if (lang === 'kz') this.MESSAGE = 'Интернет байланысы жоқ!'
+                else this.MESSAGE = 'No internet connection!'
+            } else {
+                if (lang === 'ru') this.MESSAGE = 'Сервер не отвечает! Ведутся технические работы.'
+                else if (lang === 'kz') this.MESSAGE = 'Сервер жауап бермейді! Техникалық жұмыстар жүргізілуде.'
+                else this.MESSAGE = 'Server is not responding! Technical work is in progress.'
+            }
+        },
 
-
+        showAlertBlock(type) {
+            this.SHOW_ALERT = type
+        },
+    },
+})

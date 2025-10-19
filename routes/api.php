@@ -43,24 +43,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/adsActiveToggle', [AdsController::class, 'adsActiveToggle']); //Запустить - остановить мое обьявление
 
 
-    //Маршрут Для СМС Чатов
-    Route::post('/sendMessage', [ChatController::class, 'sendMessage']);//Отправить смс
-    Route::get('/getAllChats', [ChatController::class, 'getAllChats']);//Получить все мои чаты
-    Route::get('/getAllMessages', [ChatController::class, 'getAllMessages']);//Получить все смс одного чата
-    Route::delete('/deleteChat', [ChatController::class, 'deleteChat']);
-    Route::get('/countNewMessage', [ChatController::class, 'countNewMessage']);//Узнать сколько новых смс поступило, уведомление
-
-
-    //Локация Казахстана
-    Route::post('/KZLocation/addLocation', [KZLocationController::class, 'addLocation']);//Добавить локацию Казахстана
-    Route::put('/KZLocation/updateLocation', [KZLocationController::class, 'updateLocation']);//Редактировать локацию Казахстана
-    Route::delete('/KZLocation/delete/{id}', [KZLocationController::class, 'deleteLocation']);//Удалить локацию
-
-
     // Редактировать данные пользователя
     Route::post('/user/updateUserData', [UserController::class, 'updateUserData']);//Маршрут обновить-данные пользователя
 
-    //Маршрут добавить избранное
+    //Маршрут Toogle -  Добавить в избранное - Убрать
     Route::post('/like', [AdsController::class, 'addLikeToggle']); //Добавить - убрать из понравившегося
 
     //Маршрут отправить жалобу на объявление
@@ -76,10 +62,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
 //Маршрут для получения данных о проекте ежеменутно
 Route::get('/getProjectData', [ProjectDataController::class, 'getProjectData']);//Получить данные о проекте
-Route::get('/checkInternet', [ProjectDataController::class, 'checkInternet']);// Проверить соединение интернет и доступность сервера
 
 //Маршруты получения объявлений Всех
 Route::get('/getAllAds', [AdsController::class, 'getAllAds']);//Получить все объявление
+Route::get('/countAds', [AdsController::class, 'countAds']);//Узнать колличество всего объявлений
+Route::get('/getAllAdsYandexCluster', [AdsController::class, 'getAllAdsYandexCluster']);//Получить координаты объявлений для Яндекс кластера карты
+Route::get('/getAllAdsInYandexCluster', [AdsController::class, 'getAllAdsInYandexCluster']);//Получить все объявления при клике на Яндекс кластер
 Route::get('/getUserAds', [AdsController::class, 'getUserAds']);//Получить все объявления пользователя
 Route::get('/getOneAds', [AdsController::class, 'getOneAds']);//Получить 1 объявление
 Route::post('/addAdsStatistic', [AdsController::class, 'addAdsStatistic']);//Добавим статистику на объявление

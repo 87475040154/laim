@@ -12,8 +12,8 @@
                 <div class="footer__desktop-top-block">
 
                     <!-- Logo -->
-                    <div @click="appInstallStore.app != ''? appInstallStore.install(): $router.push('/allAds/Kvartira/1')">
-                        <img src="/public/img/siteImg/allImg/logo.svg" width="90" height="90" alt="logo">
+                    <div @click="appInstallStore.app != ''? appInstallStore.install(): $router.push('/allAds/Kvartira')">
+                        <img src="/img/siteImg/allImg/logo.svg" width="90" height="90" alt="logo">
                     </div>
 
                     <!-- Правила размещения объявлений / Пользовательское соглашение / Выход -->
@@ -48,6 +48,15 @@
                         </v-btn>
                     </a>
 
+
+                    <!-- Кнопка прокрутки страницы вверх -->
+                    <v-btn v-if="pageScrolled"
+                           style="position: fixed; bottom: 20px; right: 140px"
+                           icon dark @click="scrollTop"
+                    >
+                        <v-icon>mdi-arrow-up</v-icon>
+                    </v-btn>
+
                 </div>
 
                 <!-- Copyright -->
@@ -66,15 +75,15 @@
             <div class="footer__mobile-link">
 
                 <!-- lime.kz - Главная страница -->
-                <div v-if="!pageScrolled" @click="$router.push('/allAds/Kvartira/1')">
+                <div v-if="!pageScrolled" @click="$router.push('/allAds/Kvartira')">
                     <v-icon>{{$route.name == 'allAds' || $route.path == '/' ? 'mdi-home text-dark' : 'mdi-home-outline'}}</v-icon>
-                    <div style="font-size: 0.5em; line-height: 8px">laim.kz</div>
+                    <div style="font-size: 0.5em; line-height: 8px">Лайм.kz</div>
                 </div>
 
                 <!-- Кнопка прокрутка страницы вверх -->
                 <div v-else @click="scrollTop">
                     <v-icon class="text-dark" style="font-size: 1.5em">mdi-arrow-up-bold</v-icon>
-                    <div style="font-size: 0.5em; line-height: 8px">laim.kz</div>
+                    <div style="font-size: 0.5em; line-height: 8px">Лайм.kz</div>
                 </div>
 
             </div>
@@ -102,7 +111,10 @@
 
             <!-- Выбор языка -->
             <div class="footer__mobile-link" role="button">
-                <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocaleStore.lang }}</span>
+                <img :src="'/img/siteImg/allImg/' + updateDateLocaleStore.lang + '.png' "
+                     :alt="updateDateLocaleStore.lang"
+                     width="16" />
+                <div style="font-size: 0.5em; line-height: 8px" @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocaleStore.lang }}</div>
             </div>
 
             <!-- Мой аккаунт -->
