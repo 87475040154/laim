@@ -7,11 +7,10 @@ import path from 'path';
 import i18n from 'laravel-vue-i18n/vite';
 
 export default defineConfig({
+    base: '/',
     plugins: [
         vue(),
-        laravel([
-            'resources/js/app.js',
-        ]),
+        laravel(['resources/js/app.js']),
         i18n(),
     ],
     resolve: {
