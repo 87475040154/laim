@@ -24,8 +24,8 @@
     <link rel="apple-touch-icon" href="/img/siteImg/allImg/logo.svg">
     <link rel="manifest" href="/manifest.json">
 
-    <!-- Главный js файл и Scss файл -->
-    @vite(['resources/js/app.js'])
+    <!-- Главный js файл -->
+    @vite('resources/js/app.js')
 
     <!-- Передача значения config('app.url') в JavaScript -->
     <script>window.appUrl = "{{ config('app.url') }}";</script>
