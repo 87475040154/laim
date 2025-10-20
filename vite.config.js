@@ -5,7 +5,6 @@ import path from 'path';
 import i18n from 'laravel-vue-i18n/vite';
 
 export default defineConfig({
-    base: '/',
     plugins: [
         vue({
             template :{
@@ -26,4 +25,10 @@ export default defineConfig({
             '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
         },
     },
+
+    base: '/build/', // обязательно, если файлы в public/build
+    build: {
+        outDir: 'public/build',
+        rollupOptions: { /* ... */ }
+    }
 });
