@@ -1,1 +1,0 @@
-import{S as t}from"./app-DVvTTSt_.js";const s=t("filter",{state:()=>({MAKE_FILTER:!1}),getters:{make_filter:e=>e.MAKE_FILTER},actions:{makeFilter(){this.MAKE_FILTER=!this.MAKE_FILTER}}});export{s as u};
