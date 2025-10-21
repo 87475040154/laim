@@ -5,11 +5,11 @@
         v-if="ads_array && ads_array.length > 0"
         ref="scroller"
         :page-mode="true"
-        :buffer =" 1000 "
+        :buffer="1500"
+        :prerender="20"
         class="scroller"
         :items="ads_array"
-        :min-item-size="100"
-        :prerender="10"
+        :min-item-size="160"
         key-field="uniqueKey"
         :emitUpdate="true"
         @update="getNewAds"
@@ -19,7 +19,7 @@
             <DynamicScrollerItem
                 :item="ads"
                 :active="active"
-                :size-dependencies="[]"
+                :size-dependencies="[ads.images.length, ads.zagolovok]"
                 :data-index="index"
                 :key="ads.uniqueKey"
                 style="padding: 1px;"
@@ -38,8 +38,8 @@
                                 {{ $t('adsPreviewComponentUrgentBargaining') }}
                             </div>
 
-                            <img v-if="ads.images.length > 0" @click="showImage(ads)" class="ads__preview-img rounded-sm" :src=" '/img/adsImg/' + ads.images[0] " alt="Фото недвижимости">
-                            <img v-else src="/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" class="ads__preview-img">
+                            <img v-if="ads.images.length > 0" loading="lazy" @click="showImage(ads)" class="ads__preview-img rounded-sm" :src=" '/img/adsImg/' + ads.images[0] " alt="Фото недвижимости">
+                            <img v-else loading="lazy" src="/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" class="ads__preview-img">
 
                             <!-- В архиве - Не активно - -->
                             <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
@@ -510,7 +510,6 @@ export default {
                 !this.parentQuery &&
                 !this.isLastLoad
             ) {
-                console.log('dsadfsdf')
 
                 if (this.debounceTimer) clearTimeout(this.debounceTimer);
 
@@ -718,6 +717,7 @@ export default {
     box-shadow: 0 0 1px silver;
     border-radius: 2px;
     max-width: 600px;
+    will-change: transform, opacity; /* для плавного рендера */
 }
 
 
