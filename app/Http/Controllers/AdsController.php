@@ -298,7 +298,7 @@ class AdsController extends Controller
         $ads_arr = $query->cursorPaginate(20);
 
         foreach ($ads_arr as $index => $ads) {
-            $ads->uniqueKey = $index;
+            $ads->uniqueKey = $index . round(microtime(true) * 1000);
             if ($request->getMyLikeAds == 'Получить мои лайки') $ads->likes = ['true'];
         }
 
