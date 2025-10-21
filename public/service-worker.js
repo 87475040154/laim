@@ -110,10 +110,10 @@ self.addEventListener('fetch', async event=>{
 
         // "Эти GET запросы пропустим сразу в сеть
         if (
-            path == '/api/sanctum/csrf-cookie' ||
-            path == '/api/auth/user' ||
-            path == '/api/user/getPayLink' ||
-            path.startsWith('/ping.txt') // 👈 добавил сюда
+            pathname == '/api/sanctum/csrf-cookie' ||
+            pathname == '/api/auth/user' ||
+            pathname == '/api/user/getPayLink' ||
+            pathname.startsWith('/ping.txt') // 👈 добавил сюда
         ) {
             return event.respondWith(fetch(event.request));
         }
