@@ -5,8 +5,8 @@
         v-if="ads_array && ads_array.length > 0"
         :items="ads_array"
         :item-size="180"
-        :prerender="10"
-        :buffer="800"
+        :prerender="20"
+        :buffer="2000"
         key-field="uniqueKey"
         class="scroller"
         :emit-update="true"
@@ -704,6 +704,7 @@ export default {
     box-shadow: 0 0 1px silver;
     border-radius: 2px;
     max-width: 600px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 
