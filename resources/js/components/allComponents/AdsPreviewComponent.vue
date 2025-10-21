@@ -19,32 +19,30 @@
             <DynamicScrollerItem
                 :item="ads"
                 :active="active"
-                :size-dependencies="[ads.images.length, ads.zagolovok]"
+                :size-dependencies="[]"
                 :data-index="index"
                 :key="ads.uniqueKey"
                 style="padding: 1px;"
             >
-                <div style="width: 100%; height: 150px; background: green; margin-top: 10px">
 
-                </div>
-<!--                &lt;!&ndash; Сам блок с превью &ndash;&gt;-->
-<!--                <v-card class="mx-3 my-2 mx-sm-auto ads__preview ">-->
+                <!-- Сам блок с превью -->
+                <v-card class="mx-3 my-2 mx-sm-auto ads__preview ">
 
-<!--                    &lt;!&ndash;  Описание объявления &ndash;&gt;-->
-<!--                    <div class="d-flex p-md-2">-->
+                    <!--  Описание объявления -->
+                    <div class="d-flex p-md-2">
 
-<!--                        &lt;!&ndash; Фото &ndash;&gt;-->
-<!--                        <div class="image__block">-->
+                        <!-- Фото -->
+                        <div class="image__block">
 
-<!--                            &lt;!&ndash; Срочно торг &ndash;&gt;-->
+                            <!-- Срочно торг -->
 <!--                            <div v-if="ads.srochno_torg" style="position: absolute; top: 5px; left: 5px;" class="bg-yellow-darken-2 rounded-sm text-caption px-1">-->
 <!--                                {{ $t('adsPreviewComponentUrgentBargaining') }}-->
 <!--                            </div>-->
 
-<!--                            <img v-if="ads.images.length > 0" loading="lazy" @click="showImage(ads)" class="ads__preview-img rounded-sm" :src=" '/img/adsImg/' + ads.images[0] " alt="Фото недвижимости">-->
-<!--                            <img v-else loading="lazy" src="/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" class="ads__preview-img">-->
+                            <img v-if="ads.images.length > 0" loading="lazy" @click="showImage(ads)" class="ads__preview-img rounded-sm" :src=" '/img/adsImg/' + ads.images[0] " alt="Фото недвижимости">
+                            <img v-else loading="lazy" src="/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" class="ads__preview-img">
 
-<!--                            &lt;!&ndash; В архиве - Не активно - &ndash;&gt;-->
+                            <!-- В архиве - Не активно - -->
 <!--                            <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">-->
 
 <!--                                <div v-if="ads.control == 'В архиве'" class="bg-red-darken-1 p-1 px-2 rounded-lg">-->
@@ -68,23 +66,23 @@
 
 <!--                            </div>-->
 
-<!--                        </div>-->
+                        </div>
 
-<!--                        &lt;!&ndash;Блок - Описание объявления &ndash;&gt;-->
-<!--                        <div class="col pl-2">-->
+                        <!--Блок - Описание объявления -->
+                        <div class="col pl-2">
 
-<!--                            &lt;!&ndash;Блок - Описание объявления &ndash;&gt;-->
-<!--                            <div @click="showOneAds(ads, index)" role="button" class="d-flex align-start flex-column" style="min-height: 115px">-->
+                            <!--Блок - Описание объявления -->
+                            <div @click="showOneAds(ads, index)" role="button" class="d-flex align-start flex-column" style="min-height: 115px">
 
-<!--                                &lt;!&ndash; Заголовок &ndash;&gt;-->
-<!--                                <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">-->
-<!--                                    {{ads.zagolovok}}-->
-<!--                                </div>-->
+                                <!-- Заголовок -->
+                                <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">
+                                    {{ads.zagolovok}}
+                                </div>
 
-<!--                                &lt;!&ndash; Цена аренды &ndash;&gt;-->
-<!--                                <div class="my-auto fw-bold" style="font-size: 1.2em">-->
-<!--                                    {{ $filters.format_number(ads.cena) }} &#8376;-->
-<!--                                </div>-->
+                                <!-- Цена аренды -->
+                                <div class="my-auto fw-bold" style="font-size: 1.2em">
+                                    {{ $filters.format_number(ads.cena) }} &#8376;
+                                </div>
 
 <!--                                &lt;!&ndash; Адрес объекта &ndash;&gt;-->
 <!--                                <div class="mt-auto" style="font-size: 0.9em; color: #5d6f6a">-->
@@ -95,17 +93,17 @@
 <!--                                    </span>-->
 <!--                                </div>-->
 
-<!--                            </div>-->
+                            </div>
 
-<!--                            &lt;!&ndash; Дата публикации - Лайк &ndash;&gt;-->
-<!--                            <div class="d-flex align-center gap-2 position-relative">-->
+                            <!-- Дата публикации - Лайк -->
+                            <div class="d-flex align-center gap-2 position-relative">
 
-<!--                                &lt;!&ndash; Дата публикации &ndash;&gt;-->
+                                <!-- Дата публикации -->
 <!--                                <div style="font-size: 0.9em; color: #5d6f6a">-->
 <!--                                    {{ $filters.transformDateRu(ads.created_at) }}-->
 <!--                                </div>-->
 
-<!--                                <v-spacer></v-spacer>-->
+                                <v-spacer></v-spacer>
 
 <!--                                &lt;!&ndash; Если Отправленно в ТОП или ТОП х7, ТОП х30&ndash;&gt;-->
 <!--                                <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">-->
@@ -243,8 +241,8 @@
 
 <!--                                </div>-->
 
-<!--                                &lt;!&ndash; Кнопка лайк &ndash;&gt;-->
-<!--                                <span>-->
+                                <!-- Кнопка лайк -->
+                                <span>
 <!--                                    <v-icon :color="ads.likes.length > 0 ? 'red' : 'grey-lighten-1'"-->
 <!--                                            class="icon__heart mx-1"-->
 <!--                                            size="large"-->
@@ -253,14 +251,14 @@
 <!--                                    mdi-heart-->
 <!--                                    </v-icon>-->
 <!--                                    <v-tooltip activator="parent" location="bottom">{{ $t('AdsPreviewAddFavorites') }}</v-tooltip>-->
-<!--                                </span>-->
+                                </span>
 
 
-<!--                            </div>-->
+                            </div>
 
-<!--                        </div>-->
+                        </div>
 
-<!--                    </div>-->
+                    </div>
 
 <!--                    &lt;!&ndash;  - Управление объявлением - Продвигать рекламу - Сдать быстрее &ndash;&gt;-->
 <!--                    <div class="px-md-2"-->
@@ -324,7 +322,7 @@
 
 <!--                    </div>-->
 
-<!--                </v-card>-->
+                </v-card>
 
             </DynamicScrollerItem>
 
