@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -137,7 +138,15 @@ class AuthController extends Controller
         //Валидация входящих данных
         $request->validate([
             'name'=> 'required|string|max:15',
-            'email'=> 'required|string|email|max:255|unique:users,email',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->where(function ($query) {
+                    $query->whereNotNull('email_verified_at');
+                }),
+            ],
             'tel'=> 'required|string|max:255',
             'password'=> 'required|string|min:6|max:30',
             'agree'=>'required|accepted',
@@ -152,6 +161,11 @@ class AuthController extends Controller
         //Генерирую токен чтобы отправить его на почту и добавить в бд чтоб потом сравнить при активации емайла
         $token = Str::random(60);
 
+        //Удалим если уже есть запрос на регистрацию
+        User::where('email', $request->email)
+            ->whereNull('email_verified_at')
+            ->delete();
+
         $user = User::create([
             'name' => mb_convert_case($request->name, MB_CASE_TITLE, "UTF-8"),
             'email' => $request->email,
@@ -160,6 +174,7 @@ class AuthController extends Controller
             'agree' => $request->agree,
             'remember_token' => $token
         ]);
+
 
         //Отправлю на емайл ссылку активации, email и пароль   // Добавление задачи в очередь
         Queue::push(new SendEmailVerificationQueue($user, $token, $request->path));

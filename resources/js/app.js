@@ -177,7 +177,7 @@ app.use(VeeValidatePlugin)
     .use(Router)
     .use(vuetify)
     .use(vue3GoogleLogin, {
-        clientId: '360947734406-e44a0i729f9oio8qjko16itu892ajj3n.apps.googleusercontent.com'
+        clientId: '360947734406-hsjnvasg1pokf20r4sa112vf4mv16jf6.apps.googleusercontent.com'
     })
     .use(VueReCaptcha, { siteKey: '6Ld4nRkkAAAAABV1_7o0mAOBAHWa5hf1Y5Z7OEoB', loaderOptions: {useRecaptchaNet: true}})
     .use(i18nVue, {
