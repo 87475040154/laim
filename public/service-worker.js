@@ -4,10 +4,8 @@ const CACHE = 'cache-v1';
 //Для начала мы кэшируем все наши статические ресурсы
 const staticAssets = [
     // Основная страница и файлы приложения
-    './',
-    '/css/app.css',
-    '/js/app.js',
-    'manifest.json',
+    '/',
+    '/manifest.json',
 
     // Статические изображения
     '/img/siteImg/allImg/logo.svg',
@@ -102,14 +100,15 @@ self.addEventListener('fetch', async event=>{
             || pathname == '/api/getAllAdsYandexCluster'
             || pathname == '/api/getAllAdsInYandexCluster'
             || pathname == '/api/getOneAds'
+            || pathname == '/api/countAds'
             || pathname == '/api/getUserAds'
             || pathname == '/api/getProjectData'
         ){
             skipGetRequest = true;
         }
 
-        // Если это запрос на проверку интернета с internetStore пропустим его
-        if (pathname == '/api/sanctum/csrf-cookie' || pathname == '/api/auth/user' || pathname == '/api/checkInternet' || pathname == '/api/user/getPayLink') {
+        // "Эти GET запросы пропустим в сразу сеть
+        if (pathname == '/api/sanctum/csrf-cookie' || pathname == '/api/auth/user' || pathname == '/api/user/getPayLink') {
             return event.respondWith(fetch(event.request));
         }
 
@@ -161,7 +160,7 @@ async function cacheFirstGetRequest(req) {
                 //Если сервер не доступен вообще сработате этот код - Тоесть вообще нет связи
             catch (error){
                 // Если кеш не найден и нет соединения с сервером вернем эти данные
-                const index_page = await caches.match('index.php');
+                const index_page = await caches.match('/');
                 if(index_page != null){
                     return index_page;
                 }else{
@@ -204,7 +203,7 @@ async function networkFirstGetRequest(req) {
                 return checkCache;
             } else{
                 // Если кеш не найден и нет соединения с сервером вернем эти данные
-                const index_page = await caches.match('index.php');
+                const index_page = await caches.match('/');
                 if(index_page != null){
                     return index_page;
                 }
@@ -230,7 +229,7 @@ async function networkFirstGetRequest(req) {
         }
         else{
             // Если кеш не найден и нет соединения с сервером вернем эти данные
-            const index_page = await caches.match('index.php');
+            const index_page = await caches.match('/');
             if(index_page != null){
                 return index_page;
             }

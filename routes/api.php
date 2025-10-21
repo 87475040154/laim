@@ -73,9 +73,6 @@ Route::get('/getOneAds', [AdsController::class, 'getOneAds']);//Получить
 Route::post('/addAdsStatistic', [AdsController::class, 'addAdsStatistic']);//Добавим статистику на объявление
 Route::post('/addAdsViewTelStatistic', [AdsController::class, 'addAdsViewTelStatistic']);//Добавим статистику на просмотр телефона
 
-//Локация Казахстана
-Route::get('/KZLocation/getLocations', [KZLocationController::class, 'getLocations']);//Получить Локации
-
 // Добавление продвижение - удаление заявки
 Route::post('/user/addAdsPromotion', [UserController::class, 'addAdsPromotion']);// Подключение продвижения
 Route::delete('/user/deleteOrderDB', [UserController::class, 'deleteOrderDB']);//Удалить заказ с БД если при оплате произошла ошибка
