@@ -96,7 +96,8 @@ self.addEventListener('fetch', async event=>{
 
 
         //Эти GET запросы мы отпровляем сразу в сеть - Так как нам нужны сразу свежие данные
-        if(    pathname == '/api/getAllAds'
+        if(
+            pathname == '/api/getAllAds'
             || pathname == '/api/getAllAdsYandexCluster'
             || pathname == '/api/getAllAdsInYandexCluster'
             || pathname == '/api/getOneAds'
@@ -107,8 +108,13 @@ self.addEventListener('fetch', async event=>{
             skipGetRequest = true;
         }
 
-        // "Эти GET запросы пропустим в сразу сеть
-        if (pathname == '/api/sanctum/csrf-cookie' || pathname == '/api/auth/user' || pathname == '/api/user/getPayLink') {
+        // "Эти GET запросы пропустим сразу в сеть
+        if (
+            path == '/api/sanctum/csrf-cookie' ||
+            path == '/api/auth/user' ||
+            path == '/api/user/getPayLink' ||
+            path.startsWith('/ping.txt') // 👈 добавил сюда
+        ) {
             return event.respondWith(fetch(event.request));
         }
 
