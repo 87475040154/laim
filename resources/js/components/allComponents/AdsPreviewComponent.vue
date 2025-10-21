@@ -736,13 +736,13 @@ export default {
 .image__block{
     position: relative;
     width: 90px;
-    max-height: 90px;
+    height: 100%;
     overflow: hidden;
 }
 
 .ads__preview-img{
     width: 100%;
-    height: 90px;
+    height: 150px;
     object-fit: cover;
     object-position: center
 }
@@ -750,22 +750,12 @@ export default {
 @media screen and (min-width: 321px){
     .image__block{
         width: 130px;
-        max-height: 110px;
-    }
-
-    .ads__preview-img{
-        height: 110px;
     }
 }
 
 @media screen and (min-width: 390px){
     .image__block{
         width: 160px;
-        max-height: 150px;
-    }
-
-    .ads__preview-img{
-        height: 150px;
     }
 }
 

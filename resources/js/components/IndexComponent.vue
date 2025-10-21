@@ -42,6 +42,14 @@
             </div>
         </div>
 
+        <!-- Кнопка -  установить приложение laim.kz  -->
+        <div v-if="appInstallStore.app != '' && showBtnAppInstall && $route.name == 'allAds'" class="m-3 mx-sm-auto" style="max-width: 600px">
+            <v-btn @click="appInstallStore.install()" block  color="white" class="text-body-2">
+                <img src="/img/siteImg/allImg/logo.svg" width="25" height="25" alt="logo" class="rounded-3">
+                {{  $t('indexInstallLime') }}
+            </v-btn>
+        </div>
+
 
         <!-- Компонент превью объявлений -->
         <ads-preview-component  :ads_arr="ads_arr" :getMyLikeAds="getMyLikeAds" :parent-query="query"  :is-last-load="isLastLoad" @get-ads="getAds"></ads-preview-component>
@@ -54,14 +62,6 @@
         <!-- Если объявления не найденны покажется текст -->
         <div v-if="count_ads == 0 && !query" class="text-center text-muted my-3">
             <h4>{{ $t('indexAdsNotFound') }}</h4>
-        </div>
-
-        <!-- Кнопка -  установить приложение laim.kz  -->
-        <div v-if="appInstallStore.app != '' && showBtnAppInstall && $route.name == 'allAds'" class="m-3 mx-sm-auto" style="max-width: 600px">
-            <v-btn @click="appInstallStore.install()" block  color="white" class="text-body-2">
-                <img src="/img/siteImg/allImg/logo.svg" width="25" height="25" alt="logo" class="rounded-3">
-                {{  $t('indexInstallLime') }}
-            </v-btn>
         </div>
 
         <!-- Кнопка показать объекты на карте -->

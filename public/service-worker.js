@@ -108,7 +108,7 @@ self.addEventListener('fetch', async event=>{
             skipGetRequest = true;
         }
 
-        // "Эти GET запросы пропустим сразу в сеть
+        // "Эти GET запросы пропустим сразу в сеть их не кешируем
         if (
             pathname == '/api/sanctum/csrf-cookie' ||
             pathname == '/api/auth/user' ||
