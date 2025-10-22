@@ -3,10 +3,11 @@
     <!-- Это компонент для виртуального скрола- чтоб убрать лишнее элементы в DOM -->
     <DynamicScroller
         v-if="ads_array && ads_array.length > 0"
+        :key="ads_array.length"
         ref="scroller"
         :page-mode="true"
-        :buffer="1500"
-        :prerender="20"
+        :buffer="3000"
+        :prerender="4"
         class="scroller"
         :items="ads_array"
         :min-item-size="160"
@@ -35,36 +36,37 @@
                         <div class="image__block">
 
                             <!-- Срочно торг -->
-<!--                            <div v-if="ads.srochno_torg" style="position: absolute; top: 5px; left: 5px;" class="bg-yellow-darken-2 rounded-sm text-caption px-1">-->
-<!--                                {{ $t('adsPreviewComponentUrgentBargaining') }}-->
-<!--                            </div>-->
+                            <div v-if="ads.srochno_torg" style="position: absolute; top: 5px; left: 5px;" class="bg-yellow-darken-2 rounded-sm text-caption px-1">
+                                {{ $t('adsPreviewComponentUrgentBargaining') }}
+                            </div>
 
-                            <img v-if="ads.images.length > 0" loading="lazy" @click="showImage(ads)" class="ads__preview-img rounded-sm" :src=" '/img/adsImg/' + ads.images[0] " alt="Фото недвижимости">
-                            <img v-else loading="lazy" src="/img/siteImg/allImg/no-image-buildings.png" alt="Нет фото" class="ads__preview-img">
+                            <div style="width: 100%; height: 150px; background: silver">
+
+                            </div>
 
                             <!-- В архиве - Не активно - -->
-<!--                            <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">-->
+                            <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
 
-<!--                                <div v-if="ads.control == 'В архиве'" class="bg-red-darken-1 p-1 px-2 rounded-lg">-->
-<!--                                    {{ $t('AdsPreviewAddArhive') }}-->
-<!--                                </div>-->
-<!--                                <div v-if="ads.control == 'Поступили жалобы' && ads.author_id == authStore.user.id" class="bg-red-darken-1 p-1 px-2 rounded-lg">-->
-<!--                                    {{ $t('AdsPreviewAddComplain') }}-->
-<!--                                </div>-->
-<!--                                <div v-if="ads.control == 'Активно' && ads.author_id == authStore.user.id" class="bg-green-darken-1 p-1 px-2 rounded-lg">-->
-<!--                                    {{ $t('AdsPreviewAddActive') }}-->
-<!--                                </div>-->
-<!--                                <div v-if="ads.control == 'Не активно'" class="bg-blue-darken-1 p-1 px-2 rounded-lg">-->
-<!--                                    {{ $t('AdsPreviewAddNoActive') }}-->
-<!--                                </div>-->
+                                <div v-if="ads.control == 'В архиве'" class="bg-red-darken-1 p-1 px-2 rounded-lg">
+                                    {{ $t('AdsPreviewAddArhive') }}
+                                </div>
+                                <div v-if="ads.control == 'Поступили жалобы' && ads.author_id == authStore.user.id" class="bg-red-darken-1 p-1 px-2 rounded-lg">
+                                    {{ $t('AdsPreviewAddComplain') }}
+                                </div>
+                                <div v-if="ads.control == 'Активно' && ads.author_id == authStore.user.id" class="bg-green-darken-1 p-1 px-2 rounded-lg">
+                                    {{ $t('AdsPreviewAddActive') }}
+                                </div>
+                                <div v-if="ads.control == 'Не активно'" class="bg-blue-darken-1 p-1 px-2 rounded-lg">
+                                    {{ $t('AdsPreviewAddNoActive') }}
+                                </div>
 
-<!--                                <div v-if="ads.author_id != authStore.user.id && ads.control != 'В архиве'" class="bg-green-darken-1 p-1 px-2 rounded-lg">-->
-<!--                                    <span v-if="updateDateLocale.lang == 'ru'"> Хозяин </span>-->
-<!--                                    <span v-if="updateDateLocale.lang == 'kz'"> Иесі </span>-->
-<!--                                    <span v-if="updateDateLocale.lang == 'en'"> Owner </span>-->
-<!--                                </div>-->
+                                <div v-if="ads.author_id != authStore.user.id && ads.control != 'В архиве'" class="bg-green-darken-1 p-1 px-2 rounded-lg">
+                                    <span v-if="updateDateLocale.lang == 'ru'"> Хозяин </span>
+                                    <span v-if="updateDateLocale.lang == 'kz'"> Иесі </span>
+                                    <span v-if="updateDateLocale.lang == 'en'"> Owner </span>
+                                </div>
 
-<!--                            </div>-->
+                            </div>
 
                         </div>
 
@@ -79,248 +81,14 @@
                                     {{ads.zagolovok}}
                                 </div>
 
-                                <!-- Цена аренды -->
-                                <div class="my-auto fw-bold" style="font-size: 1.2em">
-                                    {{ $filters.format_number(ads.cena) }} &#8376;
-                                </div>
-
-<!--                                &lt;!&ndash; Адрес объекта &ndash;&gt;-->
-<!--                                <div class="mt-auto" style="font-size: 0.9em; color: #5d6f6a">-->
-<!--                                    <span>{{ KZLocationStore.translateLocation({gorod: ads.gorod}).gorod }}</span>-->
-
-<!--                                    <span v-if="ads.raion != undefined && ads.raion != ''">-->
-<!--                                        , {{ KZLocationStore.translateLocation({raion: ads.raion}).raion }}-->
-<!--                                    </span>-->
-<!--                                </div>-->
 
                             </div>
 
-                            <!-- Дата публикации - Лайк -->
-                            <div class="d-flex align-center gap-2 position-relative">
-
-                                <!-- Дата публикации -->
-<!--                                <div style="font-size: 0.9em; color: #5d6f6a">-->
-<!--                                    {{ $filters.transformDateRu(ads.created_at) }}-->
-<!--                                </div>-->
-
-                                <v-spacer></v-spacer>
-
-<!--                                &lt;!&ndash; Если Отправленно в ТОП или ТОП х7, ТОП х30&ndash;&gt;-->
-<!--                                <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">-->
-
-<!--                                    &lt;!&ndash; ТОП 30 &ndash;&gt;-->
-<!--                                    <v-menu open-on-hover>-->
-<!--                                        <template v-slot:activator="{ props }">-->
-<!--                                            <div v-if="ads.top_x30 != null" class="icon__crown" v-bind="props">-->
-<!--                                                <v-icon icon="mdi-crown" size="x-small" color="white"></v-icon>-->
-<!--                                            </div>-->
-<!--                                        </template>-->
-<!--                                        &lt;!&ndash; x30 просмотров на месяц &ndash;&gt;-->
-<!--                                        <div class="bueAds__card">-->
-
-<!--                                            &lt;!&ndash; Заголовок - x30 просмотров на месяц &ndash;&gt;-->
-<!--                                            <div class="d-flex py-2">-->
-
-<!--                                                &lt;!&ndash; Иконка &ndash;&gt;-->
-<!--                                                <div class="mx-2 d-flex justify-center align-center rounded-circle"-->
-<!--                                                     style="width: 21px; height: 21px; background: red"-->
-<!--                                                >-->
-<!--                                                    <v-icon icon="mdi-crown" size="x-small" color="white"></v-icon>-->
-<!--                                                </div>-->
-
-<!--                                                &lt;!&ndash; Текст заголовок &ndash;&gt;-->
-<!--                                                <h5 class="fw-bold px-1">{{ $t('bueAdsIndexx30ViewsPerMonth') }}</h5>-->
-
-<!--                                            </div>-->
-
-<!--                                            &lt;!&ndash; Текст описания &ndash;&gt;-->
-<!--                                            <div class="d-flex">-->
-<!--                                                <v-icon icon="mdi-check mx-2"></v-icon>-->
-<!--                                                <div class="text-grey">{{ $t('bueAdsIndex28DaysOfActivePromotion') }}</div>-->
-<!--                                            </div>-->
-<!--                                            <div class="d-flex py-2">-->
-<!--                                                <v-icon icon="mdi-check mx-2"></v-icon>-->
-<!--                                                <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>-->
-<!--                                            </div>-->
-
-<!--                                        </div>-->
-<!--                                    </v-menu>-->
-
-<!--                                    &lt;!&ndash; ТОП 7 &ndash;&gt;-->
-<!--                                    <v-menu open-on-hover>-->
-<!--                                        <template v-slot:activator="{ props }">-->
-<!--                                            <div v-if="ads.top_x7 != null" class="icon__diamond" v-bind="props">-->
-<!--                                                <v-icon icon="mdi-diamond" size="x-small" color="white"></v-icon>-->
-<!--                                            </div>-->
-<!--                                        </template>-->
-<!--                                        &lt;!&ndash; x7 просмотров на неделю &ndash;&gt;-->
-<!--                                        <div class="bueAds__card">-->
-
-<!--                                            &lt;!&ndash; Заголовок - x7 просмотров на неделю &ndash;&gt;-->
-<!--                                            <div class="d-flex py-2">-->
-
-<!--                                                &lt;!&ndash; Иконка &ndash;&gt;-->
-<!--                                                <div class="mx-2 d-flex justify-center align-center rounded-circle"-->
-<!--                                                     style="width: 21px; height: 21px; background: #10a37f"-->
-<!--                                                >-->
-<!--                                                    <v-icon icon="mdi-diamond" size="x-small" color="white"></v-icon>-->
-<!--                                                </div>-->
-
-<!--                                                &lt;!&ndash; Текст заголовок &ndash;&gt;-->
-<!--                                                <h5 class="fw-bold px-1">{{ $t('bueAdsIndexx7ViewsPerWeek') }}</h5>-->
-
-<!--                                            </div>-->
-
-<!--                                            &lt;!&ndash; Текст описания &ndash;&gt;-->
-<!--                                            <div class="d-flex ">-->
-<!--                                                <v-icon icon="mdi-check mx-2"></v-icon>-->
-<!--                                                <div class="text-grey">{{ $t('bueAdsIndex7DaysOfActivePromotion') }}</div>-->
-<!--                                            </div>-->
-<!--                                            <div class="d-flex py-2">-->
-<!--                                                <v-icon icon="mdi-check mx-2"></v-icon>-->
-<!--                                                <div class="text-grey">{{ $t('bueAdsIndexEveryDayInTheTOP') }}</div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </v-menu>-->
-
-<!--                                    &lt;!&ndash; ТОП 24 час &ndash;&gt;-->
-<!--                                    <v-menu open-on-hover>-->
-<!--                                        <template v-slot:activator="{ props }">-->
-<!--                                            <div v-if="ads.top != null" class="icon__triangle" v-bind="props">-->
-<!--                                                <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>-->
-<!--                                            </div>-->
-<!--                                        </template>-->
-<!--                                        <div class="bueAds__card">-->
-
-<!--                                            &lt;!&ndash; ТОП 24 часа &ndash;&gt;-->
-<!--                                            <div class="d-flex align-center">-->
-
-<!--                                                &lt;!&ndash; Иконка &ndash;&gt;-->
-<!--                                                <div class="mx-3 d-flex justify-center align-center rounded-circle"-->
-<!--                                                     style="width: 21px; height: 21px; background: orange"-->
-<!--                                                >-->
-<!--                                                    <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>-->
-<!--                                                </div>-->
-
-<!--                                                &lt;!&ndash; Описание &ndash;&gt;-->
-<!--                                                <div class="flex-grow-1 align-center" >-->
-<!--                                                    <div>{{ $t('bueAdsIndexSendToTheTOP24Hours') }}</div>-->
-<!--                                                </div>-->
-
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </v-menu>-->
-
-<!--                                    &lt;!&ndash; 8 Раз в ТОП за 24 часа &ndash;&gt;-->
-<!--                                    <v-menu open-on-hover>-->
-<!--                                        <template v-slot:activator="{ props }">-->
-<!--                                            <div v-if="ads.top_8 != null" class="icon__triangle icon__triangleTOP8" v-bind="props">-->
-<!--                                                <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>-->
-<!--                                            </div>-->
-<!--                                        </template>-->
-<!--                                        <div class="bueAds__card">-->
-
-<!--                                            &lt;!&ndash; Поднятие в ТОП каждые 3 часа &ndash;&gt;-->
-<!--                                            <div class="d-flex align-center">-->
-
-<!--                                                &lt;!&ndash; Иконка &ndash;&gt;-->
-<!--                                                <div class="mx-3 d-flex justify-center align-center rounded-circle"-->
-<!--                                                     style="width: 21px; height: 21px; background: #710250"-->
-<!--                                                >-->
-<!--                                                    <v-icon icon="mdi-triangle" size="x-small" color="white"></v-icon>-->
-<!--                                                </div>-->
-
-<!--                                                &lt;!&ndash; Описание &ndash;&gt;-->
-<!--                                                <div class="flex-grow-1 align-center" >-->
-<!--                                                    <div>{{ $t('bueAdsIndexSendToTheTOP8') }}</div>-->
-<!--                                                </div>-->
-
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </v-menu>-->
-
-<!--                                </div>-->
-
-                                <!-- Кнопка лайк -->
-                                <span>
-<!--                                    <v-icon :color="ads.likes.length > 0 ? 'red' : 'grey-lighten-1'"-->
-<!--                                            class="icon__heart mx-1"-->
-<!--                                            size="large"-->
-<!--                                            @click="authStore.check ? addLikeToggle(index, ads): $router.push({name: $route.name + 'Auth'})"-->
-<!--                                    >-->
-<!--                                    mdi-heart-->
-<!--                                    </v-icon>-->
-<!--                                    <v-tooltip activator="parent" location="bottom">{{ $t('AdsPreviewAddFavorites') }}</v-tooltip>-->
-                                </span>
-
-
-                            </div>
 
                         </div>
 
                     </div>
 
-<!--                    &lt;!&ndash;  - Управление объявлением - Продвигать рекламу - Сдать быстрее &ndash;&gt;-->
-<!--                    <div class="px-md-2"-->
-<!--                         v-if="authStore.check && authStore.user.id == ads.author_id-->
-<!--                    && $route.name == 'userAds' && ads.control != 'В архиве'-->
-<!--                    || authStore.check && authStore.user.role == 'admin' && ads.control != 'В архиве'"-->
-<!--                    >-->
-
-<!--                        <div class="d-flex justify-content-between align-center">-->
-
-<!--                            &lt;!&ndash; Кнопка сдать быстрее &ndash;&gt;-->
-<!--                            <v-btn dark color="grey-lighten-4"-->
-<!--                                   size="x-large"-->
-<!--                                   @click="$router.push({ name: $route.name + 'BueAds', params: {ads_id: ads.id} } )"-->
-<!--                                   class="text-body-1"-->
-<!--                                   style="min-width: 170px"-->
-<!--                            >-->
-<!--                                {{ $t('adsPreviewComponentPassFaster') }}-->
-<!--                            </v-btn>-->
-
-<!--                            &lt;!&ndash; Просмотров - Взяли номера &ndash;&gt;-->
-<!--                            <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Статистика', ads,index)">-->
-<!--                                <v-icon>mdi-finance</v-icon>-->
-<!--                            </v-btn>-->
-
-<!--                            &lt;!&ndash; Блок - Управление объявлением - для автора и админа &ndash;&gt;-->
-<!--                            <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Управление', ads, index)">-->
-<!--                                <v-icon>mdi-dots-vertical</v-icon>-->
-<!--                            </v-btn>-->
-
-<!--                        </div>-->
-
-<!--                        &lt;!&ndash; На сайте до&ndash;&gt;-->
-<!--                        <div class="px-1 px-md-0">-->
-<!--                            <span v-if="updateDateLocale.lang == 'ru'">На сайте до: </span>-->
-<!--                            <span v-if="updateDateLocale.lang == 'en'">Before: </span>-->
-<!--                            <span v-if="ads.top_x30 != null">{{ addDaysToCurrentDate(ads.top_x30, 30) }}</span>-->
-<!--                            <span v-else-if="ads.top_x7 != null">{{ addDaysToCurrentDate(ads.top_x7, 7) }}</span>-->
-<!--                            <span v-else>{{ addDaysToCurrentDate(ads.updated_at, 7) }}</span>-->
-<!--                            <span v-if="updateDateLocale.lang == 'kz'" class="pl-1"> дейін</span>-->
-
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-<!--                    &lt;!&ndash; Жалобы на объявления - Если поступили 5 жалоб - Они видны автору - Объявление отправиться на доработку  &ndash;&gt;-->
-<!--                    <div v-if="authStore.check && authStore.user.id == ads.author_id && $route.name == 'userAds'">-->
-
-<!--                        <div v-if="ads.control == 'Поступили жалобы' " class="col-12 alert" style="background: #efa6a6; padding: 1.7px 10px!important;">-->
-<!--                            <i class="bi bi-exclamation-octagon"></i>-->
-<!--                            {{ $t('adsPreviewComponentReturnForRevision')}}-->
-<!--                            <div>{{ $t('adsPreviewComponentCause') }} :-->
-<!--                                <span v-if="ads.complain[0] == 'Объявление не актуально'">{{ $t('oneAdsBottomOffCanvasTheAdIsNotRelevant') }}</span>-->
-<!--                                <span v-if="ads.complain[0] == 'Ошибка в цене'">{{ $t('oneAdsBottomOffCanvasPriceError') }}</span>-->
-<!--                                <span v-if="ads.complain[0] == 'Некорректные фотографии'">{{ $t('oneAdsBottomOffCanvasIncorrectPhotos') }}</span>-->
-<!--                                <span v-if="ads.complain[0] == 'Ответил риелтор'">{{ $t('oneAdsBottomOffCanvasTheRealtorReplied') }}</span>-->
-<!--                                <span v-if="ads.complain[0] == 'Телефон не отвечает'">{{ $t('oneAdsBottomOffCanvasThePhoneIsNotAnswering') }}</span>-->
-<!--                                <span v-if="ads.complain[0] == 'Обман или ложное объявление'">{{ $t('oneAdsBottomOffCanvasDeceptionOrFalseAnnouncement') }}</span>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-<!--                    </div>-->
 
                 </v-card>
 
@@ -625,14 +393,6 @@ export default {
                 })
         },
 
-        // Высчитать до кокого числа зармещено объявление
-        addDaysToCurrentDate(date, days) {
-            if (date) {
-                const newDate = new Date(date);
-                newDate.setDate(newDate.getDate() + days);
-                return this.$filters.transformDateRuNotWatch(newDate); // Здесь используйте ваш фильтр для форматирования даты
-            }
-        },
 
         // Показать блок управление объявлением
         showControlBlock(type, ads, index){
@@ -640,6 +400,15 @@ export default {
             this.ads = ads;
             this.index = index;
             this.adsPreviewControlAnimation = true;
+        },
+
+        // Высчитать до кокого числа зармещено объявление
+        addDaysToCurrentDate(date, days) {
+            if (date) {
+                const newDate = new Date(date);
+                newDate.setDate(newDate.getDate() + days);
+                return this.$filters.transformDateRuNotWatch(newDate); // Здесь используйте ваш фильтр для форматирования даты
+            }
         },
 
     }
@@ -710,8 +479,6 @@ export default {
 .scroller {
     width: 100%;
     height: 100%;
-    scroll-behavior: smooth; /* плавная прокрутка */
-    overscroll-behavior: contain; /* предотвращает резкие скачки на мобильных */
 }
 
 .ads__preview{
@@ -720,7 +487,6 @@ export default {
     box-shadow: 0 0 1px silver;
     border-radius: 2px;
     max-width: 600px;
-    will-change: transform, opacity; /* для плавного рендера */
 }
 
 
