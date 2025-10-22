@@ -27,7 +27,7 @@
             >
 
                 <!-- Сам блок с превью -->
-                <v-card class="mx-3 my-2 mx-sm-auto ads__preview ">
+                <div class="mx-3 my-2 mx-sm-auto ads__preview ">
 
                     <!--  Описание объявления -->
                     <div class="d-flex p-md-2">
@@ -90,7 +90,7 @@
                     </div>
 
 
-                </v-card>
+                </div>
 
             </DynamicScrollerItem>
 
