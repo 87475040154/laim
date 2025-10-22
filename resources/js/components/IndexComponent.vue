@@ -53,10 +53,10 @@
 
 
         <!-- Компонент превью объявлений -->
-<!--        <ads-preview-component  :ads_arr="ads_arr" :getMyLikeAds="getMyLikeAds" :parent-query="query"  :is-last-load="isLastLoad" @get-ads="getAds"></ads-preview-component>-->
+        <ads-preview-component  :ads_arr="ads_arr" :getMyLikeAds="getMyLikeAds" :parent-query="query"  :is-last-load="isLastLoad" @get-ads="getAds"></ads-preview-component>
 
 
-        <test-component></test-component>
+<!--        <test-component></test-component>-->
 
 
         <!-- Gif Load  - Если объявления еще не загрузились -->

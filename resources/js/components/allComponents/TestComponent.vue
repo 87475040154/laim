@@ -1,9 +1,7 @@
 <template>
-    <div style="display: flex; justify-content: center; padding: 20px 0; background: #f0f2f5; min-height: 100vh;">
-        <!-- контейнер виртуального списка с прокруткой -->
-        <div ref="scrollRef" style="width: 100%; max-width: 600px; height: 100vh; overflow-y: auto; padding: 10px;">
-            <!-- виртуальная область -->
-            <div :style="{ height: `${totalSize}px`, position: 'relative' }">
+    <div style="display: flex; justify-content: center; padding: 20px 0;">
+        <div style="width: 100%; max-width: 600px;">
+            <div :style="{ height: totalSize + 'px', position: 'relative' }">
                 <div
                     v-for="virtualRow in virtualRows"
                     :key="virtualRow.index"
@@ -13,8 +11,8 @@
             top: 0,
             left: 0,
             width: '100%',
-            height: `${virtualRow.size}px`,
-            transform: `translateY(${virtualRow.start}px)`,
+            height: virtualRow.size + 'px',
+            transform: 'translateY(' + virtualRow.start + 'px)',
             display: 'flex',
             padding: '12px',
             boxSizing: 'border-box',
@@ -40,32 +38,61 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script>
 import { ref, computed } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 
-const scrollRef = ref<HTMLElement | null>(null)
+export default {
+    name: 'TestComponent',
+    data() {
+        return {
+            posts: Array.from({ length: 2000 }, (_, i) => ({
+                id: i + 1,
+                image: `https://picsum.photos/seed/${i + 1}/80/80`,
+                title: `Сдам 1 ком. квартиру №${i + 1}`,
+                price: `${Math.floor(Math.random() * 50000) + 10000} ₽`,
+                date: `Дата публикации: ${new Date(Date.now() - i * 3600 * 1000).toLocaleDateString()}`
+            })),
+            rowVirtualizer: null
+        }
+    },
+    computed: {
+        virtualRows() {
+            return this.rowVirtualizer ? this.rowVirtualizer.getVirtualItems() : []
+        },
+        totalSize() {
+            return this.rowVirtualizer ? this.rowVirtualizer.getTotalSize() : 0
+        }
+    },
+    mounted() {
+        // Инициализация виртуализатора
+        this.rowVirtualizer = useVirtualizer({
+            count: this.posts.length,
+            getScrollElement: () => document.documentElement,
+            estimateSize: () => 150,
+            overscan: 50
+        })
 
-const posts = Array.from({ length: 2000 }, (_, i) => ({
-    id: i + 1,
-    image: `https://picsum.photos/seed/${i + 1}/80/80`,
-    title: `Сдам 1 ком. квартиру №${i + 1}`,
-    price: `${Math.floor(Math.random() * 50000) + 10000} ₽`,
-    date: `Дата публикации: ${new Date(Date.now() - i * 3600 * 1000).toLocaleDateString()}`
-}))
-
-const rowVirtualizer = useVirtualizer({
-    count: posts.length,
-    getScrollElement: () => scrollRef.value, // virtualizer слушает контейнер
-    estimateSize: () => 150,
-    overscan: 30 // рендерим буфер выше и ниже видимой области
-})
-
-const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
-const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
+        // Привязка скролла страницы
+        this.onScroll = () => {
+            if (this.rowVirtualizer) {
+                this.rowVirtualizer.measure()
+            }
+        }
+        window.addEventListener('scroll', this.onScroll)
+    },
+    beforeUnmount() {
+        window.removeEventListener('scroll', this.onScroll)
+    }
+}
 </script>
 
 <style scoped>
+body {
+    margin: 0;
+    background: #f0f2f5;
+}
+
 .ListItem:hover {
     background-color: #fafafa;
 }
