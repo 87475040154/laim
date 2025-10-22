@@ -16,7 +16,7 @@
             >
 
             <!-- Сам блок с превью -->
-            <v-card class="mx-3 my-2 mx-sm-auto ads__preview">
+            <v-card v-if="ads_array[virtualRow.index]" class="mx-3 my-2 mx-sm-auto ads__preview">
 
                 <!--  Описание объявления -->
                 <div class="d-flex p-md-2">
@@ -315,6 +315,8 @@
                 </div>
 
             </v-card>
+
+                <v-skeleton-loader v-else class="ads__preview"></v-skeleton-loader>
         </div>
     </div>
     </div>
@@ -402,7 +404,7 @@ export default {
                         count: this.ads_array.length,
                         getScrollElement: () => document.documentElement,
                         estimateSize: () => 170,
-                        overscan: 20
+                        overscan: 50
                     })
                 } else if (this.rowVirtualizer) {
                     // Обновляем count
@@ -411,7 +413,9 @@ export default {
                     // Сразу вызываем measure, чтобы пересчитать позиции
                     // nextTick нужен, чтобы Vue успел отрендерить новые элементы
                     this.$nextTick(() => {
-                        this.rowVirtualizer.measure()
+                        requestAnimationFrame(() => {
+                            this.rowVirtualizer.measure()
+                        })
                     })
                 }
             }
@@ -638,38 +642,6 @@ export default {
 </style>
 
 <style scoped>
-.scroll-container {
-    height: 100vh;
-    overflow-y: auto;
-    position: relative;
-    background: #f5f5f5;
-}
-.item {
-    display: flex;
-    align-items: flex-start;
-    background: white;
-    margin: 4px;
-    padding: 8px;
-    border-radius: 8px;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-}
-.preview {
-    width: 150px;
-    height: 150px;
-    background: silver;
-    margin-right: 12px;
-}
-/* Стиль для компонента - виртуального скролла */
-.scroller {
-    width: 100%;
-    height: 100%;
-    will-change: transform;
-    contain: layout paint;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-overflow-scrolling: touch;
-}
-
 .ads__preview{
     user-select: none;
     background: #ffffff;
