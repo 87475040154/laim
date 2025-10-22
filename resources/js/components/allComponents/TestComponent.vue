@@ -1,6 +1,8 @@
 <template>
-    <div style="display: flex; justify-content: center; padding: 20px 0;">
-        <div style="width: 100%; max-width: 600px;">
+    <div style="display: flex; justify-content: center; padding: 20px 0; background: #f0f2f5; min-height: 100vh;">
+        <!-- контейнер виртуального списка с прокруткой -->
+        <div ref="scrollRef" style="width: 100%; max-width: 600px; height: 100vh; overflow-y: auto; padding: 10px;">
+            <!-- виртуальная область -->
             <div :style="{ height: `${totalSize}px`, position: 'relative' }">
                 <div
                     v-for="virtualRow in virtualRows"
@@ -39,10 +41,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 
-const posts = Array.from({ length: 500 }, (_, i) => ({
+const scrollRef = ref<HTMLElement | null>(null)
+
+const posts = Array.from({ length: 2000 }, (_, i) => ({
     id: i + 1,
     image: `https://picsum.photos/seed/${i + 1}/80/80`,
     title: `Сдам 1 ком. квартиру №${i + 1}`,
@@ -50,32 +54,18 @@ const posts = Array.from({ length: 500 }, (_, i) => ({
     date: `Дата публикации: ${new Date(Date.now() - i * 3600 * 1000).toLocaleDateString()}`
 }))
 
-// виртуализатор без контейнера scrollRef
 const rowVirtualizer = useVirtualizer({
     count: posts.length,
-    getScrollElement: () => document.documentElement, // можно использовать document.documentElement
-    estimateSize: () => 100,
-    overscan: 20
+    getScrollElement: () => scrollRef.value, // virtualizer слушает контейнер
+    estimateSize: () => 150,
+    overscan: 30 // рендерим буфер выше и ниже видимой области
 })
 
 const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
 const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
-
-// слушаем скролл страницы
-const onScroll = () => {
-    rowVirtualizer.value.measure()
-}
-
-onMounted(() => window.addEventListener('scroll', onScroll))
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <style scoped>
-body {
-    margin: 0;
-    background: #f0f2f5;
-}
-
 .ListItem:hover {
     background-color: #fafafa;
 }
