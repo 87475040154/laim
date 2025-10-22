@@ -21,8 +21,10 @@
     },
     "dependencies": {
         "@coders-tm/vue-number-format": "^3.13.0",
+        "@tanstack/vue-virtual": "^3.13.12",
         "@vee-validate/i18n": "^4.7.3",
         "@vee-validate/rules": "^4.7.3",
+        "@vueuse/core": "^14.0.0",
         "bootstrap-icons": "^1.10.3",
         "google-auth-library": "^9.0.0",
         "laravel-vue-i18n": "^2.4.3",

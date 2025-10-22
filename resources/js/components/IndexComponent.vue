@@ -42,8 +42,9 @@
             </div>
         </div>
 
+
         <!-- Кнопка -  установить приложение laim.kz  -->
-        <div v-if="appInstallStore.app != '' && showBtnAppInstall && $route.name == 'allAds'" class="m-3 mx-sm-auto" style="max-width: 600px">
+        <div v-if="appInstallStore.app != '' && $route.name == 'allAds'" class="m-3 mx-sm-auto" style="max-width: 600px">
             <v-btn @click="appInstallStore.install()" block  color="white" class="text-body-2">
                 <img src="/img/siteImg/allImg/logo.svg" width="25" height="25" alt="logo" class="rounded-3">
                 {{  $t('indexInstallLime') }}
@@ -52,7 +53,11 @@
 
 
         <!-- Компонент превью объявлений -->
-        <ads-preview-component  :ads_arr="ads_arr" :getMyLikeAds="getMyLikeAds" :parent-query="query"  :is-last-load="isLastLoad" @get-ads="getAds"></ads-preview-component>
+<!--        <ads-preview-component  :ads_arr="ads_arr" :getMyLikeAds="getMyLikeAds" :parent-query="query"  :is-last-load="isLastLoad" @get-ads="getAds"></ads-preview-component>-->
+
+
+        <test-component></test-component>
+
 
         <!-- Gif Load  - Если объявления еще не загрузились -->
         <div v-if="query" class="d-flex justify-content-center py-1">
@@ -90,12 +95,13 @@ import {useUpdateDateLocaleStore} from "../stores/updateDateLocale";
 
 //Импортируем Компоненты
 import adsPreviewComponent from "./allComponents/AdsPreviewComponent.vue";
+import TestComponent from './allComponents/TestComponent.vue'
 
 export default {
     name: "IndexComponent",
 
     components: {
-        adsPreviewComponent,
+        adsPreviewComponent, TestComponent
     },
 
     data(){
@@ -112,8 +118,6 @@ export default {
             controller: null,     // Для отмены предыдущего запроса
 
             topPanelFixed: false, // Фиксируем панель при прокрутке
-
-            showBtnAppInstall: false,
 
             count_ads: 0,
 
@@ -170,12 +174,11 @@ export default {
 
             const showGifDelay = setTimeout(() => {
                 this.query = true;// Устанавливаем флаг, что сейчас выполняется запрос
-            }, 200);
+            }, 100);
 
 
             // Сбрасываем настройки в зависимости от авторизации
             !this.authStore.check ? (this.getMyLikeAds = false) : '';
-            this.showBtnAppInstall = false;
 
             try {
                 const response = await axios.get('getAllAds', {
