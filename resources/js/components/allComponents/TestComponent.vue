@@ -55,7 +55,7 @@ const rowVirtualizer = useVirtualizer({
     count: posts.length,
     getScrollElement: () => document.documentElement, // можно использовать document.documentElement
     estimateSize: () => 100,
-    overscan: 5
+    overscan: 20
 })
 
 const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
