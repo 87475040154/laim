@@ -389,7 +389,7 @@ const { y, isScrolling: vuetifyIsScrolling } = useScroll(scrollParent, {
 
 const isFastScrolling = ref(false)
 let lastY = 0
-const scrollThreshold = 800 // Порог скорости в пикселях
+const scrollThreshold = 300 // Порог скорости в пикселях
 
 watch(y, (newY) => {
     const scrollDelta = Math.abs(newY - lastY)
