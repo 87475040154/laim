@@ -16,79 +16,30 @@
              }"
         >
             <!-- Легкий плейсхолдер для быстрой прокрутки -->
-            <template v-if="isScrolling">
-                <div class="mx-3 my-2 mx-sm-auto ads__preview">
+            <template v-if="isFastScrolling">
+                <!-- Облегченный шаблон при быстрой прокрутке -->
+                <v-card class="mx-3 my-2 mx-sm-auto ads__preview" :style="{ minHeight: virtualRow.size + 'px' }">
+                    <!-- Имитация контента - самая простая и производительная разметка -->
                     <div class="d-flex p-md-2">
+                        <!-- Имитация фото -->
+                        <div class="image__block placeholder-bg"></div>
 
-                        <!-- Фото -->
-                        <div class="image__block">
-
-                            <img
-                                loading="lazy"
-                                class="ads__preview-img rounded-sm"
-                                :src="props.ads_arr[virtualRow.index].images.length > 0 ? '/img/adsImg/' + props.ads_arr[virtualRow.index].images[0] : '/img/siteImg/allImg/no-image-buildings.png'"
-                                :alt="props.ads_arr[virtualRow.index].images.length > 0 ? 'Фото недвижимости' : 'Нет фото'"
-                            >
-
-                        </div>
-
-
-                        <!--Блок - Описание объявления -->
-                        <div class="col pl-2">
-
-                            <!--Блок - Описание объявления -->
-                            <div role="button" class="d-flex align-start flex-column" style="min-height: 115px">
-
-                                <!-- Заголовок -->
-                                <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">
-                                    {{props.ads_arr[virtualRow.index].zagolovok}}
-                                </div>
-
-                                <!-- Цена аренды -->
-                                <div class="my-auto fw-bold" style="font-size: 1.2em">
-                                    {{ $filters.format_number(props.ads_arr[virtualRow.index].cena) }} &#8376;
-                                </div>
-
-                                <!-- Адрес -->
-                                <div class="mt-auto" style="font-size: 0.9em; color: #5d6f6a">
-                                    {{ getFullAddress(props.ads_arr[virtualRow.index]) }}
-                                </div>
-
+                        <!-- Имитация блока описания -->
+                        <div class="col pl-2 d-flex flex-column">
+                            <div class="d-flex align-start flex-column" style="min-height: 115px">
+                                <div class="placeholder-line" style="width: 80%"></div>
+                                <div class="placeholder-line my-auto" style="width: 50%"></div>
+                                <div class="placeholder-line mt-auto" style="width: 60%"></div>
                             </div>
-
-                            <!-- Дата публикации - Лайк -->
                             <div class="d-flex align-center gap-2 position-relative">
-
-                                <!-- Дата публикации -->
-                                <div style="font-size: 0.9em; color: #5d6f6a">
-                                    {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
-                                </div>
-
+                                <div class="placeholder-line" style="width: 30%"></div>
                                 <v-spacer></v-spacer>
-
-                                <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
-                                <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
-                                    <div v-for="item in topIcons" :key="item?.key" v-if="item && props.ads_arr[virtualRow.index][item.key] != null" :class="item.class">
-                                        <v-icon :icon="item.icon" size="x-small" color="white"></v-icon>
-                                    </div>
-                                </div>
-
-                                <!-- Кнопка лайк -->
-                                <span>
-                                <v-icon :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"
-                                        class="icon__heart mx-1"
-                                        size="large"
-                                        @click="authStore.check ? addLikeToggle(virtualRow.index, props.ads_arr[virtualRow.index]): $router.push({name: $route.name + 'Auth'})"
-                                >mdi-heart
-                                </v-icon>
-                            </span>
-
+                                <div class="placeholder-circle"></div>
                             </div>
-
                         </div>
-
                     </div>
-                </div>
+                </v-card>
+
             </template>
             <!-- Сам блок с превью -->
             <template v-else>
@@ -157,7 +108,11 @@
 
                                 <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
                                 <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
-                                    <div v-for="item in topIcons" :key="item?.key" v-if="item && props.ads_arr[virtualRow.index][item.key] != null" :class="item.class">
+                                    <div
+                                        v-for="item in topIcons.filter(i => props.ads_arr[virtualRow.index][i.key] != null)"
+                                        :key="item.key"
+                                        :class="item.class"
+                                    >
                                         <v-icon :icon="item.icon" size="x-small" color="white"></v-icon>
                                     </div>
                                 </div>
@@ -350,7 +305,7 @@
 <script setup>
 import { ref,  reactive, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useThrottleFn } from '@vueuse/core'
+import { useThrottleFn, useScroll  } from '@vueuse/core'
 import axios from 'axios'
 
 // Импорт стора
@@ -425,6 +380,33 @@ const isScrolling = computed(() => rowVirtualizer.value.isScrolling)
 
 
 // ------------------ METHODS ------------------
+
+// Устанавливает isFastScrolling в false после 150 мс без прокрутки
+const { y, isScrolling: vuetifyIsScrolling } = useScroll(scrollParent, {
+    throttle: 100,
+    idle: 150,
+})
+
+const isFastScrolling = ref(false)
+let lastY = 0
+const scrollThreshold = 800 // Порог скорости в пикселях
+
+watch(y, (newY) => {
+    const scrollDelta = Math.abs(newY - lastY)
+    lastY = newY
+
+    // Если прокрутка быстрая, немедленно включаем плейсхолдер
+    if (scrollDelta > scrollThreshold) {
+        isFastScrolling.value = true
+    }
+})
+
+watch(vuetifyIsScrolling, (isCurrentlyScrolling) => {
+    // isScrolling становится false только после того, как прокрутка полностью остановилась
+    if (!isCurrentlyScrolling) {
+        isFastScrolling.value = false
+    }
+})
 
 // Асинхронная функция для подгрузки новых объявлений при достижении конца списка
 const getNewAds = async () => {
@@ -676,8 +658,51 @@ function getFullAddress(one) {
     width: 100%;
     height: 150px;
     object-fit: cover;
-    object-position: center
+    object-position: center;
+    background: silver;
 }
+
+/* Стили для плейсхолдера */
+.ads__preview .placeholder-bg {
+    background-color: #e0e0e0;
+    border-radius: 4px;
+}
+.ads__preview .placeholder-line {
+    background-color: #e0e0e0;
+    height: 16px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+.ads__preview .placeholder-circle {
+    background-color: #e0e0e0;
+    width: 40px; /* Размер иконки */
+    height: 40px; /* Размер иконки */
+    border-radius: 50%;
+}
+
+/* Примените пульсирующую анимацию, если хотите */
+.ads__preview .image__block.placeholder-bg {
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    height: 150px; /* Задаем ту же высоту, что и у .ads__preview-img */
+}
+.ads__preview .image__block.placeholder-bg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    transform: translateX(-100%);
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    to {
+        transform: translateX(100%);
+    }
+}
+
 
 @media screen and (min-width: 321px){
     .image__block{
