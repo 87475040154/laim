@@ -384,12 +384,12 @@ const isScrolling = computed(() => rowVirtualizer.value.isScrolling)
 // Устанавливает isFastScrolling в false после 150 мс без прокрутки
 const { y, isScrolling: vuetifyIsScrolling } = useScroll(scrollParent, {
     throttle: 100,
-    idle: 150,
+    idle: 100,
 })
 
 const isFastScrolling = ref(false)
 let lastY = 0
-const scrollThreshold = 300 // Порог скорости в пикселях
+const scrollThreshold = 200 // Порог скорости в пикселях
 
 watch(y, (newY) => {
     const scrollDelta = Math.abs(newY - lastY)
