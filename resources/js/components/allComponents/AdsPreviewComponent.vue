@@ -1,164 +1,241 @@
 <template>
 
-    <div style="width: 100%" ref="scrollParent">
-        <div :style="{ height: totalSize + 'px', position: 'relative' }">
-            <div
-                v-for="(ads, index) in virtualAds"
-                :key="ads.id || index"
-                :style="{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: virtualRows[index].size + 'px',
-                    transform: 'translateY(' + virtualRows[index].start + 'px)'
-                 }"
-            >
+    <!-- Превью блок -->
+    <div style="height: 100vh; overflow-y: auto; width: 100%;" ref="scrollParent">
+        <div :style="{ height: totalSize + 'px', width: '100%', position: 'relative' }">
+        <div
+            v-for="virtualRow in virtualRows"
+            :key="props.ads_arr[virtualRow.index].id || virtualRow.index"
+            :style="{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: virtualRow.size + 'px',
+                transform: 'translateY(' + virtualRow.start + 'px)'
+             }"
+        >
+            <!-- Легкий плейсхолдер для быстрой прокрутки -->
+            <template v-if="isScrolling">
+                <div class="mx-3 my-2 mx-sm-auto ads__preview">
+                    <div class="d-flex p-md-2">
 
-            <!-- Сам блок с превью -->
-            <v-card class="mx-3 my-2 mx-sm-auto ads__preview">
+                        <!-- Фото -->
+                        <div class="image__block">
 
+                            <img
+                                loading="lazy"
+                                class="ads__preview-img rounded-sm"
+                                :src="props.ads_arr[virtualRow.index].images.length > 0 ? '/img/adsImg/' + props.ads_arr[virtualRow.index].images[0] : '/img/siteImg/allImg/no-image-buildings.png'"
+                                :alt="props.ads_arr[virtualRow.index].images.length > 0 ? 'Фото недвижимости' : 'Нет фото'"
+                            >
 
-                <!--  Описание объявления -->
-                <div class="d-flex p-md-2">
-
-                    <!-- Фото -->
-                    <div class="image__block">
-
-                        <!-- Срочно торг -->
-                        <div v-if="ads.srochno_torg" style="position: absolute; top: 5px; left: 5px;" class="bg-yellow-darken-2 rounded-sm text-caption px-1">
-                            {{ $t('adsPreviewComponentUrgentBargaining') }}
                         </div>
 
-                        <img
-                            loading="lazy"
-                            @click="ads.images.length ? showImage(ads) : null"
-                            class="ads__preview-img rounded-sm"
-                            :src="ads.images.length > 0 ? '/img/adsImg/' + ads.images[0] : '/img/siteImg/allImg/no-image-buildings.png'"
-                            :alt="ads.images.length > 0 ? 'Фото недвижимости' : 'Нет фото'"
-                        >
 
-                        <!-- Статус - В архиве - Не активно - Хозяин и тд. -->
-                        <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
-                            <div :class="getStatus(ads).style">{{ getStatus(ads).text }}</div>
+                        <!--Блок - Описание объявления -->
+                        <div class="col pl-2">
+
+                            <!--Блок - Описание объявления -->
+                            <div role="button" class="d-flex align-start flex-column" style="min-height: 115px">
+
+                                <!-- Заголовок -->
+                                <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">
+                                    {{props.ads_arr[virtualRow.index].zagolovok}}
+                                </div>
+
+                                <!-- Цена аренды -->
+                                <div class="my-auto fw-bold" style="font-size: 1.2em">
+                                    {{ $filters.format_number(props.ads_arr[virtualRow.index].cena) }} &#8376;
+                                </div>
+
+                                <!-- Адрес -->
+                                <div class="mt-auto" style="font-size: 0.9em; color: #5d6f6a">
+                                    {{ getFullAddress(props.ads_arr[virtualRow.index]) }}
+                                </div>
+
+                            </div>
+
+                            <!-- Дата публикации - Лайк -->
+                            <div class="d-flex align-center gap-2 position-relative">
+
+                                <!-- Дата публикации -->
+                                <div style="font-size: 0.9em; color: #5d6f6a">
+                                    {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
+                                </div>
+
+                                <v-spacer></v-spacer>
+
+                                <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
+                                <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
+                                    <div v-for="item in topIcons" :key="item?.key" v-if="item && props.ads_arr[virtualRow.index][item.key] != null" :class="item.class">
+                                        <v-icon :icon="item.icon" size="x-small" color="white"></v-icon>
+                                    </div>
+                                </div>
+
+                                <!-- Кнопка лайк -->
+                                <span>
+                                <v-icon :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"
+                                        class="icon__heart mx-1"
+                                        size="large"
+                                        @click="authStore.check ? addLikeToggle(virtualRow.index, props.ads_arr[virtualRow.index]): $router.push({name: $route.name + 'Auth'})"
+                                >mdi-heart
+                                </v-icon>
+                            </span>
+
+                            </div>
+
                         </div>
 
                     </div>
+                </div>
+            </template>
+            <!-- Сам блок с превью -->
+            <template v-else>
+                <v-card class="mx-3 my-2 mx-sm-auto ads__preview">
 
-                    <!--Блок - Описание объявления -->
-                    <div class="col pl-2">
 
-                        <!--Блок - Описание объявления -->
-                        <div @click="showOneAds(ads,index)" role="button" class="d-flex align-start flex-column" style="min-height: 115px">
+                    <!--  Описание объявления -->
+                    <div class="d-flex p-md-2">
 
-                            <!-- Заголовок -->
-                            <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">
-                                {{ads.zagolovok}}
+                        <!-- Фото -->
+                        <div class="image__block">
+
+                            <!-- Срочно торг -->
+                            <div v-if="props.ads_arr[virtualRow.index].srochno_torg" style="position: absolute; top: 5px; left: 5px;" class="bg-yellow-darken-2 rounded-sm text-caption px-1">
+                                {{ $t('adsPreviewComponentUrgentBargaining') }}
                             </div>
 
-                            <!-- Цена аренды -->
-                            <div class="my-auto fw-bold" style="font-size: 1.2em">
-                                {{ $filters.format_number(ads.cena) }} &#8376;
-                            </div>
+                            <img
+                                loading="lazy"
+                                @click="props.ads_arr[virtualRow.index].images.length ? showImage(props.ads_arr[virtualRow.index]) : null"
+                                class="ads__preview-img rounded-sm"
+                                :src="props.ads_arr[virtualRow.index].images.length > 0 ? '/img/adsImg/' + props.ads_arr[virtualRow.index].images[0] : '/img/siteImg/allImg/no-image-buildings.png'"
+                                :alt="props.ads_arr[virtualRow.index].images.length > 0 ? 'Фото недвижимости' : 'Нет фото'"
+                            >
 
-                            <!-- Адрес -->
-                            <div class="mt-auto" style="font-size: 0.9em; color: #5d6f6a">
-                                {{ getFullAddress(ads) }}
+                            <!-- Статус - В архиве - Не активно - Хозяин и тд. -->
+                            <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
+                                <div :class="getStatus(props.ads_arr[virtualRow.index]).style">{{ getStatus(props.ads_arr[virtualRow.index]).text }}</div>
                             </div>
 
                         </div>
 
-                        <!-- Дата публикации - Лайк -->
-                        <div class="d-flex align-center gap-2 position-relative">
+                        <!--Блок - Описание объявления -->
+                        <div class="col pl-2">
 
-                            <!-- Дата публикации -->
-                            <div style="font-size: 0.9em; color: #5d6f6a">
-                                {{ $filters.transformDateRu(ads.created_at) }}
-                            </div>
+                            <!--Блок - Описание объявления -->
+                            <div @click="showOneAds(props.ads_arr[virtualRow.index],virtualRow.index)" role="button" class="d-flex align-start flex-column" style="min-height: 115px">
 
-                            <v-spacer></v-spacer>
-
-
-                            <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
-                            <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
-                                <div v-for="item in topIcons" :key="item?.key" v-if="item && ads[item.key] != null" :class="item.class">
-                                    <v-icon :icon="item.icon" size="x-small" color="white"></v-icon>
+                                <!-- Заголовок -->
+                                <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">
+                                    {{props.ads_arr[virtualRow.index].zagolovok}}
                                 </div>
+
+                                <!-- Цена аренды -->
+                                <div class="my-auto fw-bold" style="font-size: 1.2em">
+                                    {{ $filters.format_number(props.ads_arr[virtualRow.index].cena) }} &#8376;
+                                </div>
+
+                                <!-- Адрес -->
+                                <div class="mt-auto" style="font-size: 0.9em; color: #5d6f6a">
+                                    {{ getFullAddress(props.ads_arr[virtualRow.index]) }}
+                                </div>
+
                             </div>
 
-                            <!-- Кнопка лайк -->
-                            <span>
-                                <v-icon :color="ads.likes.length > 0 ? 'red' : 'grey-lighten-1'"
+                            <!-- Дата публикации - Лайк -->
+                            <div class="d-flex align-center gap-2 position-relative">
+
+                                <!-- Дата публикации -->
+                                <div style="font-size: 0.9em; color: #5d6f6a">
+                                    {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
+                                </div>
+
+                                <v-spacer></v-spacer>
+
+
+                                <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
+                                <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
+                                    <div v-for="item in topIcons" :key="item?.key" v-if="item && props.ads_arr[virtualRow.index][item.key] != null" :class="item.class">
+                                        <v-icon :icon="item.icon" size="x-small" color="white"></v-icon>
+                                    </div>
+                                </div>
+
+                                <!-- Кнопка лайк -->
+                                <span>
+                                <v-icon :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"
                                         class="icon__heart mx-1"
                                         size="large"
-                                        @click="authStore.check ? addLikeToggle(index, ads): $router.push({name: $route.name + 'Auth'})"
-                                    >mdi-heart
+                                        @click="authStore.check ? addLikeToggle(virtualRow.index, props.ads_arr[virtualRow.index]): $router.push({name: $route.name + 'Auth'})"
+                                >mdi-heart
                                 </v-icon>
                             </span>
 
 
+                            </div>
+
                         </div>
 
                     </div>
 
-                </div>
+                    <!--  - Управление объявлением - Продвигать рекламу - Сдать быстрее -->
+                    <div class="px-md-2"
+                         v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id
+                                    && $route.name == 'userAds' && props.ads_arr[virtualRow.index].control != 'В архиве'
+                                    || authStore.check && authStore.user.role == 'admin' && props.ads_arr[virtualRow.index].control != 'В архиве'"
+                    >
 
-                <!--  - Управление объявлением - Продвигать рекламу - Сдать быстрее -->
-                <div class="px-md-2"
-                     v-if="authStore.check && authStore.user.id == ads.author_id
-                                    && $route.name == 'userAds' && ads.control != 'В архиве'
-                                    || authStore.check && authStore.user.role == 'admin' && ads.control != 'В архиве'"
-                >
+                        <div class="d-flex justify-content-between align-center">
 
-                    <div class="d-flex justify-content-between align-center">
+                            <!-- Кнопка сдать быстрее -->
+                            <v-btn dark color="grey-lighten-4"
+                                   size="x-large"
+                                   @click="$router.push({ name: $route.name + 'BueAds', params: {ads_id: props.ads_arr[virtualRow.index].id} } )"
+                                   class="text-body-1"
+                                   style="min-width: 170px"
+                            >
+                                {{ $t('adsPreviewComponentPassFaster') }}
+                            </v-btn>
 
-                        <!-- Кнопка сдать быстрее -->
-                        <v-btn dark color="grey-lighten-4"
-                               size="x-large"
-                               @click="$router.push({ name: $route.name + 'BueAds', params: {ads_id: ads.id} } )"
-                               class="text-body-1"
-                               style="min-width: 170px"
-                        >
-                            {{ $t('adsPreviewComponentPassFaster') }}
-                        </v-btn>
+                            <!-- Просмотров - Взяли номера -->
+                            <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Статистика', props.ads_arr[virtualRow.index],virtualRow.index)">
+                                <v-icon>mdi-finance</v-icon>
+                            </v-btn>
 
-                        <!-- Просмотров - Взяли номера -->
-                        <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Статистика', ads,index)">
-                            <v-icon>mdi-finance</v-icon>
-                        </v-btn>
+                            <!-- Блок - Управление объявлением - для автора и админа -->
+                            <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Управление', props.ads_arr[virtualRow.index],virtualRow.index)">
+                                <v-icon>mdi-dots-vertical</v-icon>
+                            </v-btn>
 
-                        <!-- Блок - Управление объявлением - для автора и админа -->
-                        <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Управление', ads,index)">
-                            <v-icon>mdi-dots-vertical</v-icon>
-                        </v-btn>
+                        </div>
+
+                        <!-- На сайте до-->
+                        <div class="px-1 px-md-0">
+                            <span v-if="updateDateLocale.lang == 'ru'">На сайте до: </span>
+                            <span v-if="updateDateLocale.lang == 'en'">Before: </span>
+                            <span v-if="props.ads_arr[virtualRow.index].top_x30 != null">{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].top_x30, 30) }}</span>
+                            <span v-else-if="props.ads_arr[virtualRow.index].top_x7 != null">{{ addDaysToCurrentDate(ads.top_x7, 7) }}</span>
+                            <span v-else>{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].updated_at, 7) }}</span>
+                            <span v-if="updateDateLocale.lang == 'kz'" class="pl-1"> дейін</span>
+
+                        </div>
 
                     </div>
 
-                    <!-- На сайте до-->
-                    <div class="px-1 px-md-0">
-                        <span v-if="updateDateLocale.lang == 'ru'">На сайте до: </span>
-                        <span v-if="updateDateLocale.lang == 'en'">Before: </span>
-                        <span v-if="ads.top_x30 != null">{{ addDaysToCurrentDate(ads.top_x30, 30) }}</span>
-                        <span v-else-if="ads.top_x7 != null">{{ addDaysToCurrentDate(ads.top_x7, 7) }}</span>
-                        <span v-else>{{ addDaysToCurrentDate(ads.updated_at, 7) }}</span>
-                        <span v-if="updateDateLocale.lang == 'kz'" class="pl-1"> дейін</span>
+                    <!-- Жалобы на объявления - Если поступили 5 жалоб - Они видны автору - Объявление отправиться на доработку  -->
+                    <div v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id && $route.name == 'userAds'">
+
+                        <div v-if="props.ads_arr[virtualRow.index].control == 'Поступили жалобы' " class="col-12 alert" style="background: #efa6a6; padding: 1.7px 10px!important;">
+                            <i class="bi bi-exclamation-octagon"></i>
+                            {{ $t('adsPreviewComponentReturnForRevision')}}
+                            <div>{{ $t('adsPreviewComponentCause') }} : {{ getComplainText(ads) }}</div>
+                        </div>
 
                     </div>
 
-                </div>
-
-                <!-- Жалобы на объявления - Если поступили 5 жалоб - Они видны автору - Объявление отправиться на доработку  -->
-                <div v-if="authStore.check && authStore.user.id == ads.author_id && $route.name == 'userAds'">
-
-                    <div v-if="ads.control == 'Поступили жалобы' " class="col-12 alert" style="background: #efa6a6; padding: 1.7px 10px!important;">
-                        <i class="bi bi-exclamation-octagon"></i>
-                        {{ $t('adsPreviewComponentReturnForRevision')}}
-                        <div>{{ $t('adsPreviewComponentCause') }} : {{ getComplainText(ads) }}</div>
-                    </div>
-
-                </div>
-
-            </v-card>
+                </v-card>
+            </template>
 
         </div>
     </div>
@@ -270,313 +347,240 @@
 
 </template>
 
-<script>
+<script setup>
+import { ref,  reactive, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useThrottleFn } from '@vueuse/core'
+import axios from 'axios'
 
-//Импортирую Store - Общее состояние
-import { useAuthStore } from "../../stores/auth";
-import { useImagesStore } from "../../stores/images";
-import { useAdsStore } from "../../stores/ads";
-import { useUpdateDateLocaleStore } from "../../stores/updateDateLocale";
-import { useKZLocationStore } from "../../stores/KZLocation";
-
-// Компонент динамический скроллер - Скрывает лишние элементы из DOM
-import { RecycleScroller } from 'vue-virtual-scroller'
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+// Импорт стора
+import { useAuthStore } from "../../stores/auth"
+import { useImagesStore } from "../../stores/images"
+import { useAdsStore } from "../../stores/ads"
+import { useUpdateDateLocaleStore } from "../../stores/updateDateLocale"
+import { useKZLocationStore } from "../../stores/KZLocation"
 
 import { useVirtualizer } from '@tanstack/vue-virtual'
-export default {
-    name: "AdsPreviewComponent",
 
-    components: {RecycleScroller},
+const props = defineProps({
+    ads_arr: Array,
+    getMyLikeAds: Boolean,
+    parentQuery: Boolean,
+    isLastLoad: Boolean
+})
 
-    props: {
-        ads_arr: Array,
-        getMyLikeAds: Boolean, //Это нужно чтоб знать сейчас запрос избранного или нет если да то мы можем при отмене избранного удалить его из массива
-        parentQuery: Boolean,       // флаг, что идёт загрузка
-        isLastLoad: Boolean,  // флаг, что достигнут конец
-    },
+const emit = defineEmits(['get-ads'])
 
-    data(){
-        return {
+const router = useRouter()
+const route = useRoute()
 
-            //Подключаю Store - Наше общее состояние
-            authStore: useAuthStore(),
-            imageStore: useImagesStore(),
-            adsStore: useAdsStore(),
-            updateDateLocale: useUpdateDateLocaleStore(),
-            KZLocationStore: useKZLocationStore(),
+// Stores
+const authStore = useAuthStore()
+const imageStore = useImagesStore()
+const adsStore = useAdsStore()
+const updateDateLocale = useUpdateDateLocaleStore()
+const KZLocationStore = useKZLocationStore()
 
-            ads_array: [],
-            debounceTimer: null, // Это ограничитель вызова update для получения объявлений типа setTimout
-            query: false,
-            rowVirtualizer: null,   // Добавляем виртуальный скроллер
-
-            adsPreviewControlAnimation: false,
-            controlBlockType: '',
-            ads: '',
-            index: '',
-            deleteAdsBlock: false,
+// ------------------ STATE ------------------
+const debounceTimer = ref(null)
+const query = ref(false)
 
 
-            ownerText: { ru: 'Хозяин', kz: 'Иесі', en: 'Owner' },
-            topIcons: [
-                { key: 'top_x30', icon: 'mdi-crown', class: 'icon__crown' },
-                { key: 'top_x7', icon: 'mdi-diamond', class: 'icon__diamond' },
-                { key: 'top', icon: 'mdi-triangle', class: 'icon__triangle' },
-                { key: 'top_8', icon: 'mdi-triangle', class: 'icon__triangle icon__triangleTOP8' }
-            ]
-        }
-        },
+// Создаём виртуализатор ОДИН РАЗ в setup.
+// count — computed, автоматически отслеживает длину ads_array
+const scrollParent = ref(null)
+// Используем computed, который обращается к props напрямую.
+const rowVirtualizerOptions = computed(() => ({
+    count: props.ads_arr.length,
+    getScrollElement: () => scrollParent.value,
+    getItemKey: (i) => props.ads_arr[i]?.id || i, // Корректное использование ключа
+    estimateSize: () => 170,
+    overscan: 30,
+}))
+const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
 
-    computed: {
-        virtualRows() {
-            return this.rowVirtualizer ? this.rowVirtualizer.getVirtualItems() : []
-        },
-        totalSize() {
-            return this.rowVirtualizer ? this.rowVirtualizer.getTotalSize() : 0
-        },
+const adsPreviewControlAnimation = ref(false)
+const controlBlockType = ref('')
+const ads = ref('')
+const index = ref('')
+const deleteAdsBlock = ref(false)
 
-        // вычисляем массив видимых объявлений
-        virtualAds() {
-            return this.virtualRows.map(row => this.ads_array[row.index]);
-        }
-    },
+const ownerText = reactive({ ru: 'Хозяин', kz: 'Иесі', en: 'Owner' })
+const topIcons = reactive([
+    { key: 'top_x30', icon: 'mdi-crown', class: 'icon__crown' },
+    { key: 'top_x7', icon: 'mdi-diamond', class: 'icon__diamond' },
+    { key: 'top', icon: 'mdi-triangle', class: 'icon__triangle' },
+    { key: 'top_8', icon: 'mdi-triangle', class: 'icon__triangle icon__triangleTOP8' }
+])
 
+// ------------------ COMPUTED ------------------
+// Виртуальные элементы, которые должны быть отрисованы в данный момент
+const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
 
-    watch: {
+// Общая высота виртуализированного списка (нужна для корректного позиционирования элементов)
+const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
 
-        //Записываем объявления полученные через пропс
-        ads_arr: {
-            immediate: true,
-            handler(newVal) {
-                if (!this.ads_array.length) {
-                    // первая загрузка
-                    this.ads_array = newVal
-                } else {
-                    // добавляем только новые элементы
-                    const newItems = newVal.slice(this.ads_array.length)
-                    this.ads_array.push(...newItems)
-                }
-
-                if (!this.rowVirtualizer && this.ads_array.length) {
-                    // создаём виртуализатор только при наличии данных
-                    this.rowVirtualizer = useVirtualizer({
-                        count: this.ads_array.length,
-                        getScrollElement: () => document.documentElement,
-                        estimateSize: () => 170,
-                        overscan: 50
-                    })
-                } else if (this.rowVirtualizer) {
-                    // Обновляем count
-                    this.rowVirtualizer.options.count = this.ads_array.length
-
-                    // Сразу вызываем measure, чтобы пересчитать позиции
-                    // nextTick нужен, чтобы Vue успел отрендерить новые элементы
-                    this.$nextTick(() => {
-                        requestAnimationFrame(() => {
-                            this.rowVirtualizer.measure()
-                        })
-                    })
-                }
-            }
-        },
-
-        //Следим за сменой языка
-        async 'updateDateLocale.lang' (){
-            this.ads_array = {};
-            this.ads_array = this.ads_arr;
-        }
-    },
-
-    methods: {
-
-        // Метод отправить событие для получения новых объявлений за 10 до конца прокрутки
-        onScroll() {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop
-            const scrollHeight = document.documentElement.scrollHeight
-            const clientHeight = document.documentElement.clientHeight
-
-            // Сколько пикселей осталось до конца страницы
-            const remainingPx = scrollHeight - (scrollTop + clientHeight)
-
-            // 10 элементов * 170px = 1700px
-            if (remainingPx <= 1700 && !this.parentQuery && !this.isLastLoad) {
-                if (!this.debounceTimer) {
-                    this.debounceTimer = setTimeout(() => {
-                        this.$emit('get-ads')
-                        this.debounceTimer = null
-                    }, 300)
-                }
-            }
-        },
-
-        //Открыть 1-но объявление
-        async showOneAds(ads,index){
-            localStorage.setItem('oneAds', JSON.stringify(ads))
-
-            this.$router.push({name: this.$route.name + "OneAds" ,params: {ads_id: ads.id, table_name: ads.table_name }})
-        },
-
-        // Показать фото
-        showImage(ads){
-            this.imageStore.showImages({images: ads.images,index: 0, allImg: true})
-            this.$router.push({name: this.$route.name + "Image"});
-        },
-
-        //Метод - Рекламировать или Остановить - рекламу объявления
-        async adsActiveToggle(index, ads_id, table_name, ads_control){
-            this.query = true;
-
-            axios.post('/adsActiveToggle', {
-                ads_id, table_name
-            })
-                .then((response)=>{
-                    this.query = false;
-
-                    //Укажем активно или нет
-                    ads_control == 'Активно' ? this.ads_arr[index].control = 'Не активно' : this.ads_arr[index].control = 'Активно';
-
-                })
-                .catch(errors=>{
-                    this.query = false;
-
-                    //Если объявление было удалено
-                    if(errors.response.data.error == 'Объявление было удалено')this.ads_arr.splice(index, 1);
-
-                    //Если объявление было отправлено в архив
-                    if(errors.response.data.error == 'Объявление находиться в архиве')this.ads_arr[index].control = 'В архиве'
-
-                    Toast.fire({
-                        text: errors.response.data.error
-                    })
-
-                })
-        },
-
-        //Метод добавить в избранное
-       async addLikeToggle(index, ads){
-
-            this.query = true;
-
-            //Для быстрого реагирования добавим без проверки и далее в проверке уже подтвердим
-            ads.likes = ads.likes.length > 0? []: ['Есть лайк'];
-
-            axios.post('/like',{
-                author_id: this.authStore.user.id,
-                table_name: ads.table_name,
-                ads_id: ads.id
-            })
-                .then(response=>{
-                    this.query = false;
-                    //Если метод вызван когда запрос на мои избранные то удалим данное избранно из моих
-                    this.getMyLikeAds ? this.ads_arr.splice(index, 1) : '';
-
-                })
-                .catch(errors=>{
-                    this.query = false;
-
-                    //Toggle своиства избранного, меняем данные у данного объявления без перезагрузки
-                    ads.likes = [];
-
-                    //Если объявление уже стало не активно уведомим что не активно
-                    Toast.fire({
-                        icon: 'error',
-                        title: errors.response.data.error
-                    })
-
-                })
-        },
-
-        //Метод - Отправить в архив -  на 7 дней . Далее автоматом будет удалено
-        deleteAds(index, ads_id, table_name){
-            this.query = true;
-
-            axios.delete('/deleteAds', {params:{
-                    ads_id, table_name,
-                }})
-                .then((response)=>{
-                    this.query = false;
-
-                    Toast.fire({
-                        title: this.$t('adsPreviewComponentRemoved')
-                    })
-
-                    this.adsPreviewControlAnimation = false;
-
-                    //Уберем из массива данное объявление
-                    this.ads_arr.splice(index, 1);
-
-                })
-                .catch((errors)=>{
-                    this.query = false;
-                    Toast.fire({
-                        title: this.$t('adsPreviewComponentError')
-                    })
-                })
-        },
+// Флаг, показывающий, выполняется ли сейчас прокрутка (true во время скролла)
+const isScrolling = computed(() => rowVirtualizer.value.isScrolling)
 
 
-        // Показать блок управление объявлением
-        showControlBlock(type, ads, index){
-            this.controlBlockType = type;
-            this.ads = ads;
-            this.index = index;
-            this.adsPreviewControlAnimation = true;
-        },
+// ------------------ METHODS ------------------
 
-        // Высчитать до кокого числа зармещено объявление
-        addDaysToCurrentDate(date, days) {
-            if (date) {
-                const newDate = new Date(date);
-                newDate.setDate(newDate.getDate() + days);
-                return this.$filters.transformDateRuNotWatch(newDate); // Здесь используйте ваш фильтр для форматирования даты
-            }
-        },
+// Асинхронная функция для подгрузки новых объявлений при достижении конца списка
+const getNewAds = async () => {
+    // Получаем последний виртуальный элемент (тот, что виден последним в области виртуализации)
+    const [lastItem] = [...virtualRows.value].reverse()
 
+    // Если элементов нет или достигнут конец всех данных — выходим
+    if (!lastItem || props.isLastLoad) {
+        return
+    }
 
-
-        //Методы для сокращения шаблона
-        getStatus(ads) {
-            const { control, author_id } = ads;
-            const { user } = this.authStore;
-
-            if (control === 'В архиве') return { style: 'bg-red-darken-1 p-1 px-2 rounded-lg', text: this.$t('AdsPreviewAddArhive') };
-            if (control === 'Поступили жалобы' && author_id === user.id) return { style: 'bg-red-darken-1 p-1 px-2 rounded-lg', text: this.$t('AdsPreviewAddComplain') };
-            if (control === 'Активно' && author_id === user.id) return { style: 'bg-green-darken-1 p-1 px-2 rounded-lg', text: this.$t('AdsPreviewAddActive') };
-            if (control === 'Не активно') return { style: 'bg-blue-darken-1 p-1 px-2 rounded-lg', text: this.$t('AdsPreviewAddNoActive') };
-            if (author_id !== user.id && control !== 'В архиве') return { style: 'bg-green-darken-1 p-1 px-2 rounded-lg', text: this.ownerText[this.updateDateLocale.lang] };
-
-            return { style: '', text: '' };
-        },
-
-        getComplainText(ads) {
-            if (!ads.complain || !ads.complain[0]) return '';
-            const map = {
-                'Ответил риелтор': 'oneAdsBottomOffCanvasTheRealtorReplied',
-                'Объявление не актуально': 'oneAdsBottomOffCanvasTheAdIsNotRelevant',
-                'Ошибка в цене': 'oneAdsBottomOffCanvasPriceError',
-                'Некорректные фотографии': 'oneAdsBottomOffCanvasIncorrectPhotos',
-                'Телефон не отвечает': 'oneAdsBottomOffCanvasThePhoneIsNotAnswering',
-                'Обман или ложное объявление': 'oneAdsBottomOffCanvasDeceptionOrFalseAnnouncement'
-            }
-            return this.$t(map[ads.complain[0]] || '');
-        },
-
-        getFullAddress(ads) {
-            const city = this.KZLocationStore.translateLocation({ gorod: ads.gorod }).gorod;
-            const raion = ads.raion ? `, ${this.KZLocationStore.translateLocation({ raion: ads.raion }).raion}` : '';
-            return city + raion;
-        },
-    },
-
-    mounted() {
-        window.addEventListener('scroll', this.onScroll)
-    },
-    beforeUnmount() {
-        window.removeEventListener('scroll', this.onScroll)
+    // Проверяем, если последний видимый элемент — это последний элемент массива объявлений
+    // (т.е. пользователь проскроллил до самого конца списка)
+    if (lastItem.index >= props.ads_arr.length - 1) {
+        console.log('Достигнут конец списка. Загружаем ещё...')
+        // Вызываем событие в родительский компонент для подгрузки новой порции объявлений
+        emit('get-ads')
     }
 }
+
+// 1️⃣ Создаём троттлированную (ограниченную по частоте) версию функции,
+// чтобы избежать частых запросов при быстрой прокрутке.
+// useThrottleFn — вызывается не чаще, чем раз в 500 мс.
+const throttledGetNewAds = useThrottleFn(getNewAds, 500)
+
+
+// 2️⃣ Следим за изменениями виртуальных элементов
+// (каждый раз, когда пользователь прокручивает список и изменяется набор видимых элементов)
+watch(virtualRows, async () => {
+    // Ждём, пока DOM обновится после очередной отрисовки виртуальных элементов
+    await nextTick()
+
+    // Проверяем, нужно ли подгрузить новую партию объявлений
+    throttledGetNewAds()
+})
+
+// Открыть объявление
+function showOneAdsFn(one, i) {
+    localStorage.setItem('oneAds', JSON.stringify(one))
+    router.push({ name: route.name + "OneAds", params: { ads_id: one.id, table_name: one.table_name } })
+}
+
+// Показать фото
+function showImage(one) {
+    imageStore.showImages({ images: one.images, index: 0, allImg: true })
+    router.push({ name: route.name + "Image" })
+}
+
+// Активировать/остановить объявление
+async function adsActiveToggleFn(i, ads_id, table_name, control) {
+    query.value = true
+    try {
+        await axios.post('/adsActiveToggle', { ads_id, table_name })
+        query.value = false
+        control === 'Активно'
+            ? props.ads_arr[i].control = 'Не активно'
+            : props.ads_arr[i].control = 'Активно'
+    } catch (errors) {
+        query.value = false
+        const err = errors.response?.data?.error
+        if (err === 'Объявление было удалено') props.ads_arr.splice(i, 1)
+        if (err === 'Объявление находиться в архиве') props.ads_arr[i].control = 'В архиве'
+        Toast.fire({ text: err })
+    }
+}
+
+// Лайк
+async function addLikeToggleFn(i, one) {
+    query.value = true
+    one.likes = one.likes.length > 0 ? [] : ['Есть лайк']
+
+    try {
+        await axios.post('/like', {
+            author_id: authStore.user.id,
+            table_name: one.table_name,
+            ads_id: one.id
+        })
+        query.value = false
+        if (props.getMyLikeAds) props.ads_arr.splice(i, 1)
+    } catch (errors) {
+        query.value = false
+        one.likes = []
+        Toast.fire({ icon: 'error', title: errors.response.data.error })
+    }
+}
+
+// Удалить объявление
+async function deleteAdsFn(i, ads_id, table_name) {
+    query.value = true
+    try {
+        await axios.delete('/deleteAds', { params: { ads_id, table_name } })
+        query.value = false
+        Toast.fire({ title: $t('adsPreviewComponentRemoved') })
+        adsPreviewControlAnimation.value = false
+        props.ads_arr.splice(i, 1)
+    } catch {
+        query.value = false
+        Toast.fire({ title: $t('adsPreviewComponentError') })
+    }
+}
+
+// Показать блок управления
+function showControlBlockFn(type, one, i) {
+    controlBlockType.value = type
+    ads.value = one
+    index.value = i
+    adsPreviewControlAnimation.value = true
+}
+
+// Добавить дни к дате
+function addDaysToCurrentDate(date, days) {
+    if (date) {
+        const newDate = new Date(date)
+        newDate.setDate(newDate.getDate() + days)
+        return $filters.transformDateRuNotWatch(newDate)
+    }
+}
+
+// Статус объявления
+function getStatus(one) {
+    const { control, author_id } = one
+    const { user } = authStore
+
+    if (control === 'В архиве') return { style: 'bg-red-darken-1 p-1 px-2 rounded-lg', text: $t('AdsPreviewAddArhive') }
+    if (control === 'Поступили жалобы' && author_id === user.id) return { style: 'bg-red-darken-1 p-1 px-2 rounded-lg', text: $t('AdsPreviewAddComplain') }
+    if (control === 'Активно' && author_id === user.id) return { style: 'bg-green-darken-1 p-1 px-2 rounded-lg', text: $t('AdsPreviewAddActive') }
+    if (control === 'Не активно') return { style: 'bg-blue-darken-1 p-1 px-2 rounded-lg', text: $t('AdsPreviewAddNoActive') }
+    if (author_id !== user.id && control !== 'В архиве') return { style: 'bg-green-darken-1 p-1 px-2 rounded-lg', text: ownerText[updateDateLocale.lang] }
+    return { style: '', text: '' }
+}
+
+// Причина жалобы
+function getComplainText(one) {
+    if (!one.complain || !one.complain[0]) return ''
+    const map = {
+        'Ответил риелтор': 'oneAdsBottomOffCanvasTheRealtorReplied',
+        'Объявление не актуально': 'oneAdsBottomOffCanvasTheAdIsNotRelevant',
+        'Ошибка в цене': 'oneAdsBottomOffCanvasPriceError',
+        'Некорректные фотографии': 'oneAdsBottomOffCanvasIncorrectPhotos',
+        'Телефон не отвечает': 'oneAdsBottomOffCanvasThePhoneIsNotAnswering',
+        'Обман или ложное объявление': 'oneAdsBottomOffCanvasDeceptionOrFalseAnnouncement'
+    }
+    return $t(map[one.complain[0]] || '')
+}
+
+// Полный адрес
+function getFullAddress(one) {
+    const city = KZLocationStore.translateLocation({ gorod: one.gorod }).gorod
+    const raion = one.raion ? `, ${KZLocationStore.translateLocation({ raion: one.raion }).raion}` : ''
+    return city + raion
+}
+
+// ------------------ LIFECYCLE ------------------
+
 </script>
+
 
 <style>
 
@@ -644,6 +648,9 @@ export default {
     max-width: 600px;
 }
 
+.virtual-row {
+    will-change: transform;
+}
 
 /* Стили для слайдера */
 ::v-deep(.swiper-pagination-fraction){
