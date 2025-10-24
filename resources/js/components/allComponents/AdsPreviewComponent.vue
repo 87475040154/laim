@@ -17,32 +17,34 @@
                 <div class="adsPreview__block">
 
                     <!-- Фото -->
-                    <div v-if="!shouldHideContent" class="adsPreviewImage__block">
+                    <div class="adsPreviewImage__block">
 
-                        <!-- Срочно торг -->
-                        <span
-                            v-show="!shouldHideContent && props.ads_arr[virtualRow.index].srochno_torg"
-                             class="adsPreviewImage__srochnoTorg"
-                        >
-                            {{ $t('adsPreviewComponentUrgentBargaining') }}
-                        </span>
+                        <template v-if="!shouldHideContent">
 
-                        <!-- Фото -->
-                        <img
-                            v-if="!shouldHideContent"
-                            loading="lazy"
-                            @click="props.ads_arr[virtualRow.index].images.length ? showImage(props.ads_arr[virtualRow.index]) : null"
-                            class="adsPreviewImage__image"
-                            :src="props.ads_arr[virtualRow.index].images.length > 0 ? '/img/adsImg/' + props.ads_arr[virtualRow.index].images[0] : '/img/siteImg/allImg/no-image-buildings.png'"
-                            alt="Недвижимость"
-                        >
+                            <!-- Срочно торг -->
+                            <span
+                                v-if="props.ads_arr[virtualRow.index].srochno_torg"
+                                class="adsPreviewImage__srochnoTorg"
+                            >
+                                {{ $t('adsPreviewComponentUrgentBargaining') }}
+                            </span>
 
-                        <!-- Статус - В архиве - Не активно - Хозяин и тд. -->
-                        <div v-if="!shouldHideContent"  class="adsPreviewImage__status">
-                            <div :class="getStatus(props.ads_arr[virtualRow.index]).style">
-                                {{ getStatus(props.ads_arr[virtualRow.index]).text }}
+                            <!-- Фото -->
+                            <img loading="lazy"
+                                 @click="props.ads_arr[virtualRow.index].images.length ? showImage(props.ads_arr[virtualRow.index]) : null"
+                                 class="adsPreviewImage__image"
+                                 :src="props.ads_arr[virtualRow.index].images.length > 0 ? '/img/adsImg/' + props.ads_arr[virtualRow.index].images[0] : '/img/siteImg/allImg/no-image-buildings.png'"
+                                 alt="Недвижимость"
+                            >
+
+                            <!-- Статус - В архиве - Не активно - Хозяин и тд. -->
+                            <div class="adsPreviewImage__status">
+                                <div :class="getStatus(props.ads_arr[virtualRow.index]).style">
+                                    {{ getStatus(props.ads_arr[virtualRow.index]).text }}
+                                </div>
                             </div>
-                        </div>
+
+                        </template>
 
                     </div>
 
@@ -67,7 +69,7 @@
                             </div>
 
                             <!-- Адрес -->
-                            <div v-show="!shouldHideContent" class="adsPreviewDescription__adress">
+                            <div v-if="!shouldHideContent" class="adsPreviewDescription__adress">
                                 {{ getFullAddress(props.ads_arr[virtualRow.index]) }}
                             </div>
 
@@ -76,35 +78,36 @@
                         <!-- Дата публикации - Лайк -->
                         <div class="adsPreviewDescription__date">
 
-                            <!-- Дата публикации -->
-                            <div v-show="!shouldHideContent" class="adsPreview__date">
-                                {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
-                            </div>
-
-                            <v-spacer></v-spacer>
-
-                            <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
-                            <div v-if="!shouldHideContent" class="adsPreview__reclama">
-                                <div
-                                    v-for="item in topIcons.filter(i => props.ads_arr[virtualRow.index][i.key] != null)"
-                                    :key="item.key"
-                                    :class="item.class"
-                                >
-                                    <v-icon :icon="item.icon" size="x-small" color="white"></v-icon>
+                            <template v-if="!shouldHideContent">
+                                <!-- Дата публикации -->
+                                <div class="adsPreview__date">
+                                    {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
                                 </div>
-                            </div>
 
-                            <!-- Кнопка лайк -->
-                            <span>
-                                <v-icon
-                                    v-show="!shouldHideContent"
-                                    :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"
-                                    class="icon__heart mx-1"
-                                    size="large"
-                                    @click="authStore.check ? addLikeToggle( props.ads_arr[virtualRow.index], virtualRow.index): $router.push({name: $route.name + 'Auth'})"
+                                <v-spacer></v-spacer>
+
+                                <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
+                                <div class="adsPreview__reclama">
+                                    <div
+                                        v-for="item in topIcons.filter(i => props.ads_arr[virtualRow.index][i.key] != null)"
+                                        :key="item.key"
+                                        :class="item.class"
+                                    >
+                                        <v-icon :icon="item.icon" size="x-small" color="white"></v-icon>
+                                    </div>
+                                </div>
+
+                                <!-- Кнопка лайк -->
+                                <span>
+                                <v-icon :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"
+                                        class="icon__heart mx-1"
+                                        size="large"
+                                        @click="authStore.check ? addLikeToggle( props.ads_arr[virtualRow.index], virtualRow.index): $router.push({name: $route.name + 'Auth'})"
                                 >mdi-heart
                                 </v-icon>
                             </span>
+
+                            </template>
 
                         </div>
 
@@ -113,59 +116,63 @@
                 </div>
 
                 <!--  - Управление объявлением - Продвигать рекламу - Сдать быстрее -->
-                <div class="px-md-2"
-                     v-if="!shouldHideContent && authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id
+                <template v-if="!shouldHideContent">
+
+                    <div class="px-md-2"
+                         v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id
                                     && $route.name == 'userAds' && props.ads_arr[virtualRow.index].control != 'В архиве'
-                                    || !shouldHideContent && authStore.check && authStore.user.role == 'admin' && props.ads_arr[virtualRow.index].control != 'В архиве'"
-                >
+                                    || authStore.check && authStore.user.role == 'admin' && props.ads_arr[virtualRow.index].control != 'В архиве'"
+                    >
 
-                    <div class="d-flex justify-content-between align-center">
+                        <div class="d-flex justify-content-between align-center">
 
-                        <!-- Кнопка сдать быстрее -->
-                        <v-btn dark color="grey-lighten-4"
-                               size="x-large"
-                               @click="$router.push({ name: $route.name + 'BueAds', params: {ads_id: props.ads_arr[virtualRow.index].id} } )"
-                               class="text-body-1"
-                               style="min-width: 170px"
-                        >
-                            {{ $t('adsPreviewComponentPassFaster') }}
-                        </v-btn>
+                            <!-- Кнопка сдать быстрее -->
+                            <v-btn dark color="grey-lighten-4"
+                                   size="x-large"
+                                   @click="$router.push({ name: $route.name + 'BueAds', params: {ads_id: props.ads_arr[virtualRow.index].id} } )"
+                                   class="text-body-1"
+                                   style="min-width: 170px"
+                            >
+                                {{ $t('adsPreviewComponentPassFaster') }}
+                            </v-btn>
 
-                        <!-- Просмотров - Взяли номера -->
-                        <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Статистика', props.ads_arr[virtualRow.index],virtualRow.index)">
-                            <v-icon>mdi-finance</v-icon>
-                        </v-btn>
+                            <!-- Просмотров - Взяли номера -->
+                            <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Статистика', props.ads_arr[virtualRow.index],virtualRow.index)">
+                                <v-icon>mdi-finance</v-icon>
+                            </v-btn>
 
-                        <!-- Блок - Управление объявлением - для автора и админа -->
-                        <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Управление', props.ads_arr[virtualRow.index],virtualRow.index)">
-                            <v-icon>mdi-dots-vertical</v-icon>
-                        </v-btn>
+                            <!-- Блок - Управление объявлением - для автора и админа -->
+                            <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Управление', props.ads_arr[virtualRow.index],virtualRow.index)">
+                                <v-icon>mdi-dots-vertical</v-icon>
+                            </v-btn>
+
+                        </div>
+
+                        <!-- На сайте до-->
+                        <div class="px-1 px-md-0">
+                            <span v-if="updateDateLocale.lang == 'ru'">На сайте до: </span>
+                            <span v-if="updateDateLocale.lang == 'en'">Before: </span>
+                            <span v-if="props.ads_arr[virtualRow.index].top_x30 != null">{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].top_x30, 30) }}</span>
+                            <span v-else-if="props.ads_arr[virtualRow.index].top_x7 != null">{{ addDaysToCurrentDate(ads.top_x7, 7) }}</span>
+                            <span v-else>{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].updated_at, 7) }}</span>
+                            <span v-if="updateDateLocale.lang == 'kz'" class="pl-1"> дейін</span>
+
+                        </div>
 
                     </div>
 
-                    <!-- На сайте до-->
-                    <div class="px-1 px-md-0">
-                        <span v-if="updateDateLocale.lang == 'ru'">На сайте до: </span>
-                        <span v-if="updateDateLocale.lang == 'en'">Before: </span>
-                        <span v-if="props.ads_arr[virtualRow.index].top_x30 != null">{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].top_x30, 30) }}</span>
-                        <span v-else-if="props.ads_arr[virtualRow.index].top_x7 != null">{{ addDaysToCurrentDate(ads.top_x7, 7) }}</span>
-                        <span v-else>{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].updated_at, 7) }}</span>
-                        <span v-if="updateDateLocale.lang == 'kz'" class="pl-1"> дейін</span>
+                    <!-- Жалобы на объявления - Если поступили 5 жалоб - Они видны автору - Объявление отправиться на доработку  -->
+                    <div v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id && $route.name == 'userAds'">
+
+                        <div v-if="props.ads_arr[virtualRow.index].control == 'Поступили жалобы' " class="col-12 alert" style="background: #efa6a6; padding: 1.7px 10px!important;">
+                            <i class="bi bi-exclamation-octagon"></i>
+                            {{ $t('adsPreviewComponentReturnForRevision')}}
+                            <div>{{ $t('adsPreviewComponentCause') }} : {{ getComplainText(ads) }}</div>
+                        </div>
 
                     </div>
 
-                </div>
-
-                <!-- Жалобы на объявления - Если поступили 5 жалоб - Они видны автору - Объявление отправиться на доработку  -->
-                <div v-if="!shouldHideContent && authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id && $route.name == 'userAds'">
-
-                    <div v-if="props.ads_arr[virtualRow.index].control == 'Поступили жалобы' " class="col-12 alert" style="background: #efa6a6; padding: 1.7px 10px!important;">
-                        <i class="bi bi-exclamation-octagon"></i>
-                        {{ $t('adsPreviewComponentReturnForRevision')}}
-                        <div>{{ $t('adsPreviewComponentCause') }} : {{ getComplainText(ads) }}</div>
-                    </div>
-
-                </div>
+                </template>
 
             </div>
 
@@ -655,7 +662,7 @@ function getFullAddress(one) {
     width: 110px;
     height: 100%;
     overflow: hidden;
-    background: linear-gradient(to top, #fccb90 0%, #d57eeb 100%);
+    background: linear-gradient(135deg, #e6ffe6 0%, #d9e9c7 100%);
 }
 
 .adsPreviewImage__srochnoTorg {
