@@ -17,7 +17,7 @@
                 <div class="adsPreview__block">
 
                     <!-- Фото -->
-                    <div class="adsPreviewImage__block">
+                    <div v-if="!shouldHideContent" class="adsPreviewImage__block">
 
                         <!-- Срочно торг -->
                         <span
@@ -332,6 +332,7 @@ const rowVirtualizerOptions = computed(() => ({
     estimateSize: () => estimateSize.value,
     overscan: 6,
     gap: 16, // Добавляет отступ в 16px между элементами
+    isScrollingResetDelay: 900,
 }))
 // 🧩 Фиксированная высота по маршруту
 const estimateSize = computed(() => {
@@ -372,12 +373,11 @@ const isScrolling = computed(() => rowVirtualizer.value.isScrolling)
 
 // ------------------ METHODS ------------------
 
-// Отслеживаем изменения в списке видимых виртуальных строк
-// 1️⃣ Создаем троттлированную функцию, которая будет отправлять событие
+//Получить новые обьявления Отслеживаем изменения в списке видимых виртуальных строк
 const emitThrottledGetAds = useThrottleFn(() => {
     // Внутри этой функции мы отправляем событие родителю
     emit('get-ads')
-}, 500) // Ограничиваем вызов до одного раза в 500 мс
+}, 500)// Ограничиваем вызов до одного раза в 500 мс
 
 // Отслеживаем изменения в списке видимых виртуальных строк
 watch(virtualRows, (newVirtualRows) => {
@@ -395,6 +395,41 @@ watch(virtualRows, (newVirtualRows) => {
 }) // Глубокое отслеживание, чтобы следить за изменениями внутри массива
 
 
+// Состояние для отслеживания скорости прокрутки чтобы скрывать при быстрой часть контента чтобы не было прыжков
+const shouldHideContent = computed(() => {
+    return isFastScrolling.value && isScrolling.value
+})
+
+const scrollSpeed = ref(0)
+const isFastScrolling = ref(false)
+let lastScrollY = 0
+let lastScrollTime = 0
+
+// Порог скорости, при превышении которого считаем прокрутку быстрой
+const speedThreshold = 50 // Настройте это значение
+
+const handleScroll = useThrottleFn(() => {
+    const currentScrollY = window.scrollY
+    const currentTime = Date.now()
+    const timeDelta = currentTime - lastScrollTime
+
+    // Избегаем деления на ноль, если событие срабатывает слишком быстро
+    if (timeDelta > 0) {
+        scrollSpeed.value = Math.abs(currentScrollY - lastScrollY) / timeDelta
+        isFastScrolling.value = scrollSpeed.value > speedThreshold
+    }
+
+    lastScrollY = currentScrollY
+    lastScrollTime = currentTime
+}, 100) // Частота проверки скорости
+
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll)
+})
 
 // Открыть объявление
 function showOneAds(ads, i) {
