@@ -44,7 +44,7 @@
 
 
         <!-- Кнопка -  установить приложение laim.kz  -->
-        <div v-if="appInstallStore.app != '' && $route.name == 'allAds'" class="m-3 mx-sm-auto" style="max-width: 600px">
+        <div v-if="appInstallStore.app != ''" class="m-3 mx-sm-auto" style="max-width: 600px">
             <v-btn @click="appInstallStore.install()" block  color="white" class="text-body-2">
                 <img src="/img/siteImg/allImg/logo.svg" width="25" height="25" alt="logo" class="rounded-3">
                 {{  $t('indexInstallLime') }}
@@ -54,9 +54,6 @@
 
         <!-- Компонент превью объявлений -->
         <ads-preview-component  :ads_arr="ads_arr" :getMyLikeAds="getMyLikeAds" :parent-query="query"  :is-last-load="isLastLoad" @get-ads="getAds"></ads-preview-component>
-
-
-<!--        <test-component></test-component>-->
 
 
         <!-- Gif Load  - Если объявления еще не загрузились -->
