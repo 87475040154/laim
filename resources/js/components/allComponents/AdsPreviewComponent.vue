@@ -21,7 +21,7 @@
 
                         <!-- Срочно торг -->
                         <span
-                            v-show="!isScrolling && props.ads_arr[virtualRow.index].srochno_torg"
+                            v-show="!shouldHideContent && props.ads_arr[virtualRow.index].srochno_torg"
                              class="adsPreviewImage__srochnoTorg"
                         >
                             {{ $t('adsPreviewComponentUrgentBargaining') }}
@@ -29,6 +29,7 @@
 
                         <!-- Фото -->
                         <img
+                            v-if="!shouldHideContent"
                             loading="lazy"
                             @click="props.ads_arr[virtualRow.index].images.length ? showImage(props.ads_arr[virtualRow.index]) : null"
                             class="adsPreviewImage__image"
@@ -37,7 +38,7 @@
                         >
 
                         <!-- Статус - В архиве - Не активно - Хозяин и тд. -->
-                        <div v-if="!isScrolling"  class="adsPreviewImage__status">
+                        <div v-if="!shouldHideContent"  class="adsPreviewImage__status">
                             <div :class="getStatus(props.ads_arr[virtualRow.index]).style">
                                 {{ getStatus(props.ads_arr[virtualRow.index]).text }}
                             </div>
@@ -66,7 +67,7 @@
                             </div>
 
                             <!-- Адрес -->
-                            <div class="adsPreviewDescription__adress">
+                            <div v-show="!shouldHideContent" class="adsPreviewDescription__adress">
                                 {{ getFullAddress(props.ads_arr[virtualRow.index]) }}
                             </div>
 
@@ -76,14 +77,14 @@
                         <div class="adsPreviewDescription__date">
 
                             <!-- Дата публикации -->
-                            <div class="adsPreview__date">
+                            <div v-show="!shouldHideContent" class="adsPreview__date">
                                 {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
                             </div>
 
                             <v-spacer></v-spacer>
 
                             <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
-                            <div v-if="!isScrolling" class="adsPreview__reclama">
+                            <div v-if="!shouldHideContent" class="adsPreview__reclama">
                                 <div
                                     v-for="item in topIcons.filter(i => props.ads_arr[virtualRow.index][i.key] != null)"
                                     :key="item.key"
@@ -95,10 +96,12 @@
 
                             <!-- Кнопка лайк -->
                             <span>
-                                <v-icon :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"
-                                        class="icon__heart mx-1"
-                                        size="large"
-                                        @click="authStore.check ? addLikeToggle( props.ads_arr[virtualRow.index], virtualRow.index): $router.push({name: $route.name + 'Auth'})"
+                                <v-icon
+                                    v-show="!shouldHideContent"
+                                    :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"
+                                    class="icon__heart mx-1"
+                                    size="large"
+                                    @click="authStore.check ? addLikeToggle( props.ads_arr[virtualRow.index], virtualRow.index): $router.push({name: $route.name + 'Auth'})"
                                 >mdi-heart
                                 </v-icon>
                             </span>
@@ -111,9 +114,9 @@
 
                 <!--  - Управление объявлением - Продвигать рекламу - Сдать быстрее -->
                 <div class="px-md-2"
-                     v-if="!isScrolling && authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id
+                     v-if="!shouldHideContent && authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id
                                     && $route.name == 'userAds' && props.ads_arr[virtualRow.index].control != 'В архиве'
-                                    || !isScrolling && authStore.check && authStore.user.role == 'admin' && props.ads_arr[virtualRow.index].control != 'В архиве'"
+                                    || !shouldHideContent && authStore.check && authStore.user.role == 'admin' && props.ads_arr[virtualRow.index].control != 'В архиве'"
                 >
 
                     <div class="d-flex justify-content-between align-center">
@@ -154,7 +157,7 @@
                 </div>
 
                 <!-- Жалобы на объявления - Если поступили 5 жалоб - Они видны автору - Объявление отправиться на доработку  -->
-                <div v-if="!isScrolling && authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id && $route.name == 'userAds'">
+                <div v-if="!shouldHideContent && authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id && $route.name == 'userAds'">
 
                     <div v-if="props.ads_arr[virtualRow.index].control == 'Поступили жалобы' " class="col-12 alert" style="background: #efa6a6; padding: 1.7px 10px!important;">
                         <i class="bi bi-exclamation-octagon"></i>
@@ -652,6 +655,7 @@ function getFullAddress(one) {
     width: 110px;
     height: 100%;
     overflow: hidden;
+    background: linear-gradient(to top, #fccb90 0%, #d57eeb 100%);
 }
 
 .adsPreviewImage__srochnoTorg {
