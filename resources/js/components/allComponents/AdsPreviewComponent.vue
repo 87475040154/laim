@@ -342,7 +342,7 @@ const rowVirtualizerOptions = computed(() => ({
     estimateSize: () => estimateSize.value,
     overscan: 6,
     gap: 16, // Добавляет отступ в 16px между элементами
-    isScrollingResetDelay: 900,
+    isScrollingResetDelay: 200,
 }))
 // 🧩 Фиксированная высота по маршруту
 const estimateSize = computed(() => {
@@ -416,7 +416,7 @@ let lastScrollY = 0
 let lastScrollTime = 0
 
 // Порог скорости, при превышении которого считаем прокрутку быстрой
-const speedThreshold = 10 // Настройте это значение
+const speedThreshold = 5 // Настройте это значение
 
 const handleScroll = useThrottleFn(() => {
     const currentScrollY = window.scrollY
