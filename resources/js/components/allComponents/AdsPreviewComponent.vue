@@ -1,86 +1,89 @@
 <template>
 
-    <!-- Превью блок -->
-    <div style="width: 100%; position: relative; margin-bottom: 20px" :style="{ height: totalSize + 'px'}">
+    <!-- Вывожу превью объявлений через виртуальный скроллер - Tanstak vue -->
+    <div class="rowVirtual__wrapper" :style="{ height: totalSize + 'px' }">
+
+        <!-- Внешний котейнер - 1 контейнер > 1 превью объявления -->
         <div
             v-for="virtualRow in virtualRows"
             :key="props.ads_arr[virtualRow.index].id || virtualRow.index"
-            class="virtual-row"
-            :style="{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: virtualRow.size + 'px',
-                transform: 'translateY(' + virtualRow.start + 'px)'
-             }"
+            class="rowVirtual__item"
+            :style="{ height: `${virtualRow.size}px`,transform: `translateY(${virtualRow.start}px)` }"
         >
-            <!-- Сам блок с превью -->
-            <div class="mx-3 my-2 mx-sm-auto ads__preview" :style="{ minHeight: virtualRow.size + 'px' }">
+            <!-- Обвертка блока -->
+            <div class="adsPreviewBlock__wrapper">
 
-
-                <!--  Описание объявления -->
-                <div class="d-flex p-md-2">
+                <!--  Сам блок - Фото, описание и тд. -->
+                <div class="adsPreview__block">
 
                     <!-- Фото -->
-                    <div class="image__block">
+                    <div class="adsPreviewImage__block">
 
                         <!-- Срочно торг -->
-                        <div v-show="!isScrolling && props.ads_arr[virtualRow.index].srochno_torg" style="position: absolute; top: 5px; left: 5px;" class="bg-yellow-darken-2 rounded-sm text-caption px-1">
+                        <span
+                            v-show="!isScrolling && props.ads_arr[virtualRow.index].srochno_torg"
+                             class="adsPreviewImage__srochnoTorg"
+                        >
                             {{ $t('adsPreviewComponentUrgentBargaining') }}
-                        </div>
+                        </span>
 
+                        <!-- Фото -->
                         <img
                             loading="lazy"
                             @click="props.ads_arr[virtualRow.index].images.length ? showImage(props.ads_arr[virtualRow.index]) : null"
-                            class="ads__preview-img rounded-sm"
+                            class="adsPreviewImage__image"
                             :src="props.ads_arr[virtualRow.index].images.length > 0 ? '/img/adsImg/' + props.ads_arr[virtualRow.index].images[0] : '/img/siteImg/allImg/no-image-buildings.png'"
-                            :alt="props.ads_arr[virtualRow.index].images.length > 0 ? 'Фото недвижимости' : 'Нет фото'"
+                            alt="Недвижимость"
                         >
 
                         <!-- Статус - В архиве - Не активно - Хозяин и тд. -->
-                        <div v-if="!isScrolling" class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
-                            <div :class="getStatus(props.ads_arr[virtualRow.index]).style">{{ getStatus(props.ads_arr[virtualRow.index]).text }}</div>
+                        <div v-if="!isScrolling"  class="adsPreviewImage__status">
+                            <div :class="getStatus(props.ads_arr[virtualRow.index]).style">
+                                {{ getStatus(props.ads_arr[virtualRow.index]).text }}
+                            </div>
                         </div>
 
                     </div>
 
                     <!--Блок - Описание объявления -->
-                    <div class="col pl-2">
+                    <div class="adsPreviewDescription__wrapper">
 
-                        <!--Блок - Описание объявления -->
-                        <div @click="showOneAds(props.ads_arr[virtualRow.index],virtualRow.index)" role="button" class="d-flex align-start flex-column" style="min-height: 115px">
+                        <!-- Заголовок / Цена / Адрес -->
+                        <div
+                            @click=" showOneAds(props.ads_arr[virtualRow.index],virtualRow.index) "
+                            role="button"
+                            class="adsPreviewDescription__block"
+                        >
 
                             <!-- Заголовок -->
-                            <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">
+                            <div class="adsPreviewDescription__zagolovok">
                                 {{props.ads_arr[virtualRow.index].zagolovok}}
                             </div>
 
                             <!-- Цена аренды -->
-                            <div class="my-auto fw-bold" style="font-size: 1.2em">
+                            <div class="adsPreviewDescription__cena">
                                 {{ $filters.format_number(props.ads_arr[virtualRow.index].cena) }} &#8376;
                             </div>
 
                             <!-- Адрес -->
-                            <div class="mt-auto" style="font-size: 0.9em; color: #5d6f6a">
+                            <div class="adsPreviewDescription__adress">
                                 {{ getFullAddress(props.ads_arr[virtualRow.index]) }}
                             </div>
 
                         </div>
 
                         <!-- Дата публикации - Лайк -->
-                        <div class="d-flex align-center gap-2 position-relative">
+                        <div class="adsPreviewDescription__date">
 
                             <!-- Дата публикации -->
-                            <div style="font-size: 0.9em; color: #5d6f6a">
+                            <div class="adsPreview__date">
                                 {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
                             </div>
 
                             <v-spacer></v-spacer>
 
-
                             <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
-                            <div v-if="!isScrolling" class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
+                            <div v-if="!isScrolling" class="adsPreview__reclama">
                                 <div
                                     v-for="item in topIcons.filter(i => props.ads_arr[virtualRow.index][i.key] != null)"
                                     :key="item.key"
@@ -99,7 +102,6 @@
                                 >mdi-heart
                                 </v-icon>
                             </span>
-
 
                         </div>
 
@@ -165,10 +167,10 @@
             </div>
 
         </div>
+
     </div>
 
-    <!--    Управление объявлением-->
-    <!-- Backdrop -->
+    <!--    Управление объявлением - Backdrop-->
     <transition name="adsPreviewControl__animation-backdrop">
         <div v-if="adsPreviewControlAnimation" class="adsPreviewControl__backdrop" @click="adsPreviewControlAnimation = false"></div>
     </transition>
@@ -367,40 +369,30 @@ const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
 // Флаг, показывающий, выполняется ли сейчас прокрутка (true во время скролла)
 const isScrolling = computed(() => rowVirtualizer.value.isScrolling)
 
-
 // ------------------ METHODS ------------------
 
+// Отслеживаем изменения в списке видимых виртуальных строк
+// 1️⃣ Создаем троттлированную функцию, которая будет отправлять событие
+const emitThrottledGetAds = useThrottleFn(() => {
+    // Внутри этой функции мы отправляем событие родителю
+    emit('get-ads')
+}, 500) // Ограничиваем вызов до одного раза в 500 мс
 
-// Асинхронная функция для подгрузки новых объявлений при достижении конца списка
-const getNewAds = async () => {
-    // Если достигнут конец всех данных — выходим
-    if (props.isLastLoad) {
-        return
+// Отслеживаем изменения в списке видимых виртуальных строк
+watch(virtualRows, (newVirtualRows) => {
+    // Если больше нет данных, не делаем ничего
+    if (props.isLastLoad) return
+
+    const lastVirtualRow = newVirtualRows[newVirtualRows.length - 1]
+
+    // Проверяем, если последняя видимая строка - одна из последних 5
+    if (lastVirtualRow && lastVirtualRow.index >= props.ads_arr.length - 5) {
+        // 2️⃣ Вызываем троттлированную функцию, которая отправит событие
+        // только если с момента последнего вызова прошло достаточно времени
+        emitThrottledGetAds()
     }
+}) // Глубокое отслеживание, чтобы следить за изменениями внутри массива
 
-    // Проверяем, находится ли прокрутка внизу страницы
-    const scrollHeight = document.documentElement.scrollHeight
-    const scrollTop = document.documentElement.scrollTop
-    const clientHeight = document.documentElement.clientHeight
-    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 200 // С небольшим отступом в 200px для предзагрузки
-
-    if (isAtBottom) {
-        emit('get-ads')
-    }
-}
-
-// 1️⃣ Создаём троттлированную (ограниченную по частоте) версию функции
-const throttledGetNewAds = useThrottleFn(getNewAds, 500)
-
-
-// 2️⃣ Добавляем и удаляем слушатель события прокрутки
-onMounted(() => {
-    window.addEventListener('scroll', throttledGetNewAds)
-})
-
-onUnmounted(() => {
-    window.removeEventListener('scroll', throttledGetNewAds)
-})
 
 
 // Открыть объявление
@@ -453,6 +445,7 @@ async function addLikeToggle(ads, i) {
         Toast.fire({ icon: 'error', title: errors.response.data.error })
     }
 }
+
 // Удалить объявление
 async function deleteAds( ads_id, table_name, i) {
     query.value = true
@@ -582,100 +575,134 @@ function getFullAddress(one) {
 </style>
 
 <style scoped>
-.ads__preview{
+
+.rowVirtual__wrapper {
+    width: 100%;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.rowVirtual__item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: transform 0.1s linear;
+    will-change: transform;
+}
+
+.adsPreviewBlock__wrapper {
     user-select: none;
     background: #ffffff;
     box-shadow: 0 0 1px silver;
     border-radius: 2px;
     max-width: 600px;
+    margin: 8px auto;
 }
 
-.virtual-row {
-    will-change: transform;
+.adsPreview__block {
+    display: flex;
+    padding: 0.5rem;
 }
 
-/* Стили для слайдера */
-::v-deep(.swiper-pagination-fraction){
-    width: auto;
-    color: #fff;
-    background: rgb(0,0,0,.7);
-    border-radius: 3px;
-    padding: 0 2px;
-    right: 5px;
-    left: auto;
-    bottom: 22px;
-    font-size: 0.7em;
-}
-
-.image__block{
+.adsPreviewImage__block{
     position: relative;
-    width: 90px;
+    width: 100%;
     height: 100%;
     overflow: hidden;
+    flex: 4;
 }
 
-.ads__preview-img{
+.adsPreviewImage__srochnoTorg {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: #ffeb3b; /* аналог bg-yellow-darken-2 */
+    border-radius: 4px; /* заменяет rounded-sm */
+    font-size: 0.75rem; /* text-caption */
+    padding: 2px 4px; /* px-1 */
+    font-weight: 500;
+    color: #333;
+    line-height: 1.2;
+    z-index: 2;
+    user-select: none;
+}
+
+.adsPreviewImage__status {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    gap: 4px;      /* аналог gap-1 */
+    padding: 4px;  /* аналог p-1 */
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 2;
+}
+
+.adsPreviewImage__image{
     width: 100%;
     height: 150px;
     object-fit: cover;
     object-position: center;
     background: silver;
+    border-radius: 4px;
 }
 
-/* Стили для плейсхолдера */
-.ads__preview .placeholder-bg {
-    background-color: #e0e0e0;
-    border-radius: 4px;
-}
-.ads__preview .placeholder-line {
-    background-color: #e0e0e0;
-    height: 16px;
-    border-radius: 4px;
-    margin-bottom: 8px;
-}
-.ads__preview .placeholder-circle {
-    background-color: #e0e0e0;
-    width: 40px; /* Размер иконки */
-    height: 40px; /* Размер иконки */
-    border-radius: 50%;
+.adsPreviewDescription__wrapper{
+    padding: 4px;
+    flex:8;
 }
 
-/* Примените пульсирующую анимацию, если хотите */
-.ads__preview .image__block.placeholder-bg {
-    background-color: #e0e0e0;
-    border-radius: 4px;
-    height: 150px; /* Задаем ту же высоту, что и у .ads__preview-img */
+.adsPreviewDescription__block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 115px;
 }
-.ads__preview .image__block.placeholder-bg::after {
-    content: '';
+
+.adsPreviewDescription__zagolovok {
+    font-size: 17px;
+    color: #4b4b4b;
+    line-height: 22px;
+}
+
+.adsPreviewDescription__cena {
+    font-size: 1.2em;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: 700;
+}
+
+.adsPreviewDescription__adress {
+    font-size: 0.9em;
+    color: #5d6f6a;
+    margin-top: auto;
+}
+
+.adsPreviewDescription__date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.adsPreview__date {
+    font-size: 0.9em;
+    color: #5d6f6a;
+}
+
+.adsPreview__reclama {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-    transform: translateX(-100%);
-    animation: pulse 1.5s infinite;
+    bottom: 0;
+    right: 30px;
+    display: flex;
+    gap: 4px;
+    padding: 4px;
 }
-@keyframes pulse {
-    to {
-        transform: translateX(100%);
-    }
-}
-
-
-@media screen and (min-width: 321px){
-    .image__block{
-        width: 130px;
-    }
-}
-
-@media screen and (min-width: 390px){
-    .image__block{
-        width: 160px;
-    }
-}
-
 
 /* Стили для иконок */
 .icon__crown, .icon__diamond, .icon__triangle{
@@ -764,6 +791,33 @@ function getFullAddress(one) {
 
 .adsPreviewControl__body{
     flex-grow: 1;
+}
+
+
+
+/* Смартфоны шире 360px */
+@media screen and (min-width: 360px) {
+
+}
+
+/* Смартфоны шире 430px (iPhone Pro Max) */
+@media screen and (min-width: 430px) {
+
+}
+
+/* Планшеты (iPad) */
+@media screen and (min-width: 768px) {
+
+}
+
+/* Ноутбуки (1024px+) */
+@media screen and (min-width: 1024px) {
+
+}
+
+/* Большие экраны (1440px+) */
+@media screen and (min-width: 1440px) {
+
 }
 
 </style>
