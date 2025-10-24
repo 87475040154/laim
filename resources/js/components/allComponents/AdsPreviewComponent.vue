@@ -1,7 +1,7 @@
 <template>
 
     <!-- Превью блок -->
-    <div style="height: 100vh; overflow-y: auto; width: 100%;" ref="scrollParent">
+    <div style="width: 100%;" ref="scrollParent">
         <div :style="{ height: totalSize + 'px', width: '100%', position: 'relative' }">
         <div
             v-for="virtualRow in virtualRows"
@@ -276,7 +276,7 @@
 </template>
 
 <script setup>
-import { ref,  reactive, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { ref,  reactive, computed, watch, onMounted,onUnmounted, onBeforeUnmount, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useThrottleFn, useScroll, useDebounceFn  } from '@vueuse/core'
 import axios from 'axios'
@@ -320,7 +320,7 @@ const scrollParent = ref(null)
 // Используем computed, который обращается к props напрямую.
 const rowVirtualizerOptions = computed(() => ({
     count: props.ads_arr.length,
-    getScrollElement: () => scrollParent.value,
+    getScrollElement: () => document.documentElement,
     getItemKey: (i) => props.ads_arr[i]?.id || i,
     estimateSize: () => 170,
     overscan: 6,
@@ -356,39 +356,39 @@ const isScrolling = computed(() => rowVirtualizer.value.isScrolling)
 
 
 // Асинхронная функция для подгрузки новых объявлений при достижении конца списка
+// Асинхронная функция для подгрузки новых объявлений при достижении конца списка
 const getNewAds = async () => {
-    // Получаем последний виртуальный элемент (тот, что виден последним в области виртуализации)
-    const [lastItem] = [...virtualRows.value].reverse()
-
-    // Если элементов нет или достигнут конец всех данных — выходим
-    if (!lastItem || props.isLastLoad) {
+    // Если достигнут конец всех данных — выходим
+    if (props.isLastLoad) {
         return
     }
 
-    // Проверяем, если последний видимый элемент — это последний элемент массива объявлений
-    // (т.е. пользователь проскроллил до самого конца списка)
-    if (lastItem.index >= props.ads_arr.length - 1) {
+    // Проверяем, находится ли прокрутка внизу страницы
+    const scrollHeight = document.documentElement.scrollHeight
+    const scrollTop = document.documentElement.scrollTop
+    const clientHeight = document.documentElement.clientHeight
+    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 200 // С небольшим отступом в 200px для предзагрузки
+
+    if (isAtBottom) {
         console.log('Достигнут конец списка. Загружаем ещё...')
-        // Вызываем событие в родительский компонент для подгрузки новой порции объявлений
+        // Вызываем событие в родительский компонент
         emit('get-ads')
     }
 }
 
-// 1️⃣ Создаём троттлированную (ограниченную по частоте) версию функции,
-// чтобы избежать частых запросов при быстрой прокрутке.
-// useThrottleFn — вызывается не чаще, чем раз в 500 мс.
+// 1️⃣ Создаём троттлированную (ограниченную по частоте) версию функции
 const throttledGetNewAds = useThrottleFn(getNewAds, 500)
 
 
-// 2️⃣ Следим за изменениями виртуальных элементов
-// (каждый раз, когда пользователь прокручивает список и изменяется набор видимых элементов)
-watch(virtualRows, async () => {
-    // Ждём, пока DOM обновится после очередной отрисовки виртуальных элементов
-    await nextTick()
-
-    // Проверяем, нужно ли подгрузить новую партию объявлений
-    throttledGetNewAds()
+// 2️⃣ Добавляем и удаляем слушатель события прокрутки
+onMounted(() => {
+    window.addEventListener('scroll', throttledGetNewAds)
 })
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', throttledGetNewAds)
+})
+
 
 // Открыть объявление
 function showOneAdsFn(one, i) {
