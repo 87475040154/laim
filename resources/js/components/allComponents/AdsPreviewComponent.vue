@@ -40,153 +40,153 @@
             </div>
 
             <!-- Сам блок с превью -->
-<!--            <v-card class="mx-3 my-2 mx-sm-auto ads__preview" :style="{ minHeight: virtualRow.size + 'px' }">-->
+            <v-card v-if="index != ''" class="mx-3 my-2 mx-sm-auto ads__preview" :style="{ minHeight: virtualRow.size + 'px' }">
 
 
-<!--                &lt;!&ndash;  Описание объявления &ndash;&gt;-->
-<!--                <div class="d-flex p-md-2">-->
+                <!--  Описание объявления -->
+                <div class="d-flex p-md-2">
 
-<!--                    &lt;!&ndash; Фото &ndash;&gt;-->
-<!--                    <div class="image__block">-->
+                    <!-- Фото -->
+                    <div class="image__block">
 
-<!--                        &lt;!&ndash; Срочно торг &ndash;&gt;-->
-<!--                        <div v-if="props.ads_arr[virtualRow.index].srochno_torg" style="position: absolute; top: 5px; left: 5px;" class="bg-yellow-darken-2 rounded-sm text-caption px-1">-->
-<!--                            {{ $t('adsPreviewComponentUrgentBargaining') }}-->
-<!--                        </div>-->
+                        <!-- Срочно торг -->
+                        <div v-if="props.ads_arr[virtualRow.index].srochno_torg" style="position: absolute; top: 5px; left: 5px;" class="bg-yellow-darken-2 rounded-sm text-caption px-1">
+                            {{ $t('adsPreviewComponentUrgentBargaining') }}
+                        </div>
 
-<!--                        <img-->
-<!--                            loading="lazy"-->
-<!--                            @click="props.ads_arr[virtualRow.index].images.length ? showImage(props.ads_arr[virtualRow.index]) : null"-->
-<!--                            class="ads__preview-img rounded-sm"-->
-<!--                            :src="props.ads_arr[virtualRow.index].images.length > 0 ? '/img/adsImg/' + props.ads_arr[virtualRow.index].images[0] : '/img/siteImg/allImg/no-image-buildings.png'"-->
-<!--                            :alt="props.ads_arr[virtualRow.index].images.length > 0 ? 'Фото недвижимости' : 'Нет фото'"-->
-<!--                        >-->
+                        <img
+                            loading="lazy"
+                            @click="props.ads_arr[virtualRow.index].images.length ? showImage(props.ads_arr[virtualRow.index]) : null"
+                            class="ads__preview-img rounded-sm"
+                            :src="props.ads_arr[virtualRow.index].images.length > 0 ? '/img/adsImg/' + props.ads_arr[virtualRow.index].images[0] : '/img/siteImg/allImg/no-image-buildings.png'"
+                            :alt="props.ads_arr[virtualRow.index].images.length > 0 ? 'Фото недвижимости' : 'Нет фото'"
+                        >
 
-<!--                        &lt;!&ndash; Статус - В архиве - Не активно - Хозяин и тд. &ndash;&gt;-->
-<!--                        <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">-->
-<!--                            <div :class="getStatus(props.ads_arr[virtualRow.index]).style">{{ getStatus(props.ads_arr[virtualRow.index]).text }}</div>-->
-<!--                        </div>-->
+                        <!-- Статус - В архиве - Не активно - Хозяин и тд. -->
+                        <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
+                            <div :class="getStatus(props.ads_arr[virtualRow.index]).style">{{ getStatus(props.ads_arr[virtualRow.index]).text }}</div>
+                        </div>
 
-<!--                    </div>-->
+                    </div>
 
-<!--                    &lt;!&ndash;Блок - Описание объявления &ndash;&gt;-->
-<!--                    <div class="col pl-2">-->
+                    <!--Блок - Описание объявления -->
+                    <div class="col pl-2">
 
-<!--                        &lt;!&ndash;Блок - Описание объявления &ndash;&gt;-->
-<!--                        <div @click="showOneAds(props.ads_arr[virtualRow.index],virtualRow.index)" role="button" class="d-flex align-start flex-column" style="min-height: 115px">-->
+                        <!--Блок - Описание объявления -->
+                        <div @click="showOneAds(props.ads_arr[virtualRow.index],virtualRow.index)" role="button" class="d-flex align-start flex-column" style="min-height: 115px">
 
-<!--                            &lt;!&ndash; Заголовок &ndash;&gt;-->
-<!--                            <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">-->
-<!--                                {{props.ads_arr[virtualRow.index].zagolovok}}-->
-<!--                            </div>-->
+                            <!-- Заголовок -->
+                            <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">
+                                {{props.ads_arr[virtualRow.index].zagolovok}}
+                            </div>
 
-<!--                            &lt;!&ndash; Цена аренды &ndash;&gt;-->
-<!--                            <div class="my-auto fw-bold" style="font-size: 1.2em">-->
-<!--                                {{ $filters.format_number(props.ads_arr[virtualRow.index].cena) }} &#8376;-->
-<!--                            </div>-->
+                            <!-- Цена аренды -->
+                            <div class="my-auto fw-bold" style="font-size: 1.2em">
+                                {{ $filters.format_number(props.ads_arr[virtualRow.index].cena) }} &#8376;
+                            </div>
 
-<!--                            &lt;!&ndash; Адрес &ndash;&gt;-->
-<!--                            <div class="mt-auto" style="font-size: 0.9em; color: #5d6f6a">-->
-<!--                                {{ getFullAddress(props.ads_arr[virtualRow.index]) }}-->
-<!--                            </div>-->
+                            <!-- Адрес -->
+                            <div class="mt-auto" style="font-size: 0.9em; color: #5d6f6a">
+                                {{ getFullAddress(props.ads_arr[virtualRow.index]) }}
+                            </div>
 
-<!--                        </div>-->
+                        </div>
 
-<!--                        &lt;!&ndash; Дата публикации - Лайк &ndash;&gt;-->
-<!--                        <div class="d-flex align-center gap-2 position-relative">-->
+                        <!-- Дата публикации - Лайк -->
+                        <div class="d-flex align-center gap-2 position-relative">
 
-<!--                            &lt;!&ndash; Дата публикации &ndash;&gt;-->
-<!--                            <div style="font-size: 0.9em; color: #5d6f6a">-->
-<!--                                {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}-->
-<!--                            </div>-->
+                            <!-- Дата публикации -->
+                            <div style="font-size: 0.9em; color: #5d6f6a">
+                                {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
+                            </div>
 
-<!--                            <v-spacer></v-spacer>-->
-
-
-<!--                            &lt;!&ndash; Если Отправленно в ТОП или ТОП х7, ТОП х30&ndash;&gt;-->
-<!--                            <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">-->
-<!--                                <div-->
-<!--                                    v-for="item in topIcons.filter(i => props.ads_arr[virtualRow.index][i.key] != null)"-->
-<!--                                    :key="item.key"-->
-<!--                                    :class="item.class"-->
-<!--                                >-->
-<!--                                    <v-icon :icon="item.icon" size="x-small" color="white"></v-icon>-->
-<!--                                </div>-->
-<!--                            </div>-->
-
-<!--                            &lt;!&ndash; Кнопка лайк &ndash;&gt;-->
-<!--                            <span>-->
-<!--                                <v-icon :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"-->
-<!--                                        class="icon__heart mx-1"-->
-<!--                                        size="large"-->
-<!--                                        @click="authStore.check ? addLikeToggle(virtualRow.index, props.ads_arr[virtualRow.index]): $router.push({name: $route.name + 'Auth'})"-->
-<!--                                >mdi-heart-->
-<!--                                </v-icon>-->
-<!--                            </span>-->
+                            <v-spacer></v-spacer>
 
 
-<!--                        </div>-->
+                            <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
+                            <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
+                                <div
+                                    v-for="item in topIcons.filter(i => props.ads_arr[virtualRow.index][i.key] != null)"
+                                    :key="item.key"
+                                    :class="item.class"
+                                >
+                                    <v-icon :icon="item.icon" size="x-small" color="white"></v-icon>
+                                </div>
+                            </div>
 
-<!--                    </div>-->
+                            <!-- Кнопка лайк -->
+                            <span>
+                                <v-icon :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"
+                                        class="icon__heart mx-1"
+                                        size="large"
+                                        @click="authStore.check ? addLikeToggle(virtualRow.index, props.ads_arr[virtualRow.index]): $router.push({name: $route.name + 'Auth'})"
+                                >mdi-heart
+                                </v-icon>
+                            </span>
 
-<!--                </div>-->
 
-<!--                &lt;!&ndash;  - Управление объявлением - Продвигать рекламу - Сдать быстрее &ndash;&gt;-->
-<!--                <div class="px-md-2"-->
-<!--                     v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id-->
-<!--                                    && $route.name == 'userAds' && props.ads_arr[virtualRow.index].control != 'В архиве'-->
-<!--                                    || authStore.check && authStore.user.role == 'admin' && props.ads_arr[virtualRow.index].control != 'В архиве'"-->
-<!--                >-->
+                        </div>
 
-<!--                    <div class="d-flex justify-content-between align-center">-->
+                    </div>
 
-<!--                        &lt;!&ndash; Кнопка сдать быстрее &ndash;&gt;-->
-<!--                        <v-btn dark color="grey-lighten-4"-->
-<!--                               size="x-large"-->
-<!--                               @click="$router.push({ name: $route.name + 'BueAds', params: {ads_id: props.ads_arr[virtualRow.index].id} } )"-->
-<!--                               class="text-body-1"-->
-<!--                               style="min-width: 170px"-->
-<!--                        >-->
-<!--                            {{ $t('adsPreviewComponentPassFaster') }}-->
-<!--                        </v-btn>-->
+                </div>
 
-<!--                        &lt;!&ndash; Просмотров - Взяли номера &ndash;&gt;-->
-<!--                        <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Статистика', props.ads_arr[virtualRow.index],virtualRow.index)">-->
-<!--                            <v-icon>mdi-finance</v-icon>-->
-<!--                        </v-btn>-->
+                <!--  - Управление объявлением - Продвигать рекламу - Сдать быстрее -->
+                <div class="px-md-2"
+                     v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id
+                                    && $route.name == 'userAds' && props.ads_arr[virtualRow.index].control != 'В архиве'
+                                    || authStore.check && authStore.user.role == 'admin' && props.ads_arr[virtualRow.index].control != 'В архиве'"
+                >
 
-<!--                        &lt;!&ndash; Блок - Управление объявлением - для автора и админа &ndash;&gt;-->
-<!--                        <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Управление', props.ads_arr[virtualRow.index],virtualRow.index)">-->
-<!--                            <v-icon>mdi-dots-vertical</v-icon>-->
-<!--                        </v-btn>-->
+                    <div class="d-flex justify-content-between align-center">
 
-<!--                    </div>-->
+                        <!-- Кнопка сдать быстрее -->
+                        <v-btn dark color="grey-lighten-4"
+                               size="x-large"
+                               @click="$router.push({ name: $route.name + 'BueAds', params: {ads_id: props.ads_arr[virtualRow.index].id} } )"
+                               class="text-body-1"
+                               style="min-width: 170px"
+                        >
+                            {{ $t('adsPreviewComponentPassFaster') }}
+                        </v-btn>
 
-<!--                    &lt;!&ndash; На сайте до&ndash;&gt;-->
-<!--                    <div class="px-1 px-md-0">-->
-<!--                        <span v-if="updateDateLocale.lang == 'ru'">На сайте до: </span>-->
-<!--                        <span v-if="updateDateLocale.lang == 'en'">Before: </span>-->
-<!--                        <span v-if="props.ads_arr[virtualRow.index].top_x30 != null">{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].top_x30, 30) }}</span>-->
-<!--                        <span v-else-if="props.ads_arr[virtualRow.index].top_x7 != null">{{ addDaysToCurrentDate(ads.top_x7, 7) }}</span>-->
-<!--                        <span v-else>{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].updated_at, 7) }}</span>-->
-<!--                        <span v-if="updateDateLocale.lang == 'kz'" class="pl-1"> дейін</span>-->
+                        <!-- Просмотров - Взяли номера -->
+                        <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Статистика', props.ads_arr[virtualRow.index],virtualRow.index)">
+                            <v-icon>mdi-finance</v-icon>
+                        </v-btn>
 
-<!--                    </div>-->
+                        <!-- Блок - Управление объявлением - для автора и админа -->
+                        <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Управление', props.ads_arr[virtualRow.index],virtualRow.index)">
+                            <v-icon>mdi-dots-vertical</v-icon>
+                        </v-btn>
 
-<!--                </div>-->
+                    </div>
 
-<!--                &lt;!&ndash; Жалобы на объявления - Если поступили 5 жалоб - Они видны автору - Объявление отправиться на доработку  &ndash;&gt;-->
-<!--                <div v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id && $route.name == 'userAds'">-->
+                    <!-- На сайте до-->
+                    <div class="px-1 px-md-0">
+                        <span v-if="updateDateLocale.lang == 'ru'">На сайте до: </span>
+                        <span v-if="updateDateLocale.lang == 'en'">Before: </span>
+                        <span v-if="props.ads_arr[virtualRow.index].top_x30 != null">{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].top_x30, 30) }}</span>
+                        <span v-else-if="props.ads_arr[virtualRow.index].top_x7 != null">{{ addDaysToCurrentDate(ads.top_x7, 7) }}</span>
+                        <span v-else>{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].updated_at, 7) }}</span>
+                        <span v-if="updateDateLocale.lang == 'kz'" class="pl-1"> дейін</span>
 
-<!--                    <div v-if="props.ads_arr[virtualRow.index].control == 'Поступили жалобы' " class="col-12 alert" style="background: #efa6a6; padding: 1.7px 10px!important;">-->
-<!--                        <i class="bi bi-exclamation-octagon"></i>-->
-<!--                        {{ $t('adsPreviewComponentReturnForRevision')}}-->
-<!--                        <div>{{ $t('adsPreviewComponentCause') }} : {{ getComplainText(ads) }}</div>-->
-<!--                    </div>-->
+                    </div>
 
-<!--                </div>-->
+                </div>
 
-<!--            </v-card>-->
+                <!-- Жалобы на объявления - Если поступили 5 жалоб - Они видны автору - Объявление отправиться на доработку  -->
+                <div v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id && $route.name == 'userAds'">
+
+                    <div v-if="props.ads_arr[virtualRow.index].control == 'Поступили жалобы' " class="col-12 alert" style="background: #efa6a6; padding: 1.7px 10px!important;">
+                        <i class="bi bi-exclamation-octagon"></i>
+                        {{ $t('adsPreviewComponentReturnForRevision')}}
+                        <div>{{ $t('adsPreviewComponentCause') }} : {{ getComplainText(ads) }}</div>
+                    </div>
+
+                </div>
+
+            </v-card>
 
         </div>
     </div>
@@ -346,7 +346,7 @@ const rowVirtualizerOptions = computed(() => ({
     getScrollElement: () => scrollParent.value,
     getItemKey: (i) => props.ads_arr[i]?.id || i,
     estimateSize: () => 170,
-    overscan: 5,
+    overscan: 8,
 }))
 const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
 
