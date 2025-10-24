@@ -16,54 +16,8 @@
                 transform: 'translateY(' + virtualRow.start + 'px)'
              }"
         >
-            <!-- Легкий плейсхолдер для быстрой прокрутки -->
-            <div  class="mx-3  mx-sm-auto ads__preview" :style="{ 'min-height': virtualRow.size + 'px', height: 170+'px' }">
-                <!-- Имитация контента - самая простая и производительная разметка -->
-                <div class="d-flex p-md-2">
-                    <!-- Имитация фото -->
-                    <div class="image__block placeholder-bg"></div>
-
-                    <!-- Имитация блока описания -->
-                    <div class="col pl-2 d-flex flex-column">
-                        <div class="d-flex align-start flex-column" style="min-height: 115px">
-                            <!-- Заголовок -->
-                            <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">
-                                {{props.ads_arr[virtualRow.index].zagolovok}}
-                            </div>
-
-                            <!-- Цена аренды -->
-                            <div class="my-auto fw-bold" style="font-size: 1.2em">
-                                {{ $filters.format_number(props.ads_arr[virtualRow.index].cena) }} &#8376;
-                            </div>
-
-                            <!-- Адрес -->
-                            <div class="mt-auto" style="font-size: 0.9em; color: #5d6f6a">
-                                {{ getFullAddress(props.ads_arr[virtualRow.index]) }}
-                            </div>
-                        </div>
-                        <div class="d-flex align-center gap-2 position-relative">
-                            <!-- Дата публикации -->
-                            <div style="font-size: 0.9em; color: #5d6f6a">
-                                {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
-                            </div>
-
-                            <v-spacer></v-spacer>
-                            <!-- Кнопка лайк -->
-                            <span>
-                                <v-icon :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"
-                                        class="icon__heart mx-1"
-                                        size="large"
-                                        @click="authStore.check ? addLikeToggle(virtualRow.index, props.ads_arr[virtualRow.index]): $router.push({name: $route.name + 'Auth'})"
-                                >mdi-heart
-                                </v-icon>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Сам блок с превью -->
-            <v-card v-if="index != ''" class="mx-3 my-2 mx-sm-auto ads__preview" :style="{ minHeight: virtualRow.size + 'px' }">
+            <v-card class="mx-3 my-2 mx-sm-auto ads__preview" :style="{ minHeight: virtualRow.size + 'px' }">
 
 
                 <!--  Описание объявления -->
@@ -73,7 +27,7 @@
                     <div class="image__block">
 
                         <!-- Срочно торг -->
-                        <div v-if="props.ads_arr[virtualRow.index].srochno_torg" style="position: absolute; top: 5px; left: 5px;" class="bg-yellow-darken-2 rounded-sm text-caption px-1">
+                        <div v-show="!isScrolling && props.ads_arr[virtualRow.index].srochno_torg" style="position: absolute; top: 5px; left: 5px;" class="bg-yellow-darken-2 rounded-sm text-caption px-1">
                             {{ $t('adsPreviewComponentUrgentBargaining') }}
                         </div>
 
@@ -86,7 +40,7 @@
                         >
 
                         <!-- Статус - В архиве - Не активно - Хозяин и тд. -->
-                        <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
+                        <div v-if="!isScrolling" class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto">
                             <div :class="getStatus(props.ads_arr[virtualRow.index]).style">{{ getStatus(props.ads_arr[virtualRow.index]).text }}</div>
                         </div>
 
@@ -127,7 +81,7 @@
 
 
                             <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
-                            <div class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
+                            <div v-show="!isScrolling" class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
                                 <div
                                     v-for="item in topIcons.filter(i => props.ads_arr[virtualRow.index][i.key] != null)"
                                     :key="item.key"
@@ -156,9 +110,9 @@
 
                 <!--  - Управление объявлением - Продвигать рекламу - Сдать быстрее -->
                 <div class="px-md-2"
-                     v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id
+                     v-if="!isScrolling && authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id
                                     && $route.name == 'userAds' && props.ads_arr[virtualRow.index].control != 'В архиве'
-                                    || authStore.check && authStore.user.role == 'admin' && props.ads_arr[virtualRow.index].control != 'В архиве'"
+                                    || !isScrolling && authStore.check && authStore.user.role == 'admin' && props.ads_arr[virtualRow.index].control != 'В архиве'"
                 >
 
                     <div class="d-flex justify-content-between align-center">
@@ -199,7 +153,7 @@
                 </div>
 
                 <!-- Жалобы на объявления - Если поступили 5 жалоб - Они видны автору - Объявление отправиться на доработку  -->
-                <div v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id && $route.name == 'userAds'">
+                <div v-if="!isScrolling && authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id && $route.name == 'userAds'">
 
                     <div v-if="props.ads_arr[virtualRow.index].control == 'Поступили жалобы' " class="col-12 alert" style="background: #efa6a6; padding: 1.7px 10px!important;">
                         <i class="bi bi-exclamation-octagon"></i>
@@ -400,22 +354,6 @@ const isScrolling = computed(() => rowVirtualizer.value.isScrolling)
 
 // ------------------ METHODS ------------------
 
-// Устанавливает isFastScrolling в false после 150 мс без прокрутки
-const isContentHidden = ref(false)
-
-// Таймер показа контента после остановки скролла
-const handleStopScrolling = useDebounceFn(() => {
-    isContentHidden.value = false
-}, 150) // через 150 мс после окончания прокрутки
-
-watch(isScrolling, (scrolling) => {
-    if (scrolling) {
-        // Скрываем контент при прокрутке
-        isContentHidden.value = true
-        // Дебаунс на конец прокрутки
-        handleStopScrolling()
-    }
-})
 
 // Асинхронная функция для подгрузки новых объявлений при достижении конца списка
 const getNewAds = async () => {
