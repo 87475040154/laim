@@ -26,14 +26,37 @@
                     <!-- Имитация блока описания -->
                     <div class="col pl-2 d-flex flex-column">
                         <div class="d-flex align-start flex-column" style="min-height: 115px">
-                            <div class="placeholder-line" style="width: 80%"></div>
-                            <div class="placeholder-line my-auto" style="width: 50%"></div>
-                            <div class="placeholder-line mt-auto" style="width: 60%"></div>
+                            <!-- Заголовок -->
+                            <div style="font-size: 17px; color: #4b4b4b; line-height: 22px">
+                                {{props.ads_arr[virtualRow.index].zagolovok}}
+                            </div>
+
+                            <!-- Цена аренды -->
+                            <div class="my-auto fw-bold" style="font-size: 1.2em">
+                                {{ $filters.format_number(props.ads_arr[virtualRow.index].cena) }} &#8376;
+                            </div>
+
+                            <!-- Адрес -->
+                            <div class="mt-auto" style="font-size: 0.9em; color: #5d6f6a">
+                                {{ getFullAddress(props.ads_arr[virtualRow.index]) }}
+                            </div>
                         </div>
                         <div class="d-flex align-center gap-2 position-relative">
-                            <div class="placeholder-line" style="width: 30%"></div>
+                            <!-- Дата публикации -->
+                            <div style="font-size: 0.9em; color: #5d6f6a">
+                                {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
+                            </div>
+
                             <v-spacer></v-spacer>
-                            <div class="placeholder-circle"></div>
+                            <!-- Кнопка лайк -->
+                            <span>
+                                <v-icon :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"
+                                        class="icon__heart mx-1"
+                                        size="large"
+                                        @click="authStore.check ? addLikeToggle(virtualRow.index, props.ads_arr[virtualRow.index]): $router.push({name: $route.name + 'Auth'})"
+                                >mdi-heart
+                                </v-icon>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -346,7 +369,7 @@ const rowVirtualizerOptions = computed(() => ({
     getScrollElement: () => scrollParent.value,
     getItemKey: (i) => props.ads_arr[i]?.id || i,
     estimateSize: () => 170,
-    overscan: 8,
+    overscan: 10,
 }))
 const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
 
