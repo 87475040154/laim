@@ -331,6 +331,7 @@ const rowVirtualizerOptions = computed(() => ({
     getItemKey: (i) => props.ads_arr[i]?.id || i,
     estimateSize: () => estimateSize.value,
     overscan: 6,
+    gap: 16, // Добавляет отступ в 16px между элементами
 }))
 // 🧩 Фиксированная высота по маршруту
 const estimateSize = computed(() => {
@@ -597,20 +598,25 @@ function getFullAddress(one) {
     box-shadow: 0 0 1px silver;
     border-radius: 2px;
     max-width: 600px;
-    margin: 8px auto;
+    height: 100%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .adsPreview__block {
-    display: flex;
-    padding: 0.5rem;
-}
-
-.adsPreviewImage__block{
-    position: relative;
     width: 100%;
     height: 100%;
+    display: flex;
+    gap: 0.5rem; /* небольшой отступ между фото и описанием */
+}
+
+
+/* Левая колонка - фото */
+.adsPreviewImage__block {
+    position: relative;
+    width: 110px;
+    height: 100%;
     overflow: hidden;
-    flex: 4;
 }
 
 .adsPreviewImage__srochnoTorg {
@@ -643,18 +649,22 @@ function getFullAddress(one) {
     z-index: 2;
 }
 
-.adsPreviewImage__image{
+.adsPreviewImage__image {
     width: 100%;
-    height: 150px;
+    height: 100%;
     object-fit: cover;
     object-position: center;
-    background: silver;
     border-radius: 4px;
 }
 
-.adsPreviewDescription__wrapper{
-    padding: 4px;
-    flex:8;
+
+
+/* Правая колонка - описание */
+.adsPreviewDescription__wrapper {
+    flex: 1; /* занимает всё оставшееся пространство */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* чтобы заголовок сверху, дата и лайк снизу */
 }
 
 .adsPreviewDescription__block {
@@ -689,6 +699,7 @@ function getFullAddress(one) {
     gap: 0.5rem;
     position: relative;
 }
+
 
 .adsPreview__date {
     font-size: 0.9em;
@@ -797,12 +808,16 @@ function getFullAddress(one) {
 
 /* Смартфоны шире 360px */
 @media screen and (min-width: 360px) {
-
+    .adsPreviewImage__block{
+        width: 140px; /* ширина увеличивается на больших экранах */
+    }
 }
 
 /* Смартфоны шире 430px (iPhone Pro Max) */
 @media screen and (min-width: 430px) {
-
+    .adsPreviewImage__block{
+        width: 160px; /* ширина увеличивается на больших экранах */
+    }
 }
 
 /* Планшеты (iPad) */
