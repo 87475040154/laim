@@ -323,7 +323,7 @@ const rowVirtualizerOptions = computed(() => ({
     getScrollElement: () => scrollParent.value,
     getItemKey: (i) => props.ads_arr[i]?.id || i,
     estimateSize: () => 170,
-    overscan: 2,
+    overscan: 6,
 }))
 const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
 
