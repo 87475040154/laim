@@ -81,7 +81,7 @@
 
 
                             <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
-                            <div v-show="!isScrolling" class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
+                            <div v-if="!isScrolling" class="d-flex gap-1 p-1" style="position: absolute; bottom: 0; right: 30px">
                                 <div
                                     v-for="item in topIcons.filter(i => props.ads_arr[virtualRow.index][i.key] != null)"
                                     :key="item.key"
