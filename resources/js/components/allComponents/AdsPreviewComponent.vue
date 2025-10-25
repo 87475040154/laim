@@ -19,6 +19,14 @@
                     <!-- Фото -->
                     <div class="adsPreviewImage__block">
 
+                        <!-- Фото -->
+                        <img loading="lazy"
+                             @click="props.ads_arr[virtualRow.index].images.length ? showImage(props.ads_arr[virtualRow.index]) : null"
+                             class="adsPreviewImage__image"
+                             :src="props.ads_arr[virtualRow.index].images.length > 0 ? '/img/adsImg/' + props.ads_arr[virtualRow.index].images[0] : '/img/siteImg/allImg/no-image-buildings.png'"
+                             alt="Недвижимость"
+                        >
+
                         <template v-if="!shouldHideContent">
 
                             <!-- Срочно торг -->
@@ -29,13 +37,6 @@
                                 {{ $t('adsPreviewComponentUrgentBargaining') }}
                             </span>
 
-                            <!-- Фото -->
-                            <img loading="lazy"
-                                 @click="props.ads_arr[virtualRow.index].images.length ? showImage(props.ads_arr[virtualRow.index]) : null"
-                                 class="adsPreviewImage__image"
-                                 :src="props.ads_arr[virtualRow.index].images.length > 0 ? '/img/adsImg/' + props.ads_arr[virtualRow.index].images[0] : '/img/siteImg/allImg/no-image-buildings.png'"
-                                 alt="Недвижимость"
-                            >
 
                             <!-- Статус - В архиве - Не активно - Хозяин и тд. -->
                             <div class="adsPreviewImage__status">
