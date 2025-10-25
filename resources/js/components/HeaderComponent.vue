@@ -8,6 +8,7 @@
         <!-- Верхняя панель -->
         <div class="top">
             <div class="top__inner">
+
                 <!-- Логотип -->
                 <button class="logo" @click="onLogoClick">
                     <img src="/img/siteImg/allImg/logo.svg" width="30" height="30" alt="Логотип" />
@@ -109,9 +110,9 @@
                 @click="$router.replace(item.link)"
             >
                 <div class="menu__icon" :class="{ active: $route.params.table_name === item.name }">
-                    <img :src="item.icon" :alt="item.label" width="35" height="35" />
+                    <img :src="item.icon" :alt="item.label" width="45" height="45" />
+                    <small>{{ $t(item.label) !== item.label ? $t(item.label) : item.fallback }}</small>
                 </div>
-                <small>{{ $t(item.label) !== item.label ? $t(item.label) : item.fallback }}</small>
             </div>
         </nav>
     </header>
@@ -128,35 +129,47 @@ const authStore = useAuthStore()
 const getProjectDataStore = useGetProjectDataStore()
 const appInstallStore = useAppInstallStore()
 
+// 🔹 Ссылки и реактивные данные
 const headerRef = ref(null)
 const { height: headerHeight } = useElementSize(headerRef)
-const { y, directions } = useScroll(window)
+const { y } = useScroll(window)
 
-const isFixed = ref(false)
-const isHidden = ref(false)
-let lastY = 0
-const DELTA = 10
+// 🔹 Состояние хедера
+const isFixed = ref(false)   // прикреплён к верху
+const isHidden = ref(false)  // скрыт за экран
+let lastY = 0                // последняя позиция скролла
 
+// 🔹 Отслеживание прокрутки
 watch(y, (newY) => {
-    const diff = newY - lastY
-    if (Math.abs(diff) < DELTA) return
+    const diff = newY - lastY // определяем направление
 
     if (newY <= 0) {
+        // В самом верху страницы
         isFixed.value = false
         isHidden.value = false
-    } else if (directions.bottom) {
+    }
+    else if (diff > 0) {
+        // Скроллим вниз — прячем хедер
+        isFixed.value = true
         isHidden.value = true
-    } else if (directions.top) {
+    }
+    else if (diff < 0) {
+        // Скроллим вверх — показываем хедер
         isFixed.value = true
         isHidden.value = false
     }
+
     lastY = newY
 })
 
+// 🔹 Стиль для анимации
 const headerStyle = computed(() => ({
-    transform: isHidden.value ? `translateY(-${headerHeight.value}px)` : 'translateY(0)',
-    transition: 'transform 220ms cubic-bezier(.2,.9,.2,1)',
+    transform: isHidden.value
+        ? `translateY(-${headerHeight.value}px)`
+        : 'translateY(0)',
+    transition: 'transform 200ms ease'
 }))
+
 
 const categories = [
     { name: 'Kvartira', label: 'headerMenuApartments', fallback: 'Квартиры', icon: '/img/siteImg/menuImg/1.svg', link: '/allAds/Kvartira' },
@@ -187,15 +200,17 @@ function onSubmitClick() {
     width: 100%;
     background: #eeeeee;
     will-change: transform;
-    z-index: 1000;
 }
 .header--fixed {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    z-index: 10; /* чуть выше */
+    width: 100%;
 }
 .top {
+    display: none;
     background: rgb(63 63 69);
     color: #fff;
     padding: 8px 0;
@@ -258,40 +273,134 @@ function onSubmitClick() {
 .submit-btn:hover {
     opacity: 0.9;
 }
+
 .menu {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
     gap: 12px;
     flex-wrap: nowrap;
     overflow-x: auto;
     padding: 10px 8px 14px;
+    scrollbar-width: none; /* скрыть скролл на Firefox */
 }
+.menu::-webkit-scrollbar {
+    display: none; /* скрыть скролл на Chrome/Safari */
+}
+
 .menu__item {
+    flex: 0 0 auto; /* 🔥 запрещаем растягивание */
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    min-width: 70px;
     user-select: none;
 }
+
 .menu__icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background: #f9f9f9;
-    margin-bottom: 5px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     transition: background 0.2s;
+    padding: 6px 0;
 }
+
+.menu__icon img {
+    margin-bottom: 4px;
+}
+
+.menu__icon small {
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    line-height: 1.1;
+}
+
 .menu__icon.active {
     background: #19b07b;
+}
+
+.menu__icon.active small {
     color: #fff;
 }
-.menu small {
-    font-size: 13px;
-    color: #333;
+
+/* 📞 Маленькие телефоны (≥480px) */
+@media (min-width: 480px) {
+    /* Пример: немного увеличиваем шрифт */
+    body {
+        font-size: 15px;
+    }
+}
+
+/* 📱 Средние телефоны (≥576px) */
+@media (min-width: 576px) {
+
+}
+
+/* 💼 Планшеты (≥768px) */
+@media (min-width: 768px) {
+
+}
+
+/* при ширине экрана ≥823px — по центру */
+@media (min-width: 823px) {
+    .menu {
+        justify-content: center;
+    }
+}
+
+/* 💻 Ноутбуки (≥992px) */
+@media (min-width: 992px) {
+    .top{
+        display: block;
+    }
+
+    .menu__icon img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* 🖥 Десктопы (≥1200px) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+
+    body {
+        font-size: 16px;
+    }
+}
+
+/* 🖥💎 Большие мониторы (≥1400px) */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+}
+
+/* 🖥 Ultra-wide 2K (≥1600px) */
+@media (min-width: 1600px) {
+    .container {
+        max-width: 1500px;
+    }
+}
+
+/* 🖥 4K дисплеи (≥1920px) */
+@media (min-width: 1920px) {
+    body {
+        font-size: 18px;
+    }
+
+    .container {
+        max-width: 1700px;
+    }
 }
 </style>
