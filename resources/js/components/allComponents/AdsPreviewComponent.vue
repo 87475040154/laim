@@ -336,12 +336,14 @@ const query = ref(false)
 // Создаём виртуализатор ОДИН РАЗ в setup.
 // count — computed, автоматически отслеживает длину ads_array
 const scrollParent = ref(null)
+const isFastScrolling = ref(false)
+
 // Используем computed, который обращается к props напрямую.
 const rowVirtualizerOptions = computed(() => ({
     count: props.ads_arr.length,
     getItemKey: (i) => props.ads_arr[i]?.id || i,
     estimateSize: () => estimateSize.value,
-    overscan: 8,
+    overscan: isFastScrolling.value ? 1 : 8,
     gap: 16,
     isScrollingResetDelay: 500
 }))
@@ -412,7 +414,6 @@ const shouldHideContent = computed(() => {
 })
 
 const scrollSpeed = ref(0)
-const isFastScrolling = ref(false)
 let lastScrollY = 0
 let lastScrollTime = 0
 
