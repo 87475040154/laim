@@ -70,8 +70,8 @@
                             </div>
 
                             <!-- Адрес -->
-                            <div v-if="!shouldHideContent" class="adsPreviewDescription__adress">
-                                {{ getFullAddress(props.ads_arr[virtualRow.index]) }}
+                            <div class="adsPreviewDescription__adress">
+                                <span v-if="!shouldHideContent">{{ getFullAddress(props.ads_arr[virtualRow.index]) }}</span>
                             </div>
 
                         </div>
@@ -341,9 +341,9 @@ const rowVirtualizerOptions = computed(() => ({
     count: props.ads_arr.length,
     getItemKey: (i) => props.ads_arr[i]?.id || i,
     estimateSize: () => estimateSize.value,
-    overscan: 6,
+    overscan: 8,
     gap: 16,
-    isScrollingResetDelay: 400
+    isScrollingResetDelay: 500
 }))
 // 🧩 Фиксированная высота по маршруту
 const estimateSize = computed(() => {
@@ -417,7 +417,7 @@ let lastScrollY = 0
 let lastScrollTime = 0
 
 // Порог скорости, при превышении которого считаем прокрутку быстрой
-const speedThreshold = 1.5 // Настройте это значение
+const speedThreshold = 2.5 // Настройте это значение
 
 const handleScroll = useThrottleFn(() => {
     const currentScrollY = window.scrollY
