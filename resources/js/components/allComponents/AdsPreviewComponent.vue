@@ -341,7 +341,7 @@ const rowVirtualizerOptions = computed(() => ({
     count: props.ads_arr.length,
     getItemKey: (i) => props.ads_arr[i]?.id || i,
     estimateSize: () => estimateSize.value,
-    overscan: 6,
+    overscan: 10,
     gap: 16,
     isScrollingResetDelay: 400
 }))
