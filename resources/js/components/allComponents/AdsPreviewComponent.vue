@@ -340,7 +340,7 @@ const rowVirtualizerOptions = computed(() => ({
     count: props.ads_arr.length,
     getItemKey: (i) => props.ads_arr[i]?.id || i,
     estimateSize: () => estimateSize.value,
-    overscan: 20,
+    overscan: 2,
     gap: 16
 }))
 // 🧩 Фиксированная высота по маршруту
