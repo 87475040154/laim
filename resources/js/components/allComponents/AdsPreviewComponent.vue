@@ -341,7 +341,7 @@ const rowVirtualizerOptions = computed(() => ({
     count: props.ads_arr.length,
     getItemKey: (i) => props.ads_arr[i]?.id || i,
     estimateSize: () => estimateSize.value,
-    overscan: 8,
+    overscan: 7,
     gap: 16,
     isScrollingResetDelay: 400
 }))
@@ -417,7 +417,7 @@ let lastScrollY = 0
 let lastScrollTime = 0
 
 // Порог скорости, при превышении которого считаем прокрутку быстрой
-const speedThreshold = 3 // Настройте это значение
+const speedThreshold = 1.5 // Настройте это значение
 
 const handleScroll = useThrottleFn(() => {
     const currentScrollY = window.scrollY
