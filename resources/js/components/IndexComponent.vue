@@ -28,14 +28,11 @@
                         <v-tooltip activator="parent" location="bottom">{{ $t('indexMakeFilter') }}</v-tooltip>
                     </div>
 
-                    <!-- Кнопка показать мои Избранные  -->
-                    <div>
-                        <v-icon @click="authStore.check ? getMyLike(): $router.push({name: $route.name + 'Auth'})"
-                                :icon="getMyLikeAds ? 'mdi-heart' : 'mdi-heart-outline'"
-                                :class="{'text-red':getMyLikeAds}"
-                                class="icon__heart"
-                        ></v-icon>
-                        <v-tooltip activator="parent" location="bottom">{{ $t('indexMyFavorites') }}</v-tooltip>
+                    <!-- Кнопка выбор языка  -->
+                    <div @click="$router.push({name: $route.name + 'Lang'})">
+                        <img :src="'/img/siteImg/allImg/' + updateDateLocaleStore.lang + '.png' "
+                             :alt="updateDateLocaleStore.lang"
+                             width="16" />
                     </div>
 
                 </div>

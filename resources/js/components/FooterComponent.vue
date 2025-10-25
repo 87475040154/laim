@@ -108,14 +108,15 @@
                 <v-icon style="font-size: 2em; color: #10a37f">mdi-plus-box</v-icon>
             </div>
 
-
-            <!-- Выбор языка -->
-            <div class="footer__mobile-link" role="button">
-                <img :src="'/img/siteImg/allImg/' + updateDateLocaleStore.lang + '.png' "
-                     :alt="updateDateLocaleStore.lang"
-                     width="16" />
-                <div style="font-size: 0.5em; line-height: 8px" @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocaleStore.lang }}</div>
+            <!-- Мои избранные -->
+            <div  class="footer__mobile-link" @click="authStore.check ?getMyLikeAds = !getMyLikeAds : $router.push({name: $route.name + 'Auth'})">
+                <v-icon :icon="getMyLikeAds ? 'mdi-heart' : 'mdi-heart-outline'"
+                        :class="{'text-red':getMyLikeAds}"
+                        class="icon__heart"
+                ></v-icon>
+                <div style="font-size: 0.5em; line-height: 8px">{{ 'Избранные' }}</div>
             </div>
+
 
             <!-- Мой аккаунт -->
             <div  class="footer__mobile-link" @click="authStore.check ? $router.push({name: 'myAccount'}) : $router.push({name: $route.name + 'Auth'})">
@@ -152,6 +153,8 @@ export default {
             updateDateLocaleStore: useUpdateDateLocaleStore(),
             //Проверка прокрученна ли страница
             pageScrolled: false,
+
+            getMyLikeAds: false
         }
     },
 

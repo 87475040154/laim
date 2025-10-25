@@ -20,7 +20,7 @@
                     <div class="adsPreviewImage__block">
 
                         <!-- Фото -->
-                        <img v-if="!shouldHideContent" loading="lazy"
+                        <img loading="lazy"
                              @click="props.ads_arr[virtualRow.index].images.length ? showImage(props.ads_arr[virtualRow.index]) : null"
                              class="adsPreviewImage__image"
                              :src="props.ads_arr[virtualRow.index].images.length > 0 ? '/img/adsImg/' + props.ads_arr[virtualRow.index].images[0] : '/img/siteImg/allImg/no-image-buildings.png'"
@@ -41,7 +41,10 @@
                             <!-- Статус - В архиве - Не активно - Хозяин и тд. -->
                             <div class="adsPreviewImage__status">
                                 <div :class="getStatus(props.ads_arr[virtualRow.index]).style">
-                                    {{ getStatus(props.ads_arr[virtualRow.index]).text }}
+                                    <span
+                                        @click="getStatus(props.ads_arr[virtualRow.index])?.control?showControlBlock('Поступили жалобы', props.ads_arr[virtualRow.index],virtualRow.index): null  "
+                                    >
+                                        {{ getStatus(props.ads_arr[virtualRow.index]).text }}</span>
                                 </div>
                             </div>
 
@@ -64,42 +67,43 @@
                                 {{props.ads_arr[virtualRow.index].zagolovok}}
                             </div>
 
-                            <!-- Цена аренды -->
-                            <div v-if="!shouldHideContent" class="adsPreviewDescription__cena">
-                                {{ $filters.format_number(props.ads_arr[virtualRow.index].cena) }} &#8376;
-                            </div>
+                            <template v-if="!shouldHideContent">
+                                <!-- Цена аренды -->
+                                <div class="adsPreviewDescription__cena">
+                                    {{ $filters.format_number(props.ads_arr[virtualRow.index].cena) }} &#8376;
+                                </div>
 
-                            <!-- Адрес -->
-                            <div class="adsPreviewDescription__adress">
-                                <span v-if="!shouldHideContent">{{ getFullAddress(props.ads_arr[virtualRow.index]) }}</span>
-                            </div>
+                                <!-- Адрес -->
+                                <div class="adsPreviewDescription__adress">
+                                    {{ getFullAddress(props.ads_arr[virtualRow.index]) }}
+                                </div>
+                            </template>
 
                         </div>
 
                         <!-- Дата публикации - Лайк -->
-                        <div class="adsPreviewDescription__date">
+                        <div v-if="!shouldHideContent" class="adsPreviewDescription__date">
 
-                            <template v-if="!shouldHideContent">
-                                <!-- Дата публикации -->
-                                <div class="adsPreview__date">
-                                    {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
+                            <!-- Дата публикации -->
+                            <div class="adsPreview__date">
+                                {{ $filters.transformDateRu(props.ads_arr[virtualRow.index].created_at) }}
+                            </div>
+
+                            <v-spacer></v-spacer>
+
+                            <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
+                            <div class="adsPreview__reclama">
+                                <div
+                                    v-for="item in topIcons.filter(i => props.ads_arr[virtualRow.index][i.key] != null)"
+                                    :key="item.key"
+                                    :class="item.class"
+                                >
+                                    <v-icon :icon="item.icon" size="x-small" color="white"></v-icon>
                                 </div>
+                            </div>
 
-                                <v-spacer></v-spacer>
-
-                                <!-- Если Отправленно в ТОП или ТОП х7, ТОП х30-->
-                                <div class="adsPreview__reclama">
-                                    <div
-                                        v-for="item in topIcons.filter(i => props.ads_arr[virtualRow.index][i.key] != null)"
-                                        :key="item.key"
-                                        :class="item.class"
-                                    >
-                                        <v-icon :icon="item.icon" size="x-small" color="white"></v-icon>
-                                    </div>
-                                </div>
-
-                                <!-- Кнопка лайк -->
-                                <span>
+                            <!-- Кнопка лайк -->
+                            <span>
                                 <v-icon :color="props.ads_arr[virtualRow.index].likes.length > 0 ? 'red' : 'grey-lighten-1'"
                                         class="icon__heart mx-1"
                                         size="large"
@@ -108,8 +112,6 @@
                                 </v-icon>
                             </span>
 
-                            </template>
-
                         </div>
 
                     </div>
@@ -117,63 +119,47 @@
                 </div>
 
                 <!--  - Управление объявлением - Продвигать рекламу - Сдать быстрее -->
-                <template v-if="!shouldHideContent">
-
-                    <div class="px-md-2"
-                         v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id
+                <div v-if="!shouldHideContent && authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id
                                     && $route.name == 'userAds' && props.ads_arr[virtualRow.index].control != 'В архиве'
-                                    || authStore.check && authStore.user.role == 'admin' && props.ads_arr[virtualRow.index].control != 'В архиве'"
-                    >
+                                    ||!shouldHideContent && authStore.check && authStore.user.role == 'admin' && props.ads_arr[virtualRow.index].control != 'В архиве'"
+                >
 
-                        <div class="d-flex justify-content-between align-center">
+                    <div class="d-flex justify-content-between align-center px-md-2">
 
-                            <!-- Кнопка сдать быстрее -->
-                            <v-btn dark color="grey-lighten-4"
-                                   size="x-large"
-                                   @click="$router.push({ name: $route.name + 'BueAds', params: {ads_id: props.ads_arr[virtualRow.index].id} } )"
-                                   class="text-body-1"
-                                   style="min-width: 170px"
-                            >
-                                {{ $t('adsPreviewComponentPassFaster') }}
-                            </v-btn>
+                        <!-- Кнопка сдать быстрее -->
+                        <v-btn dark color="grey-lighten-4"
+                               size="x-large"
+                               @click="$router.push({ name: $route.name + 'BueAds', params: {ads_id: props.ads_arr[virtualRow.index].id} } )"
+                               class="text-body-1"
+                               style="min-width: 170px"
+                        >
+                            {{ $t('adsPreviewComponentPassFaster') }}
+                        </v-btn>
 
-                            <!-- Просмотров - Взяли номера -->
-                            <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Статистика', props.ads_arr[virtualRow.index],virtualRow.index)">
-                                <v-icon>mdi-finance</v-icon>
-                            </v-btn>
+                        <!-- Просмотров - Взяли номера -->
+                        <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Статистика', props.ads_arr[virtualRow.index],virtualRow.index)">
+                            <v-icon>mdi-finance</v-icon>
+                        </v-btn>
 
-                            <!-- Блок - Управление объявлением - для автора и админа -->
-                            <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Управление', props.ads_arr[virtualRow.index],virtualRow.index)">
-                                <v-icon>mdi-dots-vertical</v-icon>
-                            </v-btn>
-
-                        </div>
-
-                        <!-- На сайте до-->
-                        <div class="px-1 px-md-0">
-                            <span v-if="updateDateLocale.lang == 'ru'">На сайте до: </span>
-                            <span v-if="updateDateLocale.lang == 'en'">Before: </span>
-                            <span v-if="props.ads_arr[virtualRow.index].top_x30 != null">{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].top_x30, 30) }}</span>
-                            <span v-else-if="props.ads_arr[virtualRow.index].top_x7 != null">{{ addDaysToCurrentDate(ads.top_x7, 7) }}</span>
-                            <span v-else>{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].updated_at, 7) }}</span>
-                            <span v-if="updateDateLocale.lang == 'kz'" class="pl-1"> дейін</span>
-
-                        </div>
+                        <!-- Блок - Управление объявлением - для автора и админа -->
+                        <v-btn icon size="x-large" color="grey-lighten-4" @click="showControlBlock('Управление', props.ads_arr[virtualRow.index],virtualRow.index)">
+                            <v-icon>mdi-dots-vertical</v-icon>
+                        </v-btn>
 
                     </div>
 
-                    <!-- Жалобы на объявления - Если поступили 5 жалоб - Они видны автору - Объявление отправиться на доработку  -->
-                    <div v-if="authStore.check && authStore.user.id == props.ads_arr[virtualRow.index].author_id && $route.name == 'userAds'">
-
-                        <div v-if="props.ads_arr[virtualRow.index].control == 'Поступили жалобы' " class="col-12 alert" style="background: #efa6a6; padding: 1.7px 10px!important;">
-                            <i class="bi bi-exclamation-octagon"></i>
-                            {{ $t('adsPreviewComponentReturnForRevision')}}
-                            <div>{{ $t('adsPreviewComponentCause') }} : {{ getComplainText(ads) }}</div>
-                        </div>
+                    <!-- На сайте до-->
+                    <div class="px-1 px-md-0">
+                        <span v-if="updateDateLocale.lang == 'ru'">На сайте до: </span>
+                        <span v-if="updateDateLocale.lang == 'en'">Before: </span>
+                        <span v-if="props.ads_arr[virtualRow.index].top_x30 != null">{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].top_x30, 30) }}</span>
+                        <span v-else-if="props.ads_arr[virtualRow.index].top_x7 != null">{{ addDaysToCurrentDate(ads.top_x7, 7) }}</span>
+                        <span v-else>{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].updated_at, 7) }}</span>
+                        <span v-if="updateDateLocale.lang == 'kz'" class="pl-1"> дейін</span>
 
                     </div>
 
-                </template>
+                </div>
 
             </div>
 
@@ -201,6 +187,7 @@
                     <!-- Заголовок -->
                     <div v-if="controlBlockType == 'Управление' && !deleteAdsBlock">{{ $t('AdsPreviewAddControl') }}</div>
                     <div v-if="controlBlockType == 'Статистика' && !deleteAdsBlock">{{ $t('AdsPreviewAddStatistics') }}</div>
+                    <div v-if="controlBlockType == 'Поступили жалобы' && !deleteAdsBlock">{{ $t('adsPreviewComponentReturnForRevision')}}</div>
                     <div v-if="deleteAdsBlock">{{ $t('adsPreviewComponentSendToArchive') }}</div>
 
                     <!-- Кнопка назад -->
@@ -256,6 +243,11 @@
                     <div v-if="controlBlockType == 'Статистика' && !deleteAdsBlock">
                         <div>{{ $t('AdsPreviewAddViewed') }} : <span class="fw-bold">{{ads.view}}</span></div>
                         <div class="mt-2">{{ $t('AdsPreviewAddGotTheNumber') }} : <span class="fw-bold">{{ads.viewTel}}</span></div>
+                    </div>
+
+                    <!-- Блок Поступили жалобы -->
+                    <div v-if="controlBlockType == 'Поступили жалобы' && !deleteAdsBlock">
+                        <div>{{ $t('adsPreviewComponentCause') }} : {{ getComplainText(ads) }}</div>
                     </div>
 
                     <!-- блок подтвердить удаление объявления -->
@@ -343,9 +335,9 @@ const rowVirtualizerOptions = computed(() => ({
     count: props.ads_arr.length,
     getItemKey: (i) => props.ads_arr[i]?.id || i,
     estimateSize: () => estimateSize.value,
-    overscan: 14,
+    overscan: 8,
     gap: 16,
-    isScrollingResetDelay: 800
+    isScrollingResetDelay: 500
 }))
 // 🧩 Фиксированная высота по маршруту
 const estimateSize = computed(() => {
@@ -353,9 +345,9 @@ const estimateSize = computed(() => {
         case 'allAds':      // пример: главная страница
             return 160
         case 'userAds':      // пример: объявления пользователя
-            return 300
+            return 230
         default:
-            return 170
+            return 160
     }
 })
 const rowVirtualizer = useWindowVirtualizer(rowVirtualizerOptions)
@@ -418,7 +410,7 @@ let lastScrollY = 0
 let lastScrollTime = 0
 
 // Порог скорости, при превышении которого считаем прокрутку быстрой
-const speedThreshold = 2 // Настройте это значение
+const speedThreshold = 2.5 // Настройте это значение
 
 const handleScroll = useThrottleFn(() => {
     const currentScrollY = window.scrollY
@@ -532,7 +524,7 @@ function getStatus(one) {
     const { user } = authStore
 
     if (control === 'В архиве') return { style: 'bg-red-darken-1 p-1 px-2 rounded-lg', text: t('AdsPreviewAddArhive') }
-    if (control === 'Поступили жалобы' && author_id === user.id) return { style: 'bg-red-darken-1 p-1 px-2 rounded-lg', text: t('AdsPreviewAddComplain') }
+    if (control === 'Поступили жалобы' && author_id === user.id) return {control: 'Поступили жалобы', style: 'bg-red-darken-1 p-1 px-2 rounded-lg', text: t('AdsPreviewAddComplain') }
     if (control === 'Активно' && author_id === user.id) return { style: 'bg-green-darken-1 p-1 px-2 rounded-lg', text: t('AdsPreviewAddActive') }
     if (control === 'Не активно') return { style: 'bg-blue-darken-1 p-1 px-2 rounded-lg', text: t('AdsPreviewAddNoActive') }
     if (author_id !== user.id && control !== 'В архиве') return { style: 'bg-green-darken-1 p-1 px-2 rounded-lg', text: ownerText[updateDateLocale.lang] }
@@ -568,8 +560,8 @@ function getFullAddress(one) {
 <style>
 
 /* Анимация -- Backdrop  */
-.addAdsMenu__animation-backdrop-enter-active,
-.addAdsMenu__animation-backdrop-leave-active{
+.adsPreviewControl__animation-backdrop-enter-active,
+.adsPreviewControl__animation-backdrop-leave-active{
     transition: opacity 0.3s ease;
 }
 
@@ -603,23 +595,6 @@ function getFullAddress(one) {
     transform: translateY(0);/* Конечное положение при анимации появления */
 }
 
-/* При экране более 992px */
-@media screen and (min-width: 992px) {
-    .addAdsMenu__animation-wrapper-enter-from{
-        transform: translateX(50%); /* Начальное положение при анимации скрытия */
-    }
-
-    .addAdsMenu__animation-wrapper-leave-to {
-        transform: translateX(100%); /* Начальное положение при анимации скрытия */
-    }
-
-    .addAdsMenu__animation-wrapper-enter-to,
-    .addAdsMenu__animation-wrapper-leave-from {
-        transform: translateX(0);/* Конечное положение при анимации появления */
-    }
-
-}
-
 </style>
 
 <style scoped>
@@ -640,19 +615,22 @@ function getFullAddress(one) {
 }
 
 .adsPreviewBlock__wrapper {
-    user-select: none;
-    background: #ffffff;
-    box-shadow: 0 0 1px silver;
-    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
     max-width: 600px;
     height: 100%;
     margin-right: auto;
     margin-left: auto;
+    background: #ffffff;
+    box-shadow: 0 0 1px silver;
+    border-radius: 2px;
+    user-select: none;
 }
 
 .adsPreview__block {
     width: 100%;
     height: 100%;
+    max-height: 160px;
     display: flex;
     gap: 0.5rem; /* небольшой отступ между фото и описанием */
 }
