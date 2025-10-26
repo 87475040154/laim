@@ -333,6 +333,8 @@ onMounted(() => {
     padding: 12px 20px; /* чуть больше внутренних отступов */
     z-index: 1;
     transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    margin-bottom: 16px;
+
 }
 /* Прилипающая панель */
 .show-ads-page__top-panel--sticky {
