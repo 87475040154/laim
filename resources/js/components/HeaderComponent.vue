@@ -259,6 +259,7 @@ function onSubmitClick() {
     background: rgb(63 63 69);
     color: #fff;
     padding: 8px 0;
+    margin-bottom: 16px;
 }
 .top__inner {
     display: flex;
