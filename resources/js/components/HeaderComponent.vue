@@ -1,26 +1,34 @@
 <template>
-    <header
-        ref="headerRef"
-        class="header"
-        :class="{ 'header--fixed': isFixed, 'header--hidden': isHidden }"
-        :style="headerStyle"
-    >
-        <!-- Верхняя панель -->
+    <!-- 🔹 Основной хедер -->
+    <header class="header" :class="{ 'header__sticky': isSticky }">
+
+        <!-- 🔸 Верхняя панель -->
         <div class="top">
             <div class="top__inner">
 
-                <!-- Логотип -->
+                <!-- 🏠 Логотип -->
                 <button class="logo" @click="onLogoClick">
-                    <img src="/img/siteImg/allImg/logo.svg" width="30" height="30" alt="Логотип" />
+                    <img
+                        src="/img/siteImg/allImg/logo.svg"
+                        width="30"
+                        height="30"
+                        alt="Логотип"
+                    />
                 </button>
 
                 <div class="spacer"></div>
 
-                <!-- Правая часть -->
+                <!-- 🔸 Правая часть -->
                 <div class="right-group">
+
+                    <!-- ❤️ Кнопка "Избранные" -->
                     <div class="actions">
-                        <!-- Избранные -->
-                        <button v-if="authStore.check" class="icon-btn" @click="getMyLikeAdsFn">
+                        <button
+                            v-if="authStore.check"
+                            class="icon-btn"
+                            @click=" getMyLikeAds = !getMyLikeAds "
+                        >
+                            <!-- Если есть избранные -->
                             <svg
                                 v-if="getMyLikeAds"
                                 width="24"
@@ -30,12 +38,14 @@
                             >
                                 <path
                                     d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-                    2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5
-                    2.09C13.09 3.81 14.76 3 16.5 3
-                    19.58 3 22 5.42 22 8.5
-                    c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                                    2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5
+                                    2.09C13.09 3.81 14.76 3 16.5 3
+                                    19.58 3 22 5.42 22 8.5
+                                    c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
                                 />
                             </svg>
+
+                            <!-- Если нет избранных -->
                             <svg
                                 v-else
                                 width="24"
@@ -45,40 +55,43 @@
                             >
                                 <path
                                     d="M16.5 3c-1.74 0-3.41.81-4.5
-                    2.09C10.91 3.81 9.24 3 7.5
-                    3 4.42 3 2 5.42 2 8.5
-                    c0 3.78 3.4 6.86 8.55
-                    11.54L12 21.35l1.45-1.32C18.6
-                    15.36 22 12.28 22 8.5
-                    22 5.42 19.58 3 16.5 3zM12
-                    19.55l-.1-.1C7.14 14.24 4
-                    11.39 4 8.5 4 6.5 5.5 5 7.5
-                    5c1.54 0 3.04.99 3.57
-                    2.36h1.87C13.46 5.99 14.96 5
-                    16.5 5 18.5 5 20 6.5 20
-                    8.5c0 2.89-3.14 5.74-7.9
-                    10.95l-.1.1z"
+                                    2.09C10.91 3.81 9.24 3 7.5
+                                    3 4.42 3 2 5.42 2 8.5
+                                    c0 3.78 3.4 6.86 8.55
+                                    11.54L12 21.35l1.45-1.32C18.6
+                                    15.36 22 12.28 22 8.5
+                                    22 5.42 19.58 3 16.5 3zM12
+                                    19.55l-.1-.1C7.14 14.24 4
+                                    11.39 4 8.5 4 6.5 5.5 5 7.5
+                                    5c1.54 0 3.04.99 3.57
+                                    2.36h1.87C13.46 5.99 14.96 5
+                                    16.5 5 18.5 5 20 6.5 20
+                                    8.5c0 2.89-3.14 5.74-7.9
+                                    10.95l-.1.1z"
                                 />
                             </svg>
                         </button>
 
-                        <!-- Мои объявления -->
+                        <!-- 📋 Кнопка "Мои объявления" -->
                         <button
                             v-if="authStore.check"
                             class="icon-btn"
                             @click="$router.push({ name: 'userAds', params: { author_id: authStore.user.id } })"
                         >
-                            <div v-if="getProjectDataStore.countReturnAds > 0" class="badge">
+                            <!-- 🔸 Кол-во активных объявлений -->
+                            <div
+                                v-if="getProjectDataStore.countReturnAds > 0"
+                                class="badge"
+                            >
                                 {{ getProjectDataStore.countReturnAds }}
                             </div>
+
                             <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24">
-                                <path
-                                    d="M4 4h16v2H4zm0 7h16v2H4zm0 7h16v2H4z"
-                                />
+                                <path d="M4 4h16v2H4zm0 7h16v2H4zm0 7h16v2H4z" />
                             </svg>
                         </button>
 
-                        <!-- Мой аккаунт -->
+                        <!-- 👤 Кнопка "Мой аккаунт" -->
                         <button
                             v-if="authStore.check"
                             class="icon-btn"
@@ -87,13 +100,15 @@
                             <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24">
                                 <path
                                     d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4
-                    1.79-4 4 1.79 4 4 4zm0
-                    2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                                    1.79-4 4 1.79 4 4 4zm0
+                                    2c-2.67 0-8 1.34-8 4v2h16v-2
+                                    c0-2.66-5.33-4-8-4z"
                                 />
                             </svg>
                         </button>
                     </div>
 
+                    <!-- ➕ Кнопка "Добавить объявление" -->
                     <button class="submit-btn" @click="onSubmitClick">
                         {{ $t('headerSubmitAnAd') }}
                     </button>
@@ -101,26 +116,45 @@
             </div>
         </div>
 
-        <!-- Категории -->
+        <!-- 🔸 Меню категорий -->
         <nav class="menu">
             <div
                 v-for="(item, i) in categories"
                 :key="i"
                 class="menu__item"
-                @click="$router.replace(item.link)"
+                @click="getNewAds(item.link)"
             >
-                <div class="menu__icon" :class="{ active: $route.params.table_name === item.name }">
-                    <img :src="item.icon" :alt="item.label" width="45" height="45" />
-                    <small>{{ $t(item.label) !== item.label ? $t(item.label) : item.fallback }}</small>
+                <div
+                    class="menu__icon"
+                    :class="{ active: $route.params.table_name === item.name }"
+                >
+                    <img
+                        :src="item.icon"
+                        :alt="item.label"
+                        width="45"
+                        height="45"
+                    />
+                    <small>
+                        {{ $t(item.label) !== item.label ? $t(item.label) : item.fallback }}
+                    </small>
                 </div>
             </div>
         </nav>
     </header>
+
 </template>
 
+
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useScroll, useElementSize } from '@vueuse/core'
+import { ref, watch, nextTick } from 'vue'
+import { useScroll, useLocalStorage  } from '@vueuse/core'
+import { useRouter, useRoute } from 'vue-router'
+
+// 🧭 Подключаем маршрутизатор
+const router = useRouter()
+const route = useRoute()
+
+// 🏪 Подключаем Pinia-хранилища
 import { useAuthStore } from '../stores/auth'
 import { useGetProjectDataStore } from '../stores/getProjectData'
 import { useAppInstallStore } from '../stores/AppInstall'
@@ -129,48 +163,10 @@ const authStore = useAuthStore()
 const getProjectDataStore = useGetProjectDataStore()
 const appInstallStore = useAppInstallStore()
 
-// 🔹 Ссылки и реактивные данные
-const headerRef = ref(null)
-const { height: headerHeight } = useElementSize(headerRef)
-const { y } = useScroll(window)
+// создаём реактивный ref, который синхронизирован с localStorage
+const getMyLikeAds = useLocalStorage('getMyLikeAds', false)
 
-// 🔹 Состояние хедера
-const isFixed = ref(false)   // прикреплён к верху
-const isHidden = ref(false)  // скрыт за экран
-let lastY = 0                // последняя позиция скролла
-
-// 🔹 Отслеживание прокрутки
-watch(y, (newY) => {
-    const diff = newY - lastY // определяем направление
-
-    if (newY <= 0) {
-        // В самом верху страницы
-        isFixed.value = false
-        isHidden.value = false
-    }
-    else if (diff > 0) {
-        // Скроллим вниз — прячем хедер
-        isFixed.value = true
-        isHidden.value = true
-    }
-    else if (diff < 0) {
-        // Скроллим вверх — показываем хедер
-        isFixed.value = true
-        isHidden.value = false
-    }
-
-    lastY = newY
-})
-
-// 🔹 Стиль для анимации
-const headerStyle = computed(() => ({
-    transform: isHidden.value
-        ? `translateY(-${headerHeight.value}px)`
-        : 'translateY(0)',
-    transition: 'transform 200ms ease'
-}))
-
-
+// 🗂️ Меню категорий
 const categories = [
     { name: 'Kvartira', label: 'headerMenuApartments', fallback: 'Квартиры', icon: '/img/siteImg/menuImg/1.svg', link: '/allAds/Kvartira' },
     { name: 'Obshejitie', label: 'headerMenuHostels', fallback: 'Общежития', icon: '/img/siteImg/menuImg/2.svg', link: '/allAds/Obshejitie' },
@@ -183,32 +179,81 @@ const categories = [
     { name: 'Business', label: 'headerMenuBusiness', fallback: 'Бизнес', icon: '/img/siteImg/menuImg/9.svg', link: '/allAds/Business' }
 ]
 
-function onLogoClick() {
-    if (appInstallStore.app !== '') appInstallStore.install()
-    else $router.push('/allAds/Kvartira')
+// 📜 Отслеживаем прокрутку страницы
+const { y } = useScroll(window)
+
+// 📌 Состояние "прилипания" хедера
+const isSticky = ref(false)
+let lastY = 0
+const DELTA = 10 // порог чувствительности — мелкие движения игнорируем
+
+// 🎯 Логика прилипания хедера
+watch(y, (newY) => {
+    const diff = newY - lastY
+
+    // Если вернулись к самому верху — хедер обычный (не липкий)
+    if (newY <= 0) {
+        isSticky.value = false
+        lastY = newY
+        return
+    }
+
+    // Игнорируем мелкие движения (чтобы не "дрожал")
+    if (Math.abs(diff) <= DELTA) return
+
+    if (diff < 0) {
+        // Скролл вверх — хедер становится "sticky"
+        isSticky.value = true
+    } else if (diff > 0) {
+        // Скролл вниз — хедер отпускается
+        isSticky.value = false
+    }
+
+    lastY = newY
+})
+
+
+function getNewAds(itemLink){
+    router.replace(itemLink);
 }
 
-function onSubmitClick() {
-    if (authStore.check) $router.push({ name: 'addAdsMenu' })
-    else $router.push({ name: $route.name + 'Auth' })
+
+// 🏠 Клик по логотипу
+function onLogoClick() {
+    // Если приложение установлено — вызвать установку
+    if (appInstallStore.app !== '') appInstallStore.install()
+    // Иначе перейти на страницу "Квартиры"
+    else router.push('/allAds/Kvartira')
 }
+
+// ➕ Клик по кнопке "Добавить объявление"
+function onSubmitClick() {
+    // Если пользователь авторизован — перейти в меню добавления объявления
+    if (authStore.check) router.push({ name: 'addAdsMenu' })
+    // Если нет — переадресовать на страницу авторизации
+    else router.push({ name: route.name + 'Auth' })
+}
+
 </script>
+
 
 <style scoped>
 .header {
-    position: relative;
-    width: 100%;
-    background: #eeeeee;
-    will-change: transform;
-}
-.header--fixed {
-    position: fixed;
+    position: relative; /* <-- важно */
     top: 0;
     left: 0;
     right: 0;
-    z-index: 10; /* чуть выше */
-    width: 100%;
+    background: #eeeeee;
+    will-change: transform;
 }
+.header__sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    backdrop-filter: blur(6px);
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
 .top {
     display: none;
     background: rgb(63 63 69);
@@ -218,8 +263,7 @@ function onSubmitClick() {
 .top__inner {
     display: flex;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
+
     padding: 0 12px;
 }
 .logo {
@@ -232,34 +276,52 @@ function onSubmitClick() {
 .spacer {
     flex: 1;
 }
+
 .right-group {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px; /* 🔹 немного увеличил отступ между блоками */
 }
 .actions {
     display: flex;
-    gap: 12px;
     align-items: center;
+    gap: 16px; /* 🔹 чуть больше воздуха между иконками */
 }
 .icon-btn {
     position: relative;
-    background: none;
+    background: #19b07b; /* 🔹 лёгкий фон для современного ощущения */
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px; /* 🔹 скругления как у iOS-style кнопок */
+    transition: all 0.2s ease;
+}
+.icon-btn:hover {
+    background: #4ae6b0; /* 🔹 лёгкий hover эффект */
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+}
+.icon-btn svg {
+    width: 22px;
+    height: 22px;
 }
 .badge {
     position: absolute;
-    top: -6px;
-    right: -6px;
+    top: 2px;
+    right: 2px;
     background: #ff3b30;
     color: #fff;
     font-size: 11px;
-    padding: 2px 5px;
-    border-radius: 8px;
+    padding: 1px 4px;
+    border-radius: 10px;
     font-weight: 700;
+    line-height: 1;
+    min-width: 16px;
+    text-align: center;
 }
 .submit-btn {
     background: #fc3441;
@@ -276,67 +338,79 @@ function onSubmitClick() {
 
 .menu {
     display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: start;
-    gap: 12px;
-    flex-wrap: nowrap;
+    gap: 14px;
+    padding: 12px 10px 16px;
     overflow-x: auto;
-    padding: 10px 8px 14px;
-    scrollbar-width: none; /* скрыть скролл на Firefox */
+    scrollbar-width: none; /* Firefox */
 }
+
 .menu::-webkit-scrollbar {
-    display: none; /* скрыть скролл на Chrome/Safari */
+    display: none; /* Chrome/Safari */
 }
 
 .menu__item {
-    flex: 0 0 auto; /* 🔥 запрещаем растягивание */
+    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
     user-select: none;
+    transition: transform 0.25s ease;
+}
+
+.menu__item:hover {
+    transform: translateY(-3px) scale(1.03);
 }
 
 .menu__icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 14px;
+    width: 84px;
+    height: 84px;
+    border-radius: 18px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #f9f9f9;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    transition: background 0.2s;
+    background: #f8f8f8;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    transition: all 0.25s ease;
     padding: 6px 0;
 }
 
+.menu__icon:hover {
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
+}
+
 .menu__icon img {
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
 }
 
 .menu__icon small {
-    font-size: 12px;
+    font-size: 13px;
     color: #333;
     text-align: center;
-    line-height: 1.1;
+    line-height: 1.2;
+    transition: color 0.25s ease;
 }
 
 .menu__icon.active {
-    background: #19b07b;
+    background: linear-gradient(135deg, #19b07b, #1fc79b);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .menu__icon.active small {
     color: #fff;
 }
 
+
+
+
+
 /* 📞 Маленькие телефоны (≥480px) */
 @media (min-width: 480px) {
-    /* Пример: немного увеличиваем шрифт */
-    body {
-        font-size: 15px;
-    }
+
 }
 
 /* 📱 Средние телефоны (≥576px) */
@@ -353,6 +427,7 @@ function onSubmitClick() {
 @media (min-width: 823px) {
     .menu {
         justify-content: center;
+        margin-top: 20px;
     }
 }
 
@@ -370,37 +445,21 @@ function onSubmitClick() {
 
 /* 🖥 Десктопы (≥1200px) */
 @media (min-width: 1200px) {
-    .container {
-        max-width: 1140px;
-    }
 
-    body {
-        font-size: 16px;
-    }
 }
 
 /* 🖥💎 Большие мониторы (≥1400px) */
 @media (min-width: 1400px) {
-    .container {
-        max-width: 1320px;
-    }
+
 }
 
 /* 🖥 Ultra-wide 2K (≥1600px) */
 @media (min-width: 1600px) {
-    .container {
-        max-width: 1500px;
-    }
+
 }
 
 /* 🖥 4K дисплеи (≥1920px) */
 @media (min-width: 1920px) {
-    body {
-        font-size: 18px;
-    }
 
-    .container {
-        max-width: 1700px;
-    }
 }
 </style>

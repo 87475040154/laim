@@ -132,53 +132,48 @@
 
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useScroll, useLocalStorage  } from '@vueuse/core'
 
-//Импортирую Store - Общее состояние
+// Импортируем Pinia Store
 import { useAuthStore } from "../stores/auth";
 import { useAppInstallStore } from "../stores/AppInstall";
 import { useGetProjectDataStore } from "../stores/getProjectData";
-import {useUpdateDateLocaleStore} from "../stores/updateDateLocale";
+import { useUpdateDateLocaleStore } from "../stores/updateDateLocale";
 
+// 🔹 Подключаем Stores
+const authStore = useAuthStore()
+const appInstallStore = useAppInstallStore()
+const getProjectDataStore = useGetProjectDataStore()
+const updateDateLocaleStore = useUpdateDateLocaleStore()
 
-export default {
-    name: "FooterComponent",
+// 🔹 Проверка прокручена ли страница
+const pageScrolled = ref(false)
 
-    data(){
-        return {
-            //Подключаю Store - Общее состояние
-            authStore: useAuthStore(),
-            appInstallStore: useAppInstallStore(),
-            getProjectDataStore: useGetProjectDataStore(),
-            updateDateLocaleStore: useUpdateDateLocaleStore(),
-            //Проверка прокрученна ли страница
-            pageScrolled: false,
+// создаём реактивный ref, который синхронизирован с localStorage
+const getMyLikeAds = useLocalStorage('getMyLikeAds', false)
 
-            getMyLikeAds: false
-        }
-    },
-
-
-    methods: {
-
-        //Метод прокрутить страницу Вверх
-        scrollTop(){
-            window.scroll(0,0)
-        }
-    },
-
-    mounted(){
-
-        let app = this;
-
-        //Отслеживаем событие прокрутка страницы вниз
-        window.onscroll = function() {
-            let posTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-            posTop > 0 ? app.pageScrolled = true : app.pageScrolled = false;
-        }
-    }
-
+// 🔹 Метод прокрутки страницы вверх
+function scrollTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 }
+
+// 🔹 Слежка за скроллом
+function handleScroll() {
+    const posTop = window.pageYOffset || document.documentElement.scrollTop
+    pageScrolled.value = posTop > 0
+}
+
+// 🔹 Подписка на событие скролла при монтировании
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll)
+})
+
+// 🔹 Убираем слушатель при размонтировании
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <style scoped>

@@ -3,33 +3,318 @@ import axios from "axios";
 
 const routes = [
 
-    //Главная страница
+    //Вывод всех объявлений
     {
-        path: '/',
-        component: ()=> import('../components/MainComponent.vue'),
-        name: 'home',
+        path: '/allAds/:table_name',
+        component: () => import('../components/allComponents/ShowAdsComponent.vue'),
+        name: 'allAds',
         meta: {
-            title: 'Главная страница'
+            title: 'Лайм Недвижимость в Казахстане'
         },
 
         children: [
 
-            //Вывод всех объявлений
+            //Вывод Одного объявление
             {
-                path: '/allAds/:table_name',
-                component: () => import('../components/IndexComponent.vue'),
-                name: 'allAds',
+                path: 'allAdsOneAds/:ads_id',
+                component: ()=> import('../components/allComponents/oneAds/OneAdsComponent.vue'),
+                name: 'allAdsOneAds',
                 meta: {
-                    title: 'Лайм Недвижимость в Казахстане'
+                    title: 'Недвижимость'
                 },
 
                 children: [
 
+                    //Фото
+                    {
+                        path: 'allAdsOneAdsImage',
+                        component: ()=> import('../components/allComponents/ImageComponent.vue'),
+                        name: 'allAdsOneAdsImage',
+                        meta: {
+                            title: 'Фото'
+                        },
+                    },
+
+                    //Lang
+                    {
+                        path: 'allAdsOneAdsLang',
+                        component: ()=> import('../components/allComponents/LangComponent.vue'),
+                        name: 'allAdsOneAdsLang',
+                    },
+
+                    //Карта
+                    {
+                        path: 'allAdsOneAdsMap',
+                        component: ()=> import('../components/allComponents/map/OneAdsMap.vue'),
+                        name: 'allAdsOneAdsMap',
+                        meta: {
+                            title: 'Объект на карте'
+                        },
+                    },
+
+                    //Нижний OffCanvas
+                    {
+                        path: 'allAdsOneAdsBottomOffCanvas/:type',
+                        component: ()=> import('../components/allComponents/oneAds/OneAdsBottomOffCanvas.vue'),
+                        name: 'allAdsOneAdsBottomOffCanvas',
+                        children: [
+                            //Авторизация на сайте
+                            {
+                                path: 'allAdsOneAdsBottomOffCanvasAuth',
+                                component: ()=> import('../components/allComponents/AuthComponent.vue'),
+                                name: 'allAdsOneAdsBottomOffCanvasAuth',
+                                meta: {
+                                    title: 'Вход на сайт',
+                                },
+                            },
+                        ]
+                    },
+
+                    //Авторизация на сайте
+                    {
+                        path: 'allAdsOneAdsAuth',
+                        component: ()=> import('../components/allComponents/AuthComponent.vue'),
+                        name: 'allAdsOneAdsAuth',
+                        meta: {
+                            title: 'Вход на сайт',
+
+                        },
+                    },
+
+                ]
+            },
+
+
+            //Фильтр
+            {
+                path: 'filter',
+                component: ()=> import('../components/allComponents/AdsFilterComponent.vue'),
+                name: 'filter',
+                meta: {
+                    title: 'Фильтр'
+                },
+
+                children: [
+                    //Локации
+                    {
+                        path: 'filterLocation/:oblast/:gorod/:locationStep',
+                        component: ()=> import('../components/allComponents/KZLocationComponent.vue'),
+                        name: 'filterLocation',
+                        meta: {
+                            title: 'Местоположение',
+                        },
+                    },
+                ]
+            },
+
+            //Авторизация на сайте
+            {
+                path: 'allAdsAuth',
+                component: ()=> import('../components/allComponents/AuthComponent.vue'),
+                name: 'allAdsAuth',
+                meta: {
+                    title: 'Вход на сайт',
+
+                },
+            },
+
+            //Мой кабинет
+            {
+                path: 'myAccount',
+                component: ()=> import('../components/allComponents/user/MyAccountComponent.vue'),
+                name: 'myAccount',
+                meta: {
+                    title: 'Мой кабинет',
+                    auth: true
+                },
+                children: [
+                    //Настройки
+                    {
+                        path: 'myAccountSettings',
+                        component: ()=> import('../components/allComponents/user/MyAccountSettings.vue'),
+                        name: "myAccountSettings",
+                        meta: {
+                            auth: true,
+                            title: 'Настройка аккаунта'
+                        }
+                    },
+                ]
+            },
+
+
+            //Фото
+            {
+                path: 'allAdsImage',
+                component: ()=> import('../components/allComponents/ImageComponent.vue'),
+                name: 'allAdsImage',
+                meta: {
+                    title: 'Фото'
+                },
+            },
+
+            // Объявления на карте
+            {
+                path: 'allAdsMap',
+                component: ()=> import('../components/allComponents/map/AllAdsMap.vue'),
+                name: 'allAdsMap',
+                meta: {
+                    title: 'Объекты на карте'
+                },
+
+                children:  [
+                    {
+                        path: 'allAdsMapPreviewAds/:pages',
+                        component: ()=> import('../components/allComponents/map/AllAdsMapPreviewAds.vue'),
+                        name: 'allAdsMapPreviewAds',
+                        meta: {
+                            title: 'Объекты на карте'
+                        },
+
+                        children: [
+                            //Вывод Одного объявление
+                            {
+                                path: 'allAdsMapPreviewAdsOneAds/:ads_id',
+                                component: ()=> import('../components/allComponents/oneAds/OneAdsComponent.vue'),
+                                name: 'allAdsMapPreviewAdsOneAds',
+                                meta: {
+                                    title: 'Недвижимость'
+                                },
+
+                                children: [
+
+                                    //Фото
+                                    {
+                                        path: 'allAdsMapPreviewAdsOneAdsImage',
+                                        component: ()=> import('../components/allComponents/ImageComponent.vue'),
+                                        name: 'allAdsMapPreviewAdsOneAdsImage',
+                                        meta: {
+                                            title: 'Фото'
+                                        },
+                                    },
+
+                                    //Lang
+                                    {
+                                        path: 'allAdsMapPreviewAdsOneAdsLang',
+                                        component: ()=> import('../components/allComponents/LangComponent.vue'),
+                                        name: 'allAdsMapPreviewAdsOneAdsLang',
+                                    },
+
+                                    //Карта
+                                    {
+                                        path: 'allAdsMapPreviewAdsOneAdsMap',
+                                        component: ()=> import('../components/allComponents/map/OneAdsMap.vue'),
+                                        name: 'allAdsMapPreviewAdsOneAdsMap',
+                                        meta: {
+                                            title: 'Объект на карте'
+                                        },
+                                    },
+
+                                    //Нижний OffCanvas
+                                    {
+                                        path: 'allAdsMapPreviewAdsOneAdsBottomOffCanvas/:type',
+                                        component: ()=> import('../components/allComponents/oneAds/OneAdsBottomOffCanvas.vue'),
+                                        name: 'allAdsMapPreviewAdsOneAdsBottomOffCanvas',
+                                        children: [
+                                            //Авторизация на сайте
+                                            {
+                                                path: 'allAdsMapPreviewAdsOneAdsBottomOffCanvasAuth',
+                                                component: ()=> import('../components/allComponents/AuthComponent.vue'),
+                                                name: 'allAdsMapPreviewAdsOneAdsBottomOffCanvasAuth',
+                                                meta: {
+                                                    title: 'Вход на сайт',
+                                                },
+                                            },
+                                        ]
+                                    },
+
+                                    //Авторизация на сайте
+                                    {
+                                        path: 'allAdsMapPreviewAdsOneAdsAuth',
+                                        component: ()=> import('../components/allComponents/AuthComponent.vue'),
+                                        name: 'allAdsMapPreviewAdsOneAdsAuth',
+                                        meta: {
+                                            title: 'Вход на сайт',
+
+                                        },
+                                    },
+
+                                ]
+                            },
+
+                            //Фото с превью
+                            {
+                                path: 'allAdsMapPreviewAdsImage',
+                                component: ()=> import('../components/allComponents/ImageComponent.vue'),
+                                name: 'allAdsMapPreviewAdsImage',
+                                meta: {
+                                    title: 'Фото'
+                                },
+                            },
+                        ]
+                    },
+                ]
+            },
+
+            // Меню Подача объявления
+            {
+                path: 'addAdsMenu',
+                component: ()=> import('../components/allComponents/addAds/AddAdsMenu.vue'),
+                name: 'addAdsMenu',
+                meta: {
+                    title: 'Что сдать',
+                    auth: true,
+                }
+            },
+
+            // Подача объявления
+            {
+                path: 'allAdsAddAds/:id/:step',
+                component: ()=> import('../components/allComponents/addAds/AddAdsForm.vue'),
+                name: 'allAdsAddAds',
+                meta: {
+                    title: 'Подать объявление',
+                    auth: true,
+
+                },
+
+                children: [
+                    //Локации
+                    {
+                        path: 'allAdsAddAdsLocation/:oblast/:gorod/:locationStep',
+                        component: ()=> import('../components/allComponents/KZLocationComponent.vue'),
+                        name: 'allAdsAddAdsLocation',
+                        meta: {
+                            title: 'Местоположение'
+                        },
+                    },
+
+                    //Фото
+                    {
+                        path: 'allAdsAddAdsImage/',
+                        component: ()=> import('../components/allComponents/ImageComponent.vue'),
+                        name: 'allAdsAddAdsImage',
+                        meta: {
+                            title: 'Фото'
+                        },
+                    },
+                ]
+            },
+
+            //Объявления автора
+            {
+                path: 'userAds/:author_id/',
+                component: ()=> import('../components/allComponents/user/UserAds.vue'),
+                name: 'userAds',
+                meta: {
+                    title: 'Объявления автора',
+                },
+                children: [
+
                     //Вывод Одного объявление
                     {
-                        path: 'allAdsOneAds/:ads_id',
+                        path: 'userAdsOneAds/:ads_id',
                         component: ()=> import('../components/allComponents/oneAds/OneAdsComponent.vue'),
-                        name: 'allAdsOneAds',
+                        name: 'userAdsOneAds',
                         meta: {
                             title: 'Недвижимость'
                         },
@@ -38,9 +323,9 @@ const routes = [
 
                             //Фото
                             {
-                                path: 'allAdsOneAdsImage',
+                                path: 'userAdsOneAdsImage',
                                 component: ()=> import('../components/allComponents/ImageComponent.vue'),
-                                name: 'allAdsOneAdsImage',
+                                name: 'userAdsOneAdsImage',
                                 meta: {
                                     title: 'Фото'
                                 },
@@ -48,16 +333,16 @@ const routes = [
 
                             //Lang
                             {
-                                path: 'allAdsOneAdsLang',
+                                path: 'userAdsOneAdsLang',
                                 component: ()=> import('../components/allComponents/LangComponent.vue'),
-                                name: 'allAdsOneAdsLang',
+                                name: 'userAdsOneAdsLang',
                             },
 
                             //Карта
                             {
-                                path: 'allAdsOneAdsMap',
+                                path: 'userAdsOneAdsMap',
                                 component: ()=> import('../components/allComponents/map/OneAdsMap.vue'),
-                                name: 'allAdsOneAdsMap',
+                                name: 'userAdsOneAdsMap',
                                 meta: {
                                     title: 'Объект на карте'
                                 },
@@ -65,223 +350,31 @@ const routes = [
 
                             //Нижний OffCanvas
                             {
-                                path: 'allAdsOneAdsBottomOffCanvas/:type',
+                                path: 'userAdsOneAdsBottomOffCanvas/:type',
                                 component: ()=> import('../components/allComponents/oneAds/OneAdsBottomOffCanvas.vue'),
-                                name: 'allAdsOneAdsBottomOffCanvas',
-                                children: [
-                                    //Авторизация на сайте
-                                    {
-                                        path: 'allAdsOneAdsBottomOffCanvasAuth',
-                                        component: ()=> import('../components/allComponents/AuthComponent.vue'),
-                                        name: 'allAdsOneAdsBottomOffCanvasAuth',
-                                        meta: {
-                                            title: 'Вход на сайт',
-                                        },
-                                    },
-                                ]
-                            },
-
-                            //Авторизация на сайте
-                            {
-                                path: 'allAdsOneAdsAuth',
-                                component: ()=> import('../components/allComponents/AuthComponent.vue'),
-                                name: 'allAdsOneAdsAuth',
+                                name: 'userAdsOneAdsBottomOffCanvas',
                                 meta: {
-                                    title: 'Вход на сайт',
-
                                 },
                             },
 
                         ]
                     },
 
-
-                    //Фильтр
+                    //Фото с превью
                     {
-                        path: 'filter',
-                        component: ()=> import('../components/allComponents/AdsFilterComponent.vue'),
-                        name: 'filter',
-                        meta: {
-                            title: 'Фильтр'
-                        },
-
-                        children: [
-                            //Локации
-                            {
-                                path: 'filterLocation/:oblast/:gorod/:locationStep',
-                                component: ()=> import('../components/allComponents/KZLocationComponent.vue'),
-                                name: 'filterLocation',
-                                meta: {
-                                    title: 'Местоположение',
-                                },
-                            },
-                        ]
-                    },
-
-                    //Авторизация на сайте
-                    {
-                        path: 'allAdsAuth',
-                        component: ()=> import('../components/allComponents/AuthComponent.vue'),
-                        name: 'allAdsAuth',
-                        meta: {
-                            title: 'Вход на сайт',
-
-                        },
-                    },
-
-                    //Мой кабинет
-                    {
-                        path: 'myAccount',
-                        component: ()=> import('../components/allComponents/user/MyAccountComponent.vue'),
-                        name: 'myAccount',
-                        meta: {
-                            title: 'Мой кабинет',
-                            auth: true
-                        },
-                        children: [
-                            //Настройки
-                            {
-                                path: 'myAccountSettings',
-                                component: ()=> import('../components/allComponents/user/MyAccountSettings.vue'),
-                                name: "myAccountSettings",
-                                meta: {
-                                    auth: true,
-                                    title: 'Настройка аккаунта'
-                                }
-                            },
-                        ]
-                    },
-
-
-                    //Фото
-                    {
-                        path: 'allAdsImage',
+                        path: 'userAdsImage',
                         component: ()=> import('../components/allComponents/ImageComponent.vue'),
-                        name: 'allAdsImage',
+                        name: 'userAdsImage',
                         meta: {
                             title: 'Фото'
                         },
                     },
 
-                    // Объявления на карте
-                    {
-                        path: 'allAdsMap',
-                        component: ()=> import('../components/allComponents/map/AllAdsMap.vue'),
-                        name: 'allAdsMap',
-                        meta: {
-                            title: 'Объекты на карте'
-                        },
-
-                        children:  [
-                            {
-                                path: 'allAdsMapPreviewAds/:pages',
-                                component: ()=> import('../components/allComponents/map/AllAdsMapPreviewAds.vue'),
-                                name: 'allAdsMapPreviewAds',
-                                meta: {
-                                    title: 'Объекты на карте'
-                                },
-
-                                children: [
-                                    //Вывод Одного объявление
-                                    {
-                                        path: 'allAdsMapPreviewAdsOneAds/:ads_id',
-                                        component: ()=> import('../components/allComponents/oneAds/OneAdsComponent.vue'),
-                                        name: 'allAdsMapPreviewAdsOneAds',
-                                        meta: {
-                                            title: 'Недвижимость'
-                                        },
-
-                                        children: [
-
-                                            //Фото
-                                            {
-                                                path: 'allAdsMapPreviewAdsOneAdsImage',
-                                                component: ()=> import('../components/allComponents/ImageComponent.vue'),
-                                                name: 'allAdsMapPreviewAdsOneAdsImage',
-                                                meta: {
-                                                    title: 'Фото'
-                                                },
-                                            },
-
-                                            //Lang
-                                            {
-                                                path: 'allAdsMapPreviewAdsOneAdsLang',
-                                                component: ()=> import('../components/allComponents/LangComponent.vue'),
-                                                name: 'allAdsMapPreviewAdsOneAdsLang',
-                                            },
-
-                                            //Карта
-                                            {
-                                                path: 'allAdsMapPreviewAdsOneAdsMap',
-                                                component: ()=> import('../components/allComponents/map/OneAdsMap.vue'),
-                                                name: 'allAdsMapPreviewAdsOneAdsMap',
-                                                meta: {
-                                                    title: 'Объект на карте'
-                                                },
-                                            },
-
-                                            //Нижний OffCanvas
-                                            {
-                                                path: 'allAdsMapPreviewAdsOneAdsBottomOffCanvas/:type',
-                                                component: ()=> import('../components/allComponents/oneAds/OneAdsBottomOffCanvas.vue'),
-                                                name: 'allAdsMapPreviewAdsOneAdsBottomOffCanvas',
-                                                children: [
-                                                    //Авторизация на сайте
-                                                    {
-                                                        path: 'allAdsMapPreviewAdsOneAdsBottomOffCanvasAuth',
-                                                        component: ()=> import('../components/allComponents/AuthComponent.vue'),
-                                                        name: 'allAdsMapPreviewAdsOneAdsBottomOffCanvasAuth',
-                                                        meta: {
-                                                            title: 'Вход на сайт',
-                                                        },
-                                                    },
-                                                ]
-                                            },
-
-                                            //Авторизация на сайте
-                                            {
-                                                path: 'allAdsMapPreviewAdsOneAdsAuth',
-                                                component: ()=> import('../components/allComponents/AuthComponent.vue'),
-                                                name: 'allAdsMapPreviewAdsOneAdsAuth',
-                                                meta: {
-                                                    title: 'Вход на сайт',
-
-                                                },
-                                            },
-
-                                        ]
-                                    },
-
-                                    //Фото с превью
-                                    {
-                                        path: 'allAdsMapPreviewAdsImage',
-                                        component: ()=> import('../components/allComponents/ImageComponent.vue'),
-                                        name: 'allAdsMapPreviewAdsImage',
-                                        meta: {
-                                            title: 'Фото'
-                                        },
-                                    },
-                                ]
-                            },
-                        ]
-                    },
-
-                    // Меню Подача объявления
-                    {
-                        path: 'addAdsMenu',
-                        component: ()=> import('../components/allComponents/addAds/AddAdsMenu.vue'),
-                        name: 'addAdsMenu',
-                        meta: {
-                            title: 'Что сдать',
-                            auth: true,
-                        }
-                    },
-
                     // Подача объявления
                     {
-                        path: 'allAdsAddAds/:id/:step',
+                        path: 'userAdsAddAds/:id/:step',
                         component: ()=> import('../components/allComponents/addAds/AddAdsForm.vue'),
-                        name: 'allAdsAddAds',
+                        name: 'userAdsAddAds',
                         meta: {
                             title: 'Подать объявление',
                             auth: true,
@@ -291,9 +384,9 @@ const routes = [
                         children: [
                             //Локации
                             {
-                                path: 'allAdsAddAdsLocation/:oblast/:gorod/:locationStep',
+                                path: 'userAdsAddAdsLocation/:oblast/:gorod/:locationStep',
                                 component: ()=> import('../components/allComponents/KZLocationComponent.vue'),
-                                name: 'allAdsAddAdsLocation',
+                                name: 'userAdsAddAdsLocation',
                                 meta: {
                                     title: 'Местоположение'
                                 },
@@ -301,9 +394,9 @@ const routes = [
 
                             //Фото
                             {
-                                path: 'allAdsAddAdsImage/',
+                                path: 'userAdsAddAdsImage/',
                                 component: ()=> import('../components/allComponents/ImageComponent.vue'),
-                                name: 'allAdsAddAdsImage',
+                                name: 'userAdsAddAdsImage',
                                 meta: {
                                     title: 'Фото'
                                 },
@@ -311,199 +404,93 @@ const routes = [
                         ]
                     },
 
-                    //Объявления автора
+                    //Покупка рекламы
                     {
-                        path: 'userAds/:author_id/',
-                        component: ()=> import('../components/allComponents/user/UserAds.vue'),
-                        name: 'userAds',
+                        path: 'userAdsBueAds/:ads_id',
+                        component: ()=> import('../components/allComponents/user/bueAds/Index.vue'),
+                        name: 'userAdsBueAds',
                         meta: {
-                            title: 'Объявления автора',
+                            title: 'Продвинуть объявление',
                         },
-                        children: [
 
-                            //Вывод Одного объявление
+                        children : [
                             {
-                                path: 'userAdsOneAds/:ads_id',
-                                component: ()=> import('../components/allComponents/oneAds/OneAdsComponent.vue'),
-                                name: 'userAdsOneAds',
+                                path: 'userAdsBueAdsPayMethod/:bueAdsType',
+                                component: ()=> import('../components/allComponents/user/bueAds/BueAdsPayMethod.vue'),
+                                name: 'userAdsBueAdsPayMethod',
                                 meta: {
-                                    title: 'Недвижимость'
+                                    title: 'Способ оплаты',
                                 },
-
-                                children: [
-
-                                    //Фото
-                                    {
-                                        path: 'userAdsOneAdsImage',
-                                        component: ()=> import('../components/allComponents/ImageComponent.vue'),
-                                        name: 'userAdsOneAdsImage',
-                                        meta: {
-                                            title: 'Фото'
-                                        },
-                                    },
-
-                                    //Lang
-                                    {
-                                        path: 'userAdsOneAdsLang',
-                                        component: ()=> import('../components/allComponents/LangComponent.vue'),
-                                        name: 'userAdsOneAdsLang',
-                                    },
-
-                                    //Карта
-                                    {
-                                        path: 'userAdsOneAdsMap',
-                                        component: ()=> import('../components/allComponents/map/OneAdsMap.vue'),
-                                        name: 'userAdsOneAdsMap',
-                                        meta: {
-                                            title: 'Объект на карте'
-                                        },
-                                    },
-
-                                    //Нижний OffCanvas
-                                    {
-                                        path: 'userAdsOneAdsBottomOffCanvas/:type',
-                                        component: ()=> import('../components/allComponents/oneAds/OneAdsBottomOffCanvas.vue'),
-                                        name: 'userAdsOneAdsBottomOffCanvas',
-                                        meta: {
-                                        },
-                                    },
-
-                                ]
-                            },
-
-                            //Фото с превью
-                            {
-                                path: 'userAdsImage',
-                                component: ()=> import('../components/allComponents/ImageComponent.vue'),
-                                name: 'userAdsImage',
-                                meta: {
-                                    title: 'Фото'
-                                },
-                            },
-
-                            // Подача объявления
-                            {
-                                path: 'userAdsAddAds/:id/:step',
-                                component: ()=> import('../components/allComponents/addAds/AddAdsForm.vue'),
-                                name: 'userAdsAddAds',
-                                meta: {
-                                    title: 'Подать объявление',
-                                    auth: true,
-
-                                },
-
-                                children: [
-                                    //Локации
-                                    {
-                                        path: 'userAdsAddAdsLocation/:oblast/:gorod/:locationStep',
-                                        component: ()=> import('../components/allComponents/KZLocationComponent.vue'),
-                                        name: 'userAdsAddAdsLocation',
-                                        meta: {
-                                            title: 'Местоположение'
-                                        },
-                                    },
-
-                                    //Фото
-                                    {
-                                        path: 'userAdsAddAdsImage/',
-                                        component: ()=> import('../components/allComponents/ImageComponent.vue'),
-                                        name: 'userAdsAddAdsImage',
-                                        meta: {
-                                            title: 'Фото'
-                                        },
-                                    },
-                                ]
-                            },
-
-                            //Покупка рекламы
-                            {
-                                path: 'userAdsBueAds/:ads_id',
-                                component: ()=> import('../components/allComponents/user/bueAds/Index.vue'),
-                                name: 'userAdsBueAds',
-                                meta: {
-                                    title: 'Продвинуть объявление',
-                                },
-
-                                children : [
-                                    {
-                                        path: 'userAdsBueAdsPayMethod/:bueAdsType',
-                                        component: ()=> import('../components/allComponents/user/bueAds/BueAdsPayMethod.vue'),
-                                        name: 'userAdsBueAdsPayMethod',
-                                        meta: {
-                                            title: 'Способ оплаты',
-                                        },
-                                    },
-
-                                    //Авторизация на сайте
-                                    {
-                                        path: 'userAdsBueAdsAuth',
-                                        component: ()=> import('../components/allComponents/AuthComponent.vue'),
-                                        name: 'userAdsBueAdsAuth',
-                                        meta: {
-                                            title: 'Вход на сайт',
-
-                                        },
-                                    },
-                                ]
                             },
 
                             //Авторизация на сайте
                             {
-                                path: 'userAdsAuth',
+                                path: 'userAdsBueAdsAuth',
                                 component: ()=> import('../components/allComponents/AuthComponent.vue'),
-                                name: 'userAdsAuth',
+                                name: 'userAdsBueAdsAuth',
                                 meta: {
                                     title: 'Вход на сайт',
 
                                 },
                             },
-
                         ]
                     },
 
-                    //Lang
+                    //Авторизация на сайте
                     {
-                        path: 'allAdsLang',
-                        component: ()=> import('../components/allComponents/LangComponent.vue'),
-                        name: 'allAdsLang'
+                        path: 'userAdsAuth',
+                        component: ()=> import('../components/allComponents/AuthComponent.vue'),
+                        name: 'userAdsAuth',
+                        meta: {
+                            title: 'Вход на сайт',
+
+                        },
                     },
 
                 ]
             },
 
-
-            //Правила использования - Политика конфиденциальности
-
+            //Lang
             {
-                path: '/rules',
-                component: ()=> import('../components/allComponents/projectData/PravilaSaita.vue'),
-                name: 'rules',
-                meta: {title: 'Правила размещения объявлений'}
+                path: 'allAdsLang',
+                component: ()=> import('../components/allComponents/LangComponent.vue'),
+                name: 'allAdsLang'
             },
 
-            {
-                path: '/polzovatelskoeSoglashenie',
-                component: ()=> import('../components/allComponents/projectData/PolzovatelskoeSoglashenie.vue'),
-                name: 'polzovatelskoeSoglashenie',
-                meta: {
-                    title: 'Пользовательское соглашение'
-                }
-            },
-
-            {
-                path: '/contacts',
-                component: ()=> import('../components/allComponents/projectData/Contacts.vue'),
-                name: 'contacts',
-                meta: {title: 'Контакты'}
-            },
-
-            {
-                path: '/uslugi',
-                component: ()=> import('../components/allComponents/projectData/PlatnieUslugi.vue'),
-                name: 'uslugi',
-                meta: {title: 'Платные услуги'}
-            },
         ]
+    },
+
+
+    //Правила использования - Политика конфиденциальности
+
+    {
+        path: '/rules',
+        component: ()=> import('../components/allComponents/projectData/PravilaSaita.vue'),
+        name: 'rules',
+        meta: {title: 'Правила размещения объявлений'}
+    },
+
+    {
+        path: '/polzovatelskoeSoglashenie',
+        component: ()=> import('../components/allComponents/projectData/PolzovatelskoeSoglashenie.vue'),
+        name: 'polzovatelskoeSoglashenie',
+        meta: {
+            title: 'Пользовательское соглашение'
+        }
+    },
+
+    {
+        path: '/contacts',
+        component: ()=> import('../components/allComponents/projectData/Contacts.vue'),
+        name: 'contacts',
+        meta: {title: 'Контакты'}
+    },
+
+    {
+        path: '/uslugi',
+        component: ()=> import('../components/allComponents/projectData/PlatnieUslugi.vue'),
+        name: 'uslugi',
+        meta: {title: 'Платные услуги'}
     },
 
 
@@ -528,75 +515,74 @@ import { getActiveLanguage } from 'laravel-vue-i18n';
 import {useAuthStore} from "../stores/auth";
 
 
-router.beforeEach( (to, from, next) => {
-    //Добавим Title Страницам
+router.beforeEach((to, from, next) => {
+
+    // 1️⃣ Редирект с '/' на '/allAds/Kvartira', если нет params и query
+    if (to.path === '/' && Object.keys(to.params).length === 0 && Object.keys(to.query).length === 0) {
+        return next('/allAds/Kvartira');
+    }
+
+    // 2️⃣ Добавляем Title страницам
     let lang = getActiveLanguage();
-    if(lang == 'ru')document.title = to.meta.title;
+    if(lang == 'ru') document.title = to.meta.title;
     if(lang == 'kz'){
-        if(to.meta.title == 'Лайм Недвижимость в Казахстане')document.title = 'Лайм Қазақстандағы жылжымайтын мүлік';
-        if(to.meta.title == 'Недвижимость')document.title = 'Жылжымайтын мүлік';
-        if(to.meta.title == 'Фото')document.title = 'Фото';
-        if(to.meta.title == 'Объект на карте')document.title = 'Картадағы нысан';
-        if(to.meta.title == 'Вход на сайт')document.title = 'Сайтқа кіру';
-        if(to.meta.title == 'Мой кабинет')document.title = 'Менің кабинетім';
-        if(to.meta.title == 'Настройка аккаунта')document.title = 'Есептік жазбаны орнату';
-        if(to.meta.title == 'Чаты')document.title = 'Чаттар';
-        if(to.meta.title == 'Объекты на карте')document.title = 'Картадағы Нысандар';
-        if(to.meta.title == 'Что сдать')document.title = 'Нені тапсыру керек';
-        if(to.meta.title == 'Подать объявление')document.title = 'Хабарландыру жіберу';
-        if(to.meta.title == 'Местоположение')document.title = 'Орналасқан жері';
-        if(to.meta.title == 'Объявления автора')document.title = 'Автордың хабарландырулары';
-        if(to.meta.title == 'Продвинуть объявление')document.title = 'Хабарландыруды жылжыту';
-        if(to.meta.title == 'Способ оплаты')document.title = 'Төлем әдісі';
-        if(to.meta.title == 'Фильтр')document.title = 'Сүзгі';
-        if(to.meta.title == 'Правила размещения объявлений')document.title = 'Жарнамаларды орналастыру ережелері';
-        if(to.meta.title == 'Пользовательское соглашение')document.title = 'Қолдану ережелері';
-        if(to.meta.title == 'Контакты')document.title = 'Контактілер';
-        if(to.meta.title == 'Платные услуги')document.title = 'Ақылы қызметтер';
-        if(to.meta.title == 'Проверка платежа')document.title = 'Төлемді тексеру';
+        if(to.meta.title == 'Лайм Недвижимость в Казахстане') document.title = 'Лайм Қазақстандағы жылжымайтын мүлік';
+        if(to.meta.title == 'Недвижимость') document.title = 'Жылжымайтын мүлік';
+        if(to.meta.title == 'Фото') document.title = 'Фото';
+        if(to.meta.title == 'Объект на карте') document.title = 'Картадағы нысан';
+        if(to.meta.title == 'Вход на сайт') document.title = 'Сайтқа кіру';
+        if(to.meta.title == 'Мой кабинет') document.title = 'Менің кабинетім';
+        if(to.meta.title == 'Настройка аккаунта') document.title = 'Есептік жазбаны орнату';
+        if(to.meta.title == 'Чаты') document.title = 'Чаттар';
+        if(to.meta.title == 'Объекты на карте') document.title = 'Картадағы Нысандар';
+        if(to.meta.title == 'Что сдать') document.title = 'Нені тапсыру керек';
+        if(to.meta.title == 'Подать объявление') document.title = 'Хабарландыру жіберу';
+        if(to.meta.title == 'Местоположение') document.title = 'Орналасқан жері';
+        if(to.meta.title == 'Объявления автора') document.title = 'Автордың хабарландырулары';
+        if(to.meta.title == 'Продвинуть объявление') document.title = 'Хабарландыруды жылжыту';
+        if(to.meta.title == 'Способ оплаты') document.title = 'Төлем әдісі';
+        if(to.meta.title == 'Фильтр') document.title = 'Сүзгі';
+        if(to.meta.title == 'Правила размещения объявлений') document.title = 'Жарнамаларды орналастыру ережелері';
+        if(to.meta.title == 'Пользовательское соглашение') document.title = 'Қолдану ережелері';
+        if(to.meta.title == 'Контакты') document.title = 'Контактілер';
+        if(to.meta.title == 'Платные услуги') document.title = 'Ақылы қызметтер';
+        if(to.meta.title == 'Проверка платежа') document.title = 'Төлемді тексеру';
     }
     if(lang == 'en'){
-        if(to.meta.title == 'Лайм Недвижимость в Казахстане')document.title = '\n' +
-            'Лайм Real Estate in Kazakhstan';
-        if(to.meta.title == 'Недвижимость')document.title = 'Real estate';
-        if(to.meta.title == 'Фото')document.title = 'Photo';
-        if(to.meta.title == 'Объект на карте')document.title = 'Object on the map';
-        if(to.meta.title == 'Вход на сайт')document.title = 'Login to the site';
-        if(to.meta.title == 'Мой кабинет')document.title = 'My office';
-        if(to.meta.title == 'Настройка аккаунта')document.title = 'Account Setup';
-        if(to.meta.title == 'Чаты')document.title = 'Chats';
-        if(to.meta.title == 'Объекты на карте')document.title = 'Objects on the map';
-        if(to.meta.title == 'Что сдать')document.title = 'What to hand over';
-        if(to.meta.title == 'Подать объявление')document.title = 'Submit an ad';
-        if(to.meta.title == 'Местоположение')document.title = 'Location';
-        if(to.meta.title == 'Объявления автора')document.title = "Author's Ads";
-        if(to.meta.title == 'Продвинуть объявление')document.title = 'Ad Promotion';
-        if(to.meta.title == 'Способ оплаты')document.title = 'Payment method';
-        if(to.meta.title == 'Фильтр')document.title = 'Filter';
-        if(to.meta.title == 'Правила размещения объявлений')document.title = 'Rules for posting ads';
-        if(to.meta.title == 'Пользовательское соглашение')document.title = 'Terms of use';
-        if(to.meta.title == 'Контакты')document.title = 'Contacts';
-        if(to.meta.title == 'Платные услуги')document.title = 'Paid services';
-        if(to.meta.title == 'Проверка платежа')document.title = 'Payment verification';
-
+        if(to.meta.title == 'Лайм Недвижимость в Казахстане') document.title = 'Лайм Real Estate in Kazakhstan';
+        if(to.meta.title == 'Недвижимость') document.title = 'Real estate';
+        if(to.meta.title == 'Фото') document.title = 'Photo';
+        if(to.meta.title == 'Объект на карте') document.title = 'Object on the map';
+        if(to.meta.title == 'Вход на сайт') document.title = 'Login to the site';
+        if(to.meta.title == 'Мой кабинет') document.title = 'My office';
+        if(to.meta.title == 'Настройка аккаунта') document.title = 'Account Setup';
+        if(to.meta.title == 'Чаты') document.title = 'Chats';
+        if(to.meta.title == 'Объекты на карте') document.title = 'Objects on the map';
+        if(to.meta.title == 'Что сдать') document.title = 'What to hand over';
+        if(to.meta.title == 'Подать объявление') document.title = 'Submit an ad';
+        if(to.meta.title == 'Местоположение') document.title = 'Location';
+        if(to.meta.title == 'Объявления автора') document.title = "Author's Ads";
+        if(to.meta.title == 'Продвинуть объявление') document.title = 'Ad Promotion';
+        if(to.meta.title == 'Способ оплаты') document.title = 'Payment method';
+        if(to.meta.title == 'Фильтр') document.title = 'Filter';
+        if(to.meta.title == 'Правила размещения объявлений') document.title = 'Rules for posting ads';
+        if(to.meta.title == 'Пользовательское соглашение') document.title = 'Terms of use';
+        if(to.meta.title == 'Контакты') document.title = 'Contacts';
+        if(to.meta.title == 'Платные услуги') document.title = 'Paid services';
+        if(to.meta.title == 'Проверка платежа') document.title = 'Payment verification';
     }
 
-    // Проверяем, требуется ли аутентификация для маршрута
+    // 3️⃣ Проверяем аутентификацию
     if (to.meta.auth !== undefined) {
         const authRequired = to.meta.auth;
         const isAuthenticated = useAuthStore().check;
 
-        // Если требуется аутентификация и пользователь не аутентифицирован, или
-        // Если не требуется аутентификация и пользователь аутентифицирован,
-        // перенаправляем на главную страницу
-        if ((authRequired && !isAuthenticated) || (!authRequired && isAuthenticated)) {
-            return next({ name: 'home' });
+        if (authRequired && !isAuthenticated) {
+            return next('/allAds/Kvartira');
         }
     }
 
-    //Пропустить если нет meta auth
     next();
-
-})
+});
 
 export default router
