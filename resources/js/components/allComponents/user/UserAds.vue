@@ -161,7 +161,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--app-bg-color);
+    background: #eeeeee;
     user-select: none;
 }
 
@@ -176,7 +176,7 @@ export default {
     height: auto;
     display: flex;
     align-items: center;
-    background: var(--app-header-bg-color);
+    background: #19b07b;
     color: #ffffff;
 }
 

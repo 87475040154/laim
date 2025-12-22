@@ -306,7 +306,7 @@ export default {
     align-items: center;
     font-size: 1.2em;
     font-weight: bold;
-    background: var(--app-header-bg-color);
+    background: #19b07b;
     color: #ffffff;
     padding: 0 10px;
 }

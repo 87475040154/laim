@@ -222,7 +222,7 @@ export default {
     max-width: 850px;
     margin: 0 auto;
     border-radius: 10px 10px 0 0;
-    background: var(--app-bg-color);
+    background: #eeeeee;
 }
 
 

@@ -1076,7 +1076,7 @@ export default {
 .filter__header{
     display: flex;
     align-items: center;
-    background: var(--app-header-bg-color);
+    background: #19b07b;
     color: #ffffff;
 }
 

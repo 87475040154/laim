@@ -357,7 +357,7 @@ export default {
     }
 
     .addAdsMenu__header{
-        background: var(--app-header-bg-color);
+        background: #19b07b;
         color: #ffffff;
 
     }

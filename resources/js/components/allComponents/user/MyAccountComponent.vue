@@ -88,16 +88,6 @@
                         </div>
                     </div>
 
-                    <!-- Поменять - тему -->
-                    <div class="text-center py-2">
-                        <v-btn icon size="x-small" color="blue-grey" variant="outlined"
-                               @click="appInstallStore.changeTheme()"
-                        >
-                            <v-icon size="x-large">mdi-theme-light-dark</v-icon>
-                            <v-tooltip activator="parent" location="bottom">{{ $t('headerChangeTheme') }}</v-tooltip>
-                        </v-btn>
-                    </div>
-
                 </div>
 
             </div>
@@ -260,7 +250,7 @@ export default {
 .myAccount__header{
     display: flex;
     align-items: center;
-    background: var(--app-header-bg-color);
+    background: #19b07b;
     color: #ffffff;
     padding: 0 5px;
 }

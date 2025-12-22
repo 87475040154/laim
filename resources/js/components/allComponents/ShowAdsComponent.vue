@@ -84,64 +84,64 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, nextTick  } from 'vue';
+
+// 🔹 Импорт реактивных функций из Vue
+import { ref, watch, onMounted } from 'vue';
+
+// 🔹 Импорт Axios для HTTP-запросов
 import axios from 'axios';
 
+
+// 🔹 Импорт функций маршрутизатора Vue
 import { useRouter, useRoute } from 'vue-router'
+const router = useRouter()// - объект router позволяет программно переходить на другие страницы (router.push, router.replace)
+const route = useRoute()// - объект route содержит текущий маршрут, параметры, query и имя страницы
 
-// 🧭 Подключаем маршрутизатор
-const router = useRouter()
-const route = useRoute()
-
-
-// Импортируем Store
+// 📦 Импортируем Stores из разных модулей
 import { useAuthStore } from "../../stores/auth";
 import { useAppInstallStore } from "../../stores/AppInstall";
 import { useFilterStore } from "../../stores/Filter";
 import { useKZLocationStore } from "../../stores/KZLocation";
 import { useUpdateDateLocaleStore } from "../../stores/updateDateLocale";
 
-// Импортируем компоненты
-import adsPreviewComponent from "./AdsPreviewComponent.vue";
-import { useScroll, useLocalStorage  } from '@vueuse/core'
-
-
-// Stores
+// ⚡ Инициализация Stores
 const authStore = useAuthStore();
 const appInstallStore = useAppInstallStore();
 const filterStore = useFilterStore();
 const updateDateLocaleStore = useUpdateDateLocaleStore();
 const KZLocationStore = useKZLocationStore();
 
-// Reactive state
-const query = ref(false);
-const controller = ref(null);
+// 📦 Импортируем компоненты и утилиты
+import AdsPreviewComponent from "./AdsPreviewComponent.vue"; // - Компонент для превью объявлений, который используется в шаблоне <ads-preview-component>
 
-const topPanelFixed = ref(false);
+import { useScroll, useLocalStorage } from '@vueuse/core';
+// - useScroll: позволяет отслеживать положение скролла на странице
+// - useLocalStorage: реактивная работа с localStorage, данные автоматически синхронизируются
 
-const countAds = ref(0);
-const adsNotFound = ref(false);
 
-const ads_arr = ref([]);
-// создаём реактивный ref, который синхронизирован с localStorage
-const getMyLikeAds = useLocalStorage('getMyLikeAds', false)
-
-const countFilter = ref(0);
-const showMapButton = ref(false);
-
-const nextCursor = ref(null);
-const isFirstLoad = ref(true);
-const isLastLoad = ref(false);
+// Реактивные переменные
+const query = ref(false); // :Флаг -  отправлен запрос на сервер или нет
+const controller = ref(null); // 🔹 Создаём реактивную переменную для контроллера отмены запросов axios // - controller.value будет хранить объект AbortController // - если нужно отменить предыдущий запрос, можно вызвать: controller.value.abort()
+const topPanelFixed = ref(false); // Верхняя панель - Фиксированна  position : Sticky или relative
+const ads_arr = ref([]); // Массив объявлений полученный с БД
+const getMyLikeAds = useLocalStorage('getMyLikeAds', false) // создаём реактивный ref, который синхронизирован с localStorage
+const countFilter = ref(0); // Колличество активных значений в фильре
+const showMapButton = ref(false); // :Флаг - Показать кнопку "Установить приложение Лайм.kz"
+const countAds = ref(0); // Колличество найденных объявлений
+const adsNotFound = ref(false); // :Флаг объявления не найденны
+const nextCursor = ref(null); // Следующий курсор для получения объявлений
+const isFirstLoad = ref(true); // :Флаг - Первый запрос объявлений
+const isLastLoad = ref(false); // :Флаг - Получаем последние объявления
 
 // Методы
-// 📜 Отслеживаем прокрутку страницы
-const { y } = useScroll(window)
+
+
+const { y } = useScroll(window) // 📜 Отслеживаем прокрутку страницы
 
 // 📌 Состояние "прилипания" верхней панели
 const isSticky = ref(false)
 let lastY = 0
 const DELTA = 10 // порог чувствительности — мелкие движения игнорируем
-
 // 🎯 Логика прилипания верхней панели
 watch(y, (newY) => {
     const diff = newY - lastY
@@ -168,6 +168,8 @@ watch(y, (newY) => {
 })
 
 
+
+// Метод отчищает, скидывает все данные до базовых
 const clearData = () => {
 
     ads_arr.value = [];
@@ -183,36 +185,44 @@ const clearData = () => {
 
 };
 
+// 🔹 Метод для подсчёта активных фильтров
 const filterLength = () => {
+    // Получаем фильтр из localStorage по текущей таблице
     const filter = JSON.parse(localStorage.getItem("filter=" + route.params.table_name));
+
+    // Если фильтра нет — сбрасываем счетчик и скрываем кнопку карты
     if (!filter) {
         countFilter.value = 0;
         showMapButton.value = false;
         return;
     }
 
-    let count = 0;
-    for (let key in filter) {
-        if (!['originalData', 'busy', 'successful', 'recentlySuccessful', 'recentlySuccessfulTimeoutId', 'errors', 'progress'].includes(key)) {
-            if (filter[key] !== '' && filter[key] != null) count++;
-        }
+    // Список служебных ключей, которые не учитываются
+    const excludedKeys = [
+        'originalData', 'busy', 'successful',
+        'recentlySuccessful', 'recentlySuccessfulTimeoutId',
+        'errors', 'progress'
+    ];
+
+    // Подсчёт активных фильтров
+    let count = Object.keys(filter)
+        .filter(key => !excludedKeys.includes(key) && filter[key] !== '' && filter[key] != null)
+        .length;
+
+    // Корректировка для областей/городов/районов
+    if (count > 0 && filter.oblast != null) {
+        if (filter.gorod != null) count--;
+        if (filter.raion != null) count--;
+        showMapButton.value = true;   // показываем кнопку "Показать объекты на карте"
+    } else {
+        showMapButton.value = false;  // иначе скрываем кнопку
     }
 
-    if (count > 0) {
-        if (filter.oblast != null) {
-            if (filter.gorod != null) count--;
-            if (filter.raion != null) count--;
-            showMapButton.value = true;
-        } else {
-            showMapButton.value = false;
-        }
-        countFilter.value = count;
-    } else {
-        countFilter.value = 0;
-        showMapButton.value = false;
-    }
+    // Сохраняем результат, гарантируя, что не будет отрицательного числа
+    countFilter.value = Math.max(count, 0);
 };
 
+// Метод узнать сколько есть объявлений в БД по данному запросу
 const countAdsFn = async () => {
     try {
         const response = await axios.get('countAds', {
@@ -238,6 +248,7 @@ const countAdsFn = async () => {
     }
 };
 
+// Метод запрос объявлений с БД
 const getAds = async () => {
     if (isLastLoad.value) return;
 
@@ -245,6 +256,7 @@ const getAds = async () => {
     controller.value = new AbortController();
     const signal = controller.value.signal;
 
+    // Покажем гивку загрузки с задержкой
     const showGifDelay = setTimeout(() => query.value = true, 100);
 
     if (!authStore.check) getMyLikeAds.value = false;
@@ -275,32 +287,37 @@ const getAds = async () => {
     }
 };
 
+// 🔹 WATCHERS
 
+// Следим за изменением флага "мои избранные"
 watch(getMyLikeAds, (newVal) => {
     clearData();
     getAds();
-}, { immediate: true })
+}, { immediate: true });
 
+
+// Следим за сменой категории (table_name)
 watch(
     () => route.params.table_name,
     (newTable, oldTable) => {
         if (newTable !== oldTable) {
-            clearData()
-            getAds()
-            window.scrollTo({ top: 0 })
+            clearData();
+            getAds();
+            window.scrollTo({ top: 0 }); // прокрутка вверх
         }
     },
-    { deep: true } // отслеживает вложенные свойства объекта
-)
+    { deep: true }
+);
 
+// Следим за применением фильтра
 watch(() => filterStore.make_filter, () => {
     clearData();
     getAds();
 });
 
-// Mounted
+// 🔹 ON MOUNTED
 onMounted(() => {
-    getAds();
+    getAds();  // загружаем объявления при монтировании компонента
 });
 
 </script>
@@ -383,6 +400,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 .show-ads-page__lang-current {
     font-size: 14px;
@@ -434,7 +452,7 @@ onMounted(() => {
     width: 2rem;                   /* увеличенный размер */
     height: 2rem;
     border: 3px solid rgba(0, 0, 0, 0.1);  /* толще рамка */
-    border-top-color: var(--app-text-color);
+    border-top-color: #000000;
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
 }

@@ -1,150 +1,120 @@
 <template>
 
-    <!-- Backdrop -->
+    <!-- Затемнённый фон под модальным окном -->
     <transition name="lang__animation-backdrop">
-
         <div v-if="langAnimation" class="lang__backdrop" @click="$router.back()"></div>
-
     </transition>
 
-    <!-- Обвертка - Компонента -->
+    <!-- Обёртка модального окна с анимацией -->
     <transition name="lang__animation-wrapper">
-
-        <!-- Обвертка - Компонента -->
         <div v-if="langAnimation" class="lang__wrapper">
 
-            <!-- Сам блок -->
+            <!-- Основной блок модалки -->
             <div class="lang__block">
 
-                <!-- Header -->
+                <!-- Header: заголовок и кнопка закрытия -->
                 <div class="lang__header">
-
-                    <h4 v-if="lang == 'ru' ">Выберите язык</h4>
-                    <h4 v-if="lang == 'kz' ">Тілді таңдаңыз</h4>
-                    <h4 v-if="lang == 'en' ">Choose language</h4>
-
-                    <!-- Кнопка закрыть блок -->
-                    <v-btn role="button" icon size="small" variant="text"
-                           class="mx-1"
-                           style="position: absolute; top: 5px; right: 5px"
-                           dark @click="$router.back()">
-                        <v-icon size="large">mdi-close</v-icon>
-                    </v-btn>
-
+                    <h4>{{ $t('choose_language') }}</h4>
+                    <button class="lang__close" @click="$router.back()" aria-label="Close">✕</button>
                 </div>
 
-                <!-- Body -->
+                <!-- Body: список языков -->
                 <div class="lang__body">
-
                     <div class="lang__links-block">
 
-                        <div @click="getLang('kz'), $router.back()" class="lang__link">
-
-                            <img src="/img/siteImg/allImg/kz.png"
-                                 alt="Kazakhstan"
-                                 width="24" />
-                            <span class="lang__link-text px-2" :class="{'text-blue': lang == 'kz'}">Қазақ</span>
-
-                        </div>
-
-                        <div @click="getLang('ru'), $router.back()" class="lang__link">
-
-                            <img src="/img/siteImg/allImg/ru.png"
-                                 alt="Russia"
-                                 width="24" />
-                            <span class="lang__link-text px-2" :class="{'text-blue': lang == 'ru'}">Русский</span>
-
-                        </div>
-
-                        <div @click="getLang('en'), $router.back()" class="lang__link">
-
-                            <img src="/img/siteImg/allImg/en.png"
-                                 alt="United Kingdom"
-                                 width="24" />
-                            <span class="lang__link-text px-2" :class="{'text-blue': lang == 'en'}">English</span>
-
+                        <!-- Одна языковая ссылка -->
+                        <div
+                            v-for="item in languages"
+                            :key="item.code"
+                            class="lang__link"
+                            @click="changeLang(item.code)"
+                        >
+                            <img :src="item.img" :alt="item.alt" width="24" />
+                            <span class="lang__link-text px-2" :class="{ 'text-blue': lang === item.code }">
+              {{ item.name }}
+            </span>
                         </div>
 
                     </div>
-
                 </div>
 
             </div>
 
-
         </div>
-
     </transition>
 
 </template>
 
 
-<script>
+<script setup>
+// Vue
+import { ref, onMounted } from 'vue'
+import { onBeforeRouteLeave, useRouter } from 'vue-router'
 
-//Мультиязык
-import { loadLanguageAsync } from 'laravel-vue-i18n';
+const router = useRouter()
 
-import moment from "moment";
+// Мультиязык
+import { loadLanguageAsync } from 'laravel-vue-i18n'
+import moment from 'moment'
 
-// Импортирую store
-import {useUpdateDateLocaleStore} from "../../stores/updateDateLocale";
+// Store
+import { useUpdateDateLocaleStore } from '../../stores/updateDateLocale'
 
-//Импорт мультиязык vee-validate
-import { setLocale } from '@vee-validate/i18n';
+// vee-validate i18n
+import { setLocale } from '@vee-validate/i18n'
 
-export default {
-    name: "LangComponent",
-    data(){
-        return {
+// Store
+const updateDateLocale = useUpdateDateLocaleStore()
 
-            //Импортирую Store - Общее состояние
-            updateDateLocale: useUpdateDateLocaleStore(),
-            lang: 'ru',
+// State
+const lang = ref('ru')
+const langAnimation = ref(false)
+const languages = [
+    { code: 'kz', name: 'Қазақ', img: '/img/siteImg/allImg/kz.png', alt: 'Kazakhstan' },
+    { code: 'ru', name: 'Русский', img: '/img/siteImg/allImg/ru.png', alt: 'Russia' },
+    { code: 'en', name: 'English', img: '/img/siteImg/allImg/en.png', alt: 'United Kingdom' }
+]
 
-            langAnimation: false,
-        }
-    },
-
-    methods: {
-        async getLang(lang){
-
-            //Изменим локаль - Приложения ( Мои переводы )
-            await loadLanguageAsync(lang)
-
-            this.lang = lang;
-
-            // Занесем выбранную в хранилище
-            localStorage.setItem('lang', lang);
-
-            // Обновим в store
-            this.updateDateLocale.updateLang(lang)
-
-            // Поменяем локаль ошибок vee-validate
-            setLocale(lang);
-
-            //Поменяем local даты пакета moment.jz
-            this.lang == 'kz' ? lang = 'kk' : '';
-            this.lang == 'en' ? lang = 'en-gb' : '';
-            moment.locale(lang);
-        }
-    },
-
-    mounted() {
-        this.langAnimation = true;
-
-        document.querySelector(':root').classList.add('PATCH_modal');
-        localStorage.getItem('lang') != undefined ? this.getLang(localStorage.getItem('lang')) : ''
-    },
-
-    beforeRouteLeave(to, from, next) {
-        this.langAnimation = false; // Установите значение в false перед покиданием маршрута
-        if(to.name == 'allAds')document.querySelector(':root').classList.remove('PATCH_modal'); //Отменим прокрутку под модальным окном
-
-        setTimeout(() => {
-            next(); // Вызываем next() после завершения setTimeout - Для завершения анимации
-        }, 350);
-    }
+// Methods
+const changeLang = async (code) => {
+    await getLang(code)
+    router.back()
 }
+
+const momentMap = { kz: 'kk', ru: 'ru', en: 'en-gb' }
+const getLang = async (newLang) => {
+    await loadLanguageAsync(newLang)
+    lang.value = newLang
+    localStorage.setItem('lang', newLang)
+    updateDateLocale.updateLang(newLang)
+    setLocale(newLang)
+    moment.locale(momentMap[newLang] || 'ru')
+}
+
+// Lifecycle
+onMounted(() => {
+    langAnimation.value = true
+
+    document.querySelector(':root').classList.add('PATCH_modal')
+
+    const savedLang = localStorage.getItem('lang')
+    if (savedLang) {
+        getLang(savedLang)
+    }
+})
+
+// Route Leave (анимация)
+onBeforeRouteLeave((to, from, next) => {
+    langAnimation.value = false
+
+    if (to.name === 'allAds') {
+        document.querySelector(':root').classList.remove('PATCH_modal')
+    }
+
+    setTimeout(() => {
+        next()
+    }, 350)
+})
 </script>
 <style>
 
@@ -186,23 +156,28 @@ export default {
 </style>
 
 <style scoped>
-/* Backdrop */
-.lang__backdrop{
+/* ============================
+   Backdrop - затемнённый фон
+============================ */
+.lang__backdrop {
     position: fixed;
     top: 0;
-    bottom:0;
-    right: 0;
+    bottom: 0;
     left: 0;
-    background: rgba(0,0,0,0.8);
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
     z-index: 3;
 }
 
-.lang__wrapper{
+/* ============================
+   Wrapper - центрирует модалку
+============================ */
+.lang__wrapper {
     position: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
-    bottom:0;
+    bottom: 0;
     left: 0;
     width: 100%;
     height: auto;
@@ -212,7 +187,10 @@ export default {
     z-index: 3;
 }
 
-.lang__block{
+/* ============================
+   Модальный блок
+============================ */
+.lang__block {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -221,43 +199,72 @@ export default {
     background: #ffffff;
 }
 
-.lang__header{
+/* ============================
+   Header - заголовок и кнопка
+============================ */
+.lang__header {
     position: relative;
     text-align: center;
     padding: 20px;
 }
 
-.lang__body{
+.lang__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+}
+
+.lang__close:hover {
+    opacity: 0.7;
+}
+
+/* ============================
+   Body - содержимое модалки
+============================ */
+.lang__body {
     flex-grow: 1;
     width: 100%;
     font-size: 1.1em;
     padding-bottom: 20px;
 }
 
-.lang__links-block{
+.lang__links-block {
     padding: 10px;
 }
 
-.lang__link{
+/* ============================
+   Ссылка на язык
+============================ */
+.lang__link {
     color: #2a2a2a;
     padding: 15px;
     display: flex;
     align-items: center;
-}
-
-.lang__link-text{
-    font-size: 1.1em;
-}
-
-.lang__link:hover{
-    background: rgba(0,0,0,0.1);
-    cursor: pointer;
     border-radius: 10px;
+    transition: background 0.2s;
 }
 
-/*При экранее более 992px */
-@media screen and  (min-width: 992px) {
-    .lang__block{
+.lang__link:hover {
+    background: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.lang__link-text {
+    font-size: 1.1em;
+    margin-left: 8px; /* небольшой отступ между флагом и текстом */
+}
+
+/* ============================
+   Адаптивность
+============================ */
+@media screen and (min-width: 992px) {
+    .lang__block {
         margin-right: 10px;
     }
 }

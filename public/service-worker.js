@@ -1,5 +1,5 @@
 //Наше название КЭША
-const CACHE = 'cache-v1';
+const CACHE = 'cache-v2';
 
 //Для начала мы кэшируем все наши статические ресурсы
 const staticAssets = [

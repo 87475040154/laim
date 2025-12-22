@@ -6,13 +6,11 @@ export const useAppInstallStore = defineStore('AppInstall', {
     //Свойства
     state: ()=>({
         APP: '',
-        THEME: ''
     }),
 
     //Получаем доступ к свойствам
     getters: {
         app: ( state )=> state.APP,
-        theme: ( state )=> state.THEME,
     },
 
     actions: {
@@ -28,11 +26,6 @@ export const useAppInstallStore = defineStore('AppInstall', {
             const { outcome } = await this.APP.userChoice;
             this.APP =  '';
         },
-
-        // Изменить тему
-        changeTheme(){
-            this.THEME  =  this.THEME == '' ? 'dark-theme': '';
-        }
 
     }
 

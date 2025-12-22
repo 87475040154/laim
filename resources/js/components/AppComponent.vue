@@ -1,28 +1,23 @@
 <template>
 
-    <!-- Внешний wrapper для фона -->
-    <div :class="['app-wrapper', appInstallStore.theme]">
+    <div class="app-container">
 
-        <div class="app-container">
+        <!-- Alert если нет Интернета -->
+        <transition name="fade">
+            <div v-if="checkInternetStore.showAlert && !checkInternetStore.online" class="internet-alert" role="alert">
+                <strong>{{ checkInternetStore.message }}</strong>
+                <button type="button" class="internet-alert__close" @click="checkInternetStore.showAlertBlock(false)" aria-label="Закрыть">&times;</button>
+            </div>
+        </transition>
 
-            <!-- Alert если нет Интернета -->
-            <transition name="fade">
-                <div v-if="checkInternetStore.showAlert && !checkInternetStore.online" class="internet-alert" role="alert">
-                    <strong>{{ checkInternetStore.message }}</strong>
-                    <button type="button" class="internet-alert__close" @click="checkInternetStore.showAlertBlock(false)" aria-label="Закрыть">&times;</button>
-                </div>
-            </transition>
+        <!-- HEADER -->
+        <header-component></header-component>
 
-            <!-- HEADER -->
-            <header-component></header-component>
+        <!-- MAIN  -->
+        <main-component></main-component>
 
-            <!-- MAIN  -->
-            <main-component></main-component>
-
-            <!-- FOOTER -->
-            <footer-component></footer-component>
-
-        </div>
+        <!-- FOOTER -->
+        <footer-component></footer-component>
 
     </div>
 
@@ -86,36 +81,13 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.app-wrapper {
-    background: var(--app-bg-color);
-    min-height: 100vh;
-}
 
 .app-container {
     width: 100%;
     max-width: 1320px;
     margin: 0 auto;
-    background: var(--app-inner-bg-color);
+    background: #eeeeee;
 }
-
-.main__pages{
-    min-height: 500px;
-}
-
-
-/* Темы */
-.light-theme {
-    --app-bg-color: #f8f9fa;
-    --text-color: #333;
-    --app-inner-bg-color: #fff;
-}
-
-.dark-theme {
-    --app-bg-color: #1e1e1e;
-    --text-color: #f5f5f5;
-    --app-inner-bg-color: #2a2a2a;
-}
-
 
 /* Alert для отсутствия интернета */
 .internet-alert {
