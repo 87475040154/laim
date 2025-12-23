@@ -48,7 +48,7 @@ class SendLinkForgotPassword extends Notification
             ->subject('Востановление пароля Лайм.kz')
             ->greeting('Востановление пароля')
             ->line('Нажмите на кнопку ниже')
-            ->action('Сменить пароль', url('/'. $this->path.'?resetPasswordToken='.$this->token))
+            ->action('Сменить пароль', url($this->path.'?resetPasswordToken='.$this->token))
             ->line('На сайте Лайм.kz был создан запрос на востановление пароля, если это были не вы, то будьте осторожны кто то пытается войти на сайт под вашими данными');
     }
 
