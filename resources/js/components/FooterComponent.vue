@@ -69,12 +69,12 @@
         </div>
 
         <!-- FOOTER MOBILE -->
-        <div class="footer__mobile pb-1">
+        <div class="footer__mobile">
 
-            <!-- Главная - Laim.kz -->
+            <!-- Главная - Лайм.kz -->
             <div class="footer__mobile-link">
 
-                <!-- lime.kz - Главная страница -->
+                <!-- лайм.kz - Главная страница -->
                 <div v-if="!pageScrolled" @click="$router.push('/allAds/Kvartira')">
                     <v-icon>{{$route.name == 'allAds' || $route.path == '/' ? 'mdi-home text-dark' : 'mdi-home-outline'}}</v-icon>
                     <div style="font-size: 0.5em; line-height: 8px">Лайм.kz</div>
@@ -87,6 +87,7 @@
                 </div>
 
             </div>
+
             <!-- Мои объявления -->
             <div  class="footer__mobile-link" @click="authStore.check ?$router.push({name:'userAds', params: {author_id: authStore.user.id}}) : $router.push({name: $route.name + 'Auth'})">
 
@@ -102,7 +103,6 @@
                 <div style="font-size: 0.5em; line-height: 8px">{{ $t('footerMy') }}</div>
             </div>
 
-
             <!-- Сдать -->
             <div  class="footer__mobile-link" @click="authStore.check ? $router.push({name: 'addAdsMenu'}) : $router.push({name: $route.name + 'Auth'})">
                 <v-icon style="font-size: 2em; color: #10a37f">mdi-plus-box</v-icon>
@@ -116,7 +116,6 @@
                 ></v-icon>
                 <div style="font-size: 0.5em; line-height: 8px">{{ 'Избранные' }}</div>
             </div>
-
 
             <!-- Мой аккаунт -->
             <div  class="footer__mobile-link" @click="authStore.check ? $router.push({name: 'myAccount'}) : $router.push({name: $route.name + 'Auth'})">
@@ -230,6 +229,7 @@ onUnmounted(() => {
     color: #888b94;
     border-top: 1px solid rgba(0,0,0,.1);
     font-size: 1.4em;
+    padding-bottom: 5px;
 }
 
 .footer__mobile-link{

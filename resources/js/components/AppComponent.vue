@@ -2,7 +2,7 @@
 
     <div class="app-container">
 
-        <!-- Alert если нет Интернета -->
+        <!-- Блок - если нет Интернета -->
         <transition name="fade">
             <div v-if="checkInternetStore.showAlert && !checkInternetStore.online" class="internet-alert" role="alert">
                 <strong>{{ checkInternetStore.message }}</strong>
@@ -24,6 +24,7 @@
 </template>
 
 <script setup>
+
 import { onMounted } from 'vue';
 
 // Импорт компонентов
@@ -31,33 +32,33 @@ import HeaderComponent from './HeaderComponent.vue';
 import MainComponent from './MainComponent.vue';
 import FooterComponent from './FooterComponent.vue';
 
-// Импорт Store
+// Импорт Stores
 import { useAuthStore } from "../stores/auth";
 import { useAppInstallStore } from "../stores/AppInstall";
 import { useCheckInternetStore } from "../stores/checkInternet";
-import { useGetProjectDataStore } from '../stores/getProjectData';
 
-// Мультиязык
+// Мультиязык -> resources -> lang -> ru.json, kz.json, en.json Делаю перевод сайта
 import { loadLanguageAsync } from 'laravel-vue-i18n';
 
-// Инициализация Stores
+// Инициализация Stores - Общее состояние сайта
 const authStore = useAuthStore();
 const appInstallStore = useAppInstallStore();
 const checkInternetStore = useCheckInternetStore();
-const getProjectDataStore = useGetProjectDataStore();
+
+
+// Проверка через что зашел пользователь Телефон - Компьютер
+function detectDevice() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
+    authStore.desktopOrMob(isMobile ? 'Mobile' : 'Desktop');
+    document.documentElement.classList.add(isMobile ? 'mobile__device' : 'desktop__device');
+}
 
 onMounted(() => {
 
     // Определяем устройство - Desktop или Mobile
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
-        authStore.desktopOrMob('Mobile');
-        document.documentElement.classList.add('mobile__device');
-    } else {
-        authStore.desktopOrMob('Desktop');
-        document.documentElement.classList.add('desktop__device');
-    }
+    detectDevice();
 
-    // Мультиязык - беру значение с локального хронения и указываю язык приложения // мои переводы
+    // Мультиязык - беру значение с локального хронения и указываю язык приложения если перезагрузка
     const lang = localStorage.getItem('lang');
     if (lang) loadLanguageAsync(lang);
 
@@ -83,9 +84,13 @@ onMounted(() => {
 <style scoped>
 
 .app-container {
-    width: 100%;
+    min-height: 100vh;          /* контейнер минимум на весь экран */
     max-width: 1320px;
     margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+
     background: #eeeeee;
 }
 

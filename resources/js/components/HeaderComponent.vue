@@ -146,7 +146,7 @@
 
 
 <script setup>
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch } from 'vue'
 import { useScroll, useLocalStorage  } from '@vueuse/core'
 import { useRouter, useRoute } from 'vue-router'
 

@@ -13,6 +13,6 @@
 
 <style scoped>
 .main{
-    min-height: 500px;
+    flex: 1 1 auto;
 }
 </style>

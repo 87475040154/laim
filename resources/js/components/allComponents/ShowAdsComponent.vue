@@ -408,7 +408,6 @@ onMounted(() => {
     color: #007bff;
     padding: 4px 8px;
     border-radius: 6px;
-    background-color: #e6f0ff; /* лёгкий фон для выделения */
 }
 
 /* Кнопка установка приложения */
