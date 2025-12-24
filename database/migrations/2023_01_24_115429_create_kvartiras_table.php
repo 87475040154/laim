@@ -58,7 +58,10 @@ return new class extends Migration
             $table->text('text_obyavleniya');
             $table->string('name');
             $table->string('tel');
+            $table->tinyInteger('whatsapp_tel')->default(0);
             $table->string('tel2')->nullable();
+            $table->tinyInteger('whatsapp_tel2')->default(0);
+
 
 
             //Управление

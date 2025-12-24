@@ -602,11 +602,8 @@ export default {
 <style scoped>
 .auth__wrapper {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #ffffff;
+    inset: 0;       /* top, right, bottom, left */
+    background: #fff;
 }
 
 .auth__block{
@@ -659,3 +656,4 @@ export default {
     border-color: #b3b3b3;
 }
 </style>
+<!--662-->

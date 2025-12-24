@@ -18,7 +18,7 @@ class Ofis extends Model
         'author_id','tip_sdelki', 'zagolovok', 'kolichestvo_komnat', 'cena','cena_tip', 'tip_ofisa', 'etag','etagnost','visota_potolkov',
         'ploshad_obshaya', 'tip_stroeniya','god_postroiki', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie', 'mebel',
         'sanuzel', 'otdelniy_vhod', 'mebel_arr','raznoe','bezopasnost',
-        'text_obyavleniya', 'name', 'tel','tel2'
+        'text_obyavleniya', 'name', 'tel','tel2','whatsapp_tel','whatsapp_tel2'
         , 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
     ];
 

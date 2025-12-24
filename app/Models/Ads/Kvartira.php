@@ -19,7 +19,7 @@ class Kvartira extends Model
         'author_id','tip_sdelki', 'zagolovok', 'period_arendi', 'kolichestvo_komnat', 'cena', 'etag','etagnost','ploshad_obshaya',
         'ploshad_kuhni', 'tip_stroeniya','god_postroiki', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie',
         'sanuzel', 'balkon', 'mebel', 'mebel_arr','raznoe','bezopasnost', 'text_obyavleniya',
-        'name', 'tel','tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
+        'name', 'tel','tel2','whatsapp_tel','whatsapp_tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
     ];
 
     // Преобразуем масив в json и обратно при занесении данных в БД и при получении из нее автоматически

@@ -10,7 +10,7 @@
     <div class="show-ads__page">
 
         <!-- Верхняя панель: количество объявлений, фильтр и выбор языка -->
-        <div class="show-ads-page__top-panel" :class="{ 'show-ads-page__top-panel--sticky': isSticky }">
+        <div class="show-ads-page__top-panel">
 
             <!-- Счетчик найденных объявлений -->
             <div class="show-ads-page__top-panel-count">
@@ -134,40 +134,6 @@ const isFirstLoad = ref(true); // :Флаг - Первый запрос объя
 const isLastLoad = ref(false); // :Флаг - Получаем последние объявления
 
 // Методы
-
-
-const { y } = useScroll(window) // 📜 Отслеживаем прокрутку страницы
-
-// 📌 Состояние "прилипания" верхней панели
-const isSticky = ref(false)
-let lastY = 0
-const DELTA = 10 // порог чувствительности — мелкие движения игнорируем
-// 🎯 Логика прилипания верхней панели
-watch(y, (newY) => {
-    const diff = newY - lastY
-
-    // Если вернулись к самому верху — хедер обычный (не липкий)
-    if (newY <= 0) {
-        isSticky.value = false
-        lastY = newY
-        return
-    }
-
-    // Игнорируем мелкие движения (чтобы не "дрожал")
-    if (Math.abs(diff) <= DELTA) return
-
-    if (diff < 0) {
-        // Скролл вверх — хедер становится "sticky"
-        isSticky.value = true
-    } else if (diff > 0) {
-        // Скролл вниз — хедер отпускается
-        isSticky.value = false
-    }
-
-    lastY = newY
-})
-
-
 
 // Метод отчищает, скидывает все данные до базовых
 const clearData = () => {
@@ -353,14 +319,6 @@ onMounted(() => {
     margin-bottom: 16px;
 
 }
-/* Прилипающая панель */
-.show-ads-page__top-panel--sticky {
-    position: sticky;
-    top: 112px;
-    z-index: 1;
-    backdrop-filter: blur(6px);
-    transition: background 0.2s ease, box-shadow 0.2s ease;
-}
 
 /* Счетчик найденных объявлений — второстепенный элемент */
 .show-ads-page__top-panel-count {
@@ -489,7 +447,7 @@ onMounted(() => {
     color: #333;               /* цвет текста */
     font-size: 0.875rem;       /* text-caption */
     font-weight: 500;
-    z-index: 100;
+    z-index: 1;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -531,10 +489,7 @@ onMounted(() => {
 
 /* 💻 Ноутбуки (≥992px) */
 @media (min-width: 992px) {
-    /* Прилипающая панель */
-    .show-ads-page__top-panel--sticky {
-        top: 190px; /* от верха окна или родителя, с которым нет overflow */
-    }
+
 }
 
 /* 🖥 Десктопы (≥1200px) */
@@ -557,3 +512,4 @@ onMounted(() => {
 
 }
 </style>
+<!--515-->

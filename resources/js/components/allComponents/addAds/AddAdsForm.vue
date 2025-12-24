@@ -1461,6 +1461,11 @@
 
                             </validation-provider>
 
+                            <div class="whatsapp-checkbox">
+                                <input type="checkbox" v-model="form.whatsapp_tel" :disabled="!form.tel" :true-value="1" :false-value="0" id="whatsapp1">
+                                <label for="whatsapp1">WhatsApp</label>
+                            </div>
+
                         </div>
 
                         <!-- Телефон 2 -->
@@ -1470,6 +1475,11 @@
                                            :inputOptions="{ placeholder: $t('addAdsYourPhoneNumber'), showDialCode: true}"
                                            :validCharactersOnly="true"
                             ></vue-tel-input>
+
+                            <div class="whatsapp-checkbox">
+                                <input type="checkbox" v-model="form.whatsapp_tel2" :disabled="!form.tel2" :true-value="1" :false-value="0" id="whatsapp2">
+                                <label for="whatsapp2">WhatsApp</label>
+                            </div>
 
                         </div>
 
@@ -1692,7 +1702,9 @@ export default {
                 //Контактные данные автора
                 name: '',
                 tel: '',
+                whatsapp_tel: 0,
                 tel2: '',
+                whatsapp_tel2: 0,
 
             }),
             imageAndPreviewImage: [],
@@ -2261,6 +2273,19 @@ export default {
     background: #f0f7f0
 }
 
+.whatsapp-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* отступ между чекбоксом и текстом */
+    margin-top: 1rem;
+}
+
+.whatsapp-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
 
 /*Добавим стили для полей vuetify - textarea и для label*/
 ::v-deep(.v-textarea--auto-grow .v-field__input) {
@@ -2272,3 +2297,4 @@ export default {
 }
 
 </style>
+<!--2300-->
