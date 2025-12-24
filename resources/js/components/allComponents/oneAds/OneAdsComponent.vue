@@ -882,13 +882,7 @@ export default {
                 version: '2.1'
             },
             detailedControls :{ zoomControl: { position: { right: 0, top: 0 } } },
-            //Изменяем иконку
-            options: {
-                iconLayout: 'default#image',
-                iconImageHref: '', //Путь к фото
-                iconImageSize: [25, 26],
-                iconImageOffset: [-20, -10],
-            },
+            options: {},
 
             //swiper Модули для слайдера фото
             modules: [Pagination, Mousewheel, Keyboard],
@@ -915,13 +909,8 @@ export default {
             if(localStorage.getItem('oneAds') != undefined){
                 this.ads = JSON.parse(localStorage.getItem('oneAds'));
 
-                //Фото значка расположения на карте
+                //Расположения на карте
                 if(this.ads.lat != undefined){
-                    if(this.ads.images.length == 0){
-                        this.options.iconImageHref = '/img/siteImg/allImg/apartmens.jpg';
-                    }else{
-                        this.options.iconImageHref = '/img/adsImg/' + this.ads.images[0];
-                    }
                     this.showMap = true;
                 }
             }
@@ -1074,13 +1063,6 @@ export default {
 /* Уберем значки на карте - Например: как добраться, создать новую карту, кнопка увеличения уменьшения карты */
 .ymaps-2-1-79-controls__control_toolbar, .ymaps-2-1-79-gototech, .ymaps-2-1-79-controls__control, .ymaps-2-1-79-map-copyrights-promo{
     display: none!important;
-}
-
-/* Стили для макрера - наше фото квартиры */
-.ymaps-2-1-79-image{
-    border-radius: 100%;
-    box-shadow: 0 0 0 2px white, 0 0 0 4px #2196F3;
-    background-size: cover;
 }
 </style>
 

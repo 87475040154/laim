@@ -65,12 +65,7 @@ export default {
             detailedControls :{ zoomControl: { position: { right: 0, top: 0 } } },
             //Стили для маркера, будет фото квартиры
             //Конфиг для маркера
-            options : {
-                iconLayout: 'default#image',
-                iconImageHref: '',
-                iconImageSize: [25, 26],
-                iconImageOffset: [-20, -10],
-            },
+            options : {},
         }
     },
 
@@ -78,13 +73,6 @@ export default {
         let app = this;
 
         document.querySelector(':root').classList.add('PATCH_modal');
-
-        if(this.$route.query.image == 'no-image'){
-            this.options.iconImageHref = '/img/siteImg/allImg/apartmens.jpg';
-        }
-        else{
-            this.options.iconImageHref = '/img/adsImg/' + this.$route.query.image;
-        }
         this.coordinates = [this.$route.query.lat, this.$route.query.lon];
 
     },
@@ -110,13 +98,6 @@ export default {
 /* Уберем значки на карте - Например: как добраться, создать новую карту, кнопка увеличения уменьшения карты */
 .ymaps-2-1-79-map-copyrights-promo{
     display: none!important;
-}
-
-/* Стили для макрера - наше фото квартиры */
-.ymaps-2-1-79-image{
-    border-radius: 100%;
-    box-shadow: 0 0 0 2px white, 0 0 0 4px #2196F3;
-    background-size: cover;
 }
 
 </style>
