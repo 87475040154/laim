@@ -1,7 +1,7 @@
 <template>
     <!-- КОМПОНЕНТ - ВЫВОД ИНФОРМАЦИЯ ДЛЯ ОНДНОГО ОБЪЯВЛЕНИЯ ВНИЗУ СТРАНИЦЫ  -->
 
-    <!-- Backdrop -->
+    <!-- Backdrop - Затемнённый фон под модальным окном  -->
     <transition name="oneAdsBottom__animation-backdrop">
 
         <div v-if="oneAdsBottomAnimation" class="oneAdsBottom__backdrop" @click="$router.back()"></div>
@@ -21,20 +21,13 @@
                 <div class="oneAdsBottom__header">
 
                     <!-- Заголовок - Имя автора | Причина жалобы и тд. -->
-                    <h4 v-if="$route.params.type == 'Позвонить' ">
-                        <span>{{ads.name}}</span>
-                    </h4>
+                    <h4 v-if="$route.params.type == 'Позвонить' ">{{ads.name}}</h4>
                     <h4 v-if="$route.params.type == 'Пожаловаться'">{{ $t('oneAdsBottomOffCanvasCallReasonForComplaint') }}</h4>
                     <h4 v-if="$route.params.type == 'Скачать или поделиться фото'">{{ $t('oneAdsBottomOffCanvasDownloadPhotos') }}</h4>
                     <h4 v-if="$route.params.type == 'Поделиться объявлением'">{{ $t('oneAdsBottomOffCanvasShareAnAd') }}</h4>
 
                     <!-- Кнопка закрыть блок -->
-                    <v-btn role="button" icon size="small" variant="text"
-                           class="mx-1"
-                           style="position: absolute; top: 5px; right: 5px"
-                           dark @click="$router.back()">
-                        <v-icon size="large">mdi-close</v-icon>
-                    </v-btn>
+                    <button class="btn__close" @click="$router.back()" aria-label="Close">✕</button>
 
                 </div>
 
@@ -42,26 +35,30 @@
                 <div class="oneAdsBottom__body">
 
                     <!-- Кнопки номер телефона и Whatsapp-->
-                    <div v-if="$route.params.type=='Позвонить'" class="text-center">
+                    <div v-if="$route.params.type=='Позвонить'" class="callBtn__block">
 
-                        <!-- Кнопки - Tel, whatsapp - 1 - Если отправленно с контактами автора-->
-                        <div>
-                            <div>
-                                <a v-if="$route.query.tel == undefined"  :href="'https://api.whatsapp.com/send?phone='+ads.tel+'&text=' + SiteDomain +'/allAds/'+ $route.params.table_name + '/allAdsOneAds/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
-                                <a :href="'tel: '+ String($route.query.tel || ads.tel)" class="btn bg-blue text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px">
-                                    <i class="bi bi-telephone-fill pr-2"></i>
-                                    <small> {{ $route.query.tel || ads.tel }}</small>
-                                </a>
-                            </div>
+                        <div class="row">
+                            <a :href="'https://api.whatsapp.com/send?phone='+ads.tel+'&text=' + SiteDomain +'/allAds/'+ $route.params.table_name + '/allAdsOneAds/' + $route.params.ads_id" class="btn wa">
+                                {{ $t('oneAdsBottomOffCanvasGoToWA') }}
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
 
-                            <!-- Кнопки - Tel, whatsapp - 2 -->
-                            <div v-if="$route.query.tel == undefined" class="mt-2">
-                                <a v-if="ads.tel2 != null" :href="'https://api.whatsapp.com/send?phone='+ads.tel2+'&text=' + SiteDomain +'/allAds/'+ $route.params.table_name + '/allAdsOneAds/' + $route.params.ads_id" class="btn text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px; background: #10a37f"> {{ $t('oneAdsBottomOffCanvasGoToWA') }} <i class="bi bi-whatsapp"></i> </a>
-                                <a v-if="ads.tel2 != null" :href="'tel:'+ads.tel2" class="btn bg-blue text-white text-body-1 mx-1 py-3" style="width: 100%; max-width: 170px">
-                                    <i class="bi bi-telephone-fill pr-2"></i>
-                                    <small>{{ String(ads.tel2) }}</small>
-                                </a>
-                            </div>
+                            <a :href="'tel:'+ ads.tel" class="btn tel">
+                                <i class="bi bi-telephone-fill"></i>
+                                <small>{{ ads.tel }}</small>
+                            </a>
+                        </div>
+
+                        <div class="row">
+                            <a v-if="ads.tel2" :href="'https://api.whatsapp.com/send?phone='+ads.tel2+'&text=' + SiteDomain +'/allAds/'+ $route.params.table_name + '/allAdsOneAds/' + $route.params.ads_id" class="btn wa">
+                                {{ $t('oneAdsBottomOffCanvasGoToWA') }}
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+
+                            <a v-if="ads.tel2" :href="'tel:'+ ads.tel2" class="btn tel">
+                                <i class="bi bi-telephone-fill"></i>
+                                <small>{{ ads.tel2 }}</small>
+                            </a>
                         </div>
 
                     </div>
@@ -99,19 +96,7 @@
                     <div v-if="$route.params.type=='Поделиться объявлением'">
 
                         <!-- Поделиться с номером телефона автора -->
-                        <div v-if="$route.query.tel == undefined" @click="linkShare('С номером автора')" class="border-bottom p-2 pb-3" role="button">
-                            <i class="bi bi-share mx-1"></i>
-                            {{ $t('oneAdsBottomOffCanvasToShare') }}
-                        </div>
-
-                        <!-- Поделиться с моим номером телефона -->
-                        <div v-if="$route.query.tel == undefined" @click="authStore.check ? linkShare('С моим номером') : $router.push({name: $route.name + 'Auth'})" class="p-2 py-3" role="button">
-                            <i class="bi bi-share mx-1"></i>
-                            {{ $t('oneAdsBottomOffCanvasShareWithMyPhoneNumber') }}
-                        </div>
-
-                        <!-- Поделиться с моим номером телефона -->
-                        <div v-if="$route.query.tel != undefined" @click="linkShare('С моим номером')" class="p-2 py-3" role="button">
+                        <div @click="linkShare" class="border-bottom p-2 pb-3" role="button">
                             <i class="bi bi-share mx-1"></i>
                             {{ $t('oneAdsBottomOffCanvasToShare') }}
                         </div>
@@ -131,156 +116,102 @@
 
 </template>
 
-<script>
+<script setup>
 
-//Валидация laravel VFORM
-import Form from 'vform'
-import { Button, HasError, AlertError } from 'vform/src/components/bootstrap5'
+// vue
+import { ref, onMounted } from 'vue'
+import { useRouter, onBeforeRouteLeave } from 'vue-router'
 
+// router
+const router = useRouter()
 
-//Импортирую Store - Общее состояние
-import { useAuthStore } from "../../../stores/auth";
-import {useUpdateDateLocaleStore} from "../../../stores/updateDateLocale";
-
-
-//Импортируем NavigatorShare - пакет дает возможность поделиться ссылкой например через whatsapp
-import NavigatorShare from 'vue-navigator-share'
-
-export default {
-    name: "OneAdsBottomOffCanvas",
+// stores
+import { useAuthStore } from "../../../stores/auth"
+import { useUpdateDateLocaleStore } from "../../../stores/updateDateLocale"
 
 
-    components: {
-        NavigatorShare, //Поделиться, ссылкой, фото
-        Button, HasError, AlertError, //Валидация формы VForm
-    },
+// stores init
+const authStore = useAuthStore()
+const updateDateLocale = useUpdateDateLocaleStore()
 
-    data(){
-        return {
+// state
+const ads = ref('')
+const oneAdsBottomAnimation = ref(false)
+const query = ref(false)
+const SiteDomainLocal = SiteDomain
 
-            //Подключаю Store - Наше общее состояние
-            authStore: useAuthStore(),
-            updateDateLocale: useUpdateDateLocaleStore(),
+// methods
+const addComplain = async (complain) => {
+    query.value = true
 
-            ads: '', //Сюда занесем данные 1-го объявления
+    try {
+        await axios.post('/addComplain', {
+            ads_id: ads.value.id,
+            table_name: ads.value.table_name,
+            user_id: authStore.user.id,
+            complain
+        })
 
-            oneAdsBottomAnimation: false,
+        router.back()
+        Toast.fire({
+            title: app.config.globalProperties.$t('oneAdsBottomOffCanvasThanks'),
+            text: app.config.globalProperties.$t('oneAdsBottomOffCanvasComplainText')
+        })
+    } catch (errors) {
+        router.back()
+        Toast.fire({
+            title: app.config.globalProperties.$t('oneAdsBottomOffCanvasErrorText'),
+            text: errors.response.data.error
+        })
+    } finally {
+        query.value = false
+    }
+}
 
-            query: false,
-            SiteDomain: SiteDomain
-        }
-    },
+const downloadImage = async () => {
+    ads.value.images.forEach(img => {
+        const link = document.createElement('a')
+        link.href = '/img/adsImg/' + img
+        link.download = img
+        link.click()
+    })
+}
 
-    computed: {
-        tipObekta(){
-            if(this.ads.zagolovok != undefined){
-                return this.ads.zagolovok;
-            }else{
-                return this.ads.tip_obekta;
-            }
+const linkShare = async () => {
+    navigator.share({
+        url: SiteDomainLocal + '/allAds/' + ads.value.table_name + '/allAdsOneAds/' + ads.value.id
+    })
+}
 
-        }
-    },
+const shareImage = async () => {
+    const files = []
 
-    methods:{
-
-        //Метод - Отправить жалобу на объявление
-       async addComplain(complain){
-           this.query = true;
-
-            axios.post('/addComplain', {
-                ads_id: this.ads.id,
-                table_name: this.ads.table_name,
-                user_id: this.authStore.user.id,
-                complain: complain
-            })
-                .then(response=>{
-                    this.$router.back();
-                    Toast.fire({
-                        title: this.$t('oneAdsBottomOffCanvasThanks'),
-                        text: this.$t('oneAdsBottomOffCanvasComplainText')
-                    })
-                    this.query = false;
-                })
-                .catch(errors=>{
-                    this.$router.back();
-                    Toast.fire({
-                        title: this.$t('oneAdsBottomOffCanvasErrorText'),
-                        text: errors.response.data.error
-                    })
-                    this.query = false;
-                })
-        },
-
-        //Метод поделиться ссылкой
-        async linkShare(type) {
-
-            //Поделиться с номером телефона автора
-            if(type == 'С номером автора'){
-                navigator.share({
-                    url: SiteDomain +'/allAds/' + this.ads.table_name + '/1/allAdsOneAds/' + this.ads.id
-                })
-            }
-
-            //Поделиться с моим номером телефона
-            if(type == 'С моим номером'){
-                let tel = new URL(window.location).searchParams.has('tel') ? new URL(window.location).searchParams.get('tel') : this.authStore.user.tel
-                navigator.share({
-                    url:  SiteDomain + '/allAds/' + this.ads.table_name + '/1/allAdsOneAds/' + this.ads.id + '?tel=' + tel
-                })
-            }
-
-        },
-
-        //Метод скачать фото
-        async downloadImage(){
-
-            this.ads.images.forEach(elem=>{
-                let link = document.createElement("a");
-                link.setAttribute("href",'/img/adsImg/'+elem);
-                link.setAttribute("download", elem);
-                link.click();
-            })
-        },
-        //Поделиться фото - напримерв Whatsapp
-        async shareImage(){
-
-            let files = [];
-            for (const item of this.ads.images) {
-                const response = await fetch("/img/adsImg/" + item);
-                const blob = await response.blob();
-
-                const file = new File([blob], item, { type: blob.type });
-
-                files.push(file);
-            }
-
-            // Поделиться файлом
-            if (navigator.canShare({ files })) await navigator.share({ files });
-
-        },
-    },
-
-    mounted(){
-        let app = this;
-
-        this.oneAdsBottomAnimation = true;
-
-        this.ads = JSON.parse(localStorage.getItem('oneAds'));
-        document.querySelector(':root').classList.add('PATCH_modal');
-
-    },
-
-    beforeRouteLeave(to, from, next) {
-        this.oneAdsBottomAnimation = false; // Установите значение в false перед покиданием маршрута
-
-        setTimeout(() => {
-            next(); // Вызываем next() после завершения setTimeout - Для завершения анимации
-        }, 350);
+    for (const img of ads.value.images) {
+        const response = await fetch('/img/adsImg/' + img)
+        const blob = await response.blob()
+        files.push(new File([blob], img, { type: blob.type }))
     }
 
+    if (navigator.canShare({ files })) {
+        await navigator.share({ files })
+    }
 }
+
+
+// lifecycle
+onMounted(() => {
+    oneAdsBottomAnimation.value = true
+    ads.value = JSON.parse(localStorage.getItem('oneAds'))
+    document.documentElement.classList.add('PATCH_modal')
+})
+
+onBeforeRouteLeave((to, from, next) => {
+    oneAdsBottomAnimation.value = false
+    setTimeout(() => next(), 350)
+})
+
 </script>
+
 
 <style>
 
@@ -361,12 +292,54 @@ export default {
     text-align: center;
     padding: 20px;
 }
+.btn__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+}
+.btn__close:hover {
+    opacity: 0.7;
+}
 
 .oneAdsBottom__body{
     flex-grow: 1;
     width: 100%;
     font-size: 1.1em;
     padding-bottom: 20px;
+}
+.callBtn__block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+.row {
+    display: flex;
+    gap: 8px;
+}
+.btn {
+    width: 170px;
+    padding: 12px;
+    border-radius: 6px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.wa {
+    background: #10a37f;
+}
+.tel {
+    background: #2563eb;
 }
 
 /*При экранее более 992px */
@@ -377,3 +350,4 @@ export default {
 }
 
 </style>
+<!--355-->

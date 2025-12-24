@@ -7,16 +7,14 @@
         <!-- Сам блок -->
         <div class="oneAds__block" @click.stop>
 
-            <!-- Header -->
-            <div class="oneAds__header d-flex align-center">
+            <!-- Header - Кнопка назад - Дата публикации -->
+            <div class="oneAds__header">
 
                 <!-- Кнопка назад -->
-                <v-btn icon dark @click="$router.back()">
-                    <v-icon size="large">mdi-arrow-left</v-icon>
-                </v-btn>
+                <button class="back-button" type="button" aria-label="Назад" @click="$router.back()">←</button>
 
                 <!-- Дата публикации объявления -->
-                <span>{{ $filters.transformDateRu(ads.created_at) }}</span>
+                <span class="ads-date">{{ $filters.transformDateRu(ads.created_at) }}</span>
 
             </div>
 
@@ -789,7 +787,7 @@
                 </article>
 
                 <!-- Ссылка - Все объявления автора / Пожаловаться на объявление -->
-                <div v-if="$route.query.tel == undefined">
+                <div>
 
                     <!-- Все объявления автора-->
                     <v-btn :disabled="$route.name != 'allAdsOneAds'"  @click="$router.push({name: 'userAds', params: { author_id: ads.author_id }})" color="blue-lighten-1" variant="text"  style="text-transform: capitalize">
@@ -810,16 +808,9 @@
 
             </div>
 
-            <!-- footer -  Позвонить автору - Написать автору  -->
+            <!-- footer - Кнопка - Позвонить автору -->
             <div class="oneAds__footer">
-
-                <!-- Кнопки  - позвонить  -->
-                <v-btn dark variant="flat" size="large" class="text-body-1 text-white" style="width: 100%; max-width: 170px; background: #10a37f"
-                       @click="showBottomOffCanvas('Позвонить')"
-                >
-                    {{ $t('oneAdsCall') }}
-                </v-btn>
-
+                <button class="call-button" type="button" @click="showBottomOffCanvas('Позвонить')">{{ $t('oneAdsCall') }}</button>
             </div>
 
         </div>
@@ -979,7 +970,7 @@ export default {
         showBottomOffCanvas(type){
 
             if(type == 'Позвонить')this.addAdsViewTelStatistic()
-            this.$router.push({name: this.$route.name + "BottomOffCanvas", params:{type: type }, query:{tel: this.$route.query.tel}})
+            this.$router.push({name: this.$route.name + "BottomOffCanvas", params:{type: type }})
         },
 
         //После просмотра объявления добавим статистику
@@ -996,6 +987,7 @@ export default {
                     this.ads.view += 1;
                 })
         },
+
 
         //После просмотра телефона добавим статистику
         async addAdsViewTelStatistic(){
@@ -1110,6 +1102,26 @@ export default {
     background: #ffffff;
 }
 
+.oneAds__header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.back-button {
+    cursor: pointer;
+    font-size: 24px;
+    color: #333;
+    padding: 5px;
+}
+.back-button:hover {
+    color: #007bff;
+}
+.ads-date {
+    font-size: 14px;
+    color: #666;
+}
+
+
 .oneAds__body{
     padding-bottom: 100px;
 }
@@ -1124,7 +1136,25 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+}
+.call-button {
+    width: 100%;
+    max-width: 170px;
+    background-color: #10a37f; /* зеленый фон */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.call-button:hover {
+    background-color: #0e8e6c;
+}
+.call-button:active {
+    transform: scale(0.97); /* эффект нажатия */
 }
 
 
@@ -1234,4 +1264,5 @@ export default {
 
 }
 
+/*1239*/
 </style>
