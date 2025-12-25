@@ -1132,18 +1132,18 @@ export default {
     transform: scale(0.97);
 }
 .oneAds__author-ads-btn {
-    color: #1e88e5;
-    background: #e3f2fd;
+    color: #4a6fa5;        /* приглушённый синий */
+    background: #f1f5fb;   /* очень светлый синий */
 }
 .oneAds__author-ads-btn:hover {
-    background: #d6ebfb;
+    background: #e7eef9;
 }
 .oneAds__complain-btn {
-    color: #e53935;
-    background: #fdecea;
+    color: #b85c5c;        /* приглушённый красный */
+    background: #fbf2f2;   /* мягкий розово-серый */
 }
 .oneAds__complain-btn:hover {
-    background: #fbdad6;
+    background: #f5e6e6;
 }
 
 .oneAds__footer {
