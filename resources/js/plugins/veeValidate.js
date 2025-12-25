@@ -25,7 +25,7 @@ export default {
         app.component("ErrorMessage", ErrorMessage);
 
         Object.keys(rules).forEach(rule => {
-            if(rule != 'default'){
+            if(typeof rules[rule] === 'function' && rule != 'default'){
                 defineRule(rule, rules[rule]);
             }
         });
