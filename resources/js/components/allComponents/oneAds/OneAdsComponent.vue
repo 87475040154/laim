@@ -782,22 +782,23 @@
                 </article>
 
                 <!-- Ссылка - Все объявления автора / Пожаловаться на объявление -->
-                <div>
+                <div class="oneAds__author-ads-and-complain-block">
 
-                    <!-- Все объявления автора-->
-                    <v-btn :disabled="$route.name != 'allAdsOneAds'"  @click="$router.push({name: 'userAds', params: { author_id: ads.author_id }})" color="blue-lighten-1" variant="text"  style="text-transform: capitalize">
-                        <i class="bi bi-person-workspace"></i>
-                        {{ $t('oneAdsAds') }} <strong class="pl-1">{{ads.name}}</strong>
-                    </v-btn>
-
-                    <!-- Блок - Отправить жалобу на объявление -->
-                    <v-btn dark saiz="small" variant="text" color="red-lighten-1"
-                           @click="authStore.check ? showBottomOffCanvas('Пожаловаться') : $router.push({name: $route.name + 'Auth'})"
-                           style="text-transform: capitalize; color: #fa5555"
+                    <!-- Все объявления автора -->
+                    <button :disabled="$route.name != 'allAdsOneAds'" @click="$router.push({name: 'userAds', params: { author_id: ads.author_id }})"
+                        class="oneAds__author-ads-btn"
                     >
-                        <i class="bi bi-exclamation-octagon"></i>
+                        <svg fill="currentColor" width="22px" height="22px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>bullhorn</title> <path d="M26.588 1.896c-0.17-0.092-0.372-0.146-0.587-0.146-0.261 0-0.503 0.080-0.704 0.217l0.004-0.003c-6.053 4.080-12.829 6.047-23.389 6.789-0.651 0.047-1.162 0.588-1.162 1.247v0 12c0 0.666 0.521 1.21 1.177 1.248l0.003 0c0.63 0.035 1.214 0.093 1.819 0.14v6.612c0 0.69 0.56 1.25 1.25 1.25h5c0.69-0 1.25-0.56 1.25-1.25v-5.606c5.325 1.063 10.049 3.031 14.236 5.756l-0.156-0.095c0.19 0.122 0.422 0.195 0.67 0.195 0.221 0 0.428-0.057 0.607-0.158l-0.006 0.003c0.389-0.216 0.649-0.625 0.649-1.094 0-0.001 0-0.001 0-0.002v0-26c-0-0.475-0.265-0.888-0.655-1.1l-0.007-0.003zM3.25 11.159c2.735-0.221 5.202-0.542 7.5-0.953v11.545c-1.776-0.325-3.65-0.577-5.64-0.76-0.038-0.003-0.071-0.022-0.11-0.022-0.015 0-0.028 0.008-0.043 0.009-0.568-0.051-1.119-0.111-1.707-0.151zM8.75 28.75h-2.5v-5.132c0.85 0.095 1.695 0.192 2.5 0.316zM24.75 26.783c-3.313-1.94-7.15-3.492-11.215-4.454l-0.285-0.057v-12.566c4.342-0.941 8.187-2.474 11.682-4.537l-0.182 0.099zM30 10.75c-0.69 0-1.25 0.56-1.25 1.25v8c0 0.69 0.56 1.25 1.25 1.25s1.25-0.56 1.25-1.25v0-8c-0-0.69-0.56-1.25-1.25-1.25h-0z"></path> </g></svg>
+                        {{ $t('oneAdsAds') }} <strong>{{ ads.name }}</strong>
+                    </button>
+
+                    <!-- Пожаловаться на объявление -->
+                    <button @click="authStore.check ? showBottomOffCanvas('Пожаловаться') : $router.push({name: $route.name + 'Auth'})"
+                        class="oneAds__complain-btn"
+                    >
+                        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  width="22px" height="22px"  fill="currentColor" class="bi bi-exclamation-diamond"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"></path> <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"></path> </g></svg>
                         {{ $t('oneAdsComplain') }}
-                    </v-btn>
+                    </button>
 
                 </div>
 
@@ -1109,6 +1110,42 @@ export default {
     padding-bottom: 100px;
 }
 
+.oneAds__author-ads-and-complain-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 16px auto 0;
+}
+.oneAds__author-ads-btn,
+.oneAds__complain-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 14px;
+    border-radius: 12px;
+}
+.oneAds__author-ads-btn:active,
+.oneAds__complain-btn:active {
+    transform: scale(0.97);
+}
+.oneAds__author-ads-btn {
+    color: #1e88e5;
+    background: #e3f2fd;
+}
+.oneAds__author-ads-btn:hover {
+    background: #d6ebfb;
+}
+.oneAds__complain-btn {
+    color: #e53935;
+    background: #fdecea;
+}
+.oneAds__complain-btn:hover {
+    background: #fbdad6;
+}
+
 .oneAds__footer {
     position: fixed;
     bottom: 30px;       /* отступ от низа */
@@ -1213,7 +1250,6 @@ export default {
     height: 100%;
     cursor: pointer;
 }
-
 .swiper-button-next{
     left: 0;
 }
@@ -1221,6 +1257,29 @@ export default {
     right: 0;
 }
 
+
+/* 📞 Маленькие телефоны (≥480px) */
+@media (min-width: 480px) {
+
+}
+
+/* 📱 Средние телефоны (≥576px) */
+@media (min-width: 576px) {
+
+}
+
+/* 💼 Планшеты (≥768px) */
+@media (min-width: 768px) {
+    .oneAds__author-ads-and-complain-block {
+        flex-direction: row;
+        justify-content: center;
+    }
+    .oneAds__author-ads-btn,
+    .oneAds__complain-btn {
+        width: auto;
+        min-width: 200px;
+    }
+}
 
 /* Для экрана - Более 992px */
 @media screen and  (min-width: 992px) {
@@ -1239,6 +1298,26 @@ export default {
         right: 53px;
     }
 
+
+}
+
+/* 🖥 Десктопы (≥1200px) */
+@media (min-width: 1200px) {
+
+}
+
+/* 🖥💎 Большие мониторы (≥1400px) */
+@media (min-width: 1400px) {
+
+}
+
+/* 🖥 Ultra-wide 2K (≥1600px) */
+@media (min-width: 1600px) {
+
+}
+
+/* 🖥 4K дисплеи (≥1920px) */
+@media (min-width: 1920px) {
 
 }
 

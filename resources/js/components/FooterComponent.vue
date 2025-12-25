@@ -128,8 +128,7 @@ const appInstallStore = useAppInstallStore()
 const getProjectDataStore = useGetProjectDataStore()
 const updateDateLocaleStore = useUpdateDateLocaleStore()
 
-// 🔹 Проверка прокручена ли страница
-const pageScrolled = ref(false)
+const pageScrolled = ref(false) // :Флаг - Прокручена ли страница
 
 // создаём реактивный ref, который синхронизирован с localStorage
 const getMyLikeAds = useLocalStorage('getMyLikeAds', false)
