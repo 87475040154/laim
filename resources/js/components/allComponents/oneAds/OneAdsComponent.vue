@@ -8,428 +8,401 @@
         <div class="oneAds__block" @click.stop>
 
             <!-- Header - Кнопка назад - Дата публикации -->
-            <div class="oneAds__header">
+            <div class="oneAds__header" :class="{'oneAds__header-show-mobile-if-not-image': ads?.images?.length === 0}">
 
                 <!-- Кнопка назад -->
-                <button class="back-button" type="button" aria-label="Назад" @click="$router.back()">←</button>
+                <button class="oneAds__header-back-btn" type="button" aria-label="Назад" @click="$router.back()">←</button>
 
                 <!-- Дата публикации объявления -->
-                <span class="ads-date">{{ $filters.transformDateRu(ads.created_at) }}</span>
+                <span class="oneAds__header-date-publication-text">{{ $filters.transformDateRu(ads.created_at) }}</span>
 
             </div>
 
             <!-- Body - Полное описание 1-го объявления - кнопка пожаловаться -->
             <div class="oneAds__body">
 
-                <!-- Блок - Полное описание 1-го объявления -->
-                <article>
+                <!-- Слайдер Фото - У слайдера высота зависит от высоты фото -->
+                <swiper v-if="ads && ads.images"
+                        @swiper="(s) => swiperPhoto = s" role="button"
+                        :modules="[ Pagination, Keyboard, Navigation ]"
+                        :slides-per-view="1" :space-between="0"
+                        :pagination="{type: 'fraction', el: '.swiperPhoto__pagination'}" :keyboard="true"
+                        :navigation="{prevEl: '.swiperPhoto__prev-btn', nextEl: '.swiperPhoto__next-btn'}"
+                        class="swiperPhoto__block"
+                >
 
-                    <!-- Слайдер Фото - У слайдера высота зависит от высоты фото -->
-                    <swiper v-if="ads && ads.images"
-                            @swiper="(s) => swiperPhoto = s" role="button"
-                            :modules="[ Pagination, Keyboard, Navigation ]"
-                            :slides-per-view="1" :space-between="0"
-                            :pagination="{type: 'fraction', el: '.swiperPhoto__pagination'}" :keyboard="true"
-                            :navigation="{prevEl: '.swiperPhoto__prev-btn', nextEl: '.swiperPhoto__next-btn'}"
-                            class="swiperPhoto__block"
-                    >
+                    <!-- Вывод самого слайда - то-есть 1-го фото -->
+                    <swiper-slide v-for="(img, i) in ads.images" :key="i" class="swiperPhoto__slide-block">
+                        <img @click="showImage(ads, i)" :src="'/img/adsImg/' + img " class="swiperPhoto__slide-img">
+                    </swiper-slide>
 
-                        <!-- Вывод самого слайда - то-есть 1-го фото -->
-                        <swiper-slide v-for="(img, i) in ads.images" :key="i" class="swiperPhoto__slide-block">
-                            <img @click="showImage(ads, i)" :src="'/img/adsImg/' + img " class="swiperPhoto__slide-img">
-                        </swiper-slide>
+                    <!-- Кнопки навигации -->
+                    <div class="swiperPhoto__prev-btn"></div>
+                    <div class="swiperPhoto__next-btn"></div>
 
-                        <!-- Кнопки навигации -->
-                        <div class="swiperPhoto__prev-btn"></div>
-                        <div class="swiperPhoto__next-btn"></div>
+                    <!-- Пагинация -->
+                    <div class="swiperPhoto__pagination"></div>
 
-                        <!-- Пагинация -->
-                        <div class="swiperPhoto__pagination"></div>
+                    <!-- Для мобильных - Кнопка назад и дата публикации -->
+                    <div class="swiperPhoto__back-btn-and-date-publication-block">
 
-                        <!-- Для мобильных - Кнопка назад и дата публикации -->
-                        <div class="swiperPhoto__back-btn-and-date-publication-block">
+                        <!-- Кнопка назад -->
+                        <button class="swiperPhoto__back-btn" type="button" aria-label="Назад" @click="$router.back()">←</button>
 
-                            <!-- Кнопка назад -->
-                            <button class="swiperPhoto__back-btn" type="button" aria-label="Назад" @click="$router.back()">←</button>
-
-                            <!-- Дата публикации объявления -->
-                            <span class="swiperPhoto__date-publication">{{ $filters.transformDateRu(ads.created_at) }}</span>
-
-                        </div>
-
-                    </swiper>
-
-
-                    <!-- Блок - Скачать фото - Поделиться ссылкой, Поставить лайк, к-во просмотров -->
-                    <div class="d-flex justify-end gap-2 px-lg-5 p-2">
-
-                        <!-- Кнопка - Скачать все фото -->
-                        <div class="ads_header-btn"
-                             v-if="ads && ads.images && ads.images.length > 0"
-                             @click="showBottomOffCanvas('Скачать или поделиться фото')"
-                        >
-                            <v-icon>mdi-cloud-download-outline</v-icon>
-                        </div>
-
-                        <!-- Кнопка -  Поделиться объявлением-->
-                        <div class="ads_header-btn" @click="showBottomOffCanvas('Поделиться объявлением')">
-                            <v-icon>mdi-share-variant-outline</v-icon>
-                        </div>
-
-                        <!-- Количество просмотров -->
-                        <div class="ads_header-btn">
-                            {{ ads.view }}
-                            <v-icon>mdi-eye-outline</v-icon>
-                        </div>
-
-                        <!-- Кнопка лайк -->
-                        <div class="ads_header-btn" @click="authStore.check ? addLikeToggle(): $router.push({name: $route.name + 'Auth'})">
-                            {{ ads.countLike }}
-                            <v-icon :class="{'text-red': ads.userLike}">mdi-heart</v-icon>
-                        </div>
-
-                        <!-- Выбор языка -->
-                        <div class="ads_header-btn">
-                            <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocale.lang == 'kz' ? 'Қаз': '' }}</span>
-                            <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocale.lang == 'ru' ? 'Рус': '' }}</span>
-                            <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocale.lang == 'en' ? 'Eng': '' }}</span>
-                        </div>
+                        <!-- Дата публикации объявления -->
+                        <span class="swiperPhoto__date-publication">{{ $filters.transformDateRu(ads.created_at) }}</span>
 
                     </div>
 
-                    <!-- Верхний блок - Заголовок / Цена / Адрес -->
-                    <div class="px-2 py-2">
+                </swiper>
 
-                        <!-- Цена аренды -->
-                        <div class="pb-2 d-flex align-center text-body-1 mt-2">
+                <!-- Блок - Скачать фото - Поделиться ссылкой, Поставить лайк, к-во просмотров -->
+                <div class="oneAds__body-top-buttons-block">
 
-                            <!-- Цена -->
-                            <span class="title">
-                                    {{ $filters.format_number(ads.cena) }} &#8376;
-                                    /
-                                    <span v-if="ads.period_arendi == 'На длительно' || ads.period_arendi == 'На подселение'" >{{ $t('oneAdsMonth') }}</span>
-                                    <span v-if="ads.period_arendi == 'Посуточно'">{{ $t('oneAdsDaily') }}</span>
-                                    <span v-if="ads.period_arendi == 'По часам'">{{ $t('oneAdsHour') }}</span>
+                    <!-- Кнопка - Скачать все фото -->
+                    <div class="oneAds__body-top-btn" v-if="ads?.images?.length > 0" @click="showBottomOffCanvas('Скачать или поделиться фото')">
+                        <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 4H8.8C7.11984 4 6.27976 4 5.63803 4.32698C5.07354 4.6146 4.6146 5.07354 4.32698 5.63803C4 6.27976 4 7.11984 4 8.8V15.2C4 16.8802 4 17.7202 4.32698 18.362C4.6146 18.9265 5.07354 19.3854 5.63803 19.673C6.27976 20 7.11984 20 8.8 20H15.2C16.8802 20 17.7202 20 18.362 19.673C18.9265 19.3854 19.3854 18.9265 19.673 18.362C20 17.7202 20 16.8802 20 15.2V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M4 16L8.29289 11.7071C8.68342 11.3166 9.31658 11.3166 9.70711 11.7071L13 15M13 15L15.7929 12.2071C16.1834 11.8166 16.8166 11.8166 17.2071 12.2071L20 15M13 15L15.25 17.25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M18 3V8M18 8L16 6M18 8L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
 
-                                     <span v-if="ads.cena_tip != undefined">
-                                         <span v-if="ads.cena_tip == 'За все'">{{ $t('oneAdsPerMonth') }}</span>
-                                         <span v-if="ads.cena_tip == 'За кв.м'">{{ $t('oneAdsPerMonthPerSq.M') }}</span>
-                                     </span>
-                                </span>
+                    <!-- Кнопка -  Поделиться объявлением-->
+                    <div class="oneAds__body-top-btn" @click="showBottomOffCanvas('Поделиться объявлением')">
+                        <svg viewBox="0 0 24 24" width="24px" height="24px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.1" d="M21 6C21 7.65685 19.6569 9 18 9C16.3431 9 15 7.65685 15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6Z" fill="currentColor"></path> <path opacity="0.1" d="M21 18C21 19.6569 19.6569 21 18 21C16.3431 21 15 19.6569 15 18C15 16.3431 16.3431 15 18 15C19.6569 15 21 16.3431 21 18Z" fill="currentColor"></path> <path opacity="0.1" d="M9 12C9 13.6569 7.65685 15 6 15C4.34315 15 3 13.6569 3 12C3 10.3431 4.34315 9 6 9C7.65685 9 9 10.3431 9 12Z" fill="currentColor"></path> <path d="M21 6C21 7.65685 19.6569 9 18 9C16.3431 9 15 7.65685 15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6Z" stroke="currentColor" stroke-width="2"></path> <path d="M21 18C21 19.6569 19.6569 21 18 21C16.3431 21 15 19.6569 15 18C15 16.3431 16.3431 15 18 15C19.6569 15 21 16.3431 21 18Z" stroke="currentColor" stroke-width="2"></path> <path d="M9 12C9 13.6569 7.65685 15 6 15C4.34315 15 3 13.6569 3 12C3 10.3431 4.34315 9 6 9C7.65685 9 9 10.3431 9 12Z" stroke="currentColor" stroke-width="2"></path> <path d="M8.7207 10.6397L15.0001 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M8.70605 13.353L15 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </div>
 
-                            <!-- Срочно торг -->
-                            <div v-if="ads.srochno_torg" class="bg-yellow-darken-2 rounded-sm text-caption px-1 mx-2">
-                                {{ $t('oneAdsUrgentBargaining') }}
-                            </div>
+                    <!-- Количество просмотров -->
+                    <div class="oneAds__body-top-btn">
+                        {{ ads.view }}
+                        <svg viewBox="0 0 24 24" width="24px" height="24px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15.0007 12C15.0007 13.6569 13.6576 15 12.0007 15C10.3439 15 9.00073 13.6569 9.00073 12C9.00073 10.3431 10.3439 9 12.0007 9C13.6576 9 15.0007 10.3431 15.0007 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12.0012 5C7.52354 5 3.73326 7.94288 2.45898 12C3.73324 16.0571 7.52354 19 12.0012 19C16.4788 19 20.2691 16.0571 21.5434 12C20.2691 7.94291 16.4788 5 12.0012 5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </div>
 
-                        </div>
+                    <!-- Кнопка лайк -->
+                    <div class="oneAds__body-top-btn" @click="authStore.check ? addLikeToggle(): $router.push({name: $route.name + 'Auth'})">
+                        {{ ads.countLike }}
+                        <svg width="24px" height="24px" :fill="ads.userLike ? '#ff3b30' : 'currentColor'" viewBox="0 0 24 24">
+                            <path v-if="ads.userLike"  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                            <path v-else d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5 c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zM12 19.55l-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5 18.5 5 20 6.5 20 8.5c0 2.89-3.14 5.74-7.9 10.95l-.1.1z"/>
+                        </svg>
+                    </div>
 
-                        <!-- Заголовок -->
-                        <div class="mb-5" style="font-size: 18px; line-height: 24px;">
-                            {{ads.zagolovok}}
-                        </div>
+                    <!-- Выбор языка -->
+                    <div class="oneAds__body-top-btn">
+                        <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocale.lang == 'kz' ? 'Қаз': '' }}</span>
+                        <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocale.lang == 'ru' ? 'Рус': '' }}</span>
+                        <span @click="$router.push({name: $route.name + 'Lang'})">{{ updateDateLocale.lang == 'en' ? 'Eng': '' }}</span>
+                    </div>
 
-                        <!-- Яндекс карта - Показать расположение объекта -->
-                        <div  class="map__container">
-                            <YandexMap v-if="showMap"
-                                       :settings="settings"
-                                       :coordinates="[ads.lat, ads.lon]"
-                                       :controls="[]"
-                                       :detailed-controls="detailedControls"
-                                       :zoom="16"
-                                       :behaviors="[]"
-                            >
-                                <YandexMarker :coordinates="[ads.lat, ads.lon]"
-                                              :marker-id="123"
-                                              :options="options"
-                                ></YandexMarker>
-                            </YandexMap>
+                </div>
 
-                            <!-- Кнопка открыть карту на весь экран -->
-                            <div style="position: absolute; top: 0; left: 0; right:0; bottom:0" role="button"
-                                 @click="$router.push({name: $route.name + 'Map', query: {lat: ads.lat, lon:ads.lon, image: ads.images[0]} })"
-                            >
-                            </div>
+                <!-- Блок - Заголовок / Цена / Адрес -->
+                <div class="oneAds__body-zagolovok-cena-adres-block">
 
-                        </div>
+                    <!-- Цена аренды -->
+                    <div class="oneAds__body-cena-block">
 
-                        <!-- Адрес объекта -->
-                        <div class="mt-3 d-flex">
-                            <i class="bi bi-geo-alt text-grey text-body-1"></i>
-                            <div class="ml-3">
-                                <span v-if="ads.table_name!='Snimu'"  style="text-transform: capitalize">{{ ads.ulica }}, {{ads.nomer_doma}}</span>
-                                <div class="text-grey">
-                                    {{ KZLocationStore.translateLocation({gorod: ads.gorod}).gorod }}
+                        <!-- Цена текст -->
+                        <span class="oneAds__body-cena-text">
+                            {{ $filters.format_number(ads.cena) }} &#8376;
 
-                                    <span v-if="ads.raion != undefined && ads.raion != ''">,
-                                        {{ KZLocationStore.translateLocation({raion: ads.raion}).raion }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                            <span v-if="ads.tip_sdelki == 'Сдам' || ads.cena_tip != undefined"> / </span>
+
+                            <span v-if="ads.tip_sdelki == 'Сдам'">
+                                <span v-if="ads.period_arendi == 'На длительно' || ads.period_arendi == 'На подселение'" >{{ $t('oneAdsMonth') }}</span>
+                                <span v-if="ads.period_arendi == 'Посуточно'">{{ $t('oneAdsDaily') }}</span>
+                                <span v-if="ads.period_arendi == 'По часам'">{{ $t('oneAdsHour') }}</span>
+                            </span>
+
+                            <span v-if="ads.cena_tip != undefined">
+                                <span v-if="ads.cena_tip == 'За все'">{{ $t('oneAdsPerMonth') }}</span>
+                                <span v-if="ads.cena_tip == 'За кв.м'">{{ $t('oneAdsPerMonthPerSq.M') }}</span>
+                            </span>
+                        </span>
+
+                        <!-- Срочно торг -->
+                        <div v-if="ads.srochno_torg" class="oneAds__body-cena-srochno-torg">{{ $t('oneAdsUrgentBargaining') }}</div>
 
                         <!-- В архиве -->
-                        <v-btn variant="flat" color="grey-lighten-4" size="large" class="w-100 text-body-1 my-3 mt-4">
-                            <span v-if="ads.control != 'Активно'">
-                                <span v-if="updateDateLocale.lang == 'ru'">{{ads.control}}</span>
-                                <span v-if="updateDateLocale.lang == 'kz'">
-                                        <span v-if="ads.control == 'В архиве'">Мұрағатта</span>
-                                        <span v-else-if="ads.control == 'Поступили жалобы'">Шағымдар түсті</span>
-                                        <span v-else>{{ads.control}}</span>
-                                    </span>
-                                <span v-if="updateDateLocale.lang == 'en'">
-                                        <span v-if="ads.control == 'В архиве'">In the archive</span>
-                                        <span v-else-if="ads.control == 'Поступили жалобы'">Complaints have been received</span>
-                                        <span v-else>{{ads.control}}</span>
-                                    </span>
-                            </span>
-                        </v-btn>
+                        <div v-if="ads.control == 'В архиве'" class="oneAds__body-cena-v-arhive">{{ $t('oneAdsVArhive') }}</div>
+
                     </div>
 
-                    <!-- Вывожу Основное описание объявления -->
-                    <div class="px-2">
+                    <!-- Заголовок -->
+                    <div class="oneAds__body-zagolovok">
+                        {{ads.zagolovok}}
+                    </div>
 
-                        <!-- Заголовок - О квартире - О общежитии-  -->
-                        <div class="mb-2 title">
+                    <!-- Яндекс карта - Показать расположение объекта -->
+                    <div  class="oneAds__body-map-container"
+                          @click="$router.push({name: $route.name + 'Map', query: {lat: ads.lat, lon:ads.lon, image: ads.images[0]} })"
+                    >
+                        <YandexMap v-if="showMap" :settings="settings" :coordinates="[ads.lat, ads.lon]" :controls="[]" :detailed-controls="detailedControls" :zoom="16" :behaviors="[]">
+                            <YandexMarker :coordinates="[ads.lat, ads.lon]" :marker-id="123" :options="options"></YandexMarker>
+                        </YandexMap>
+                    </div>
 
-                            <span v-if="ads.tip_obekta=='Квартира'"> {{ $t('oneAdsAboutTheApartment') }} </span>
-                            <span v-if="ads.tip_obekta=='Общежитие'"> {{ $t('oneAdsAboutTheHostel') }} </span>
-                            <span v-if="ads.tip_obekta=='Дом'"> {{ $t('oneAdsAboutTheHouse') }} </span>
-                            <span v-if="ads.tip_obekta=='Дача'"> {{ $t('oneAdsAboutTheCountryHouse') }} </span>
-                            <span v-if="ads.tip_obekta=='Коттедж'"> {{ $t('oneAdsAboutTheCottage') }} </span>
-                            <span v-if="ads.tip_obekta=='Офис'"> {{ $t('oneAdsAboutTheOffice') }} </span>
-                            <span v-if="ads.tip_obekta=='Здание'"> {{ $t('oneAdsAboutTheBuilding') }} </span>
-                            <span v-if="ads.tip_obekta=='Магазин'"> {{ $t('oneAdsAboutTheShop') }} </span>
-                            <span v-if="ads.tip_obekta=='Бутик'"> {{ $t('oneAdsAboutTheBoutique') }} </span>
-                            <span v-if="ads.tip_obekta=='Киоск'"> {{ $t('oneAdsAboutTheKiosk') }} </span>
-                            <span v-if="ads.tip_obekta=='Контейнер'"> {{ $t('oneAdsAboutTheContainer') }} </span>
-                            <span v-if="ads.tip_obekta=='Промбаза'"> {{ $t('oneAdsAboutTheBase') }} </span>
-                            <span v-if="ads.tip_obekta=='Завод'"> {{ $t('oneAdsAboutTheFactory') }} </span>
-                            <span v-if="ads.tip_obekta=='Склад бытовой'"> {{ $t('oneAdsAboutTheHouseholdWarehouse') }} </span>
-                            <span v-if="ads.tip_obekta=='Склад продавольственный'"> {{ $t('oneAdsAboutTheFoodWarehouse') }} </span>
-                            <span v-if="ads.tip_obekta=='Склад химпродукции'"> {{ $t('oneAdsAboutTheWarehouseOfChemicalProducts') }} </span>
-                            <span v-if="ads.tip_obekta=='Прочая'"> {{ $t('oneAdsAboutTheOther') }} </span>
-                            <span v-if="ads.tip_obekta=='Бизнес'"> {{ $t('oneAdsAboutTheBusiness') }} </span>
+                    <!-- Адрес объекта -->
+                    <div class="oneAds__body-adres-block">
+                        <svg viewBox="-4 0 32 32" version="1.1" width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>location</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set" sketch:type="MSLayerGroup" transform="translate(-104.000000, -411.000000)" fill="currentColor"> <path d="M116,426 C114.343,426 113,424.657 113,423 C113,421.343 114.343,420 116,420 C117.657,420 119,421.343 119,423 C119,424.657 117.657,426 116,426 L116,426 Z M116,418 C113.239,418 111,420.238 111,423 C111,425.762 113.239,428 116,428 C118.761,428 121,425.762 121,423 C121,420.238 118.761,418 116,418 L116,418 Z M116,440 C114.337,440.009 106,427.181 106,423 C106,417.478 110.477,413 116,413 C121.523,413 126,417.478 126,423 C126,427.125 117.637,440.009 116,440 L116,440 Z M116,411 C109.373,411 104,416.373 104,423 C104,428.018 114.005,443.011 116,443 C117.964,443.011 128,427.95 128,423 C128,416.373 122.627,411 116,411 L116,411 Z" id="location" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
+                        <div class="oneAds__body-adres-inner">
+                            <span class="oneAds__body-adres-ulica">
+                                {{ ads.ulica }}, {{ ads.nomer_doma }}
+                            </span>
+                            <div class="oneAds__body-adres-gorod">
+                                {{ KZLocationStore.translateLocation({gorod: ads.gorod}).gorod }}
+                                <span v-if="ads.raion">{{ KZLocationStore.translateLocation({raion: ads.raion}).raion }}</span>
+                            </div>
+                        </div>
+                    </div>
 
+                </div>
+
+                <!-- Вывожу Основное описание объявления -->
+                <div class="px-2">
+
+                    <!-- Заголовок - О квартире - О общежитии-  -->
+                    <div class="mb-2 title">
+
+                        <span v-if="ads.tip_obekta=='Квартира'"> {{ $t('oneAdsAboutTheApartment') }} </span>
+                        <span v-if="ads.tip_obekta=='Общежитие'"> {{ $t('oneAdsAboutTheHostel') }} </span>
+                        <span v-if="ads.tip_obekta=='Дом'"> {{ $t('oneAdsAboutTheHouse') }} </span>
+                        <span v-if="ads.tip_obekta=='Дача'"> {{ $t('oneAdsAboutTheCountryHouse') }} </span>
+                        <span v-if="ads.tip_obekta=='Коттедж'"> {{ $t('oneAdsAboutTheCottage') }} </span>
+                        <span v-if="ads.tip_obekta=='Офис'"> {{ $t('oneAdsAboutTheOffice') }} </span>
+                        <span v-if="ads.tip_obekta=='Здание'"> {{ $t('oneAdsAboutTheBuilding') }} </span>
+                        <span v-if="ads.tip_obekta=='Магазин'"> {{ $t('oneAdsAboutTheShop') }} </span>
+                        <span v-if="ads.tip_obekta=='Бутик'"> {{ $t('oneAdsAboutTheBoutique') }} </span>
+                        <span v-if="ads.tip_obekta=='Киоск'"> {{ $t('oneAdsAboutTheKiosk') }} </span>
+                        <span v-if="ads.tip_obekta=='Контейнер'"> {{ $t('oneAdsAboutTheContainer') }} </span>
+                        <span v-if="ads.tip_obekta=='Промбаза'"> {{ $t('oneAdsAboutTheBase') }} </span>
+                        <span v-if="ads.tip_obekta=='Завод'"> {{ $t('oneAdsAboutTheFactory') }} </span>
+                        <span v-if="ads.tip_obekta=='Склад бытовой'"> {{ $t('oneAdsAboutTheHouseholdWarehouse') }} </span>
+                        <span v-if="ads.tip_obekta=='Склад продавольственный'"> {{ $t('oneAdsAboutTheFoodWarehouse') }} </span>
+                        <span v-if="ads.tip_obekta=='Склад химпродукции'"> {{ $t('oneAdsAboutTheWarehouseOfChemicalProducts') }} </span>
+                        <span v-if="ads.tip_obekta=='Прочая'"> {{ $t('oneAdsAboutTheOther') }} </span>
+                        <span v-if="ads.tip_obekta=='Бизнес'"> {{ $t('oneAdsAboutTheBusiness') }} </span>
+
+                    </div>
+
+                    <!-- Описание -->
+                    <div class="pl-2">
+
+                        <!-- К-во Комнат  -->
+                        <div class="btn__item" v-if="ads.kolichestvo_komnat != undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsCountRooms') }}</div>
+                            <div>{{ ads.kolichestvo_komnat }}</div>
                         </div>
 
-                        <!-- Описание -->
-                        <div class="pl-2">
 
-                            <!-- К-во Комнат  -->
-                            <div class="btn__item" v-if="ads.kolichestvo_komnat != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsCountRooms') }}</div>
-                                <div>{{ ads.kolichestvo_komnat }}</div>
+                        <!-- Этаж - Этажность -->
+                        <div class="btn__item" v-if="ads.etag != undefined||ads.etagnost!=undefined" >
+                            <div v-if="ads.etag!=undefined" class="btn__item-cat">{{ $t('oneAdsFloor') }} </div>
+                            <div v-if="ads.etag==undefined && ads.etagnost!=undefined " class="btn__item-cat">{{ $t('oneAdsNumberOfFloors') }} </div>
+                            <div>
+                                <span v-if="ads.etag!=undefined">{{ ads.etag }}</span>
+                                <span v-if="ads.etag!=undefined" class="px-1">{{ $t('oneAdsFrom') }} </span>
+                                <span v-if="ads.etagnost!=undefined">{{ ads.etagnost }}</span>
                             </div>
+                        </div>
 
-
-                            <!-- Этаж - Этажность -->
-                            <div class="btn__item" v-if="ads.etag != undefined||ads.etagnost!=undefined" >
-                                <div v-if="ads.etag!=undefined" class="btn__item-cat">{{ $t('oneAdsFloor') }} </div>
-                                <div v-if="ads.etag==undefined && ads.etagnost!=undefined " class="btn__item-cat">{{ $t('oneAdsNumberOfFloors') }} </div>
-                                <div>
-                                    <span v-if="ads.etag!=undefined">{{ ads.etag }}</span>
-                                    <span v-if="ads.etag!=undefined" class="px-1">{{ $t('oneAdsFrom') }} </span>
-                                    <span v-if="ads.etagnost!=undefined">{{ ads.etagnost }}</span>
-                                </div>
+                        <!-- Площадь - Общая, кухня -->
+                        <div class="btn__item">
+                            <div class="btn__item-cat">{{ $t('oneAdsTotalArea') }} </div>
+                            <div>
+                                {{ads.ploshad_obshaya}}
+                                <span v-if="ads.ploshad_kuhni==undefined">м<sup>2</sup></span>
+                                <span v-if="ads.ploshad_kuhni!=undefined">/ {{ads.ploshad_kuhni}} м<sup>2</sup> </span>
                             </div>
+                        </div>
 
-                            <!-- Площадь - Общая, кухня -->
-                            <div class="btn__item">
-                                <div class="btn__item-cat">{{ $t('oneAdsTotalArea') }} </div>
-                                <div>
-                                    {{ads.ploshad_obshaya}}
-                                    <span v-if="ads.ploshad_kuhni==undefined">м<sup>2</sup></span>
-                                    <span v-if="ads.ploshad_kuhni!=undefined">/ {{ads.ploshad_kuhni}} м<sup>2</sup> </span>
-                                </div>
+                        <!-- Действующий бизнес -->
+                        <div class="btn__item" v-if="ads.deistvuushii_bisnes != undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsOperatingBusiness') }}</div>
+                            <div>{{ads.deistvuushii_bisnes == 'Да' ? $t('oneAdsYes') : $t('oneAdsNo') }}</div>
+                        </div>
+
+                        <!-- Для Магазин - Местоположение -->
+                        <div class="btn__item" v-if="ads.mestopolojenie!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsLocationText') }}</div>
+                            <div v-if="updateDateLocale.lang == 'ru'">{{ads.mestopolojenie}}</div>
+                            <div v-if="updateDateLocale.lang == 'kz'">
+                                {{ads.mestopolojenie == 'В торговом-центре' ? 'Сауда орталығында' :''}}
+                                {{ads.mestopolojenie == 'В административном здании' ? 'Әкімшілік ғимаратта' :''}}
+                                {{ads.mestopolojenie == 'На универсальном рынке (Барахолке)' ? 'Әмбебап нарықта (Барахолка)' :''}}
+                                {{ads.mestopolojenie == 'В жилом доме' ? 'Тұрғын үйде' :''}}
+                                {{ads.mestopolojenie == 'Отдельно стоящее здание' ? 'Жеке ғимарат' :''}}
+                                {{ads.mestopolojenie == 'Остановочный комплекс' ? 'Аялдама кешені' :''}}
+                                {{ads.mestopolojenie == 'Другое' ? 'Басқа' :''}}
                             </div>
-
-                            <!-- Действующий бизнес -->
-                            <div class="btn__item" v-if="ads.deistvuushii_bisnes != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsOperatingBusiness') }}</div>
-                                <div>{{ads.deistvuushii_bisnes == 'Да' ? $t('oneAdsYes') : $t('oneAdsNo') }}</div>
+                            <div v-if="updateDateLocale.lang == 'en'">
+                                {{ads.mestopolojenie == 'В торговом-центре' ? 'In the shopping center' :''}}
+                                {{ads.mestopolojenie == 'В административном здании' ? 'In the administrative building' :''}}
+                                {{ads.mestopolojenie == 'На универсальном рынке (Барахолке)' ? 'At the universal market (Flea Market)' :''}}
+                                {{ads.mestopolojenie == 'В жилом доме' ? 'In a residential building' :''}}
+                                {{ads.mestopolojenie == 'Отдельно стоящее здание' ? 'Detached building' :''}}
+                                {{ads.mestopolojenie == 'Остановочный комплекс' ? 'Bus stop complex' :''}}
+                                {{ads.mestopolojenie == 'Другое' ? 'Other' :''}}
                             </div>
+                        </div>
 
-                            <!-- Для Магазин - Местоположение -->
-                            <div class="btn__item" v-if="ads.mestopolojenie!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsLocationText') }}</div>
-                                <div v-if="updateDateLocale.lang == 'ru'">{{ads.mestopolojenie}}</div>
-                                <div v-if="updateDateLocale.lang == 'kz'">
-                                    {{ads.mestopolojenie == 'В торговом-центре' ? 'Сауда орталығында' :''}}
-                                    {{ads.mestopolojenie == 'В административном здании' ? 'Әкімшілік ғимаратта' :''}}
-                                    {{ads.mestopolojenie == 'На универсальном рынке (Барахолке)' ? 'Әмбебап нарықта (Барахолка)' :''}}
-                                    {{ads.mestopolojenie == 'В жилом доме' ? 'Тұрғын үйде' :''}}
-                                    {{ads.mestopolojenie == 'Отдельно стоящее здание' ? 'Жеке ғимарат' :''}}
-                                    {{ads.mestopolojenie == 'Остановочный комплекс' ? 'Аялдама кешені' :''}}
-                                    {{ads.mestopolojenie == 'Другое' ? 'Басқа' :''}}
-                                </div>
-                                <div v-if="updateDateLocale.lang == 'en'">
-                                    {{ads.mestopolojenie == 'В торговом-центре' ? 'In the shopping center' :''}}
-                                    {{ads.mestopolojenie == 'В административном здании' ? 'In the administrative building' :''}}
-                                    {{ads.mestopolojenie == 'На универсальном рынке (Барахолке)' ? 'At the universal market (Flea Market)' :''}}
-                                    {{ads.mestopolojenie == 'В жилом доме' ? 'In a residential building' :''}}
-                                    {{ads.mestopolojenie == 'Отдельно стоящее здание' ? 'Detached building' :''}}
-                                    {{ads.mestopolojenie == 'Остановочный комплекс' ? 'Bus stop complex' :''}}
-                                    {{ads.mestopolojenie == 'Другое' ? 'Other' :''}}
-                                </div>
+                        <!-- Для Офиса - Тип офиса -->
+                        <div class="btn__item" v-if="ads.tip_ofisa!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsLocation') }}:</div>
+                            <div v-if="updateDateLocale.lang == 'ru'">{{ads.tip_ofisa}}</div>
+                            <div v-if="updateDateLocale.lang == 'kz'">
+                                {{ads.tip_ofisa == 'В бизнес-центре' ? 'Бизнес орталығында' :''}}
+                                {{ads.tip_ofisa == 'В административном здании' ? 'Әкімшілік ғимаратта' :''}}
+                                {{ads.tip_ofisa == 'В жилом доме' ? 'Тұрғын үйде' :''}}
+                                {{ads.tip_ofisa == 'В коттедже' ? 'Коттеджде' :''}}
+                                {{ads.tip_ofisa == 'Другое' ? 'Басқа' :''}}
                             </div>
-
-                            <!-- Для Офиса - Тип офиса -->
-                            <div class="btn__item" v-if="ads.tip_ofisa!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsLocation') }}:</div>
-                                <div v-if="updateDateLocale.lang == 'ru'">{{ads.tip_ofisa}}</div>
-                                <div v-if="updateDateLocale.lang == 'kz'">
-                                    {{ads.tip_ofisa == 'В бизнес-центре' ? 'Бизнес орталығында' :''}}
-                                    {{ads.tip_ofisa == 'В административном здании' ? 'Әкімшілік ғимаратта' :''}}
-                                    {{ads.tip_ofisa == 'В жилом доме' ? 'Тұрғын үйде' :''}}
-                                    {{ads.tip_ofisa == 'В коттедже' ? 'Коттеджде' :''}}
-                                    {{ads.tip_ofisa == 'Другое' ? 'Басқа' :''}}
-                                </div>
-                                <div v-if="updateDateLocale.lang == 'en'">
-                                    {{ads.tip_ofisa == 'В бизнес-центре' ? 'In the business center' :''}}
-                                    {{ads.tip_ofisa == 'В административном здании' ? 'In the administrative building' :''}}
-                                    {{ads.tip_ofisa == 'В жилом доме' ? 'In a residential building' :''}}
-                                    {{ads.tip_ofisa == 'В коттедже' ? 'In the cottage' :''}}
-                                    {{ads.tip_ofisa == 'Другое' ? 'Other' :''}}
-                                </div>
+                            <div v-if="updateDateLocale.lang == 'en'">
+                                {{ads.tip_ofisa == 'В бизнес-центре' ? 'In the business center' :''}}
+                                {{ads.tip_ofisa == 'В административном здании' ? 'In the administrative building' :''}}
+                                {{ads.tip_ofisa == 'В жилом доме' ? 'In a residential building' :''}}
+                                {{ads.tip_ofisa == 'В коттедже' ? 'In the cottage' :''}}
+                                {{ads.tip_ofisa == 'Другое' ? 'Other' :''}}
                             </div>
+                        </div>
 
-                            <!-- Для Прочая - Сфера деятельности -->
-                            <div class="btn__item" v-if="ads.sfera_deyatelnosti!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsFieldOfActivity') }}</div>
-                                <div v-if="updateDateLocale.lang == 'ru'">{{ads.sfera_deyatelnosti}}</div>
-                                <div v-if="updateDateLocale.lang == 'kz'">
-                                    {{ads.sfera_deyatelnosti == 'Производство' ? 'Өндіріс' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Общепит' ? 'Тамақтану' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Развлечения' ? 'Ойын-сауық' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Торговля' ? 'Сауда' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Услуги' ? 'Қызметтер' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Сельское хозяйство' ? 'Ауыл шаруашылығы' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Другое' ? 'Басқа' :''}}
+                        <!-- Для Прочая - Сфера деятельности -->
+                        <div class="btn__item" v-if="ads.sfera_deyatelnosti!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsFieldOfActivity') }}</div>
+                            <div v-if="updateDateLocale.lang == 'ru'">{{ads.sfera_deyatelnosti}}</div>
+                            <div v-if="updateDateLocale.lang == 'kz'">
+                                {{ads.sfera_deyatelnosti == 'Производство' ? 'Өндіріс' :''}}
+                                {{ads.sfera_deyatelnosti == 'Общепит' ? 'Тамақтану' :''}}
+                                {{ads.sfera_deyatelnosti == 'Развлечения' ? 'Ойын-сауық' :''}}
+                                {{ads.sfera_deyatelnosti == 'Торговля' ? 'Сауда' :''}}
+                                {{ads.sfera_deyatelnosti == 'Услуги' ? 'Қызметтер' :''}}
+                                {{ads.sfera_deyatelnosti == 'Сельское хозяйство' ? 'Ауыл шаруашылығы' :''}}
+                                {{ads.sfera_deyatelnosti == 'Другое' ? 'Басқа' :''}}
 
-                                </div>
-                                <div v-if="updateDateLocale.lang == 'en'">
-                                    {{ads.sfera_deyatelnosti == 'Производство' ? 'Production' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Общепит' ? 'Catering' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Развлечения' ? 'Entertainments' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Торговля' ? 'Trading' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Услуги' ? 'Services' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Сельское хозяйство' ? 'Agricultural industry' :''}}
-                                    {{ads.sfera_deyatelnosti == 'Другое' ? 'Other' :''}}
-                                </div>
                             </div>
-
-                            <!-- Состояние -->
-                            <div class="btn__item" v-if="ads.sostoyanie!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsState') }}</div>
-                                <div v-if="updateDateLocale.lang == 'ru'">{{ads.sostoyanie}}</div>
-                                <div v-if="updateDateLocale.lang == 'kz'">
-                                    {{ads.sostoyanie == 'Евро ремонт' ? 'Еуро жөндеу' :''}}
-                                    {{ads.sostoyanie == 'Хорошее' ? 'Жақсы' :''}}
-                                    {{ads.sostoyanie == 'Среднее' ? 'Орташа' :''}}
-                                    {{ads.sostoyanie == 'Требует ремонта' ? 'Жөндеуді қажет етеді' :''}}
-                                </div>
-                                <div v-if="updateDateLocale.lang == 'en'">
-                                    {{ads.sostoyanie == 'Евро ремонт' ? 'Euro repair' :''}}
-                                    {{ads.sostoyanie == 'Хорошее' ? 'Good' :''}}
-                                    {{ads.sostoyanie == 'Среднее' ? 'Average' :''}}
-                                    {{ads.sostoyanie == 'Требует ремонта' ? 'Requires repair' :''}}
-                                </div>
+                            <div v-if="updateDateLocale.lang == 'en'">
+                                {{ads.sfera_deyatelnosti == 'Производство' ? 'Production' :''}}
+                                {{ads.sfera_deyatelnosti == 'Общепит' ? 'Catering' :''}}
+                                {{ads.sfera_deyatelnosti == 'Развлечения' ? 'Entertainments' :''}}
+                                {{ads.sfera_deyatelnosti == 'Торговля' ? 'Trading' :''}}
+                                {{ads.sfera_deyatelnosti == 'Услуги' ? 'Services' :''}}
+                                {{ads.sfera_deyatelnosti == 'Сельское хозяйство' ? 'Agricultural industry' :''}}
+                                {{ads.sfera_deyatelnosti == 'Другое' ? 'Other' :''}}
                             </div>
+                        </div>
 
-                            <!-- Мебель -->
-                            <div class="btn__item" v-if="ads.mebel != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsFurniture') }}</div>
-
-                                <div v-if="ads.mebel == 'Нет'">{{ $t('oneAdsNo') }}</div>
-
-                                <div v-if="ads.mebel != 'Нет' && updateDateLocale.lang == 'ru'">{{ads.mebel}}</div>
-                                <div v-if="ads.mebel != 'Нет' && updateDateLocale.lang == 'kz'">
-                                    {{ads.mebel == 'Полностью' ? 'Толық' :''}}
-                                    {{ads.mebel == 'Частично' ? 'Ішінара' :''}}
-                                </div>
-                                <div v-if="ads.mebel != 'Нет' && updateDateLocale.lang == 'en'">
-                                    {{ads.mebel == 'Полностью' ? 'Completely' :''}}
-                                    {{ads.mebel == 'Частично' ? 'Partly' :''}}
-                                </div>
+                        <!-- Состояние -->
+                        <div class="btn__item" v-if="ads.sostoyanie!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsState') }}</div>
+                            <div v-if="updateDateLocale.lang == 'ru'">{{ads.sostoyanie}}</div>
+                            <div v-if="updateDateLocale.lang == 'kz'">
+                                {{ads.sostoyanie == 'Евро ремонт' ? 'Еуро жөндеу' :''}}
+                                {{ads.sostoyanie == 'Хорошее' ? 'Жақсы' :''}}
+                                {{ads.sostoyanie == 'Среднее' ? 'Орташа' :''}}
+                                {{ads.sostoyanie == 'Требует ремонта' ? 'Жөндеуді қажет етеді' :''}}
                             </div>
-
-                            <!-- Площадь - Участка соток -->
-                            <div class="btn__item" v-if="ads.ploshad_uchastka!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsPlotAcres') }}</div>
-                                <div>{{ ads.ploshad_uchastka }}</div>
+                            <div v-if="updateDateLocale.lang == 'en'">
+                                {{ads.sostoyanie == 'Евро ремонт' ? 'Euro repair' :''}}
+                                {{ads.sostoyanie == 'Хорошее' ? 'Good' :''}}
+                                {{ads.sostoyanie == 'Среднее' ? 'Average' :''}}
+                                {{ads.sostoyanie == 'Требует ремонта' ? 'Requires repair' :''}}
                             </div>
+                        </div>
 
-                            <!-- Для Промбазы -->
-                            <!-- Площадь - Площадь производственных помещений -->
-                            <div class="btn__item" v-if="ads.ploshad_proizvodstvennih_pomesheniy!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsAreaOfIndustrialPremises') }}</div>
-                                <div>{{ads.ploshad_proizvodstvennih_pomesheniy}} м<sup>2</sup></div>
+                        <!-- Мебель -->
+                        <div class="btn__item" v-if="ads.mebel != undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsFurniture') }}</div>
+
+                            <div v-if="ads.mebel == 'Нет'">{{ $t('oneAdsNo') }}</div>
+
+                            <div v-if="ads.mebel != 'Нет' && updateDateLocale.lang == 'ru'">{{ads.mebel}}</div>
+                            <div v-if="ads.mebel != 'Нет' && updateDateLocale.lang == 'kz'">
+                                {{ads.mebel == 'Полностью' ? 'Толық' :''}}
+                                {{ads.mebel == 'Частично' ? 'Ішінара' :''}}
                             </div>
-                            <!-- Высота - Высота производственных помещений -->
-                            <div class="btn__item" v-if="ads.visota_proizvodstvennih_pomesheniy!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsHeightOfProductionPremises') }}</div>
-                                <div>{{ads.visota_proizvodstvennih_pomesheniy}} м</div>
+                            <div v-if="ads.mebel != 'Нет' && updateDateLocale.lang == 'en'">
+                                {{ads.mebel == 'Полностью' ? 'Completely' :''}}
+                                {{ads.mebel == 'Частично' ? 'Partly' :''}}
                             </div>
-                            <!-- Площадь - Площадь складских помещений -->
-                            <div class="btn__item" v-if="ads.ploshad_skladskih_pomesheniy!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsWarehouseArea') }}</div>
-                                <div>{{ads.ploshad_skladskih_pomesheniy}} м<sup>2</sup></div>
-                            </div>
-                            <!-- Высота - Высота складских помещений -->
-                            <div class="btn__item" v-if="ads.visota_skladskih_pomesheniy!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsWarehouseHeight') }}</div>
-                                <div>{{ads.visota_skladskih_pomesheniy}} м</div>
-                            </div>
-                            <!-- Площадь - Площадь офисных помещений -->
-                            <div class="btn__item" v-if="ads.ploshad_ofisnih_pomesheniy!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsAreaOfOfficePremises') }}</div>
-                                <div>{{ads.ploshad_ofisnih_pomesheniy}} м<sup>2</sup></div>
-                            </div>
+                        </div>
 
-                            <!-- Высота потолков -->
-                            <div class="btn__item" v-if="ads.visota_potolkov!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsCeilingHeight') }}</div>
-                                <div>{{ads.visota_potolkov}}м</div>
-                            </div>
+                        <!-- Площадь - Участка соток -->
+                        <div class="btn__item" v-if="ads.ploshad_uchastka!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsPlotAcres') }}</div>
+                            <div>{{ ads.ploshad_uchastka }}</div>
+                        </div>
 
-                            <!-- Отдельный вход -->
-                            <div class="btn__item" v-if="ads.otdelniy_vhod!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsSeparateEntrance') }}</div>
+                        <!-- Для Промбазы -->
+                        <!-- Площадь - Площадь производственных помещений -->
+                        <div class="btn__item" v-if="ads.ploshad_proizvodstvennih_pomesheniy!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsAreaOfIndustrialPremises') }}</div>
+                            <div>{{ads.ploshad_proizvodstvennih_pomesheniy}} м<sup>2</sup></div>
+                        </div>
+                        <!-- Высота - Высота производственных помещений -->
+                        <div class="btn__item" v-if="ads.visota_proizvodstvennih_pomesheniy!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsHeightOfProductionPremises') }}</div>
+                            <div>{{ads.visota_proizvodstvennih_pomesheniy}} м</div>
+                        </div>
+                        <!-- Площадь - Площадь складских помещений -->
+                        <div class="btn__item" v-if="ads.ploshad_skladskih_pomesheniy!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsWarehouseArea') }}</div>
+                            <div>{{ads.ploshad_skladskih_pomesheniy}} м<sup>2</sup></div>
+                        </div>
+                        <!-- Высота - Высота складских помещений -->
+                        <div class="btn__item" v-if="ads.visota_skladskih_pomesheniy!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsWarehouseHeight') }}</div>
+                            <div>{{ads.visota_skladskih_pomesheniy}} м</div>
+                        </div>
+                        <!-- Площадь - Площадь офисных помещений -->
+                        <div class="btn__item" v-if="ads.ploshad_ofisnih_pomesheniy!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsAreaOfOfficePremises') }}</div>
+                            <div>{{ads.ploshad_ofisnih_pomesheniy}} м<sup>2</sup></div>
+                        </div>
 
-                                <div v-if="ads.otdelniy_vhod == 'Нет'" >{{ $t('oneAdsNo') }}</div>
-                                <div v-if="ads.otdelniy_vhod != 'Нет'" >{{ $t('oneAdsThereIs') }}</div>
-                            </div>
+                        <!-- Высота потолков -->
+                        <div class="btn__item" v-if="ads.visota_potolkov!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsCeilingHeight') }}</div>
+                            <div>{{ads.visota_potolkov}}м</div>
+                        </div>
+
+                        <!-- Отдельный вход -->
+                        <div class="btn__item" v-if="ads.otdelniy_vhod!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsSeparateEntrance') }}</div>
+
+                            <div v-if="ads.otdelniy_vhod == 'Нет'" >{{ $t('oneAdsNo') }}</div>
+                            <div v-if="ads.otdelniy_vhod != 'Нет'" >{{ $t('oneAdsThereIs') }}</div>
+                        </div>
 
 
-                            <!-- Душ -->
-                            <div class="btn__item" v-if="ads.dush != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsShower') }}</div>
+                        <!-- Душ -->
+                        <div class="btn__item" v-if="ads.dush != undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsShower') }}</div>
 
-                                <div v-if="ads.dush == 'Нет'">{{ $t('oneAdsNo') }}</div>
+                            <div v-if="ads.dush == 'Нет'">{{ $t('oneAdsNo') }}</div>
 
-                                <div v-if="ads.dush != 'Нет'" >
-                                    <span v-if="updateDateLocale.lang == 'ru'">{{ads.dush}}</span>
-                                    <span v-if="updateDateLocale.lang == 'kz'">
+                            <div v-if="ads.dush != 'Нет'" >
+                                <span v-if="updateDateLocale.lang == 'ru'">{{ads.dush}}</span>
+                                <span v-if="updateDateLocale.lang == 'kz'">
                                         {{ads.dush == 'В комнате' ? 'Бөлмеде' :''}}
                                         {{ads.dush == 'В секции' ? 'Секцияда' :''}}
                                     </span>
-                                    <span v-if="updateDateLocale.lang == 'en'">
+                                <span v-if="updateDateLocale.lang == 'en'">
                                         {{ads.dush == 'В комнате' ? 'In the room' :''}}
                                         {{ads.dush == 'В секции' ? 'In the section' :''}}
                                     </span>
-                                </div>
                             </div>
+                        </div>
 
-                            <!-- Санузел -->
-                            <div class="btn__item" v-if="ads.sanuzel != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsBathroom') }}</div>
+                        <!-- Санузел -->
+                        <div class="btn__item" v-if="ads.sanuzel != undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsBathroom') }}</div>
 
-                                <div v-if="ads.sanuzel == 'Нет'">{{ $t('oneAdsNo') }}</div>
+                            <div v-if="ads.sanuzel == 'Нет'">{{ $t('oneAdsNo') }}</div>
 
-                                <div v-if="ads.sanuzel != 'Нет'">
-                                    <span v-if="updateDateLocale.lang == 'ru'">{{ads.sanuzel}}</span>
-                                    <span v-if="updateDateLocale.lang == 'kz'">
+                            <div v-if="ads.sanuzel != 'Нет'">
+                                <span v-if="updateDateLocale.lang == 'ru'">{{ads.sanuzel}}</span>
+                                <span v-if="updateDateLocale.lang == 'kz'">
                                         {{ads.sanuzel == 'Раздельный' ? 'Бөлек' :''}}
                                         {{ads.sanuzel == 'Совмещенный' ? 'Біріктірілген' :''}}
                                         {{ads.sanuzel == '2 с/у и более' ? '2 с/y және одан көп' :''}}
@@ -439,7 +412,7 @@
                                         {{ads.sanuzel == 'Во дворе' ? 'Аулада' :''}}
                                         {{ads.sanuzel == 'Есть' ? 'Бар' :''}}
                                     </span>
-                                    <span v-if="updateDateLocale.lang == 'en'">
+                                <span v-if="updateDateLocale.lang == 'en'">
                                         {{ads.sanuzel == 'Раздельный' ? 'Separate' :''}}
                                         {{ads.sanuzel == 'Совмещенный' ? 'Combined' :''}}
                                         {{ads.sanuzel == '2 с/у и более' ? '2 or more' :''}}
@@ -449,169 +422,169 @@
                                         {{ads.sanuzel == 'Во дворе' ? 'In the courtyard' :''}}
                                         {{ads.sanuzel == 'Есть' ? 'There are' :''}}
                                     </span>
-                                </div>
                             </div>
+                        </div>
 
-                            <!-- Канализация -->
-                            <div class="btn__item" v-if="ads.kanalizaciya != undefined">
+                        <!-- Канализация -->
+                        <div class="btn__item" v-if="ads.kanalizaciya != undefined">
 
-                                <div class="btn__item-cat">{{ $t('oneAdsSewers') }}</div>
-                                <div v-if="ads.kanalizaciya == 'Нет'">{{ $t('oneAdsNo') }}</div>
+                            <div class="btn__item-cat">{{ $t('oneAdsSewers') }}</div>
+                            <div v-if="ads.kanalizaciya == 'Нет'">{{ $t('oneAdsNo') }}</div>
 
-                                <div v-if="ads.kanalizaciya != 'Нет'">
-                                    <span v-if="updateDateLocale.lang == 'ru'">{{ads.kanalizaciya}}</span>
-                                    <span v-if="updateDateLocale.lang == 'kz'">
+                            <div v-if="ads.kanalizaciya != 'Нет'">
+                                <span v-if="updateDateLocale.lang == 'ru'">{{ads.kanalizaciya}}</span>
+                                <span v-if="updateDateLocale.lang == 'kz'">
                                         {{ads.kanalizaciya == 'Центральная' ? 'Орталық' :''}}
                                         {{ads.kanalizaciya == 'Септик' ? 'Септик' :''}}
                                     </span>
-                                    <span v-if="updateDateLocale.lang == 'en'">
+                                <span v-if="updateDateLocale.lang == 'en'">
                                         {{ads.kanalizaciya == 'Центральная' ? 'Central' :''}}
                                         {{ads.kanalizaciya == 'Септик' ? 'Septic tank' :''}}
                                     </span>
-                                </div>
-
                             </div>
 
-                            <!-- Вода -->
-                            <div class="btn__item" v-if="ads.voda != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsWater') }}</div>
+                        </div>
 
-                                <div v-if="ads.voda == 'Нет'">{{ $t('oneAdsNo') }}</div>
+                        <!-- Вода -->
+                        <div class="btn__item" v-if="ads.voda != undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsWater') }}</div>
 
-                                <div v-if="ads.voda != 'Нет'">
-                                    <span v-if="updateDateLocale.lang == 'ru'">{{ads.voda}}</span>
-                                    <span v-if="updateDateLocale.lang == 'kz'">
+                            <div v-if="ads.voda == 'Нет'">{{ $t('oneAdsNo') }}</div>
+
+                            <div v-if="ads.voda != 'Нет'">
+                                <span v-if="updateDateLocale.lang == 'ru'">{{ads.voda}}</span>
+                                <span v-if="updateDateLocale.lang == 'kz'">
                                         {{ads.voda == 'Центральная' ? 'Орталық' :''}}
                                         {{ads.voda == 'Скважина' ? 'Ұңғыма' :''}}
                                     </span>
-                                    <span v-if="updateDateLocale.lang == 'en'">
+                                <span v-if="updateDateLocale.lang == 'en'">
                                         {{ads.voda == 'Центральная' ? 'Central' :''}}
                                         {{ads.voda == 'Скважина' ? 'Borehole' :''}}
                                     </span>
-                                </div>
-
                             </div>
 
-                            <!-- Электричество -->
-                            <div class="btn__item" v-if="ads.elektrichestvo != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsElectricity') }}</div>
+                        </div>
 
-                                <div v-if="ads.elektrichestvo == 'Нет'">{{ $t('oneAdsNo') }}</div>
+                        <!-- Электричество -->
+                        <div class="btn__item" v-if="ads.elektrichestvo != undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsElectricity') }}</div>
 
-                                <div v-if="ads.elektrichestvo != 'Нет'">
-                                    <span v-if="updateDateLocale.lang == 'ru'">{{ads.elektrichestvo}}</span>
-                                    <span v-if="updateDateLocale.lang == 'kz'">
+                            <div v-if="ads.elektrichestvo == 'Нет'">{{ $t('oneAdsNo') }}</div>
+
+                            <div v-if="ads.elektrichestvo != 'Нет'">
+                                <span v-if="updateDateLocale.lang == 'ru'">{{ads.elektrichestvo}}</span>
+                                <span v-if="updateDateLocale.lang == 'kz'">
                                         {{ads.elektrichestvo == 'Есть' ? 'Бар' :''}}
                                     </span>
-                                    <span v-if="updateDateLocale.lang == 'en'">
+                                <span v-if="updateDateLocale.lang == 'en'">
                                         {{ads.elektrichestvo == 'Есть' ? 'There are' :''}}
                                     </span>
-                                </div>
-
                             </div>
 
-                            <!-- Отопление -->
-                            <div class="btn__item" v-if="ads.otoplenie != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsHeating') }}</div>
+                        </div>
 
-                                <div v-if="ads.otoplenie == 'Нет'">{{ $t('oneAdsNo') }}</div>
+                        <!-- Отопление -->
+                        <div class="btn__item" v-if="ads.otoplenie != undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsHeating') }}</div>
 
-                                <div v-if="ads.otoplenie != 'Нет'">
-                                    <span v-if="updateDateLocale.lang == 'ru'">{{ads.otoplenie}}</span>
-                                    <span v-if="updateDateLocale.lang == 'kz'">
+                            <div v-if="ads.otoplenie == 'Нет'">{{ $t('oneAdsNo') }}</div>
+
+                            <div v-if="ads.otoplenie != 'Нет'">
+                                <span v-if="updateDateLocale.lang == 'ru'">{{ads.otoplenie}}</span>
+                                <span v-if="updateDateLocale.lang == 'kz'">
                                         {{ads.otoplenie == 'Центральное' ? 'Орталық' :''}}
                                         {{ads.otoplenie == 'На газе' ? 'Газбен' :''}}
                                         {{ads.otoplenie == 'На твердом топливе' ? 'Қатты отынмен' :''}}
                                         {{ads.otoplenie == 'На жидком топливе' ? 'Сұйық отынмен' :''}}
                                         {{ads.otoplenie == 'Смешанное' ? 'Аралас' :''}}
                                     </span>
-                                    <span v-if="updateDateLocale.lang == 'en'">
+                                <span v-if="updateDateLocale.lang == 'en'">
                                         {{ads.otoplenie == 'Центральное' ? 'Central' :''}}
                                         {{ads.otoplenie == 'На газе' ? 'On gas' :''}}
                                         {{ads.otoplenie == 'На твердом топливе' ? 'On solid fuel' :''}}
                                         {{ads.otoplenie == 'На жидком топливе' ? 'On liquid fuel' :''}}
                                         {{ads.otoplenie == 'Смешанное' ? 'Mixed' :''}}
                                     </span>
-                                </div>
-
-                            </div>
-
-                            <!-- Газ -->
-                            <div class="btn__item" v-if="ads.gaz != undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsGas') }}</div>
-
-                                <div v-if="ads.gaz == 'Нет'">{{ $t('oneAdsNo') }}</div>
-
-                                <div v-if="ads.gaz != 'Нет'">
-                                    <span v-if="updateDateLocale.lang == 'ru'">{{ads.gaz}}</span>
-                                    <span v-if="updateDateLocale.lang == 'kz'">
-                                        {{ads.gaz == 'Магистральный' ? 'Магистральдық' :''}}
-                                        {{ads.gaz == 'Автономный' ? 'Автономды' :''}}
-                                    </span>
-                                    <span v-if="updateDateLocale.lang == 'en'">
-                                        {{ads.gaz == 'Магистральный' ? 'Trunk' :''}}
-                                        {{ads.gaz == 'Автономный' ? 'Autonomous' :''}}
-                                    </span>
-                                </div>
-
-                            </div>
-
-                            <!-- Балкон -->
-                            <div class="btn__item" v-if="ads.balkon != undefined">
-                                <div v-if="ads.balkon == 'Нет'"  class="btn__item-cat">{{ $t('oneAdsBalcony') }}</div>
-                                <div v-if="ads.balkon == 'Нет'">{{ $t('oneAdsNo') }}</div>
-
-                                <div v-if="ads.balkon != 'Нет' && updateDateLocale.lang == 'ru'" class="btn__item-cat">{{ads.balkon}}</div>
-                                <div v-if="ads.balkon != 'Нет' && updateDateLocale.lang == 'kz'" class="btn__item-cat">
-                                    {{ads.balkon == 'Балкон' ? 'Балкон' :''}}
-                                    {{ads.balkon == 'Лоджия' ? 'Лоджия' :''}}
-                                    {{ads.balkon == '2 балкона и более' ? '2 балкон және одан да көп' :''}}
-                                </div>
-                                <div v-if="ads.balkon != 'Нет' && updateDateLocale.lang == 'en'" class="btn__item-cat">
-                                    {{ads.balkon == 'Балкон' ? 'Balcony' :''}}
-                                    {{ads.balkon == 'Лоджия' ? 'Loggia' :''}}
-                                    {{ads.balkon == '2 балкона и более' ? '2 balconies or more' :''}}
-                                </div>
-                                <div v-if="ads.balkon != 'Нет'">{{ $t('oneAdsThereIs') }}</div>
-                            </div>
-
-                            <!-- Тип строения -->
-                            <div class="btn__item" v-if="ads.tip_stroeniya!=undefined">
-                                <div class="btn__item-cat">{{ $t('oneAdsBuildingType') }}</div>
-                                <div v-if="updateDateLocale.lang == 'ru'">{{ads.tip_stroeniya}}</div>
-                                <div v-if="updateDateLocale.lang == 'kz'">
-                                    {{ads.tip_stroeniya == 'Панель' ? 'Панель' :''}}
-                                    {{ads.tip_stroeniya == 'Кирпич' ? 'Кірпіш' :''}}
-                                    {{ads.tip_stroeniya == 'Дерево' ? 'Ағаш' :''}}
-                                    {{ads.tip_stroeniya == 'Другое' ? 'Басқа' :''}}
-                                </div>
-                                <div v-if="updateDateLocale.lang == 'en'">
-                                    {{ads.tip_stroeniya == 'Панель' ? 'Panel' :''}}
-                                    {{ads.tip_stroeniya == 'Кирпич' ? 'Brick' :''}}
-                                    {{ads.tip_stroeniya == 'Дерево' ? 'Tree' :''}}
-                                    {{ads.tip_stroeniya == 'Другое' ? 'Other' :''}}
-                                </div>
-                            </div>
-
-                            <!-- Год постройки -->
-                            <div class="btn__item">
-                                <div class="btn__item-cat">{{ $t('oneAdsYearOfConstruction') }}</div>
-                                <div>{{ads.god_postroiki}}</div>
                             </div>
 
                         </div>
 
+                        <!-- Газ -->
+                        <div class="btn__item" v-if="ads.gaz != undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsGas') }}</div>
+
+                            <div v-if="ads.gaz == 'Нет'">{{ $t('oneAdsNo') }}</div>
+
+                            <div v-if="ads.gaz != 'Нет'">
+                                <span v-if="updateDateLocale.lang == 'ru'">{{ads.gaz}}</span>
+                                <span v-if="updateDateLocale.lang == 'kz'">
+                                        {{ads.gaz == 'Магистральный' ? 'Магистральдық' :''}}
+                                        {{ads.gaz == 'Автономный' ? 'Автономды' :''}}
+                                    </span>
+                                <span v-if="updateDateLocale.lang == 'en'">
+                                        {{ads.gaz == 'Магистральный' ? 'Trunk' :''}}
+                                        {{ads.gaz == 'Автономный' ? 'Autonomous' :''}}
+                                    </span>
+                            </div>
+
+                        </div>
+
+                        <!-- Балкон -->
+                        <div class="btn__item" v-if="ads.balkon != undefined">
+                            <div v-if="ads.balkon == 'Нет'"  class="btn__item-cat">{{ $t('oneAdsBalcony') }}</div>
+                            <div v-if="ads.balkon == 'Нет'">{{ $t('oneAdsNo') }}</div>
+
+                            <div v-if="ads.balkon != 'Нет' && updateDateLocale.lang == 'ru'" class="btn__item-cat">{{ads.balkon}}</div>
+                            <div v-if="ads.balkon != 'Нет' && updateDateLocale.lang == 'kz'" class="btn__item-cat">
+                                {{ads.balkon == 'Балкон' ? 'Балкон' :''}}
+                                {{ads.balkon == 'Лоджия' ? 'Лоджия' :''}}
+                                {{ads.balkon == '2 балкона и более' ? '2 балкон және одан да көп' :''}}
+                            </div>
+                            <div v-if="ads.balkon != 'Нет' && updateDateLocale.lang == 'en'" class="btn__item-cat">
+                                {{ads.balkon == 'Балкон' ? 'Balcony' :''}}
+                                {{ads.balkon == 'Лоджия' ? 'Loggia' :''}}
+                                {{ads.balkon == '2 балкона и более' ? '2 balconies or more' :''}}
+                            </div>
+                            <div v-if="ads.balkon != 'Нет'">{{ $t('oneAdsThereIs') }}</div>
+                        </div>
+
+                        <!-- Тип строения -->
+                        <div class="btn__item" v-if="ads.tip_stroeniya!=undefined">
+                            <div class="btn__item-cat">{{ $t('oneAdsBuildingType') }}</div>
+                            <div v-if="updateDateLocale.lang == 'ru'">{{ads.tip_stroeniya}}</div>
+                            <div v-if="updateDateLocale.lang == 'kz'">
+                                {{ads.tip_stroeniya == 'Панель' ? 'Панель' :''}}
+                                {{ads.tip_stroeniya == 'Кирпич' ? 'Кірпіш' :''}}
+                                {{ads.tip_stroeniya == 'Дерево' ? 'Ағаш' :''}}
+                                {{ads.tip_stroeniya == 'Другое' ? 'Басқа' :''}}
+                            </div>
+                            <div v-if="updateDateLocale.lang == 'en'">
+                                {{ads.tip_stroeniya == 'Панель' ? 'Panel' :''}}
+                                {{ads.tip_stroeniya == 'Кирпич' ? 'Brick' :''}}
+                                {{ads.tip_stroeniya == 'Дерево' ? 'Tree' :''}}
+                                {{ads.tip_stroeniya == 'Другое' ? 'Other' :''}}
+                            </div>
+                        </div>
+
+                        <!-- Год постройки -->
+                        <div class="btn__item">
+                            <div class="btn__item-cat">{{ $t('oneAdsYearOfConstruction') }}</div>
+                            <div>{{ads.god_postroiki}}</div>
+                        </div>
+
                     </div>
 
-                    <!-- Описание массивы -->
-                    <div class="p-2">
+                </div>
 
-                        <!-- Мебель и техника -->
-                        <div v-if="ads.mebel_arr != undefined && ads.mebel_arr.length != 0" class="my-4">
-                            <div class="title mb-2">{{ $t('oneAdsFurnitureAndAppliances') }}</div>
+                <!-- Описание массивы -->
+                <div class="p-2">
 
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.mebel_arr.join(", ")}}</div>
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
+                    <!-- Мебель и техника -->
+                    <div v-if="ads.mebel_arr != undefined && ads.mebel_arr.length != 0" class="my-4">
+                        <div class="title mb-2">{{ $t('oneAdsFurnitureAndAppliances') }}</div>
+
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.mebel_arr.join(", ")}}</div>
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
                                     <span v-for="mebel in ads.mebel_arr">
                                         {{ mebel == 'Холодильник' ? 'Тоңазытқыш, ' : ''}}
                                         {{ mebel == 'Стиральная машина' ? 'Кір жуғыш машина, ' : ''}}
@@ -623,8 +596,8 @@
                                         {{ mebel == 'Микроволновая печь' ? 'Микротолқынды пеш, ' : ''}}
                                         {{ mebel == 'Вся бытовая техника' ? 'Барлық тұрмыстық техника, ' : ''}}
                                     </span>
-                            </div>
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
+                        </div>
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
                                      <span v-for="mebel in ads.mebel_arr">
                                         {{ mebel == 'Холодильник' ? 'Fridge, ' : ''}}
                                         {{ mebel == 'Стиральная машина' ? 'Washer, ' : ''}}
@@ -636,15 +609,15 @@
                                         {{ mebel == 'Микроволновая печь' ? 'A microwave, ' : ''}}
                                         {{ mebel == 'Вся бытовая техника' ? 'All household appliances, ' : ''}}
                                     </span>
-                            </div>
                         </div>
+                    </div>
 
-                        <!-- Разное-->
-                        <div v-if="ads.raznoe != undefined && ads.raznoe.length != 0" class="my-4">
-                            <div class="title mb-2">{{ $t('oneAdsMiscellaneous') }}</div>
+                    <!-- Разное-->
+                    <div v-if="ads.raznoe != undefined && ads.raznoe.length != 0" class="my-4">
+                        <div class="title mb-2">{{ $t('oneAdsMiscellaneous') }}</div>
 
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.raznoe.join(", ")}}</div>
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.raznoe.join(", ")}}</div>
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
                                     <span v-for="raznoe in ads.raznoe">
                                         {{ raznoe == 'Кухня-студия' ? 'Ас үй студиясы, ' : ''}}
                                         {{ raznoe == 'Комнаты изолированны' ? 'Бөлмелер оқшауланған, ' : ''}}
@@ -667,8 +640,8 @@
                                         {{ raznoe == 'Пандус' ? 'Пандус, ' : ''}}
                                         {{ raznoe == 'Своя подстанция' ? 'Өзінің қосалқы станциясы, ' : ''}}
                                     </span>
-                            </div>
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
+                        </div>
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
                                      <span v-for="raznoe in ads.raznoe">
                                         {{ raznoe == 'Кухня-студия' ? 'Studio Kitchen, ' : ''}}
                                         {{ raznoe == 'Комнаты изолированны' ? 'The rooms are isolated, ' : ''}}
@@ -691,36 +664,36 @@
                                         {{ raznoe == 'Пандус' ? 'Ramp, ' : ''}}
                                         {{ raznoe == 'Своя подстанция' ? 'Own substation, ' : ''}}
                                     </span>
-                            </div>
                         </div>
+                    </div>
 
-                        <!-- Расположение -->
-                        <div v-if="ads.raspolojenie != undefined && ads.raspolojenie.length != 0" class="my-4">
-                            <div class="title mb-2">{{ $t('oneAdsLocation') }}</div>
+                    <!-- Расположение -->
+                    <div v-if="ads.raspolojenie != undefined && ads.raspolojenie.length != 0" class="my-4">
+                        <div class="title mb-2">{{ $t('oneAdsLocation') }}</div>
 
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.raspolojenie.join(", ")}}</div>
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.raspolojenie.join(", ")}}</div>
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
                                     <span v-for="raspolojenie in ads.raspolojenie">
                                         {{ raspolojenie == 'В городе' ? 'Қалада, ' : ''}}
                                         {{ raspolojenie == 'В пригороде' ? 'Қала маңында, ' : ''}}
                                         {{ raspolojenie == 'Вдоль трассы' ? 'Жол бойында, ' : ''}}
                                     </span>
-                            </div>
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
+                        </div>
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
                                     <span v-for="raspolojenie in ads.raspolojenie">
                                         {{ raspolojenie == 'В городе' ? 'In the city, ' : ''}}
                                         {{ raspolojenie == 'В пригороде' ? 'In the suburbs, ' : ''}}
                                         {{ raspolojenie == 'Вдоль трассы' ? 'Along the highway, ' : ''}}
                                     </span>
-                            </div>
                         </div>
+                    </div>
 
-                        <!-- Коммуникации -->
-                        <div v-if="ads.kommunikacii != undefined && ads.kommunikacii != ''" class="my-4">
-                            <div class="title mb-2">{{ $t('oneAdsCommunications') }}</div>
+                    <!-- Коммуникации -->
+                    <div v-if="ads.kommunikacii != undefined && ads.kommunikacii != ''" class="my-4">
+                        <div class="title mb-2">{{ $t('oneAdsCommunications') }}</div>
 
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.kommunikacii.join(", ")}}</div>
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.kommunikacii.join(", ")}}</div>
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
                                     <span v-for="kommunikacii in ads.kommunikacii">
                                         {{ kommunikacii == 'Свет' ? 'Жарық, ' : ''}}
                                         {{ kommunikacii == 'Газ' ? 'Газ, ' : ''}}
@@ -730,8 +703,8 @@
                                         {{ kommunikacii == 'Телефон' ? 'Телефон, ' : ''}}
                                         {{ kommunikacii == 'Канализация' ? 'Кәріз, ' : ''}}
                                     </span>
-                            </div>
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
+                        </div>
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
                                      <span v-for="kommunikacii in ads.kommunikacii">
                                         {{ kommunikacii == 'Свет' ? 'Light, ' : ''}}
                                         {{ kommunikacii == 'Газ' ? 'Gas, ' : ''}}
@@ -741,15 +714,15 @@
                                         {{ kommunikacii == 'Телефон' ? 'Telephone, ' : ''}}
                                         {{ kommunikacii == 'Канализация' ? 'Sewage system, ' : ''}}
                                     </span>
-                            </div>
                         </div>
+                    </div>
 
-                        <!-- Безопасность-->
-                        <div v-if="ads.bezopasnost != undefined && ads.bezopasnost != ''" class="my-4">
-                            <div class="title mb-2">{{ $t('oneAdsSafety') }}</div>
+                    <!-- Безопасность-->
+                    <div v-if="ads.bezopasnost != undefined && ads.bezopasnost != ''" class="my-4">
+                        <div class="title mb-2">{{ $t('oneAdsSafety') }}</div>
 
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.bezopasnost.join(", ")}}</div>
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'ru'">{{ads.bezopasnost.join(", ")}}</div>
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'kz'">
                                     <span v-for="bezopasnost in ads.bezopasnost">
                                         {{ bezopasnost == 'Домофон' ? 'Домофон, ' : ''}}
                                         {{ bezopasnost == 'Видеодомофон' ? 'Видеодомофон, ' : ''}}
@@ -760,8 +733,8 @@
                                         {{ bezopasnost == 'Кодовый замок' ? 'Код құлпы, ' : ''}}
                                         {{ bezopasnost == 'Консьерж' ? 'Консьерж, ' : ''}}
                                     </span>
-                            </div>
-                            <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
+                        </div>
+                        <div class="p-2" style="font-size: 17px" v-if="updateDateLocale.lang == 'en'">
                                      <span v-for="bezopasnost in ads.bezopasnost">
                                         {{ bezopasnost == 'Домофон' ? 'Intercom, ' : ''}}
                                         {{ bezopasnost == 'Видеодомофон' ? 'Video intercom, ' : ''}}
@@ -772,33 +745,31 @@
                                         {{ bezopasnost == 'Кодовый замок' ? 'Combination lock, ' : ''}}
                                         {{ bezopasnost == 'Консьерж' ? 'Concierge, ' : ''}}
                                     </span>
-                            </div>
                         </div>
-
-                        <!-- Описание от хозяина-->
-                        <div class="my-4">
-                            <div class="title mb-2">{{ $t('oneAdsDescription') }}</div>
-                            <div class="p-2" style="white-space: pre-line; font-size: 17px">
-
-                                <!-- Это установленный компонент В компоненте - Показать - скрыть полное описание -->
-                                <text-clamp :text="ads.text_obyavleniya" :max-lines="8">
-                                    <template #after="{ toggle, expanded, clamped }">
-                                        <!-- Текст - показать - скрыть описание -->
-                                        <div v-if="expanded || clamped" @click="toggle" class="text-blue-lighten-1 py-2 row g-0" role="button">
-                                            <div class="col">{{expanded ? $t('oneAdsHideDescription'): $t('oneAdsShowAllDescription')}}</div>
-                                            <div class="col-auto">
-                                                <v-icon v-if="expanded">mdi-chevron-up</v-icon>
-                                                <v-icon v-else>mdi-chevron-down</v-icon>
-                                            </div>
-                                        </div>
-                                    </template>
-                                </text-clamp>
-                            </div>
-                        </div>
-
                     </div>
 
-                </article>
+                    <!-- Описание от хозяина-->
+                    <div class="my-4">
+                        <div class="title mb-2">{{ $t('oneAdsDescription') }}</div>
+                        <div class="p-2" style="white-space: pre-line; font-size: 17px">
+
+                            <!-- Это установленный компонент В компоненте - Показать - скрыть полное описание -->
+                            <text-clamp :text="ads.text_obyavleniya" :max-lines="8">
+                                <template #after="{ toggle, expanded, clamped }">
+                                    <!-- Текст - показать - скрыть описание -->
+                                    <div v-if="expanded || clamped" @click="toggle" class="text-blue-lighten-1 py-2 row g-0" role="button">
+                                        <div class="col">{{expanded ? $t('oneAdsHideDescription'): $t('oneAdsShowAllDescription')}}</div>
+                                        <div class="col-auto">
+                                            <v-icon v-if="expanded">mdi-chevron-up</v-icon>
+                                            <v-icon v-else>mdi-chevron-down</v-icon>
+                                        </div>
+                                    </div>
+                                </template>
+                            </text-clamp>
+                        </div>
+                    </div>
+
+                </div>
 
                 <!-- Кнопки - Все объявления автора / Пожаловаться на объявление -->
                 <div class="oneAds__author-ads-and-complain-block">
@@ -1036,16 +1007,29 @@ onBeforeRouteLeave((to, from, next) => {
 .oneAds__header {
     display: none;
 }
-.back-button {
+.oneAds__header-show-mobile-if-not-image{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.oneAds__header-back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: none;
     cursor: pointer;
-    font-size: 24px;
-    color: #333;
-    padding: 5px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
-.back-button:hover {
-    color: #007bff;
+.oneAds__header-back-btn:hover {
+    background-color: #f0f0f0;
 }
-.ads-date {
+.oneAds__header-date-publication-text {
     font-size: 14px;
     color: #666;
 }
@@ -1055,7 +1039,6 @@ onBeforeRouteLeave((to, from, next) => {
 .oneAds__body{
     padding-bottom: 100px;
 }
-
 
 /* Стили для Слайдера - Swiper  */
 .swiperPhoto__block {
@@ -1155,6 +1138,98 @@ onBeforeRouteLeave((to, from, next) => {
 }
 
 
+/* Блок с кнопками ниже фото */
+.oneAds__body-top-buttons-block {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;              /* gap-2 = 0.5rem = 8px */
+    padding: 8px;          /* p-2 = 0.5rem */
+}
+.oneAds__body-top-btn{
+    color: rgb(93, 111, 106);
+    padding: 7px 12px;
+    background: #F5F5F5;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.oneAds__body-top-btn:hover{
+    background: rgba(229, 229, 229, 0.91);
+}
+
+
+/* Блок - Заголовок, Цена, Адрес, Карта */
+.oneAds__body-zagolovok-cena-adres-block {
+    padding: 0.5rem;
+    margin-bottom: 2.5rem;
+}
+.oneAds__body-cena-block {
+    display: flex;
+    align-items: center;
+    margin-top: .5rem;
+    padding-bottom: .5rem;
+    font-size: 1rem;
+}
+.oneAds__body-cena-text{
+    font-size: 20px;
+    font-family: "Open Sans",sans-serif;;
+    font-weight: 600;
+    color: #1c1819;
+    line-height: 28px;
+}
+.oneAds__body-cena-srochno-torg {
+    background-color: #FBC02D;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    padding: 2px 4px;
+    margin: 0 8px;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+.oneAds__body-cena-v-arhive {
+    background-color: #ea2a2a;  /* мягкий красный */
+    color: #FFFFFF;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    padding: 2px 4px;
+    margin: 0 8px;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+.oneAds__body-zagolovok {
+    margin-bottom: 48px;
+    font-size: 18px;
+    line-height: 24px;
+}
+.oneAds__body-map-container{
+    position: relative;
+    width: 95%;
+    height: 100px;
+    margin: auto;
+    border: 1px solid rgba(28,24,25,.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+.oneAds__body-adres-block {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 16px;
+}
+.oneAds__body-adres-inner {
+    margin-left: 12px;        /* ml-3 = 0.75rem */
+    display: flex;
+    flex-direction: column;
+}
+.oneAds__body-adres-ulica {
+    text-transform: capitalize;
+    font-size: 1rem;          /* text-body-1 */
+    line-height: 1.5;
+}
+.oneAds__body-adres-gorod {
+    color: #757575;           /* text-grey */
+    font-size: 0.875rem;
+}
+
+
 /* Стили для кнопок - Обьявления автора, Пожаловаться */
 .oneAds__author-ads-and-complain-block {
     display: flex;
@@ -1226,18 +1301,6 @@ onBeforeRouteLeave((to, from, next) => {
     flex-shrink: 0;
 }
 
-
-/*Стили Для карты*/
-.map__container{
-    position: relative;
-    height: 100px;
-    width: 95%;
-    margin: auto;
-    border: 1px solid rgba(28,24,25,.05);
-    border-radius: 12px;
-    overflow: hidden;
-}
-
 /*Для заголовков*/
 .title{
     font-size: 20px;
@@ -1262,20 +1325,6 @@ onBeforeRouteLeave((to, from, next) => {
 
 .btn__item-cat{
     color: #8d8d8d;
-}
-
-
-/*Для кнопок - скачать, поделиться */
-.ads_header-btn{
-    color: rgb(93, 111, 106);
-    padding: 7px 12px;
-    background: #F5F5F5;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.ads_header-btn:hover{
-    background: rgba(229, 229, 229, 0.91);
 }
 
 
@@ -1312,6 +1361,7 @@ onBeforeRouteLeave((to, from, next) => {
         border-radius: 20px 20px 10px 10px;
     }
 
+
     /* Стили для шапки блока */
     .oneAds__header {
         display: flex;
@@ -1336,6 +1386,12 @@ onBeforeRouteLeave((to, from, next) => {
         display: none;
     }
 
+    /* Блок с кнопками ниже фото  */
+    .oneAds__body-top-buttons-block {
+        padding-left: 48px;   /* px-lg-5 = 3rem = 48px */
+        padding-right: 48px;
+    }
+
     .oneAds__footer {
         position: fixed; /* Остается фиксированной */
         bottom: 0;
@@ -1348,7 +1404,6 @@ onBeforeRouteLeave((to, from, next) => {
         display: flex;
         justify-content: center;
     }
-
     .call-button {
         width: 100%; /* теперь кнопка занимает всю ширину футера */
         max-width: 400px; /* или любая нужная ширина */

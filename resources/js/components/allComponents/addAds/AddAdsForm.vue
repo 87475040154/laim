@@ -267,7 +267,6 @@
                         </div>
 
                         <!-- Период аренды  -->
-
                         <div v-if="form.tip_sdelki === 'Сдам' && ['Kvartira', 'Obshejitie', 'Dom'].includes($route.params.table_name)" class="form-group">
 
                             <!-- Заголовок -->
