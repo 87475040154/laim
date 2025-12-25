@@ -24,19 +24,38 @@
                 <!-- Блок - Полное описание 1-го объявления -->
                 <article>
 
-                    <!-- Слайдер Фото - У слайдера высота зависит от высоты фото - height=300px-->
-                    <swiper @swiper="oneAdsSwiper" role="button" v-if="ads && ads.images" :modules="modules" :slides-per-view="1" :space-between="0"
-                            :keyboard="true" :pagination="{type: 'fraction'}"
+                    <!-- Слайдер Фото - У слайдера высота зависит от высоты фото -->
+                    <swiper v-if="ads && ads.images"
+                            @swiper="(s) => swiperPhoto = s" role="button"
+                            :modules="[ Pagination, Keyboard, Navigation ]"
+                            :slides-per-view="1" :space-between="0"
+                            :pagination="{type: 'fraction', el: '.swiperPhoto__pagination'}" :keyboard="true"
+                            :navigation="{prevEl: '.swiperPhoto__prev-btn', nextEl: '.swiperPhoto__next-btn'}"
+                            class="swiperPhoto__block"
                     >
 
                         <!-- Вывод самого слайда - то-есть 1-го фото -->
-                        <swiper-slide v-for="(img, i) in ads.images" :key="i" class="px-lg-5 position-relative">
-                            <img @click="showImage(ads, i)" :src="'/img/adsImg/' + img " style="width: 100%; height: 350px; object-fit: cover; object-position: center; border-radius: 3px 3px 0 0; box-shadow: 0 0 5px #e3e3e3; z-index: 0">
-
-                            <!-- Кнопки перетаскивания -->
-                            <div class="swiper-button-next" @click="slidePrev()"></div>
-                            <div class="swiper-button-prev" @click="slideNext()"></div>
+                        <swiper-slide v-for="(img, i) in ads.images" :key="i" class="swiperPhoto__slide-block">
+                            <img @click="showImage(ads, i)" :src="'/img/adsImg/' + img " class="swiperPhoto__slide-img">
                         </swiper-slide>
+
+                        <!-- Кнопки навигации -->
+                        <div class="swiperPhoto__prev-btn"></div>
+                        <div class="swiperPhoto__next-btn"></div>
+
+                        <!-- Пагинация -->
+                        <div class="swiperPhoto__pagination"></div>
+
+                        <!-- Для мобильных - Кнопка назад и дата публикации -->
+                        <div class="swiperPhoto__back-btn-and-date-publication-block">
+
+                            <!-- Кнопка назад -->
+                            <button class="swiperPhoto__back-btn" type="button" aria-label="Назад" @click="$router.back()">←</button>
+
+                            <!-- Дата публикации объявления -->
+                            <span class="swiperPhoto__date-publication">{{ $filters.transformDateRu(ads.created_at) }}</span>
+
+                        </div>
 
                     </swiper>
 
@@ -820,235 +839,168 @@
 
 </template>
 
-<script>
+<script setup>
+import { ref, reactive, computed, onMounted } from 'vue';
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
-// Слайдер фото Import Swiper Vue.js components
+// Swiper
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Pagination, Mousewheel, Keyboard } from 'swiper';
+import { Pagination, Mousewheel, Keyboard, Navigation } from 'swiper';
 import 'swiper/scss';
 import 'swiper/scss/pagination';
-import 'swiper/scss/mousewheel';
-import 'swiper/scss/keyboard';
+import 'swiper/scss/navigation';
 
-
-//Импортирую Store - Общее состояние
+// Stores
 import { useAuthStore } from "../../../stores/auth";
-import {useImagesStore} from "../../../stores/images";
-import {useAdsStore} from "../../../stores/ads";
-import {useUpdateDateLocaleStore} from "../../../stores/updateDateLocale";
+import { useImagesStore } from "../../../stores/images";
+import { useAdsStore } from "../../../stores/ads";
+import { useUpdateDateLocaleStore } from "../../../stores/updateDateLocale";
 import { useKZLocationStore } from "../../../stores/KZLocation";
 
-
-//Для обрезания строки
+// TextClamp
 import TextClamp from 'vue3-text-clamp';
 
+// Yandex Map
+import { YandexMap, YandexMarker } from 'vue-yandex-maps';
 
-//Компонент - Yandex map - Карта Яндекс, показать расположение
-import { YandexMap, YandexMarker } from 'vue-yandex-maps'
+// Router
+const route = useRoute();
+const router = useRouter();
 
-export default {
-    name: "ShowOneAds",
+// Stores
+const authStore = useAuthStore();
+const imageStore = useImagesStore();
+const adsStore = useAdsStore();
+const updateDateLocale = useUpdateDateLocaleStore();
+const KZLocationStore = useKZLocationStore();
 
-    components: {
-        Swiper, SwiperSlide, //Слайдер для фото
-        TextClamp, //Свернуть-развернуть текст полностью
-        YandexMap, YandexMarker, //Карта яндекс
-    },
+// Data
+const ads = ref('');
+const query = ref(false);
+const showMap = ref(false);
+const swiperPhoto = ref(null);
 
-    data(){
-        return{
+const settings = reactive({
+    apiKey: '8740b571-75d9-47f0-a5c4-582b1feaf201',
+    lang: 'ru_RU',
+    coordorder: 'latlong',
+    enterprise: false,
+    version: '2.1'
+});
 
-            //Подключаю Store - Общее состояние
-            authStore: useAuthStore(),
-            imageStore: useImagesStore(),
-            adsStore: useAdsStore(),
-            updateDateLocale: useUpdateDateLocaleStore(),
-            KZLocationStore: useKZLocationStore(),
-
-            query: false,
-
-            ads: '', //Сюда занесем данные 1-го объявления
-
-            //Яндекс карта настройки по умолчанию
-            showMap: false,
-            settings :{
-                apiKey: '8740b571-75d9-47f0-a5c4-582b1feaf201',
-                lang: 'ru_RU',
-                coordorder: 'latlong',
-                enterprise: false,
-                version: '2.1'
-            },
-            detailedControls :{ zoomControl: { position: { right: 0, top: 0 } } },
-            options: {},
-
-            //swiper Модули для слайдера фото
-            modules: [Pagination, Mousewheel, Keyboard],
-            swiper: ''
-        }
-    },
-
-    computed: {
-        tipObekta(){
-            if(this.ads.tip_obekta == 'Прочая'){
-                return this.ads.zagolovok;
-            }else{
-                return this.ads.tip_obekta;
-            }
-        },
-    },
-
-    methods: {
-
-        //Метод - Получить 1-но объявление с БД
-       async getOneAds(table_name, ads_id){
-
-            //Сначало занесем из localStorage
-            if(localStorage.getItem('oneAds') != undefined){
-                this.ads = JSON.parse(localStorage.getItem('oneAds'));
-
-                //Расположения на карте
-                if(this.ads.lat != undefined){
-                    this.showMap = true;
-                }
-            }
+const detailedControls = reactive({ zoomControl: { position: { right: 0, top: 0 } } });
+const options = reactive({});
 
 
-            axios.get('/getOneAds', {
-                params:{
-                    user_id: this.authStore.check ? this.authStore.user.id : 0,
-                    role: this.authStore.check ? this.authStore.user.role : 'user',
-                    ads_id: ads_id,
-                    table_name: table_name,
-                }
-            })
-                .then((response)=>{
-                    this.ads  = response.data;
 
-                    //Занесем В localeStorage чтоб обновить данные в компоненте AdsPreviewComponent
-                    localStorage.setItem('oneAds', JSON.stringify(response.data))
+// Computed
+const tipObekta = computed(() => {
+    if (!ads.value) return '';
+    return ads.value.tip_obekta === 'Прочая' ? ads.value.zagolovok : ads.value.tip_obekta;
+});
 
-                    //Фото значка расположения на карте
-                    if(this.ads.images.length == 0){
-                        this.options.iconImageHref = '/img/siteImg/allImg/apartmens.jpg';
-                    }else{
-                        this.options.iconImageHref = '/img/adsImg/' + this.ads.images[0];
-                    }
-
-                    this.showMap = true;
-
-                    //Добавим статистику просмотра
-                    this.addAdsStatistic();
-
-                })
-                .catch((errors)=>{
-                    Swal.fire({text: errors.response.data.error})
-                    this.$router.back();
-                })
-        },
-
-        // Метод показать фото
-        showImage(ads, i){
-
-            this.imageStore.showImages({images: ads.images,index: i, allImg: true});
-            this.$router.push({name: this.$route.name + "Image"})
-        },
-
-        //Открыть нижний OffCanvas
-        showBottomOffCanvas(type){
-
-            if(type == 'Позвонить')this.addAdsViewTelStatistic()
-            this.$router.push({name: this.$route.name + "BottomOffCanvas", params:{type: type }})
-        },
-
-        //После просмотра объявления добавим статистику
-        addAdsStatistic(){
-           //Если объявление в архиве не будем добавлять статистику
-            if(this.ads.control == 'В архиве')return
-
-            axios.post('/addAdsStatistic', {
-                user_id: this.authStore.check ? this.authStore.user.id : 0,
-                ads_id: this.ads.id,
-                table_name: this.ads.table_name,
-            })
-                .then((response)=>{
-                    this.ads.view += 1;
-                })
-        },
-
-
-        //После просмотра телефона добавим статистику
-        async addAdsViewTelStatistic(){
-
-            //Если объявление в архиве не будем добавлять статистику
-           if(this.ads.control == 'В архиве')return
-
-            axios.post('/addAdsViewTelStatistic', {
-                user_id: this.authStore.check ? this.authStore.user.id : 0,
-                ads_id: this.ads.id,
-                table_name: this.ads.table_name,
-            })
-                .then((response)=>{
-                })
-        },
-
-        //Метод - Toggle поставить - убрать Лайк
-        async addLikeToggle(){
-
-            //Добавим лайк если будет ошибка то уберем
-            this.ads.userLike = !this.ads.userLike;
-            this.ads.userLike ? this.ads.countLike +=1: this.ads.countLike -=1;
-
-            axios.post('/like',{
-                author_id: this.authStore.user.id,
-                table_name: this.ads.table_name,
-                ads_id: this.ads.id
-
-            })
-                .catch(errors=>{
-
-                    this.ads.userLike = !this.ads.userLike;
-                    this.ads.userLike? this.ads.countLike +=1: this.ads.countLike -=1;
-
-                    //Если объявление не активно уведомим что не активно
-                    Toast.fire({
-                        icon: 'error',
-                        title: errors.response.data.error
-                    })
-                })
-        },
-
-
-        // Слайдер
-        //Инициализируем Слайдер 1
-        oneAdsSwiper(swiper){
-            this.swiper = swiper;
-        },
-        slideNext(){
-           this.swiper.slideNext();
-        },
-        slidePrev(){
-            this.swiper.slidePrev();
-        },
-
-    },
-
-
-    mounted(){
-        let app = this;
-
-        document.querySelector(':root').classList.add('PATCH_modal');
-        app.getOneAds( app.$route.params.table_name, app.$route.params.ads_id );
-
-    },
-
-    beforeRouteLeave(to, from, next) {
-        if(to.name == 'allAds')document.querySelector(':root').classList.remove('PATCH_modal'); //Отменим прокрутку под модальным окном
-        next();
+// Methods
+const getOneAds = async (table_name, ads_id) => {
+    if (localStorage.getItem('oneAds')) {
+        ads.value = JSON.parse(localStorage.getItem('oneAds'));
+        if (ads.value.lat) showMap.value = true;
     }
 
+    try {
+        const response = await axios.get('/getOneAds', {
+            params: {
+                user_id: authStore.check ? authStore.user.id : 0,
+                role: authStore.check ? authStore.user.role : 'user',
+                ads_id,
+                table_name
+            }
+        });
 
-}
+        ads.value = response.data;
+        localStorage.setItem('oneAds', JSON.stringify(response.data));
+
+        options.iconImageHref = ads.value.images.length
+            ? `/img/adsImg/${ads.value.images[0]}`
+            : '/img/siteImg/allImg/apartmens.jpg';
+
+        showMap.value = true;
+        addAdsStatistic();
+    } catch (errors) {
+        Swal.fire({ text: errors.response.data.error });
+        router.back();
+    }
+};
+
+const showImage = (ad, i) => {
+    imageStore.showImages({ images: ad.images, index: i, allImg: true });
+    router.push({ name: route.name + "Image" });
+};
+
+const showBottomOffCanvas = (type) => {
+    if (type === 'Позвонить') addAdsViewTelStatistic();
+    router.push({ name: route.name + "BottomOffCanvas", params: { type } });
+};
+
+const addAdsStatistic = async () => {
+    if (ads.value.control === 'В архиве') return;
+
+    try {
+        await axios.post('/addAdsStatistic', {
+            user_id: authStore.check ? authStore.user.id : 0,
+            ads_id: ads.value.id,
+            table_name: ads.value.table_name
+        });
+        ads.value.view += 1;
+    } catch (error) {}
+};
+
+const addAdsViewTelStatistic = async () => {
+    if (ads.value.control === 'В архиве') return;
+
+    try {
+        await axios.post('/addAdsViewTelStatistic', {
+            user_id: authStore.check ? authStore.user.id : 0,
+            ads_id: ads.value.id,
+            table_name: ads.value.table_name
+        });
+    } catch (error) {}
+};
+
+const addLikeToggle = async () => {
+    ads.value.userLike = !ads.value.userLike;
+    ads.value.userLike ? ads.value.countLike++ : ads.value.countLike--;
+
+    try {
+        await axios.post('/like', {
+            author_id: authStore.user.id,
+            table_name: ads.value.table_name,
+            ads_id: ads.value.id
+        });
+    } catch (errors) {
+        ads.value.userLike = !ads.value.userLike;
+        ads.value.userLike ? ads.value.countLike++ : ads.value.countLike--;
+        Toast.fire({
+            icon: 'error',
+            title: errors.response.data.error
+        });
+    }
+};
+
+// Lifecycle
+onMounted(() => {
+    document.querySelector(':root').classList.add('PATCH_modal');
+    getOneAds(route.params.table_name, route.params.ads_id);
+});
+
+onBeforeRouteLeave((to, from, next) => {
+    if (to.name === 'allAds') document.querySelector(':root').classList.remove('PATCH_modal');
+    next();
+});
 </script>
+
+
 
 <style>
 /*В этот контейнер монтируется - Яндекс карта */
@@ -1074,7 +1026,6 @@ export default {
     background: rgba(0,0,0,0.8);
     overflow-y: scroll;
 }
-
 .oneAds__block{
     width: 100%;
     max-width: 800px;
@@ -1083,9 +1034,7 @@ export default {
 }
 
 .oneAds__header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+    display: none;
 }
 .back-button {
     cursor: pointer;
@@ -1102,10 +1051,111 @@ export default {
 }
 
 
+/* Тело центрального основного блока */
 .oneAds__body{
     padding-bottom: 100px;
 }
 
+
+/* Стили для Слайдера - Swiper  */
+.swiperPhoto__block {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+.swiperPhoto__slide-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.swiperPhoto__slide-img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.swiperPhoto__pagination {
+    position: absolute;
+    bottom: 12px;
+    right: 10px;
+    left: auto;
+    width: auto;
+    z-index: 1;
+    background-color: rgba(28,24,25,.7); /* тёмный фон на всю фракцию */
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 13px;
+    line-height: 20px;
+    color: #ffffff
+}
+.swiperPhoto__prev-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;      /* ширина клика */
+    height: 100%;     /* на всю высоту слайда */
+    z-index: 10;
+    cursor: pointer;
+    background: transparent; /* прозрачная, чтобы не видно было */
+}
+.swiperPhoto__next-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;      /* ширина клика */
+    height: 100%;     /* на всю высоту слайда */
+    z-index: 10;
+    cursor: pointer;
+    background: transparent; /* прозрачная, чтобы не видно было */
+}
+.swiperPhoto__back-btn-and-date-publication-block {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* расстояние между кнопкой и датой */
+    z-index: 20; /* чтобы было над фото и кнопками навигации */
+}
+.swiperPhoto__back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.swiperPhoto__back-btn:hover {
+    background-color: #f0f0f0;
+}
+.swiperPhoto__back-btn:active {
+    transform: scale(0.95);
+}
+.swiperPhoto__date-publication {
+    background-color: rgba(28, 24, 25, 0.7); /* как фракция */
+    color: #fff;
+    font-size: 13px;
+    line-height: 20px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+
+/* Стили для кнопок - Обьявления автора, Пожаловаться */
 .oneAds__author-ads-and-complain-block {
     display: flex;
     flex-direction: column;
@@ -1188,20 +1238,6 @@ export default {
     overflow: hidden;
 }
 
-/* Стили для слайдера */
-::v-deep(.swiper-pagination-fraction){
-    width: auto;
-    color: #fff;
-    background-color: rgba(28,24,25,.7);
-    border-radius: 3px;
-    padding: 0 4px;
-    right: 7px;
-    left: auto;
-    bottom: 12px;
-    font-size: 13px;
-    line-height: 20px;
-}
-
 /*Для заголовков*/
 .title{
     font-size: 20px;
@@ -1242,21 +1278,6 @@ export default {
     background: rgba(229, 229, 229, 0.91);
 }
 
-/* Для Слайдера кнопки переключения */
-.swiper-button-next, .swiper-button-prev{
-    position: absolute;
-    top:0;
-    width: 40px;
-    height: 100%;
-    cursor: pointer;
-}
-.swiper-button-next{
-    left: 0;
-}
-.swiper-button-prev{
-    right: 0;
-}
-
 
 /* 📞 Маленькие телефоны (≥480px) */
 @media (min-width: 480px) {
@@ -1270,6 +1291,8 @@ export default {
 
 /* 💼 Планшеты (≥768px) */
 @media (min-width: 768px) {
+
+    /* Стили для кнопок - Обьявления автора, Пожаловаться */
     .oneAds__author-ads-and-complain-block {
         flex-direction: row;
         justify-content: center;
@@ -1289,13 +1312,28 @@ export default {
         border-radius: 20px 20px 10px 10px;
     }
 
+    /* Стили для шапки блока */
+    .oneAds__header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+
+    /* Стили для тела блока */
     .oneAds__body{
         padding-bottom: 50px;
     }
 
-    /* Стили для слайдера Фракции */
-    ::v-deep(.swiper-pagination-fraction){
-        right: 53px;
+    /* Слайдет - Swiper */
+    .swiperPhoto__block{
+        max-width: 700px;
+    }
+    .swiperPhoto__prev-btn, .swiperPhoto__next-btn{
+        width: 60px;      /* ширина клика */
+    }
+    .swiperPhoto__back-btn-and-date-publication-block{
+        display: none;
     }
 
     .oneAds__footer {
