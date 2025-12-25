@@ -307,6 +307,7 @@ onMounted(() => {
     left: 0;
     right: 0;
     background: #ffffff;
+    color: #666; /* менее яркий цвет */
     border-radius: 12px; /* закругление углов */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* мягкая тень */
     will-change: transform;
@@ -324,7 +325,6 @@ onMounted(() => {
 .show-ads-page__top-panel-count {
     font-size: 14px;
     font-weight: 500;
-    color: #666; /* менее яркий цвет */
 }
 /* Кнопка фильтра — основной акцент */
 .show-ads-page__top-panel-filter {
@@ -334,7 +334,6 @@ onMounted(() => {
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
-    color: #007bff; /* яркий синий */
 }
 /* Иконка фильтра */
 .show-ads-page__top-panel-filter-icon {
@@ -363,7 +362,6 @@ onMounted(() => {
 .show-ads-page__lang-current {
     font-size: 14px;
     font-weight: 600;
-    color: #007bff;
     padding: 4px 8px;
     border-radius: 6px;
 }
