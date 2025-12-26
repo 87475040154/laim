@@ -147,13 +147,13 @@ class UserController extends Controller
         $ads = $className::find($bueAds->ads_id);
 
         if ($bueAds->bue_ads_type == 'Top x30') {
-            $ads->bueAds = Carbon::now();
+            $ads->bue_ads = Carbon::now();
             $ads->top = Null;
             $ads->top_x7 = Null;
             $ads->top_x30 = Carbon::now();
         }
         else if ($bueAds->bue_ads_type == 'Top x7') {
-            $ads->bueAds = Carbon::now();
+            $ads->bue_ads = Carbon::now();
             $ads->top = Null;
             $ads->top_x7 = Carbon::now();
             $ads->top_x30 = Null;
@@ -163,11 +163,11 @@ class UserController extends Controller
             foreach ($bueAdsType as $type) {
                 if ($type == 'Срочно торг') $ads->srochno_torg = 1;
                 if ($type == 'Топ 24') {
-                    $ads->bueAds = Carbon::now();
+                    $ads->bue_ads = Carbon::now();
                     $ads->top = Carbon::now();
                 }
                 if ($type == 'Топ 8 раз') {
-                    $ads->bueAds = Carbon::now();
+                    $ads->bue_ads = Carbon::now();
                     $ads->top_8 = Carbon::now();
                 }
             }

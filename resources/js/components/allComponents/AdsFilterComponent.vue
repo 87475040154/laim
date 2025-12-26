@@ -802,7 +802,6 @@ import { directive } from '@coders-tm/vue-number-format'
 
 //Компонент - OffCanvas с локациями Казахстана
 import { useKZLocationStore } from "../../stores/KZLocation";
-import {useUpdateDateLocaleStore} from "../../stores/updateDateLocale";
 import { useFilterStore } from "../../stores/Filter";
 
 export default {
@@ -821,7 +820,6 @@ export default {
     data(){
         return {
             KZLocationStore: useKZLocationStore(),
-            updateDateLocaleStore: useUpdateDateLocaleStore(),
             filterStore: useFilterStore(),
 
 

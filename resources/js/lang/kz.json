@@ -1,48 +1,32 @@
 {
+    "headerPodatObyavlenie": "Хабарландыру беру",
+    "headerKvartiri": "Пәтерлер",
+    "headerObshejitiya": "Жатақха...",
+    "headerDoma": "Үйлер",
+    "headerOfisa": "Кеңселер",
+    "headerZdaniya": "Ғимараттар",
+    "headerMagazini": "Дүкендер",
+    "headerPrombazi": "Базалар",
+    "headerProchaya": "Басқа",
+    "headerBiznes": "Бизнес",
 
 
-    "headerMy": "Менің",
-    "headerChats": "Чаттар",
-    "headerMyAccount": "Менің аккаунтым",
-    "headerChangeTheme": "Тақырыпты өзгерту",
-    "headerSubmitAnAd": "Хабарландыру беру",
-    "headerMenuApartments": "Пәтерлер",
-    "headerMenuHostels": "Жатақха...",
-    "headerMenuHouses": "Үйлер",
-    "headerMenuOffice": "Кеңселер",
-    "headerMenuBuilding": "Ғимараттар",
-    "headerMenuShops": "Дүкендер",
-    "headerMenuBases": "Базалар",
-    "headerMenuOther": "Басқа",
-    "headerMenuBusiness": "Бизнес",
-    "headerMenuRent": "Жалдаймын",
-
-
-
-    "footerRules": "Жарнамаларды орналастыру ережелері",
+    "footerPravila": "Жарнамаларды орналастыру ережелері",
     "footerPolzovatelskoeSoglashenie": "Қолдану ережелері",
-
-    "footerContacts": "Контактілер",
-    "footerPaidServices": "Ақылы қызметтер",
-    "footerAvailableIn": "қол жетімді",
-    "footerMy": "Менің",
-    "footerFavorites": "Тандаулар",
-    "footerLogin": "Кіру",
-
+    "footerKontakty": "Контактілер",
+    "footerPlatnieUslugi": "Ақылы қызметтер",
+    "footerDostupnoV": "қол жетімді",
+    "footerMoi": "Менің",
+    "footerIzbrannie": "Тандаулар",
+    "footerVoity": "Кіру",
 
 
 
-    "indexFound": "Табылды",
-    "indexFilter": "Сүзгі",
-    "indexAdsNotFound": "Хабарландырулар табылмады",
-    "indexInstallLime": "Лайм.kz орнатыңыз",
-    "indexOnTheMap": "Картада",
-    "indexChangeLanguage": "Тіл таңдау",
-    "indexMyFavorites": "Менің таңдаулыларым",
-    "indexMakeFilter": "Сүзгіні қолдану",
-
-
-    "choose_language": "Тілді таңдаңыз",
+    "showAdsNaideno": "Табылды",
+    "showAdsFilter": "Сүзгі",
+    "showAdsUstanovitLaimkz": "Лайм.kz орнатыңыз",
+    "showAdsObyavleniyaNeNaideni": "Хабарландырулар табылмады",
+    "showAdsNaKarte": "Картада",
 
 
 
@@ -292,57 +276,162 @@
 
 
 
-    "oneAdsOwner" : "Иесі",
-    "oneAdsSpecialist" : "Маман",
-    "oneAdsCanBeFromASpecialist" : "Маманнан болуы мүмкін",
-    "oneAdsUrgentBargaining" : "Жедел, сауда",
-    "oneAdsVArhive": "Мұрағатта",
-    "oneAdsMonth" : "айына",
-    "oneAdsDaily" : "тәулік",
-    "oneAdsHour" : "cағат",
-    "oneAdsPerMonth" : "айына",
-    "oneAdsPerMonthPerSq.M" : "айына ш.м",
+
+
+
+
+
+    "one_ads": {
+        "mesyac" : "айына",
+        "sutki" : "тәулік",
+        "chas" : "cағат",
+        "mesyac_za_kvm" : "айына м²",
+        "srochno_torg" : "Шұғыл сауда",
+        "v_arhive": "Мұрағатта",
+        "parametri" : "Параметрлер",
+        "kolichestvo_komnat": "Бөлмелер саны",
+        "etag" : "Қабат",
+        "kolichestvo_etagei" : "Қабаттар саны",
+        "ploshad_obshaya" : "Жалпы ауданы",
+        "deistvuushii_biznes" : "Қазіргі бизнес",
+        "deistvuushii_biznes_arr" : {
+            "da": "Иә",
+            "net": "Жоқ"
+        },
+        "mestopolojenie" : "Орналасқан жері",
+        "mestopolojenie_arr" : {
+            "v_torgovom_centre": "Сауда орталығында",
+            "v_administrativnom_zdanii": "Әкімшілік ғимаратта",
+            "na_rinke": "Әмбебап базарда",
+            "v_jilom_dome": "Тұрғын үйде",
+            "otdelno_stoyashee_zdanie": "Жеке ғимарат",
+            "ostanovochniy_kompleks": "Аялдама кешені",
+            "drugoe": "Басқа"
+        },
+        "raspolojenie" : "Орналасуы",
+        "tip_ofisa_arr": {
+            "v_biznes_centre": "Бизнес орталығында",
+            "v_administrativnom_zdanii": "Әкімшілік ғимаратта",
+            "v_jilom_dome": "Тұрғын үйде",
+            "v_kotedje": "Коттеджде",
+            "drugoe": "Басқа"
+        },
+        "sfera_deyatelnosti": "Қызмет саласы",
+        "sfera_deyatelnosti_arr": {
+            "proizvodstvo": "Өндіріс",
+            "obshepit": "Тамақтану",
+            "razvlecheniya": "Ойын-сауық",
+            "torgovlya": "Сауда",
+            "uslugi": "Қызметтер",
+            "selskoe_hozyaistvo": "Ауыл шаруашылығы",
+            "drugoe": "Басқа"
+        },
+        "sostoyanie": "Жағдайы",
+        "sostoyanie_arr": {
+            "evro_remont": "Еуро жөндеу",
+            "horoshee": "Жақсы",
+            "srednee": "Орташа",
+            "trebuet_remonta": "Жөндеуді қажет етеді"
+        },
+        "mebel": "Жиһаз",
+        "mebel_arr": {
+            "polnostu": "Толық",
+            "chastichno": "Ішінара",
+            "net": "Жоқ"
+        },
+        "uchastok_sotok": "Жер телімі – сотық",
+        "ploshad_proizvodstvennih_pomeshenii": "Өндірістік үй-жайлардың ауданы",
+        "visota_proizvodstvennih_pomeshenii": "Өндірістік үй-жайлардың биіктігі",
+        "ploshad_skladskih_pomeshenii": "Қойма аумағы",
+        "visota_skladskih_pomeshenii": "Қойма биіктігі",
+        "ploshad_ofisnih_pomeshenii": "Кеңсенің аумағы",
+        "visota_potolkov": "Төбенің биіктігі",
+        "otdelniy_vhod": "Жеке кіреберіс",
+        "otdelniy_vhod_arr": {
+            "est": "Бар",
+            "net": "Жоқ"
+        },
+        "dush": "Душ",
+        "dush_arr": {
+            "v_komnate": "Бөлмеде",
+            "v_sekcii": "Секцияда",
+            "net": "Жоқ"
+        },
+        "sanuzel": "Санитарлық торап",
+        "sanuzel_arr": {
+            "razdelniy": "Бөлек",
+            "sovmesheniy": "Біріктірілген",
+            "2ibolee": "2 с/т және одан көп",
+            "v_komnate": "Бөлмеде",
+            "v_sekcii": "Секцияда",
+            "v_dome": "Үйде",
+            "vo_dvore": "Аулада",
+            "est": "Бар",
+            "net": "Жоқ"
+        },
+        "kanalizaciya": "Канализация",
+        "kanalizaciya_arr": {
+            "centralnaya": "Орталықтандырылған",
+            "septik": "Септик",
+            "net": "Жоқ"
+        },
+        "voda": "Су",
+        "voda_arr": {
+            "centralnaya": "Орталықтандырылған",
+            "skvajina": "Қазық / Құдық",
+            "net": "Жоқ"
+        },
+        "elektrichestvo": "Электр энергиясы",
+        "elektrichestvo_arr": {
+            "est": "Бар",
+            "net": "Жоқ"
+        },
+        "otoplenie": "Жылыту",
+        "otoplenie_arr": {
+            "centralnoe": "Орталықтандырылған",
+            "na_gaze": "Газбен",
+            "na_tverdom_toplive": "Қатты отынмен",
+            "na_jitkom_toplive": "Сұйық отынмен",
+            "smeshannoe": "Аралас",
+            "net": "Жоқ"
+        },
+        "gaz": "Газ",
+        "gaz_arr": {
+            "magistralniy": "Магистральдік",
+            "avtonomniy": "Автономды",
+            "net": "Жоқ"
+        },
+        "balkon": "Балкон",
+        "balkon_arr": {
+            "balkon": "Бар",
+            "lodjiya": "Лоджия бар",
+            "2_balkona_i_bolee": "2 балкона және одан көп",
+            "net": "Жоқ"
+        },
+        "tip_stroeniya": "Ғимарат түрі",
+        "tip_stroeniya_arr": {
+            "panel": "Панель",
+            "kirpich": "Кірпіш",
+            "derevo": "Ағаш",
+            "drugoe": "Басқа"
+        },
+        "god_postroiki": "Құрылған жылы"
+    },
+
+
+
+
+
+
     "oneAdsRooms" : "бөл.",
     "oneAdsCabinet" : "каб.",
     "oneAdsStorey" : "қабат",
-    "oneAdsAboutTheApartment" : "Пәтер туралы",
-    "oneAdsAboutTheHostel" : "Жатақхана туралы",
-    "oneAdsAboutTheHouse" : "Үй туралы",
-    "oneAdsAboutTheCountryHouse" : "Cаяжай туралы",
-    "oneAdsAboutTheCottage" : "Коттедж туралы",
-    "oneAdsAboutTheOffice" : "Кеңсе туралы",
-    "oneAdsAboutTheBuilding" : "Ғимарат туралы",
-    "oneAdsAboutTheShop" : "Дүкен туралы",
-    "oneAdsAboutTheBoutique" : "Бутик туралы",
-    "oneAdsAboutTheKiosk" : "Дүңгіршек туралы",
-    "oneAdsAboutTheContainer" : "Контейнер туралы",
-    "oneAdsAboutTheBase" : "База туралы",
-    "oneAdsAboutTheFactory" : "Зауыт туралы",
-    "oneAdsAboutTheHouseholdWarehouse" : "Шаруашылық қоймасы туралы",
-    "oneAdsAboutTheFoodWarehouse" : "Азық-түлік қоймасы туралы",
-    "oneAdsAboutTheWarehouseOfChemicalProducts" : "Химиялық өнімдер қоймасы туралы",
-    "oneAdsAboutTheOther" : "Басқа туралы",
-    "oneAdsAboutTheBusiness" : "Бизнес туралы",
-    "oneAdsCountRooms": "Бөлмелер саны",
-    "oneAdsFloor" : "Қабат",
+
+
+
     "oneAdsFrom" : ", Қабаттар саны",
     "oneAdsNumberOfFloors" : "Қабаттар саны",
-    "oneAdsTotalArea" : "Жалпы ауданы",
-    "oneAdsOperatingBusiness" : "Қазіргі бизнес",
-    "oneAdsLocationText" : "Орналасқан жері",
-    "oneAdsFieldOfActivity": "Қызмет саласы",
-    "oneAdsState": "Жағдайы",
-    "oneAdsFurniture": "Жиһаз",
-    "oneAdsYes": "Иә",
-    "oneAdsNo": "Жоқ",
-    "oneAdsPlotAcres": "Жер телімі - сотка",
-    "oneAdsAreaOfIndustrialPremises": "Өндірістік үй-жайлардың ауданы",
-    "oneAdsHeightOfProductionPremises": "Өндірістік үй-жайлардың биіктігі",
-    "oneAdsWarehouseArea": "Қойма аумағы",
-    "oneAdsWarehouseHeight": "Қойма биіктігі",
-    "oneAdsAreaOfOfficePremises": "Кеңсенің аумағы",
-    "oneAdsCeilingHeight": "Төбенің биіктігі",
-    "oneAdsSeparateEntrance": "Бөлек кіреберіс",
+
     "oneAdsThereIs": "Бар",
     "oneAdsInternet": "Ғаламтор",
     "oneAdsShower": "Душ",
@@ -363,7 +452,7 @@
 
     "oneAdsFurnitureAndAppliances" : "Жиһаз және тұрмыстық техника",
     "oneAdsMiscellaneous" : "Әртүрлі",
-    "oneAdsLocation" : "Орналасқан жері",
+
     "oneAdsCommunications" : "Коммуникациялар",
     "oneAdsSafety" : "Қауіпсіздік",
     "oneAdsDescription" : "Сипаттама",
@@ -676,6 +765,8 @@
     "bueAdsPayMethodToPay": "Төлеу",
     "bueAdsPayMethodSuccessText1": "Төлем сәтті өтті",
     "bueAdsPayMethodSuccessText2": "Жақын арада сіздің жарнамаңызға Лайм.kz жарнамасы қосылады"
+
+
 
 
 }

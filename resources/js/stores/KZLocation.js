@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useUpdateDateLocaleStore } from "./updateDateLocale";
+import { useLangStore } from "./lang";
 
 export const useKZLocationStore= defineStore('KZLocation', {
 
@@ -22,7 +22,7 @@ export const useKZLocationStore= defineStore('KZLocation', {
 
         // Перевести локации
         translateLocation(location){
-            const lang = useUpdateDateLocaleStore().lang;
+            const lang = useLangStore().lang;
 
             let oblast_translate = '';
             let gorod_translate = '';
@@ -1391,4 +1391,4 @@ export const useKZLocationStore= defineStore('KZLocation', {
     }
 
 } )
-
+// 1394

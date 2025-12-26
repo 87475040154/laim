@@ -35,13 +35,6 @@ const routes = [
                         },
                     },
 
-                    //Lang
-                    {
-                        path: 'allAdsOneAdsLang',
-                        component: ()=> import('../components/allComponents/LangComponent.vue'),
-                        name: 'allAdsOneAdsLang',
-                    },
-
                     //Карта
                     {
                         path: 'allAdsOneAdsMap',
@@ -192,13 +185,6 @@ const routes = [
                                         },
                                     },
 
-                                    //Lang
-                                    {
-                                        path: 'allAdsMapPreviewAdsOneAdsLang',
-                                        component: ()=> import('../components/allComponents/LangComponent.vue'),
-                                        name: 'allAdsMapPreviewAdsOneAdsLang',
-                                    },
-
                                     //Карта
                                     {
                                         path: 'allAdsMapPreviewAdsOneAdsMap',
@@ -331,12 +317,6 @@ const routes = [
                                 },
                             },
 
-                            //Lang
-                            {
-                                path: 'userAdsOneAdsLang',
-                                component: ()=> import('../components/allComponents/LangComponent.vue'),
-                                name: 'userAdsOneAdsLang',
-                            },
 
                             //Карта
                             {
@@ -450,13 +430,6 @@ const routes = [
                 ]
             },
 
-            //Lang
-            {
-                path: 'allAdsLang',
-                component: ()=> import('../components/allComponents/LangComponent.vue'),
-                name: 'allAdsLang'
-            },
-
         ]
     },
 
@@ -548,29 +521,6 @@ router.beforeEach((to, from, next) => {
         if(to.meta.title == 'Платные услуги') document.title = 'Ақылы қызметтер';
         if(to.meta.title == 'Проверка платежа') document.title = 'Төлемді тексеру';
     }
-    if(lang == 'en'){
-        if(to.meta.title == 'Лайм Недвижимость в Казахстане') document.title = 'Лайм Real Estate in Kazakhstan';
-        if(to.meta.title == 'Недвижимость') document.title = 'Real estate';
-        if(to.meta.title == 'Фото') document.title = 'Photo';
-        if(to.meta.title == 'Объект на карте') document.title = 'Object on the map';
-        if(to.meta.title == 'Вход на сайт') document.title = 'Login to the site';
-        if(to.meta.title == 'Мой кабинет') document.title = 'My office';
-        if(to.meta.title == 'Настройка аккаунта') document.title = 'Account Setup';
-        if(to.meta.title == 'Чаты') document.title = 'Chats';
-        if(to.meta.title == 'Объекты на карте') document.title = 'Objects on the map';
-        if(to.meta.title == 'Что сдать') document.title = 'What to hand over';
-        if(to.meta.title == 'Подать объявление') document.title = 'Submit an ad';
-        if(to.meta.title == 'Местоположение') document.title = 'Location';
-        if(to.meta.title == 'Объявления автора') document.title = "Author's Ads";
-        if(to.meta.title == 'Продвинуть объявление') document.title = 'Ad Promotion';
-        if(to.meta.title == 'Способ оплаты') document.title = 'Payment method';
-        if(to.meta.title == 'Фильтр') document.title = 'Filter';
-        if(to.meta.title == 'Правила размещения объявлений') document.title = 'Rules for posting ads';
-        if(to.meta.title == 'Пользовательское соглашение') document.title = 'Terms of use';
-        if(to.meta.title == 'Контакты') document.title = 'Contacts';
-        if(to.meta.title == 'Платные услуги') document.title = 'Paid services';
-        if(to.meta.title == 'Проверка платежа') document.title = 'Payment verification';
-    }
 
     // 3️⃣ Проверяем аутентификацию
     if (to.meta.auth !== undefined) {
@@ -586,3 +536,4 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router
+//562

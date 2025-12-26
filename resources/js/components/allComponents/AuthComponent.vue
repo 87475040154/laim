@@ -56,33 +56,28 @@
                             </div>
 
                             <div v-else-if="error == 'Вы ввели неправильный пароль'">
-                                <span v-if="updateDateLocaleStore.lang == 'ru'">Вы ввели неправильный пароль</span>
-                                <span v-if="updateDateLocaleStore.lang == 'kz'">Сіз қате құпия сөзді енгіздіңіз</span>
-                                <span v-if="updateDateLocaleStore.lang == 'en'">You entered the wrong password</span>
+                                <span v-if="langStore.lang == 'ru'">Вы ввели неправильный пароль</span>
+                                <span v-if="langStore.lang == 'kz'">Сіз қате құпия сөзді енгіздіңіз</span>
                             </div>
 
                             <div v-else-if="error == 'Пользователь с таким email еще не зарегистрирован'">
-                                <span v-if="updateDateLocaleStore.lang == 'ru'">Пользователь с таким email еще не зарегистрирован</span>
-                                <span v-if="updateDateLocaleStore.lang == 'kz'">Осы электрондық поштасы бар пайдаланушы әлі тіркелмеген</span>
-                                <span v-if="updateDateLocaleStore.lang == 'en'">User with this email is not registered yet</span>
+                                <span v-if="langStore.lang == 'ru'">Пользователь с таким email еще не зарегистрирован</span>
+                                <span v-if="langStore.lang == 'kz'">Осы электрондық поштасы бар пайдаланушы әлі тіркелмеген</span>
                             </div>
 
                             <div v-else-if="error == 'Неверная капча - перезагрузите страницу'">
-                                <span v-if="updateDateLocaleStore.lang == 'ru'">Неверная капча - перезагрузите страницу</span>
-                                <span v-if="updateDateLocaleStore.lang == 'kz'">Жарамсыз captcha - бетті қайта жүктеңіз</span>
-                                <span v-if="updateDateLocaleStore.lang == 'en'">Invalid captcha - reload the page</span>
+                                <span v-if="langStore.lang == 'ru'">Неверная капча - перезагрузите страницу</span>
+                                <span v-if="langStore.lang == 'kz'">Жарамсыз captcha - бетті қайта жүктеңіз</span>
                             </div>
 
                             <div v-else-if="error == 'Вы уже активировали аккаунт. Попробуйте войти на сайт'">
-                                <span v-if="updateDateLocaleStore.lang == 'ru'">Вы уже активировали аккаунт. Попробуйте войти на сайт</span>
-                                <span v-if="updateDateLocaleStore.lang == 'kz'">Сіз өзіңіздің есептік жазбаңызды әлдеқашан белсендірдіңіз. Жүйеге кіріп көріңіз</span>
-                                <span v-if="updateDateLocaleStore.lang == 'en'">You have already activated your account. Try to login</span>
+                                <span v-if="langStore.lang == 'ru'">Вы уже активировали аккаунт. Попробуйте войти на сайт</span>
+                                <span v-if="langStore.lang == 'kz'">Сіз өзіңіздің есептік жазбаңызды әлдеқашан белсендірдіңіз. Жүйеге кіріп көріңіз</span>
                             </div>
 
                             <div v-else-if="error == 'Ссылка устарела, запросите новую ссылку для сменя пароля'" >
-                                <span v-if="updateDateLocaleStore.lang == 'ru'">Ссылка устарела, запросите новую ссылку для сменя пароля</span>
-                                <span v-if="updateDateLocaleStore.lang == 'kz'">Сілтеменің мерзімі өтті, құпия сөзді қалпына келтіру үшін жаңа сілтемені сұраңыз</span>
-                                <span v-if="updateDateLocaleStore.lang == 'en'">Link expired, please request a new link to reset your password</span>
+                                <span v-if="langStore.lang == 'ru'">Ссылка устарела, запросите новую ссылку для сменя пароля</span>
+                                <span v-if="langStore.lang == 'kz'">Сілтеменің мерзімі өтті, құпия сөзді қалпына келтіру үшін жаңа сілтемені сұраңыз</span>
                             </div>
 
                             <!-- Вывод всех остальных ошибок -->
@@ -260,7 +255,7 @@ import 'vue-tel-input/vue-tel-input.css';
 //Импортирую Store - общее состояние
 import { useAuthStore } from "../../stores/auth";
 import { useGetProjectDataStore} from "../../stores/getProjectData";
-import {useUpdateDateLocaleStore} from "../../stores/updateDateLocale";
+import { useLangStore } from "../../stores/lang";
 
 
 //Вход через Google
@@ -279,7 +274,7 @@ export default {
             //Подключаю Store - Общее состояние
             authStore: useAuthStore(),
             getProjectDataStore: useGetProjectDataStore(),
-            updateDateLocaleStore: useUpdateDateLocaleStore(),
+            langStore: useLangStore(),
 
             form_name: 'login', //Какую форму показать по умолчанию форму входа
             show_password: false, //Для поля пароль показать или скрытшь

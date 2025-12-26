@@ -19,7 +19,7 @@ class Dom extends Model
         'ploshad_kuhni','ploshad_uchastka', 'tip_stroeniya','god_postroiki', 'oblast', 'gorod', 'raion', 'lat', 'lon', 'ulica', 'nomer_doma', 'sostoyanie',
         'sanuzel', 'kanalizaciya','voda','elektrichestvo', 'otoplenie','gaz', 'mebel',
         'mebel_arr','raznoe','bezopasnost',
-        'text_obyavleniya', 'name', 'tel', 'tel2','whatsapp_tel','whatsapp_tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
+        'text_obyavleniya', 'name', 'tel', 'tel_2','whatsapp_tel','whatsapp_tel_2', 'bue_ads', 'top', 'top_8', 'top_x7', 'top_x30'
     ];
 
     // Преобразуем масив в json и обратно при занесении данных в БД и при получении из нее автоматически

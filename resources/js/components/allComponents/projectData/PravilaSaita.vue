@@ -1,8 +1,8 @@
 <template>
-    <div style="color: var(--app-text-color)">
+    <div style="color: #666">
 
         <!-- На казахском -->
-        <div v-if="updateDateLocaleStore.lang == 'kz'">
+        <div v-if="langStore.lang == 'kz'">
             <h3 class="py-3 fw-bold">
                 Жарнамаларды орналастыру ережелері
             </h3>
@@ -807,14 +807,14 @@
 
 <script>
 
-import { useUpdateDateLocaleStore } from "../../../stores/updateDateLocale";
+import { useLangStore } from "../../../stores/lang";
 
 export default {
     name: "Index",
 
     data() {
         return {
-            updateDateLocaleStore: useUpdateDateLocaleStore()
+            langStore: useLangStore()
         }
     }
 }

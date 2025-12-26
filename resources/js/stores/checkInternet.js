@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useUpdateDateLocaleStore } from "./updateDateLocale"
+import { useLangStore } from "./lang"
 
 export const useCheckInternetStore = defineStore('checkInternet', {
     state: () => ({
@@ -27,7 +27,7 @@ export const useCheckInternetStore = defineStore('checkInternet', {
 
         // 🚨 Проверка интернет-соединения
         async checkInternet() {
-            const lang = useUpdateDateLocaleStore().lang
+            const lang = useLangStore().lang
 
             // 1️⃣ Проверяем статус браузера
             if (!navigator.onLine) {

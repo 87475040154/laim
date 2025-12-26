@@ -37,7 +37,7 @@ class GeneralAds extends Model
             $user = User::find($ads->author_id);
             $user->count_ads += 1;
             $user->tel = $adsData['tel'];
-            $user->tel2 = $adsData['tel2'];
+            $user->tel_2 = $adsData['tel_2'];
             $user->save();
         } else{
             $ads->control = 'Активно';

@@ -160,13 +160,13 @@ class Kernel extends ConsoleKernel
             foreach ($tables as $table) {
 
                 $table::whereNotNull('top_8')
-                    ->where('bueAds', '<', Carbon::now()->subHours(3))
+                    ->where('bue_ads', '<', Carbon::now()->subHours(3))
                     ->chunk(200, function ($ads) use ($table){
                         $ads_id = $ads->pluck('id')->toArray();
 
                         $tableModel = new $table;
                         $tableModel->whereIn('id', $ads_id)
-                            ->update(['bueAds' => Carbon::now()]);
+                            ->update(['bue_ads' => Carbon::now()]);
 
                     });
             }
@@ -194,7 +194,7 @@ class Kernel extends ConsoleKernel
                     ->update([
                         'top' => null,
                         //Если на объявлении нет реклам top_8 top_x7 и top_x30 уберем рекламу с объявления
-                        'bueAds' => DB::raw("CASE WHEN top_8 IS NULL AND top_x7 IS NULL AND top_x30 IS NULL THEN '2020-12-12 12:12:12' ELSE bueAds END"),
+                        'bue_ads' => DB::raw("CASE WHEN top_8 IS NULL AND top_x7 IS NULL AND top_x30 IS NULL THEN '2020-12-12 12:12:12' ELSE bue_ads END"),
                     ]);
             }
 
@@ -221,7 +221,7 @@ class Kernel extends ConsoleKernel
                     ->update([
                     'top_8' => null,
                     //Если на объявлении нет реклам top_8 top_x7 и top_x30 уберем рекламу с объявления
-                    'bueAds' => DB::raw("CASE WHEN top IS NULL AND top_x7 IS NULL AND top_x30 IS NULL THEN '2020-12-12 12:12:12' ELSE bueAds END"),
+                    'bue_ads' => DB::raw("CASE WHEN top IS NULL AND top_x7 IS NULL AND top_x30 IS NULL THEN '2020-12-12 12:12:12' ELSE bue_ads END"),
                 ]);
             }
 
@@ -247,10 +247,10 @@ class Kernel extends ConsoleKernel
             //Перебирем и обновим
             foreach ($tables as $table) {
 
-                $updatedRecords = $table::whereNotNull('top_x7')->where('bueAds', '<' , Carbon::now()->subDay())
-                    ->orWhereNotNull('top_x30')->where('bueAds', '<' , Carbon::now()->subDay())
+                $updatedRecords = $table::whereNotNull('top_x7')->where('bue_ads', '<' , Carbon::now()->subDay())
+                    ->orWhereNotNull('top_x30')->where('bue_ads', '<' , Carbon::now()->subDay())
                     ->update([
-                        'bueAds' => Carbon::now(),
+                        'bue_ads' => Carbon::now(),
                         'top' => Carbon::now(),
                     ]);
 
@@ -282,7 +282,7 @@ class Kernel extends ConsoleKernel
                     'top_x7' => null,
                     'top_x30' => null,
                     //Если на объявлении нет реклам top и top_8 уберем рекламу с объявления
-                    'bueAds' => DB::raw("CASE WHEN top IS NULL AND top_8 IS NULL THEN '2020-12-12 12:12:12' ELSE bueAds END"),
+                    'bue_ads' => DB::raw("CASE WHEN top IS NULL AND top_8 IS NULL THEN '2020-12-12 12:12:12' ELSE bue_ads END"),
                 ]);
 
             }
@@ -301,13 +301,13 @@ class Kernel extends ConsoleKernel
 //                    $ads = $className::find($bueAds->ads_id);
 //
 //                    if ($bueAds == 'Top x30') {
-//                        $ads->bueAds = Carbon::now();
+//                        $ads->bue_ads = Carbon::now();
 //                        $ads->top = Carbon::now();
 //                        $ads->top_x7 = Null;
 //                        $ads->top_x30 = Carbon::now();
 //                    }
 //                    else if ($bueAds == 'Top x7') {
-//                        $ads->bueAds = Carbon::now();
+//                        $ads->bue_ads = Carbon::now();
 //                        $ads->top = Carbon::now();
 //                        $ads->top_x7 = Carbon::now();
 //                        $ads->top_x30 = Null;
@@ -316,11 +316,11 @@ class Kernel extends ConsoleKernel
 //                        foreach ($bueAds as $type) {
 //                            if ($type == 'Срочно торг') $ads->srochno_torg = 1;
 //                            if ($type == 'Топ 24') {
-//                                $ads->bueAds = Carbon::now();
+//                                $ads->bue_ads = Carbon::now();
 //                                $ads->top = Carbon::now();
 //                            }
 //                            if ($type == 'Топ 8 раз') {
-//                                $ads->bueAds = Carbon::now();
+//                                $ads->bue_ads = Carbon::now();
 //                                $ads->top_8 = Carbon::now();
 //                            }
 //                        }

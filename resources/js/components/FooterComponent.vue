@@ -18,10 +18,10 @@
 
                     <!-- Правила размещения объявлений / Пользовательское соглашение  -->
                     <div class="footer__desktop-links-block">
-                        <div @click="$router.push('/rules')" class="footer__desktop-link">{{ $t('footerRules') }}</div>
+                        <div @click="$router.push('/rules')" class="footer__desktop-link">{{ $t('footerPravila') }}</div>
                         <div @click="$router.push('/polzovatelskoeSoglashenie')" class="footer__desktop-link">{{ $t('footerPolzovatelskoeSoglashenie') }}</div>
-                        <div @click="$router.push('/contacts')" class="footer__desktop-link">{{ $t('footerContacts') }}</div>
-                        <div @click="$router.push('/uslugi')" class="footer__desktop-link">{{ $t('footerPaidServices') }}</div>
+                        <div @click="$router.push('/contacts')" class="footer__desktop-link">{{ $t('footerKontakty') }}</div>
+                        <div @click="$router.push('/uslugi')" class="footer__desktop-link">{{ $t('footerPlatnieUslugi') }}</div>
                     </div>
 
 
@@ -35,7 +35,7 @@
                             <path d="M10.5011 9.82822L13.7519 7.93189C13.9055 7.84228 14 7.67783 14 7.5C14 7.32217 13.9055 7.15772 13.7519 7.06811L10.501 5.17173L7.9141 7.49994L10.5011 9.82822Z" fill="currentColor"></path> </g></svg>
                         <!-- Текст -->
                         <div class="store-btn__text">
-                            <span class="store-btn__subtitle">{{ $t('footerAvailableIn') }}</span>
+                            <span class="store-btn__subtitle">{{ $t('footerDostupnoV') }}</span>
                             <span class="store-btn__title">Google Play</span>
                         </div>
                     </a>
@@ -83,7 +83,7 @@
                     <!-- Иконка -->
                     <svg fill="currentColor" width="23px" height="21px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>bullhorn</title> <path d="M26.588 1.896c-0.17-0.092-0.372-0.146-0.587-0.146-0.261 0-0.503 0.080-0.704 0.217l0.004-0.003c-6.053 4.080-12.829 6.047-23.389 6.789-0.651 0.047-1.162 0.588-1.162 1.247v0 12c0 0.666 0.521 1.21 1.177 1.248l0.003 0c0.63 0.035 1.214 0.093 1.819 0.14v6.612c0 0.69 0.56 1.25 1.25 1.25h5c0.69-0 1.25-0.56 1.25-1.25v-5.606c5.325 1.063 10.049 3.031 14.236 5.756l-0.156-0.095c0.19 0.122 0.422 0.195 0.67 0.195 0.221 0 0.428-0.057 0.607-0.158l-0.006 0.003c0.389-0.216 0.649-0.625 0.649-1.094 0-0.001 0-0.001 0-0.002v0-26c-0-0.475-0.265-0.888-0.655-1.1l-0.007-0.003zM3.25 11.159c2.735-0.221 5.202-0.542 7.5-0.953v11.545c-1.776-0.325-3.65-0.577-5.64-0.76-0.038-0.003-0.071-0.022-0.11-0.022-0.015 0-0.028 0.008-0.043 0.009-0.568-0.051-1.119-0.111-1.707-0.151zM8.75 28.75h-2.5v-5.132c0.85 0.095 1.695 0.192 2.5 0.316zM24.75 26.783c-3.313-1.94-7.15-3.492-11.215-4.454l-0.285-0.057v-12.566c4.342-0.941 8.187-2.474 11.682-4.537l-0.182 0.099zM30 10.75c-0.69 0-1.25 0.56-1.25 1.25v8c0 0.69 0.56 1.25 1.25 1.25s1.25-0.56 1.25-1.25v0-8c-0-0.69-0.56-1.25-1.25-1.25h-0z"></path> </g></svg>
                 </div>
-                <div class="footer__mobile-link-text">{{ $t('footerMy') }}</div>
+                <div class="footer__mobile-link-text">{{ $t('footerMoi') }}</div>
             </div>
 
             <!-- Сдать -->
@@ -97,13 +97,13 @@
                     <path v-if="getMyLikeAds"  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                     <path v-else d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5 c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zM12 19.55l-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5 18.5 5 20 6.5 20 8.5c0 2.89-3.14 5.74-7.9 10.95l-.1.1z"/>
                 </svg>
-                <div class="footer__mobile-link-text">{{ $t('footerFavorites') }}</div>
+                <div class="footer__mobile-link-text">{{ $t('footerIzbrannie') }}</div>
             </div>
 
             <!-- Мой аккаунт -->
             <div  class="footer__mobile-link-block" @click="authStore.check ? $router.push({name: 'myAccount'}) : $router.push({name: $route.name + 'Auth'})">
                 <svg viewBox="0 0 16 16" fill="none" width="26px" height="26px" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z" fill="currentColor"></path> <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="currentColor"></path> </g></svg>
-                <div class="footer__mobile-link-text">{{authStore.check ? authStore.user.name: $t('footerLogin')}}</div>
+                <div class="footer__mobile-link-text">{{authStore.check ? authStore.user.name: $t('footerVoity')}}</div>
             </div>
 
         </div>
@@ -120,13 +120,11 @@ import { useScroll, useLocalStorage  } from '@vueuse/core'
 import { useAuthStore } from "../stores/auth";
 import { useAppInstallStore } from "../stores/AppInstall";
 import { useGetProjectDataStore } from "../stores/getProjectData";
-import { useUpdateDateLocaleStore } from "../stores/updateDateLocale";
 
 // 🔹 Подключаем Stores
 const authStore = useAuthStore()
 const appInstallStore = useAppInstallStore()
 const getProjectDataStore = useGetProjectDataStore()
-const updateDateLocaleStore = useUpdateDateLocaleStore()
 
 const pageScrolled = ref(false) // :Флаг - Прокручена ли страница
 

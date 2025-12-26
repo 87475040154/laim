@@ -36,14 +36,13 @@ import FooterComponent from './FooterComponent.vue';
 import { useAuthStore } from "../stores/auth";
 import { useAppInstallStore } from "../stores/AppInstall";
 import { useCheckInternetStore } from "../stores/checkInternet";
-
-// Мультиязык -> resources -> lang -> ru.json, kz.json, en.json Делаю перевод сайта
-import { loadLanguageAsync } from 'laravel-vue-i18n';
+import { useLangStore } from "../stores/lang";
 
 // Инициализация Stores - Общее состояние сайта
 const authStore = useAuthStore();
 const appInstallStore = useAppInstallStore();
 const checkInternetStore = useCheckInternetStore();
+const langStore = useLangStore();
 
 
 // Проверка через что зашел пользователь Телефон - Компьютер
@@ -55,12 +54,11 @@ function detectDevice() {
 
 onMounted(() => {
 
+    // Задаем язык приложения
+    langStore.setLang(langStore.lang);
+
     // Определяем устройство - Desktop или Mobile
     detectDevice();
-
-    // Мультиязык - беру значение с локального хронения и указываю язык приложения если перезагрузка
-    const lang = localStorage.getItem('lang');
-    if (lang) loadLanguageAsync(lang);
 
     // 🔌 Автопроверка интернет соединения каждые 15 секунд
     checkInternetStore.startAutoCheck();

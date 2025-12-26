@@ -173,7 +173,7 @@
 
 //Импортирую Store - Общее состояние
 import { useAuthStore } from "../../../../stores/auth";
-import { useUpdateDateLocaleStore} from "../../../../stores/updateDateLocale";
+import { useLangStore} from "../../../../stores/lang";
 
 
 import {mask} from 'vue-the-mask' //Пакет для изменения данных при вводе в поле, маска
@@ -187,7 +187,7 @@ export default {
         return {
             //Подключаю Store
             authStore: useAuthStore(),
-            updateDateLocaleStore: useUpdateDateLocaleStore(),
+            langStore: useLangStore(),
 
             bueAdsPayMethodAnimation: false,
 
@@ -207,9 +207,8 @@ export default {
 
     computed:{
         lang(){
-            if(this.updateDateLocaleStore.lang == 'ru')return 'rus'
-            if(this.updateDateLocaleStore.lang == 'kz')return 'kaz'
-            if(this.updateDateLocaleStore.lang == 'en')return 'eng'
+            if(this.langStore.lang == 'ru')return 'rus'
+            if(this.langStore.lang == 'kz')return 'kaz'
         }
     },
 

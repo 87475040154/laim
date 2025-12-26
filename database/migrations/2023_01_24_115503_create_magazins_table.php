@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('table_name')->default('Magazin');
 
             $table->string('zagolovok');
-            $table->string('deistvuushii_bisnes');
+            $table->string('deistvuushii_biznes');
             $table->double('cena');
             $table->string('cena_tip');
             $table->string('mestopolojenie');
@@ -60,8 +60,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('tel');
             $table->tinyInteger('whatsapp_tel')->default(0);
-            $table->string('tel2')->nullable();
-            $table->tinyInteger('whatsapp_tel2')->default(0);
+            $table->string('tel_2')->nullable();
+            $table->tinyInteger('whatsapp_tel_2')->default(0);
 
 
 
@@ -71,12 +71,12 @@ return new class extends Migration
 
             //Статистика - Просмотры лайки
             $table->integer('view')->default(0);
-            $table->integer('viewTel')->default(0);
-            $table->integer('countLike')->default(0);
+            $table->integer('view_tel')->default(0);
+            $table->integer('count_like')->default(0);
 
             //Рекламные услуги
             $table->boolean('srochno_torg')->default(false); //Добавить метку срочно - Торг
-            $table->dateTime('bueAds')->default('2020-12-12 12:12:12'); // Указать что на данное объявление куплена реклама, для дальнейшей сортировки при получении объявлений
+            $table->dateTime('bue_ads')->default('2020-12-12 12:12:12'); // Указать что на данное объявление куплена реклама, для дальнейшей сортировки при получении объявлений
             $table->dateTime('top')->nullable(); // Отправить в ТОП на 24 часа,
             $table->dateTime('top_8')->nullable(); // Отправить в ТОП на 24 часа и 8 поднятий в верх Топа,
             $table->dateTime('top_x7')->nullable(); // Отпраить в топ на 7 дней -  top x7 ,
@@ -93,7 +93,7 @@ return new class extends Migration
             // Добавление индексов
             $table->index('author_id'); // Индекс на поле author_id
             $table->index('tip_obekta');
-            $table->index('deistvuushii_bisnes');
+            $table->index('deistvuushii_biznes');
             $table->index('mestopolojenie');
             $table->index('cena');
             $table->index('etag');
@@ -102,7 +102,7 @@ return new class extends Migration
             $table->index('raion');
             $table->index('sostoyanie');
             $table->index('mebel');
-            $table->index('bueAds');
+            $table->index('bue_ads');
             $table->index('top');
             $table->index('top_8');
             $table->index('top_x7');
@@ -110,7 +110,7 @@ return new class extends Migration
             $table->index('updated_at');
 
             // Создание составного индекса
-            $table->index(['bueAds', 'updated_at']);
+            $table->index(['bue_ads', 'updated_at']);
             $table->index(['oblast', 'gorod']);
 
 

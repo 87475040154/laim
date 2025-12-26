@@ -24,7 +24,7 @@
                     <!-- Заголовок старницы - что сдать  -->
                     <div class="col text-body-1">
 
-                        <span v-if="updateDateLocaleStore.lang != 'kz'">
+                        <span v-if="langStore.lang != 'kz'">
                             <span>{{ form.addOrUpdate == 'add' ? $t('addAdsAdd') : $t('addAdsEdit') }}</span>
                         </span>
 
@@ -38,7 +38,7 @@
                         <span v-if="$route.params.table_name == 'Prochaya'">{{ $t('addAdsOther') }}</span>
                         <span v-if="$route.params.table_name == 'Business'">{{ $t('addAdsBusiness') }}</span>
 
-                        <span v-if="updateDateLocaleStore.lang == 'kz'">
+                        <span v-if="langStore.lang == 'kz'">
                             <span>{{ form.addOrUpdate == 'add' ? $t('addAdsAdd') : $t('addAdsEdit') }}</span>
                         </span>
 
@@ -122,8 +122,8 @@
                             <validation-provider rules="required" v-model="form.tip_sdelki" name="tip_sdelki" v-slot="{ errors }">
 
                                 <div class="form__input">
-                                    <div @click="form.tip_sdelki = 'Сдам'" class="form__item flex-fill" :class="{'item__active': form.tip_sdelki == 'Сдам'}" style="width: 150px"> <v-icon color="green" v-if="form.tip_sdelki == 'Сдам'">mdi-check-circle</v-icon>{{ $t('addAdsSdam') }} </div>
-                                    <div @click="form.tip_sdelki = 'Продам'" class="form__item flex-fill" :class="{'item__active': form.tip_sdelki == 'Продам'}" style="width: 150px"> <v-icon color="green" v-if="form.tip_sdelki == 'Продам'">mdi-check-circle</v-icon>{{ $t('addAdsSell') }} </div>
+                                    <div @click="form.tip_sdelki = 'sdam'" class="form__item flex-fill" :class="{'item__active': form.tip_sdelki == 'sdam'}" style="width: 150px"> <v-icon color="green" v-if="form.tip_sdelki == 'sdam'">mdi-check-circle</v-icon>{{ $t('addAdsSdam') }} </div>
+                                    <div @click="form.tip_sdelki = 'prodam'" class="form__item flex-fill" :class="{'item__active': form.tip_sdelki == 'prodam'}" style="width: 150px"> <v-icon color="green" v-if="form.tip_sdelki == 'prodam'">mdi-check-circle</v-icon>{{ $t('addAdsSell') }} </div>
                                 </div>
 
                                 <!-- Вывожу ошибки - veevalidate, vform -->
@@ -135,7 +135,6 @@
                             </validation-provider>
 
                         </div>
-
 
                         <!-- Сфера деятельности - Прочая недвижимость -->
                         <div v-if="['Business','Prochaya'].includes($route.params.table_name)" class="form-group">
@@ -149,13 +148,13 @@
                                 <!-- Сфера деятельности 2 клонки -->
                                 <div class="form__input">
 
-                                    <span @click="form.sfera_deyatelnosti = 'Производство'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'Производство'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'Производство'">mdi-check-circle</v-icon>{{ $t('addAdsProduction') }}</span>
-                                    <span @click="form.sfera_deyatelnosti = 'Общепит'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'Общепит'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'Общепит'">mdi-check-circle</v-icon>{{ $t('addAdsPublicCatering') }}</span>
-                                    <span @click="form.sfera_deyatelnosti = 'Развлечения'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'Развлечения'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'Развлечения'">mdi-check-circle</v-icon>{{ $t('addAdsEntertainment') }}</span>
-                                    <span @click="form.sfera_deyatelnosti = 'Торговля'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'Торговля'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'Торговля'">mdi-check-circle</v-icon>{{ $t('addAdsTrade') }}</span>
-                                    <span @click="form.sfera_deyatelnosti = 'Услуги'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'Услуги'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'Услуги'">mdi-check-circle</v-icon>{{ $t('addAdsServices') }}</span>
-                                    <span @click="form.sfera_deyatelnosti = 'Сельское хозяйство'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'Сельское хозяйство'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'Сельское хозяйство'">mdi-check-circle</v-icon>{{ $t('addAdsAgriculture') }}</span>
-                                    <span @click="form.sfera_deyatelnosti = 'Другое'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'Другое'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'Другое'">mdi-check-circle</v-icon>{{ $t('addAdsOtherText') }}</span>
+                                    <span @click="form.sfera_deyatelnosti = 'proizvodstvo'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'proizvodstvo'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'proizvodstvo'">mdi-check-circle</v-icon>{{ $t('addAdsProduction') }}</span>
+                                    <span @click="form.sfera_deyatelnosti = 'obshepit'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'obshepit'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'obshepit'">mdi-check-circle</v-icon>{{ $t('addAdsPublicCatering') }}</span>
+                                    <span @click="form.sfera_deyatelnosti = 'razvlecheniya'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'razvlecheniya'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'razvlecheniya'">mdi-check-circle</v-icon>{{ $t('addAdsEntertainment') }}</span>
+                                    <span @click="form.sfera_deyatelnosti = 'torgovlya'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'torgovlya'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'torgovlya'">mdi-check-circle</v-icon>{{ $t('addAdsTrade') }}</span>
+                                    <span @click="form.sfera_deyatelnosti = 'uslugi'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'uslugi'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'uslugi'">mdi-check-circle</v-icon>{{ $t('addAdsServices') }}</span>
+                                    <span @click="form.sfera_deyatelnosti = 'selskoe_hozyaistvo'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'selskoe_hozyaistvo'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'selskoe_hozyaistvo'">mdi-check-circle</v-icon>{{ $t('addAdsAgriculture') }}</span>
+                                    <span @click="form.sfera_deyatelnosti = 'drugoe'" class="form__item" :class="{'item__active': form.sfera_deyatelnosti == 'drugoe'}"><v-icon color="green" v-if="form.sfera_deyatelnosti == 'drugoe'">mdi-check-circle</v-icon>{{ $t('addAdsOtherText') }}</span>
 
                                 </div>
 
@@ -181,11 +180,11 @@
                                 <validation-provider rules="required" v-model="form.tip_ofisa" name="tip_ofisa" v-slot="{ errors}">
 
                                     <select v-model="form.tip_ofisa"  name="tip_ofisa" class="form-select">
-                                        <option value="В бизнес-центре">{{ $t('addAdsInTheBusinessCenter') }}</option>
-                                        <option value="В административном здании">{{ $t('addAdsInTheAdministrativeBuilding') }}</option>
-                                        <option value="В жилом доме">{{ $t('addAdsInAResidentialBuilding') }}</option>
-                                        <option value="В коттедже">{{ $t('addAdsInTheCottage') }}</option>
-                                        <option value="Другое">{{ $t('addAdsOtherText') }}</option>
+                                        <option value="v_biznes_centre">{{ $t('addAdsInTheBusinessCenter') }}</option>
+                                        <option value="v_administrativnom_zdanii">{{ $t('addAdsInTheAdministrativeBuilding') }}</option>
+                                        <option value="v_jilom_dome">{{ $t('addAdsInAResidentialBuilding') }}</option>
+                                        <option value="v_kotedje">{{ $t('addAdsInTheCottage') }}</option>
+                                        <option value="drugoe">{{ $t('addAdsOtherText') }}</option>
                                     </select>
 
                                     <!-- Вывожу ошибки - veevalidate, vform -->
@@ -211,47 +210,35 @@
                                 <div class="form__input">
 
                                     <!-- Дом  -->
-                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.tip_obekta = 'Дом'" class="form__item" :class="{'item__active' : form.tip_obekta == 'Дом'}"><v-icon color="green" v-if="form.tip_obekta == 'Дом'">mdi-check-circle</v-icon>{{ $t('addAdsHouseText') }}</span>
+                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.tip_obekta = 'dom'" class="form__item" :class="{'item__active' : form.tip_obekta == 'dom'}"><v-icon color="green" v-if="form.tip_obekta == 'dom'">mdi-check-circle</v-icon>{{ $t('addAdsHouseText') }}</span>
                                     <!-- Дача  -->
-                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.tip_obekta = 'Дача'" class="form__item" :class="{'item__active' : form.tip_obekta == 'Дача'}"><v-icon color="green" v-if="form.tip_obekta == 'Дача'">mdi-check-circle</v-icon>{{ $t('addAdsCountryHouse') }}</span>
+                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.tip_obekta = 'dacha'" class="form__item" :class="{'item__active' : form.tip_obekta == 'dacha'}"><v-icon color="green" v-if="form.tip_obekta == 'dacha'">mdi-check-circle</v-icon>{{ $t('addAdsCountryHouse') }}</span>
                                     <!-- Коттедж  -->
-                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.tip_obekta = 'Коттедж'" class="form__item" :class="{'item__active' : form.tip_obekta == 'Коттедж'}"><v-icon color="green" v-if="form.tip_obekta == 'Коттедж'">mdi-check-circle</v-icon>{{ $t('addAdsCottage') }}</span>
+                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.tip_obekta = 'kotedj'" class="form__item" :class="{'item__active' : form.tip_obekta == 'kotedj'}"><v-icon color="green" v-if="form.tip_obekta == 'kotedj'">mdi-check-circle</v-icon>{{ $t('addAdsCottage') }}</span>
                                     <!-- Времянка  -->
-                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.tip_obekta = 'Времянка'" class="form__item" :class="{'item__active' : form.tip_obekta == 'Времянка'}"><v-icon color="green" v-if="form.tip_obekta == 'Времянка'">mdi-check-circle</v-icon>{{ $t('addAdsVremyanka') }}</span>
+                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.tip_obekta = 'vremyanka'" class="form__item" :class="{'item__active' : form.tip_obekta == 'vremyanka'}"><v-icon color="green" v-if="form.tip_obekta == 'vremyanka'">mdi-check-circle</v-icon>{{ $t('addAdsVremyanka') }}</span>
 
 
                                     <!-- Магазин  -->
-                                    <span v-if="$route.params.table_name == 'Magazin'" @click="form.tip_obekta = 'Магазин'" class="form__item" :class="{'item__active':form.tip_obekta == 'Магазин'}"><v-icon color="green" v-if="form.tip_obekta == 'Магазин'">mdi-check-circle</v-icon>{{ $t('addAdsShopText') }}</span>
+                                    <span v-if="$route.params.table_name == 'Magazin'" @click="form.tip_obekta = 'magazin'" class="form__item" :class="{'item__active':form.tip_obekta == 'magazin'}"><v-icon color="green" v-if="form.tip_obekta == 'magazin'">mdi-check-circle</v-icon>{{ $t('addAdsShopText') }}</span>
                                     <!-- Бутик  -->
-                                    <span v-if="$route.params.table_name == 'Magazin'" @click="form.tip_obekta = 'Бутик'" class="form__item" :class="{'item__active':form.tip_obekta == 'Бутик'}"><v-icon color="green" v-if="form.tip_obekta == 'Бутик'">mdi-check-circle</v-icon>{{ $t('addAdsBoutique') }}</span>
+                                    <span v-if="$route.params.table_name == 'Magazin'" @click="form.tip_obekta = 'butik'" class="form__item" :class="{'item__active':form.tip_obekta == 'butik'}"><v-icon color="green" v-if="form.tip_obekta == 'butik'">mdi-check-circle</v-icon>{{ $t('addAdsBoutique') }}</span>
                                     <!-- Киоск  -->
-                                    <span v-if="$route.params.table_name == 'Magazin'" @click="form.tip_obekta = 'Киоск'" class="form__item" :class="{'item__active':form.tip_obekta == 'Киоск'}"><v-icon color="green" v-if="form.tip_obekta == 'Киоск'">mdi-check-circle</v-icon>{{ $t('addAdsKiosk') }}</span>
+                                    <span v-if="$route.params.table_name == 'Magazin'" @click="form.tip_obekta = 'kiosk'" class="form__item" :class="{'item__active':form.tip_obekta == 'kiosk'}"><v-icon color="green" v-if="form.tip_obekta == 'kiosk'">mdi-check-circle</v-icon>{{ $t('addAdsKiosk') }}</span>
                                     <!-- Контейнер -->
-                                    <span v-if="$route.params.table_name == 'Magazin'" @click="form.tip_obekta = 'Контейнер'" class="form__item" :class="{'item__active':form.tip_obekta == 'Контейнер'}"><v-icon color="green" v-if="form.tip_obekta == 'Контейнер'">mdi-check-circle</v-icon>{{ $t('addAdsContainer') }}</span>
+                                    <span v-if="$route.params.table_name == 'Magazin'" @click="form.tip_obekta = 'konteiner'" class="form__item" :class="{'item__active':form.tip_obekta == 'konteiner'}"><v-icon color="green" v-if="form.tip_obekta == 'konteiner'">mdi-check-circle</v-icon>{{ $t('addAdsContainer') }}</span>
 
 
                                     <!-- Промбаза  -->
-                                    <span v-if="$route.params.table_name == 'Prombaza'" @click="form.tip_obekta = 'Промбаза'" class="form__item" :class="{'item__active':form.tip_obekta == 'Промбаза'}"><v-icon color="green" v-if="form.tip_obekta == 'Промбаза'">mdi-check-circle</v-icon>{{ $t('addAdsIndustrialBase') }}</span>
+                                    <span v-if="$route.params.table_name == 'Prombaza'" @click="form.tip_obekta = 'prombaza'" class="form__item" :class="{'item__active':form.tip_obekta == 'prombaza'}"><v-icon color="green" v-if="form.tip_obekta == 'prombaza'">mdi-check-circle</v-icon>{{ $t('addAdsIndustrialBase') }}</span>
                                     <!-- Завод  -->
-                                    <span v-if="$route.params.table_name == 'Prombaza'" @click="form.tip_obekta = 'Завод'" class="form__item" :class="{'item__active':form.tip_obekta == 'Завод'}"><v-icon color="green" v-if="form.tip_obekta == 'Завод'">mdi-check-circle</v-icon>{{ $t('addAdsFactory') }}</span>
+                                    <span v-if="$route.params.table_name == 'Prombaza'" @click="form.tip_obekta = 'zavod'" class="form__item" :class="{'item__active':form.tip_obekta == 'zavod'}"><v-icon color="green" v-if="form.tip_obekta == 'zavod'">mdi-check-circle</v-icon>{{ $t('addAdsFactory') }}</span>
                                     <!-- Склад бытовой  -->
-                                    <span v-if="$route.params.table_name == 'Prombaza'" @click="form.tip_obekta = 'Склад бытовой'" class="form__item" :class="{'item__active':form.tip_obekta == 'Склад бытовой'}"><v-icon color="green" v-if="form.tip_obekta == 'Склад бытовой'">mdi-check-circle</v-icon>{{ $t('addAdsHouseholdWarehouse') }}</span>
+                                    <span v-if="$route.params.table_name == 'Prombaza'" @click="form.tip_obekta = 'sklad_bitovoy'" class="form__item" :class="{'item__active':form.tip_obekta == 'sklad_bitovoy'}"><v-icon color="green" v-if="form.tip_obekta == 'sklad_bitovoy'">mdi-check-circle</v-icon>{{ $t('addAdsHouseholdWarehouse') }}</span>
                                     <!-- Склад продовольственный  -->
-                                    <span v-if="$route.params.table_name == 'Prombaza'" @click="form.tip_obekta = 'Склад продовольственный'" class="form__item" :class="{'item__active':form.tip_obekta == 'Склад продовольственный'}"><v-icon color="green" v-if="form.tip_obekta == 'Склад продовольственный'">mdi-check-circle</v-icon>{{ $t('addAdsFoodWarehouse') }}</span>
+                                    <span v-if="$route.params.table_name == 'Prombaza'" @click="form.tip_obekta = 'sklad_prodovolstvenii'" class="form__item" :class="{'item__active':form.tip_obekta == 'sklad_prodovolstvenii'}"><v-icon color="green" v-if="form.tip_obekta == 'sklad_prodovolstvenii'">mdi-check-circle</v-icon>{{ $t('addAdsFoodWarehouse') }}</span>
                                     <!-- Склад химпродукции  -->
-                                    <span v-if="$route.params.table_name == 'Prombaza'" @click="form.tip_obekta = 'Склад химпродукции'" class="form__item" :class="{'item__active':form.tip_obekta == 'Склад химпродукции'}"><v-icon color="green" v-if="form.tip_obekta == 'Склад химпродукции'">mdi-check-circle</v-icon>{{ $t('addAdsWarehouseForChemicalProducts') }}</span>
-
-
-                                    <!-- Сниму -->
-                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.tip_obekta = 'Квартира'" class="form__item" :class="{'item__active':form.tip_obekta == 'Квартира'}"><v-icon color="green" v-if="form.tip_obekta == 'Квартира'">mdi-check-circle</v-icon>{{ $t('addAdsApartmentText2') }}</span>
-                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.tip_obekta = 'Общежитие'" class="form__item" :class="{'item__active':form.tip_obekta == 'Общежитие'}"><v-icon color="green" v-if="form.tip_obekta == 'Общежитие'">mdi-check-circle</v-icon>{{ $t('addAdsHostelText2') }}</span>
-                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.tip_obekta = 'Дом'" class="form__item" :class="{'item__active':form.tip_obekta == 'Дом'}"><v-icon color="green" v-if="form.tip_obekta == 'Дом'">mdi-check-circle</v-icon>{{ $t('addAdsHouseText2') }}</span>
-                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.tip_obekta = 'Офис'" class="form__item" :class="{'item__active':form.tip_obekta == 'Офис'}"><v-icon color="green" v-if="form.tip_obekta == 'Офис'">mdi-check-circle</v-icon>{{ $t('addAdsOfficeText2') }}</span>
-                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.tip_obekta = 'Здание'" class="form__item" :class="{'item__active':form.tip_obekta == 'Здание'}"><v-icon color="green" v-if="form.tip_obekta == 'Здание'">mdi-check-circle</v-icon>{{ $t('addAdsBuildingText2') }}</span>
-                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.tip_obekta = 'Магазин'" class="form__item" :class="{'item__active':form.tip_obekta == 'Магазин'}"><v-icon color="green" v-if="form.tip_obekta == 'Магазин'">mdi-check-circle</v-icon>{{ $t('addAdsShopText2') }}</span>
-                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.tip_obekta = 'Промбаза'" class="form__item" :class="{'item__active':form.tip_obekta == 'Промбаза'}"><v-icon color="green" v-if="form.tip_obekta == 'Промбаза'">mdi-check-circle</v-icon>{{ $t('addAdsBaseText2') }}</span>
-                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.tip_obekta = 'Прочая'" class="form__item" :class="{'item__active':form.tip_obekta == 'Прочая'}"><v-icon color="green" v-if="form.tip_obekta == 'Прочая'">mdi-check-circle</v-icon>{{ $t('addAdsOtherText2') }}</span>
-                                    <span v-if="$route.params.table_name == 'Snimu'" @click="form.tip_obekta = 'Бизнес'" class="form__item" :class="{'item__active':form.tip_obekta == 'Бизнес'}"><v-icon color="green" v-if="form.tip_obekta == 'Бизнес'">mdi-check-circle</v-icon>{{ $t('addAdsBusinessText2') }}</span>
+                                    <span v-if="$route.params.table_name == 'Prombaza'" @click="form.tip_obekta = 'sklad_himprodukcii'" class="form__item" :class="{'item__active':form.tip_obekta == 'sklad_himprodukcii'}"><v-icon color="green" v-if="form.tip_obekta == 'sklad_himprodukcii'">mdi-check-circle</v-icon>{{ $t('addAdsWarehouseForChemicalProducts') }}</span>
 
                                 </div>
 
@@ -267,7 +254,7 @@
                         </div>
 
                         <!-- Период аренды  -->
-                        <div v-if="form.tip_sdelki === 'Сдам' && ['Kvartira', 'Obshejitie', 'Dom'].includes($route.params.table_name)" class="form-group">
+                        <div v-if="form.tip_sdelki === 'sdam' && ['Kvartira', 'Obshejitie', 'Dom'].includes($route.params.table_name)" class="form-group">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $t('addAdsRentalPeriod') }}</div>
@@ -276,10 +263,10 @@
                             <validation-provider rules="required" v-model="form.period_arendi" name="period_arendi" v-slot="{ errors }">
 
                                 <div class="form__input">
-                                    <div @click="form.period_arendi = 'На длительно'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'На длительно'}"><v-icon color="green" v-if="form.period_arendi == 'На длительно'">mdi-check-circle</v-icon> {{ $t('addAdsForALongTime') }} </div>
-                                    <div @click="form.period_arendi = 'Посуточно'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'Посуточно'}"><v-icon color="green" v-if="form.period_arendi == 'Посуточно'">mdi-check-circle</v-icon> {{ $t('addAdsDaily') }} </div>
-                                    <div @click="form.period_arendi = 'По часам'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'По часам'}"> <v-icon color="green" v-if="form.period_arendi == 'По часам'">mdi-check-circle</v-icon>{{ $t('addAdsByTheHour') }} </div>
-                                    <div @click="form.period_arendi = 'На подселение'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'На подселение'}"><v-icon color="green" v-if="form.period_arendi == 'На подселение'">mdi-check-circle</v-icon> {{ $t('addAdsForSharing') }} </div>
+                                    <div @click="form.period_arendi = 'na_dlitelno'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'na_dlitelno'}"><v-icon color="green" v-if="form.period_arendi == 'na_dlitelno'">mdi-check-circle</v-icon> {{ $t('addAdsForALongTime') }} </div>
+                                    <div @click="form.period_arendi = 'posutochno'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'posutochno'}"><v-icon color="green" v-if="form.period_arendi == 'posutochno'">mdi-check-circle</v-icon> {{ $t('addAdsDaily') }} </div>
+                                    <div @click="form.period_arendi = 'po_chasam'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'po_chasam'}"> <v-icon color="green" v-if="form.period_arendi == 'po_chasam'">mdi-check-circle</v-icon>{{ $t('addAdsByTheHour') }} </div>
+                                    <div @click="form.period_arendi = 'na_podselenie'" class="form__item flex-fill" :class="{'item__active': form.period_arendi == 'na_podselenie'}"><v-icon color="green" v-if="form.period_arendi == 'na_podselenie'">mdi-check-circle</v-icon> {{ $t('addAdsForSharing') }} </div>
                                 </div>
 
                                 <!-- Вывожу ошибки - veevalidate, vform -->
@@ -319,17 +306,17 @@
                             </div>
 
                             <!-- Поле -->
-                            <validation-provider rules="required" v-model="form.deistvuushii_bisnes" name="deistvuushii_bisnes" v-slot="{ errors }">
+                            <validation-provider rules="required" v-model="form.deistvuushii_biznes" name="deistvuushii_biznes" v-slot="{ errors }">
 
                                 <div class="form__input">
-                                    <span @click="form.deistvuushii_bisnes = 'Да'" class="form__item" :class="{'item__active':form.deistvuushii_bisnes == 'Да'}"><v-icon color="green" v-if="form.deistvuushii_bisnes == 'Да'">mdi-check-circle</v-icon>{{ $t('addAdsYes') }}</span>
-                                    <span @click="form.deistvuushii_bisnes = 'Нет'" class="form__item" :class="{'item__active':form.deistvuushii_bisnes == 'Нет'}"><v-icon color="green" v-if="form.deistvuushii_bisnes == 'Нет'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
+                                    <span @click="form.deistvuushii_biznes = 'da'" class="form__item" :class="{'item__active':form.deistvuushii_biznes == 'da'}"><v-icon color="green" v-if="form.deistvuushii_biznes == 'da'">mdi-check-circle</v-icon>{{ $t('addAdsYes') }}</span>
+                                    <span @click="form.deistvuushii_biznes = 'net'" class="form__item" :class="{'item__active':form.deistvuushii_biznes == 'net'}"><v-icon color="green" v-if="form.deistvuushii_biznes == 'net'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
                                 </div>
 
                                 <!-- Вывожу ошибки - veevalidate, vform -->
                                 <div class="text__error">
                                     <span >{{ errors[0] }}</span>
-                                    <has-error :form="form" field="deistvuushii_bisnes"></has-error>
+                                    <has-error :form="form" field="deistvuushii_biznes"></has-error>
                                 </div>
 
                             </validation-provider>
@@ -347,13 +334,13 @@
 
                                 <validation-provider rules="required" v-model="form.mestopolojenie" name="mestopolojenie" v-slot="{ errors }">
                                     <select v-model="form.mestopolojenie" name="mestopolojenie" class="form-select">
-                                        <option value="В торговом-центре">{{ $t('addAdsInTheShoppingCenter') }}</option>
-                                        <option value="В административном здании">{{ $t('addAdsInTheAdministrativeBuilding') }}</option>
-                                        <option value="На универсальном рынке (Барахолке)">{{ $t('addAdsAtTheUniversalMarketFleaMarket') }}</option>
-                                        <option value="В жилом доме">{{ $t('addAdsInAResidentialBuilding') }}</option>
-                                        <option value="Отдельно стоящее здание">{{ $t('addAdsDetachedBuilding') }}</option>
-                                        <option value="Остановочный комплекс">{{ $t('addAdsBusStopComplex') }}</option>
-                                        <option value="Другое">{{ $t('addAdsOtherText') }}</option>
+                                        <option value="v_torgovom_centre">{{ $t('addAdsInTheShoppingCenter') }}</option>
+                                        <option value="v_administrativnom_zdanii">{{ $t('addAdsInTheAdministrativeBuilding') }}</option>
+                                        <option value="na_rinke">{{ $t('addAdsAtTheUniversalMarketFleaMarket') }}</option>
+                                        <option value="v_jilom_dome">{{ $t('addAdsInAResidentialBuilding') }}</option>
+                                        <option value="otdelno_stoyashee_zdanie">{{ $t('addAdsDetachedBuilding') }}</option>
+                                        <option value="ostanovochniy_kompleks">{{ $t('addAdsBusStopComplex') }}</option>
+                                        <option value="drugoe">{{ $t('addAdsOtherText') }}</option>
                                     </select>
 
 
@@ -504,10 +491,10 @@
                             <validation-provider rules="required" v-model="form.tip_stroeniya" name="tip_stroeniya" v-slot="{ errors, valid, invalid, touched}">
 
                                 <div class="form__input">
-                                    <span @click="form.tip_stroeniya = 'Панель'" class="form__item"  :class="{ 'item__active' : form.tip_stroeniya == 'Панель' }"><v-icon color="green" v-if="form.tip_stroeniya == 'Панель'">mdi-check-circle</v-icon> {{ $t('addAdsPanel') }} </span>
-                                    <span @click="form.tip_stroeniya = 'Кирпич'" class="form__item"  :class="{ 'item__active' : form.tip_stroeniya == 'Кирпич' }"><v-icon color="green" v-if="form.tip_stroeniya == 'Кирпич'">mdi-check-circle</v-icon> {{ $t('addAdsBrick') }} </span>
-                                    <span @click="form.tip_stroeniya = 'Дерево'" class="form__item"  :class="{ 'item__active' : form.tip_stroeniya == 'Дерево' }"><v-icon color="green" v-if="form.tip_stroeniya == 'Дерево'">mdi-check-circle</v-icon> {{ $t('addAdsTree') }} </span>
-                                    <span @click="form.tip_stroeniya = 'Другое'" class="form__item"  :class="{ 'item__active' : form.tip_stroeniya == 'Другое' }"><v-icon color="green" v-if="form.tip_stroeniya == 'Другое'">mdi-check-circle</v-icon> {{ $t('addAdsOtherText') }} </span>
+                                    <span @click="form.tip_stroeniya = 'panel'" class="form__item"  :class="{ 'item__active' : form.tip_stroeniya == 'panel' }"><v-icon color="green" v-if="form.tip_stroeniya == 'panel'">mdi-check-circle</v-icon> {{ $t('addAdsPanel') }} </span>
+                                    <span @click="form.tip_stroeniya = 'kirpich'" class="form__item"  :class="{ 'item__active' : form.tip_stroeniya == 'kirpich' }"><v-icon color="green" v-if="form.tip_stroeniya == 'kirpich'">mdi-check-circle</v-icon> {{ $t('addAdsBrick') }} </span>
+                                    <span @click="form.tip_stroeniya = 'derevo'" class="form__item"  :class="{ 'item__active' : form.tip_stroeniya == 'derevo' }"><v-icon color="green" v-if="form.tip_stroeniya == 'derevo'">mdi-check-circle</v-icon> {{ $t('addAdsTree') }} </span>
+                                    <span @click="form.tip_stroeniya = 'drugoe'" class="form__item"  :class="{ 'item__active' : form.tip_stroeniya == 'drugoe' }"><v-icon color="green" v-if="form.tip_stroeniya == 'drugoe'">mdi-check-circle</v-icon> {{ $t('addAdsOtherText') }} </span>
                                 </div>
 
                                 <!-- Вывожу ошибки - veevalidate, vform -->
@@ -560,16 +547,16 @@
                                 <div class="form__input">
 
                                     <!-- Евро ремонт -->
-                                    <span @click="form.sostoyanie = 'Евро ремонт'" class="form__item" :class="{'item__active':form.sostoyanie == 'Евро ремонт'}"><v-icon color="green" v-if="form.sostoyanie == 'Евро ремонт'">mdi-check-circle</v-icon>{{ $t('addAdsEuroRepair') }}</span>
+                                    <span @click="form.sostoyanie = 'evro_remont'" class="form__item" :class="{'item__active':form.sostoyanie == 'evro_remont'}"><v-icon color="green" v-if="form.sostoyanie == 'evro_remont'">mdi-check-circle</v-icon>{{ $t('addAdsEuroRepair') }}</span>
 
                                     <!-- Хорошее -->
-                                    <span @click="form.sostoyanie = 'Хорошее'" class="form__item" :class="{'item__active':form.sostoyanie == 'Хорошее'}"><v-icon color="green" v-if="form.sostoyanie == 'Хорошее'">mdi-check-circle</v-icon>{{ $t('addAdsGood') }}</span>
+                                    <span @click="form.sostoyanie = 'horoshee'" class="form__item" :class="{'item__active':form.sostoyanie == 'horoshee'}"><v-icon color="green" v-if="form.sostoyanie == 'horoshee'">mdi-check-circle</v-icon>{{ $t('addAdsGood') }}</span>
 
                                     <!-- Среднее -->
-                                    <span @click="form.sostoyanie = 'Среднее'" class="form__item" :class="{'item__active':form.sostoyanie == 'Среднее'}"><v-icon color="green" v-if="form.sostoyanie == 'Среднее'">mdi-check-circle</v-icon>{{ $t('addAdsAverage') }}</span>
+                                    <span @click="form.sostoyanie = 'srednee'" class="form__item" :class="{'item__active':form.sostoyanie == 'srednee'}"><v-icon color="green" v-if="form.sostoyanie == 'srednee'">mdi-check-circle</v-icon>{{ $t('addAdsAverage') }}</span>
 
                                     <!-- Требует ремонта -->
-                                    <span @click="form.sostoyanie = 'Требует ремонта'" class="form__item" :class="{'item__active':form.sostoyanie == 'Требует ремонта'}"><v-icon color="green" v-if="form.sostoyanie == 'Требует ремонта'">mdi-check-circle</v-icon>{{ $t('addAdsRequiresRepair') }}</span>
+                                    <span @click="form.sostoyanie = 'trebuet_remonta'" class="form__item" :class="{'item__active':form.sostoyanie == 'trebuet_remonta'}"><v-icon color="green" v-if="form.sostoyanie == 'trebuet_remonta'">mdi-check-circle</v-icon>{{ $t('addAdsRequiresRepair') }}</span>
 
                                 </div>
 
@@ -595,13 +582,13 @@
                                 <div class="form__input">
 
                                     <!-- Полностью-->
-                                    <span @click="form.mebel = 'Полностью'" class="form__item" :class="{'item__active':form.mebel == 'Полностью'}"><v-icon color="green" v-if="form.mebel == 'Полностью'">mdi-check-circle</v-icon>{{ $t('addAdsCompletely') }}</span>
+                                    <span @click="form.mebel = 'polnostu'" class="form__item" :class="{'item__active':form.mebel == 'polnostu'}"><v-icon color="green" v-if="form.mebel == 'polnostu'">mdi-check-circle</v-icon>{{ $t('addAdsCompletely') }}</span>
 
                                     <!-- Частично -->
-                                    <span @click="form.mebel = 'Частично'" class="form__item" :class="{'item__active':form.mebel == 'Частично'}"><v-icon color="green" v-if="form.mebel == 'Частично'">mdi-check-circle</v-icon>{{ $t('addAdsPartly') }}</span>
+                                    <span @click="form.mebel = 'chastichno'" class="form__item" :class="{'item__active':form.mebel == 'chastichno'}"><v-icon color="green" v-if="form.mebel == 'chastichno'">mdi-check-circle</v-icon>{{ $t('addAdsPartly') }}</span>
 
                                     <!-- Нет -->
-                                    <span @click="form.mebel = 'Нет'" class="form__item" :class="{'item__active':form.mebel == 'Нет'}"><v-icon color="green" v-if="form.mebel == 'Нет'">mdi-check-circle</v-icon>{{ $t('addAdsUnfurnished') }}</span>
+                                    <span @click="form.mebel = 'net'" class="form__item" :class="{'item__active':form.mebel == 'net'}"><v-icon color="green" v-if="form.mebel == 'net'">mdi-check-circle</v-icon>{{ $t('addAdsUnfurnished') }}</span>
 
                                 </div>
 
@@ -628,13 +615,13 @@
                                 <div class="form__input">
 
                                     <!-- В комнате -->
-                                    <span @click="form.dush = 'В комнате'" class="form__item" :class="{'item__active':form.dush == 'В комнате'}"><v-icon color="green" v-if="form.dush == 'В комнате'">mdi-check-circle</v-icon>{{ $t('addAdsInTheRoom') }}</span>
+                                    <span @click="form.dush = 'v_komnate'" class="form__item" :class="{'item__active':form.dush == 'v_komnate'}"><v-icon color="green" v-if="form.dush == 'v_komnate'">mdi-check-circle</v-icon>{{ $t('addAdsInTheRoom') }}</span>
 
                                     <!-- В секции -->
-                                    <span @click="form.dush = 'В секции'" class="form__item" :class="{'item__active':form.dush == 'В секции'}"><v-icon color="green" v-if="form.dush == 'В секции'">mdi-check-circle</v-icon>{{ $t('addAdsInTheSection') }}</span>
+                                    <span @click="form.dush = 'v_sekcii'" class="form__item" :class="{'item__active':form.dush == 'v_sekcii'}"><v-icon color="green" v-if="form.dush == 'v_sekcii'">mdi-check-circle</v-icon>{{ $t('addAdsInTheSection') }}</span>
 
                                     <!-- Нет -->
-                                    <span @click="form.dush = 'Нет'" class="form__item" :class="{'item__active':form.dush == 'Нет'}"><v-icon color="green" v-if="form.dush == 'Нет'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
+                                    <span @click="form.dush = 'net'" class="form__item" :class="{'item__active':form.dush == 'net'}"><v-icon color="green" v-if="form.dush == 'net'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
 
                                 </div>
 
@@ -660,35 +647,35 @@
                                 <div class="form__input">
 
                                     <!-- Квартира - Магазин | Раздельный -->
-                                    <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel = 'Раздельный'" class="form__item" :class="{'item__active':form.sanuzel == 'Раздельный'}"><v-icon color="green" v-if="form.sanuzel == 'Раздельный'">mdi-check-circle</v-icon>{{ $t('addAdsSeparate') }}</span>
+                                    <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel = 'razdelniy'" class="form__item" :class="{'item__active':form.sanuzel == 'razdelniy'}"><v-icon color="green" v-if="form.sanuzel == 'razdelniy'">mdi-check-circle</v-icon>{{ $t('addAdsSeparate') }}</span>
                                     <!-- Совмещенный -->
-                                    <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel = 'Совмещенный'" class="form__item" :class="{'item__active':form.sanuzel == 'Совмещенный'}"><v-icon color="green" v-if="form.sanuzel == 'Совмещенный'">mdi-check-circle</v-icon>{{ $t('addAdsCombined') }}</span>
+                                    <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel = 'sovmesheniy'" class="form__item" :class="{'item__active':form.sanuzel == 'sovmesheniy'}"><v-icon color="green" v-if="form.sanuzel == 'sovmesheniy'">mdi-check-circle</v-icon>{{ $t('addAdsCombined') }}</span>
                                     <!-- 2 с/у и более -->
-                                    <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel = '2 с/у и более'" class="form__item" :class="{'item__active':form.sanuzel == '2 с/у и более'}"><v-icon color="green" v-if="form.sanuzel == '2 с/у и более'">mdi-check-circle</v-icon>{{ $t('addAds2OrMore') }}</span>
+                                    <span v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Magazin'" @click="form.sanuzel = '2ibolee'" class="form__item" :class="{'item__active':form.sanuzel == '2ibolee'}"><v-icon color="green" v-if="form.sanuzel == '2ibolee'">mdi-check-circle</v-icon>{{ $t('addAds2OrMore') }}</span>
 
 
                                     <!-- Общежитие- В комнате -->
-                                    <span v-if="$route.params.table_name == 'Obshejitie'" @click="form.sanuzel = 'В комнате'" class="form__item" :class="{'item__active':form.sanuzel == 'В комнате'}"><v-icon color="green" v-if="form.sanuzel == 'В комнате'">mdi-check-circle</v-icon>{{ $t('addAdsInTheRoom') }}</span>
+                                    <span v-if="$route.params.table_name == 'Obshejitie'" @click="form.sanuzel = 'v_komnate'" class="form__item" :class="{'item__active':form.sanuzel == 'v_komnate'}"><v-icon color="green" v-if="form.sanuzel == 'v_komnate'">mdi-check-circle</v-icon>{{ $t('addAdsInTheRoom') }}</span>
                                     <!-- В секции -->
-                                    <span v-if="$route.params.table_name == 'Obshejitie'" @click="form.sanuzel = 'В секции'" class="form__item" :class="{'item__active':form.sanuzel == 'В секции'}"><v-icon color="green" v-if="form.sanuzel == 'В секции'">mdi-check-circle</v-icon>{{ $t('addAdsInTheSection') }}</span>
+                                    <span v-if="$route.params.table_name == 'Obshejitie'" @click="form.sanuzel = 'v_sekcii'" class="form__item" :class="{'item__active':form.sanuzel == 'v_sekcii'}"><v-icon color="green" v-if="form.sanuzel == 'v_sekcii'">mdi-check-circle</v-icon>{{ $t('addAdsInTheSection') }}</span>
 
 
                                     <!-- Дом / В доме -->
-                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel = 'В доме'" class="form__item" :class="{'item__active':form.sanuzel == 'В доме'}"><v-icon color="green" v-if="form.sanuzel == 'В доме'">mdi-check-circle</v-icon>{{ $t('addAdsInAHouse') }}</span>
+                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel = 'v_dome'" class="form__item" :class="{'item__active':form.sanuzel == 'v_dome'}"><v-icon color="green" v-if="form.sanuzel == 'v_dome'">mdi-check-circle</v-icon>{{ $t('addAdsInAHouse') }}</span>
                                     <!-- 2 с/у и более -->
-                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel = '2 с/у и более'" class="form__item" :class="{'item__active':form.sanuzel == '2 с/у и более'}"><v-icon color="green" v-if="form.sanuzel == '2 с/у и более'">mdi-check-circle</v-icon>{{ $t('addAds2OrMore') }}</span>
+                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel = '2ibolee'" class="form__item" :class="{'item__active':form.sanuzel == '2ibolee'}"><v-icon color="green" v-if="form.sanuzel == '2ibolee'">mdi-check-circle</v-icon>{{ $t('addAds2OrMore') }}</span>
                                     <!-- Во дворе -->
-                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel = 'Во дворе'" class="form__item" :class="{'item__active':form.sanuzel == 'Во дворе'}"><v-icon color="green" v-if="form.sanuzel == 'Во дворе'">mdi-check-circle</v-icon>{{ $t('addAdsInTheCourtyard') }}</span>
+                                    <span v-if="$route.params.table_name == 'Dom'" @click="form.sanuzel = 'vo_dvore'" class="form__item" :class="{'item__active':form.sanuzel == 'vo_dvore'}"><v-icon color="green" v-if="form.sanuzel == 'vo_dvore'">mdi-check-circle</v-icon>{{ $t('addAdsInTheCourtyard') }}</span>
 
 
                                     <!-- Офис | Есть -->
-                                    <span v-if="$route.params.table_name == 'Ofis'" @click="form.sanuzel = 'Есть'" class="form__item" :class="{'item__active':form.sanuzel == 'Есть'}"><v-icon color="green" v-if="form.sanuzel == 'Есть'">mdi-check-circle</v-icon>{{ $t('addAdsThereAre') }}</span>
+                                    <span v-if="$route.params.table_name == 'Ofis'" @click="form.sanuzel = 'est'" class="form__item" :class="{'item__active':form.sanuzel == 'est'}"><v-icon color="green" v-if="form.sanuzel == 'est'">mdi-check-circle</v-icon>{{ $t('addAdsThereAre') }}</span>
                                     <!-- 2 с/у и более -->
-                                    <span v-if="$route.params.table_name == 'Ofis'" @click="form.sanuzel = '2 с/у и более'" class="form__item" :class="{'item__active':form.sanuzel == '2 с/у и более'}"><v-icon color="green" v-if="form.sanuzel == '2 с/у и более'">mdi-check-circle</v-icon>{{ $t('addAds2OrMore') }}</span>
+                                    <span v-if="$route.params.table_name == 'Ofis'" @click="form.sanuzel = '2ibolee'" class="form__item" :class="{'item__active':form.sanuzel == '2ibolee'}"><v-icon color="green" v-if="form.sanuzel == '2ibolee'">mdi-check-circle</v-icon>{{ $t('addAds2OrMore') }}</span>
 
 
                                     <!-- Для всех  -->
-                                    <span @click="form.sanuzel = 'Нет'" class="form__item" :class="{'item__active':form.sanuzel == 'Нет'}"><v-icon color="green" v-if="form.sanuzel == 'Нет'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
+                                    <span @click="form.sanuzel = 'net'" class="form__item" :class="{'item__active':form.sanuzel == 'net'}"><v-icon color="green" v-if="form.sanuzel == 'net'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
 
                                 </div>
 
@@ -716,10 +703,10 @@
                                 <div class="form__input">
 
                                     <!-- Есть -->
-                                    <span @click="form.otdelniy_vhod = 'Есть'" class="form__item" :class="{'item__active':form.otdelniy_vhod == 'Есть'}"><v-icon color="green" v-if="form.otdelniy_vhod == 'Есть'">mdi-check-circle</v-icon>{{ $t('addAdsThereAre') }}</span>
+                                    <span @click="form.otdelniy_vhod = 'est'" class="form__item" :class="{'item__active':form.otdelniy_vhod == 'est'}"><v-icon color="green" v-if="form.otdelniy_vhod == 'est'">mdi-check-circle</v-icon>{{ $t('addAdsThereAre') }}</span>
 
                                     <!-- Нет -->
-                                    <span @click="form.otdelniy_vhod = 'Нет'" class="form__item" :class="{'item__active':form.otdelniy_vhod == 'Нет'}"><v-icon color="green" v-if="form.otdelniy_vhod == 'Нет'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
+                                    <span @click="form.otdelniy_vhod = 'net'" class="form__item" :class="{'item__active':form.otdelniy_vhod == 'net'}"><v-icon color="green" v-if="form.otdelniy_vhod == 'net'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
 
 
                                 </div>
@@ -746,13 +733,13 @@
                                 <div class="form__input">
 
                                     <!-- Центральная -->
-                                    <span @click="form.kanalizaciya = 'Центральная'" class="form__item" :class="{'item__active':form.kanalizaciya == 'Центральная'}"><v-icon color="green" v-if="form.kanalizaciya == 'Центральная'">mdi-check-circle</v-icon>{{ $t('addAdsCentral') }}</span>
+                                    <span @click="form.kanalizaciya = 'centralnaya'" class="form__item" :class="{'item__active':form.kanalizaciya == 'centralnaya'}"><v-icon color="green" v-if="form.kanalizaciya == 'centralnaya'">mdi-check-circle</v-icon>{{ $t('addAdsCentral') }}</span>
 
                                     <!-- Септик -->
-                                    <span @click="form.kanalizaciya = 'Септик'" class="form__item" :class="{'item__active':form.kanalizaciya == 'Септик'}"><v-icon color="green" v-if="form.kanalizaciya == 'Септик'">mdi-check-circle</v-icon>{{ $t('addAdsSepticTank') }}</span>
+                                    <span @click="form.kanalizaciya = 'septik'" class="form__item" :class="{'item__active':form.kanalizaciya == 'septik'}"><v-icon color="green" v-if="form.kanalizaciya == 'septik'">mdi-check-circle</v-icon>{{ $t('addAdsSepticTank') }}</span>
 
                                     <!-- Нет -->
-                                    <span @click="form.kanalizaciya = 'Нет'" class="form__item" :class="{'item__active':form.kanalizaciya == 'Нет'}"><v-icon color="green" v-if="form.kanalizaciya == 'Нет'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
+                                    <span @click="form.kanalizaciya = 'net'" class="form__item" :class="{'item__active':form.kanalizaciya == 'net'}"><v-icon color="green" v-if="form.kanalizaciya == 'net'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
 
                                 </div>
 
@@ -778,13 +765,13 @@
                                 <div class="form__input">
 
                                     <!-- Центральная -->
-                                    <span @click="form.voda = 'Центральная'" class="form__item" :class="{'item__active':form.voda == 'Центральная'}"><v-icon color="green" v-if="form.voda == 'Центральная'">mdi-check-circle</v-icon>{{ $t('addAdsCentral') }}</span>
+                                    <span @click="form.voda = 'centralnaya'" class="form__item" :class="{'item__active':form.voda == 'centralnaya'}"><v-icon color="green" v-if="form.voda == 'centralnaya'">mdi-check-circle</v-icon>{{ $t('addAdsCentral') }}</span>
 
                                     <!-- Скважина -->
-                                    <span @click="form.voda = 'Скважина'" class="form__item" :class="{'item__active':form.voda == 'Скважина'}"><v-icon color="green" v-if="form.voda == 'Скважина'">mdi-check-circle</v-icon>{{ $t('addAdsBorehole') }}</span>
+                                    <span @click="form.voda = 'skvajina'" class="form__item" :class="{'item__active':form.voda == 'skvajina'}"><v-icon color="green" v-if="form.voda == 'skvajina'">mdi-check-circle</v-icon>{{ $t('addAdsBorehole') }}</span>
 
                                     <!-- Нет -->
-                                    <span @click="form.voda = 'Нет'" class="form__item" :class="{'item__active':form.voda == 'Нет'}"><v-icon color="green" v-if="form.voda == 'Нет'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
+                                    <span @click="form.voda = 'net'" class="form__item" :class="{'item__active':form.voda == 'net'}"><v-icon color="green" v-if="form.voda == 'net'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
 
                                 </div>
 
@@ -810,10 +797,10 @@
                                 <div class="form__input">
 
                                     <!-- Есть -->
-                                    <span @click="form.elektrichestvo = 'Есть'" class="form__item" :class="{'item__active':form.elektrichestvo == 'Есть'}"><v-icon color="green" v-if="form.elektrichestvo == 'Есть'">mdi-check-circle</v-icon>{{ $t('addAdsThereAre') }}</span>
+                                    <span @click="form.elektrichestvo = 'est'" class="form__item" :class="{'item__active':form.elektrichestvo == 'est'}"><v-icon color="green" v-if="form.elektrichestvo == 'est'">mdi-check-circle</v-icon>{{ $t('addAdsThereAre') }}</span>
 
                                     <!-- Нет -->
-                                    <span @click="form.elektrichestvo = 'Нет'" class="form__item" :class="{'item__active':form.elektrichestvo == 'Нет'}"><v-icon color="green" v-if="form.elektrichestvo == 'Нет'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
+                                    <span @click="form.elektrichestvo = 'net'" class="form__item" :class="{'item__active':form.elektrichestvo == 'net'}"><v-icon color="green" v-if="form.elektrichestvo == 'net'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
 
                                 </div>
 
@@ -839,22 +826,22 @@
                                 <div class="form__input">
 
                                     <!-- Центральное -->
-                                    <span @click="form.otoplenie = 'Центральное'" class="form__item" :class="{'item__active':form.otoplenie == 'Центральное'}"><v-icon color="green" v-if="form.otoplenie == 'Центральное'">mdi-check-circle</v-icon>{{ $t('addAdsCentralText') }}</span>
+                                    <span @click="form.otoplenie = 'centralnoe'" class="form__item" :class="{'item__active':form.otoplenie == 'centralnoe'}"><v-icon color="green" v-if="form.otoplenie == 'centralnoe'">mdi-check-circle</v-icon>{{ $t('addAdsCentralText') }}</span>
 
                                     <!-- На газе -->
-                                    <span @click="form.otoplenie = 'На газе'" class="form__item" :class="{'item__active':form.otoplenie == 'На газе'}"><v-icon color="green" v-if="form.otoplenie == 'На газе'">mdi-check-circle</v-icon>{{ $t('addAdsOnGas') }}</span>
+                                    <span @click="form.otoplenie = 'na_gaze'" class="form__item" :class="{'item__active':form.otoplenie == 'na_gaze'}"><v-icon color="green" v-if="form.otoplenie == 'na_gaze'">mdi-check-circle</v-icon>{{ $t('addAdsOnGas') }}</span>
 
                                     <!-- На твердом топливе -->
-                                    <span @click="form.otoplenie = 'На твердом топливе'" class="form__item" :class="{'item__active':form.otoplenie == 'На твердом топливе'}"><v-icon color="green" v-if="form.otoplenie == 'На твердом топливе'">mdi-check-circle</v-icon>{{ $t('addAdsOnSolidFuel') }}</span>
+                                    <span @click="form.otoplenie = 'na_tverdom_toplive'" class="form__item" :class="{'item__active':form.otoplenie == 'na_tverdom_toplive'}"><v-icon color="green" v-if="form.otoplenie == 'na_tverdom_toplive'">mdi-check-circle</v-icon>{{ $t('addAdsOnSolidFuel') }}</span>
 
                                     <!-- На жидком топливе -->
-                                    <span @click="form.otoplenie = 'На жидком топливе'" class="form__item" :class="{'item__active':form.otoplenie == 'На жидком топливе'}"><v-icon color="green" v-if="form.otoplenie == 'На жидком топливе'">mdi-check-circle</v-icon>{{ $t('addAdsOnLiquidFuel') }}</span>
+                                    <span @click="form.otoplenie = 'na_jitkom_toplive'" class="form__item" :class="{'item__active':form.otoplenie == 'na_jitkom_toplive'}"><v-icon color="green" v-if="form.otoplenie == 'na_jitkom_toplive'">mdi-check-circle</v-icon>{{ $t('addAdsOnLiquidFuel') }}</span>
 
                                     <!-- Смешанное -->
-                                    <span @click="form.otoplenie = 'Смешанное'" class="form__item" :class="{'item__active':form.otoplenie == 'Смешанное'}"><v-icon color="green" v-if="form.otoplenie == 'Смешанное'">mdi-check-circle</v-icon>{{ $t('addAdsMixed') }}</span>
+                                    <span @click="form.otoplenie = 'smeshannoe'" class="form__item" :class="{'item__active':form.otoplenie == 'smeshannoe'}"><v-icon color="green" v-if="form.otoplenie == 'smeshannoe'">mdi-check-circle</v-icon>{{ $t('addAdsMixed') }}</span>
 
                                     <!-- Нет -->
-                                    <span @click="form.otoplenie = 'Нет'" class="form__item" :class="{'item__active':form.otoplenie == 'Нет'}"><v-icon color="green" v-if="form.otoplenie == 'Нет'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
+                                    <span @click="form.otoplenie = 'net'" class="form__item" :class="{'item__active':form.otoplenie == 'net'}"><v-icon color="green" v-if="form.otoplenie == 'net'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
 
                                 </div>
 
@@ -880,13 +867,13 @@
                                 <div class="form__input">
 
                                     <!-- Магистральный -->
-                                    <span @click="form.gaz = 'Магистральный'" class="form__item" :class="{'item__active':form.gaz == 'Магистральный'}"><v-icon color="green" v-if="form.gaz == 'Магистральный'">mdi-check-circle</v-icon>{{ $t('addAdsTrunk') }}</span>
+                                    <span @click="form.gaz = 'magistralniy'" class="form__item" :class="{'item__active':form.gaz == 'magistralniy'}"><v-icon color="green" v-if="form.gaz == 'magistralniy'">mdi-check-circle</v-icon>{{ $t('addAdsTrunk') }}</span>
 
                                     <!-- Автономный -->
-                                    <span @click="form.gaz = 'Автономный'" class="form__item" :class="{'item__active':form.gaz == 'Автономный'}"><v-icon color="green" v-if="form.gaz == 'Автономный'">mdi-check-circle</v-icon>{{ $t('addAdsAutonomous') }}</span>
+                                    <span @click="form.gaz = 'avtonomniy'" class="form__item" :class="{'item__active':form.gaz == 'avtonomniy'}"><v-icon color="green" v-if="form.gaz == 'avtonomniy'">mdi-check-circle</v-icon>{{ $t('addAdsAutonomous') }}</span>
 
                                     <!--Нет -->
-                                    <span @click="form.gaz = 'Нет'" class="form__item" :class="{'item__active':form.gaz == 'Нет'}"><v-icon color="green" v-if="form.gaz == 'Нет'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
+                                    <span @click="form.gaz = 'net'" class="form__item" :class="{'item__active':form.gaz == 'net'}"><v-icon color="green" v-if="form.gaz == 'net'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
 
                                 </div>
 
@@ -912,16 +899,16 @@
                                 <div class="form__input">
 
                                     <!-- Балкон -->
-                                    <span @click="form.balkon = 'Балкон'" class="form__item" :class="{'item__active':form.balkon == 'Балкон'}"><v-icon color="green" v-if="form.balkon == 'Балкон'">mdi-check-circle</v-icon>{{ $t('addAdsBalcony') }}</span>
+                                    <span @click="form.balkon = 'balkon'" class="form__item" :class="{'item__active':form.balkon == 'balkon'}"><v-icon color="green" v-if="form.balkon == 'balkon'">mdi-check-circle</v-icon>{{ $t('addAdsBalcony') }}</span>
 
                                     <!-- Лоджия -->
-                                    <span @click="form.balkon = 'Лоджия'" class="form__item" :class="{'item__active':form.balkon == 'Лоджия'}"><v-icon color="green" v-if="form.balkon == 'Лоджия'">mdi-check-circle</v-icon>{{ $t('addAdsLoggia') }}</span>
+                                    <span @click="form.balkon = 'lodjiya'" class="form__item" :class="{'item__active':form.balkon == 'lodjiya'}"><v-icon color="green" v-if="form.balkon == 'lodjiya'">mdi-check-circle</v-icon>{{ $t('addAdsLoggia') }}</span>
 
                                     <!-- Балкон и Лоджия -->
-                                    <span @click="form.balkon = '2 балкона и более'" class="form__item" :class="{'item__active':form.balkon == '2 балкона и более'}"><v-icon color="green" v-if="form.balkon == '2 балкона и более'">mdi-check-circle</v-icon>{{ $t('addAds2BalconiesOrMore') }}</span>
+                                    <span @click="form.balkon = '2_balkona_i_bolee'" class="form__item" :class="{'item__active':form.balkon == '2_balkona_i_bolee'}"><v-icon color="green" v-if="form.balkon == '2_balkona_i_bolee'">mdi-check-circle</v-icon>{{ $t('addAds2BalconiesOrMore') }}</span>
 
                                     <!-- Несколько балконов и лоджий -->
-                                    <span @click="form.balkon = 'Нет'" class="form__item" :class="{'item__active':form.balkon == 'Нет'}"><v-icon color="green" v-if="form.balkon == 'Нет'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
+                                    <span @click="form.balkon = 'net'" class="form__item" :class="{'item__active':form.balkon == 'net'}"><v-icon color="green" v-if="form.balkon == 'net'">mdi-check-circle</v-icon>{{ $t('addAdsNo') }}</span>
 
                                 </div>
 
@@ -1045,19 +1032,19 @@
 
                             <!-- Мебель - Для квартиры - Общежития - Дом  -->
                             <div class="form__input" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie' || $route.params.table_name == 'Dom'">
-                                <span @click="checkArr('mebel_arr', 'Холодильник')" class="form__item" :class="{'item__active':form.mebel_arr.includes('Холодильник')}"><v-icon color="green" v-if="form.mebel_arr.includes('Холодильник')">mdi-check-circle</v-icon>{{ $t('addAdsFridge')}}</span>
-                                <span @click="checkArr('mebel_arr', 'Стиральная машина')" class="form__item" :class="{'item__active':form.mebel_arr.includes('Стиральная машина')}"><v-icon color="green" v-if="form.mebel_arr.includes('Стиральная машина')">mdi-check-circle</v-icon>{{ $t('addAdsWasher')}}</span>
-                                <span @click="checkArr('mebel_arr', 'Телевизор')" class="form__item" :class="{'item__active':form.mebel_arr.includes('Телевизор')}"><v-icon color="green" v-if="form.mebel_arr.includes('Телевизор')">mdi-check-circle</v-icon>{{ $t('addAdsTV')}}</span>
-                                <span @click="checkArr('mebel_arr', 'Диван')" class="form__item" :class="{'item__active':form.mebel_arr.includes('Диван')}"><v-icon color="green" v-if="form.mebel_arr.includes('Диван')">mdi-check-circle</v-icon>{{ $t('addAdsSofa')}}</span>
-                                <span @click="checkArr('mebel_arr', 'Кровать')" class="form__item" :class="{'item__active':form.mebel_arr.includes('Кровать')}"><v-icon color="green" v-if="form.mebel_arr.includes('Кровать')">mdi-check-circle</v-icon>{{ $t('addAdsBed')}}</span>
-                                <span @click="checkArr('mebel_arr', 'Кухонный гарнитур')" class="form__item" :class="{'item__active':form.mebel_arr.includes('Кухонный гарнитур')}"><v-icon color="green" v-if="form.mebel_arr.includes('Кухонный гарнитур')">mdi-check-circle</v-icon>{{ $t('addAdsKitchenSet')}}</span>
-                                <span @click="checkArr('mebel_arr', 'Кондиционер')" class="form__item" :class="{'item__active':form.mebel_arr.includes('Кондиционер')}"><v-icon color="green" v-if="form.mebel_arr.includes('Кондиционер')">mdi-check-circle</v-icon>{{ $t('addAdsConditioner')}}</span>
-                                <span @click="checkArr('mebel_arr', 'Микроволновая печь')" class="form__item" :class="{'item__active':form.mebel_arr.includes('Микроволновая печь')}"><v-icon color="green" v-if="form.mebel_arr.includes('Микроволновая печь')">mdi-check-circle</v-icon>{{ $t('addAdsAMicrowave')}}</span>
-                                <span @click="checkArr('mebel_arr', 'Вся бытовая техника')" class="form__item" :class="{'item__active':form.mebel_arr.includes('Вся бытовая техника')}"><v-icon color="green" v-if="form.mebel_arr.includes('Вся бытовая техника')">mdi-check-circle</v-icon>{{ $t('addAdsAllHouseholdAppliances')}}</span>
+                                <span @click="checkArr('mebel_arr', 'holodilnik')" class="form__item" :class="{'item__active':form.mebel_arr.includes('holodilnik')}"><v-icon color="green" v-if="form.mebel_arr.includes('holodilnik')">mdi-check-circle</v-icon>{{ $t('addAdsFridge')}}</span>
+                                <span @click="checkArr('mebel_arr', 'stiralnaya_mashinka')" class="form__item" :class="{'item__active':form.mebel_arr.includes('stiralnaya_mashinka')}"><v-icon color="green" v-if="form.mebel_arr.includes('stiralnaya_mashinka')">mdi-check-circle</v-icon>{{ $t('addAdsWasher')}}</span>
+                                <span @click="checkArr('mebel_arr', 'televizor')" class="form__item" :class="{'item__active':form.mebel_arr.includes('televizor')}"><v-icon color="green" v-if="form.mebel_arr.includes('televizor')">mdi-check-circle</v-icon>{{ $t('addAdsTV')}}</span>
+                                <span @click="checkArr('mebel_arr', 'divan')" class="form__item" :class="{'item__active':form.mebel_arr.includes('divan')}"><v-icon color="green" v-if="form.mebel_arr.includes('divan')">mdi-check-circle</v-icon>{{ $t('addAdsSofa')}}</span>
+                                <span @click="checkArr('mebel_arr', 'krovat')" class="form__item" :class="{'item__active':form.mebel_arr.includes('krovat')}"><v-icon color="green" v-if="form.mebel_arr.includes('krovat')">mdi-check-circle</v-icon>{{ $t('addAdsBed')}}</span>
+                                <span @click="checkArr('mebel_arr', 'kuhonniy_garnitur')" class="form__item" :class="{'item__active':form.mebel_arr.includes('kuhonniy_garnitur')}"><v-icon color="green" v-if="form.mebel_arr.includes('kuhonniy_garnitur')">mdi-check-circle</v-icon>{{ $t('addAdsKitchenSet')}}</span>
+                                <span @click="checkArr('mebel_arr', 'kondicioner')" class="form__item" :class="{'item__active':form.mebel_arr.includes('kondicioner')}"><v-icon color="green" v-if="form.mebel_arr.includes('kondicioner')">mdi-check-circle</v-icon>{{ $t('addAdsConditioner')}}</span>
+                                <span @click="checkArr('mebel_arr', 'mikrovolnovaya_pech')" class="form__item" :class="{'item__active':form.mebel_arr.includes('mikrovolnovaya_pech')}"><v-icon color="green" v-if="form.mebel_arr.includes('mikrovolnovaya_pech')">mdi-check-circle</v-icon>{{ $t('addAdsAMicrowave')}}</span>
+                                <span @click="checkArr('mebel_arr', 'vsya_bitovaya_tehnika')" class="form__item" :class="{'item__active':form.mebel_arr.includes('vsya_bitovaya_tehnika')}"><v-icon color="green" v-if="form.mebel_arr.includes('vsya_bitovaya_tehnika')">mdi-check-circle</v-icon>{{ $t('addAdsAllHouseholdAppliances')}}</span>
                             </div>
 
                             <div class="form__input" v-if="$route.params.table_name == 'Ofis' || $route.params.table_name == 'Magazin'">
-                                <span @click="checkArr('mebel_arr', 'Кондиционер')" class="form__item" :class="{'item__active':form.mebel_arr.includes('Кондиционер')}"><v-icon color="green" v-if="form.mebel_arr.includes('Кондиционер')">mdi-check-circle</v-icon>{{ $t('addAdsConditioner')}}</span>
+                                <span @click="checkArr('mebel_arr', 'kondicioner')" class="form__item" :class="{'item__active':form.mebel_arr.includes('kondicioner')}"><v-icon color="green" v-if="form.mebel_arr.includes('kondicioner')">mdi-check-circle</v-icon>{{ $t('addAdsConditioner')}}</span>
                             </div>
 
                         </div>
@@ -1070,41 +1057,41 @@
 
                             <!-- Разное -  Для квартиры - Общежития - Дом  -->
                             <div class="form__input" v-if="$route.params.table_name == 'Kvartira' || $route.params.table_name == 'Obshejitie'">
-                                <span @click="checkArr('raznoe', 'Кухня-студия')" class="form__item" :class="{'item__active':form.raznoe.includes('Кухня-студия')}"><v-icon color="green" v-if="form.raznoe.includes('Кухня-студия')">mdi-check-circle</v-icon>{{ $t('addAdsStudioKitchen')}}</span>
-                                <span @click="checkArr('raznoe', 'Комнаты изолированны')" class="form__item" :class="{'item__active':form.raznoe.includes('Комнаты изолированны')}"><v-icon color="green" v-if="form.raznoe.includes('Комнаты изолированны')">mdi-check-circle</v-icon>{{ $t('addAdsTheRoomsAreIsolated')}}</span>
-                                <span @click="checkArr('raznoe', 'Кабельное TV')"  class="form__item" :class="{'item__active':form.raznoe.includes('Кабельное TV')}"><v-icon color="green" v-if="form.raznoe.includes('Кабельное TV')">mdi-check-circle</v-icon>{{ $t('addAdsCableTV')}}</span>
-                                <span @click="checkArr('raznoe', 'Кладовка')" class="form__item" :class="{'item__active':form.raznoe.includes('Кладовка')}"><v-icon color="green" v-if="form.raznoe.includes('Кладовка')">mdi-check-circle</v-icon>{{ $t('addAdsStorage')}}</span>
-                                <span @click="checkArr('raznoe', 'Бесплатный WI-FI')"  class="form__item" :class="{'item__active':form.raznoe.includes('Бесплатный WI-FI')}"><v-icon color="green" v-if="form.raznoe.includes('Бесплатный WI-FI')">mdi-check-circle</v-icon>{{ $t('addAdsFreeWI-FI') }}</span>
+                                <span @click="checkArr('raznoe', 'kuhnya_studiya')" class="form__item" :class="{'item__active':form.raznoe.includes('kuhnya_studiya')}"><v-icon color="green" v-if="form.raznoe.includes('kuhnya_studiya')">mdi-check-circle</v-icon>{{ $t('addAdsStudioKitchen')}}</span>
+                                <span @click="checkArr('raznoe', 'komnati_izolirovanni')" class="form__item" :class="{'item__active':form.raznoe.includes('komnati_izolirovanni')}"><v-icon color="green" v-if="form.raznoe.includes('komnati_izolirovanni')">mdi-check-circle</v-icon>{{ $t('addAdsTheRoomsAreIsolated')}}</span>
+                                <span @click="checkArr('raznoe', 'kabelnoe_tv')"  class="form__item" :class="{'item__active':form.raznoe.includes('kabelnoe_tv')}"><v-icon color="green" v-if="form.raznoe.includes('kabelnoe_tv')">mdi-check-circle</v-icon>{{ $t('addAdsCableTV')}}</span>
+                                <span @click="checkArr('raznoe', 'kladovka')" class="form__item" :class="{'item__active':form.raznoe.includes('kladovka')}"><v-icon color="green" v-if="form.raznoe.includes('kladovka')">mdi-check-circle</v-icon>{{ $t('addAdsStorage')}}</span>
+                                <span @click="checkArr('raznoe', 'besplatniy_wifi')"  class="form__item" :class="{'item__active':form.raznoe.includes('besplatniy_wifi')}"><v-icon color="green" v-if="form.raznoe.includes('besplatniy_wifi')">mdi-check-circle</v-icon>{{ $t('addAdsFreeWI-FI') }}</span>
                             </div>
 
                             <!-- Разное - Дом-->
                             <div class="form__input" v-if="$route.params.table_name == 'Dom'">
-                                <span @click="checkArr('raznoe', 'Сад')" class="form__item" :class="{'item__active':form.raznoe.includes('Сад')}"><v-icon color="green" v-if="form.raznoe.includes('Сад')">mdi-check-circle</v-icon>{{ $t('addAdsGarden')}}</span>
-                                <span @click="checkArr('raznoe', 'Баня')" class="form__item" :class="{'item__active':form.raznoe.includes('Баня')}"><v-icon color="green" v-if="form.raznoe.includes('Баня')">mdi-check-circle</v-icon>{{ $t('addAdsBathhouse')}}</span>
-                                <span @click="checkArr('raznoe', 'Бассейн')" class="form__item" :class="{'item__active':form.raznoe.includes('Бассейн')}"><v-icon color="green" v-if="form.raznoe.includes('Бассейн')">mdi-check-circle</v-icon>{{ $t('addAdsSwimmingPool')}}</span>
-                                <span @click="checkArr('raznoe', 'Сауна')" class="form__item" :class="{'item__active':form.raznoe.includes('Сауна')}"><v-icon color="green" v-if="form.raznoe.includes('Сауна')">mdi-check-circle</v-icon>{{ $t('addAdsSauna')}}</span>
-                                <span @click="checkArr('raznoe', 'Джакузи')" class="form__item" :class="{'item__active':form.raznoe.includes('Джакузи')}"><v-icon color="green" v-if="form.raznoe.includes('Джакузи')">mdi-check-circle</v-icon>{{ $t('addAdsJacuzzi')}}</span>
-                                <span @click="checkArr('raznoe', 'Кухня-студия')" class="form__item" :class="{'item__active':form.raznoe.includes('Кухня-студия')}"><v-icon color="green" v-if="form.raznoe.includes('Кухня-студия')">mdi-check-circle</v-icon>{{ $t('addAdsStudioKitchen')}}</span>
-                                <span @click="checkArr('raznoe', 'Комнаты изолированны')" class="form__item" :class="{'item__active':form.raznoe.includes('Комнаты изолированны')}"><v-icon color="green" v-if="form.raznoe.includes('Комнаты изолированны')">mdi-check-circle</v-icon>{{ $t('addAdsTheRoomsAreIsolated')}}</span>
-                                <span @click="checkArr('raznoe', 'Кабельное TV')" class="form__item" :class="{'item__active':form.raznoe.includes('Кабельное TV')}"><v-icon color="green" v-if="form.raznoe.includes('Кабельное TV')">mdi-check-circle</v-icon>{{ $t('addAdsCableTV')}}</span>
-                                <span @click="checkArr('raznoe', 'Хозпостройки')" class="form__item" :class="{'item__active':form.raznoe.includes('Хозпостройки')}"><v-icon color="green" v-if="form.raznoe.includes('Хозпостройки')">mdi-check-circle</v-icon>{{ $t('addAdsOutbuildings')}}</span>
-                                <span @click="checkArr('raznoe', '3 Фазы')" class="form__item" :class="{'item__active':form.raznoe.includes('3 Фазы')}"><v-icon color="green" v-if="form.raznoe.includes('3 Фазы')">mdi-check-circle</v-icon>{{ $t('addAds3Phases')}}</span>
+                                <span @click="checkArr('raznoe', 'sad')" class="form__item" :class="{'item__active':form.raznoe.includes('sad')}"><v-icon color="green" v-if="form.raznoe.includes('sad')">mdi-check-circle</v-icon>{{ $t('addAdsGarden')}}</span>
+                                <span @click="checkArr('raznoe', 'banya')" class="form__item" :class="{'item__active':form.raznoe.includes('banya')}"><v-icon color="green" v-if="form.raznoe.includes('banya')">mdi-check-circle</v-icon>{{ $t('addAdsBathhouse')}}</span>
+                                <span @click="checkArr('raznoe', 'bassein')" class="form__item" :class="{'item__active':form.raznoe.includes('bassein')}"><v-icon color="green" v-if="form.raznoe.includes('bassein')">mdi-check-circle</v-icon>{{ $t('addAdsSwimmingPool')}}</span>
+                                <span @click="checkArr('raznoe', 'sauna')" class="form__item" :class="{'item__active':form.raznoe.includes('sauna')}"><v-icon color="green" v-if="form.raznoe.includes('sauna')">mdi-check-circle</v-icon>{{ $t('addAdsSauna')}}</span>
+                                <span @click="checkArr('raznoe', 'jakuzi')" class="form__item" :class="{'item__active':form.raznoe.includes('jakuzi')}"><v-icon color="green" v-if="form.raznoe.includes('jakuzi')">mdi-check-circle</v-icon>{{ $t('addAdsJacuzzi')}}</span>
+                                <span @click="checkArr('raznoe', 'kuhnya_studiya')" class="form__item" :class="{'item__active':form.raznoe.includes('kuhnya_studiya')}"><v-icon color="green" v-if="form.raznoe.includes('kuhnya_studiya')">mdi-check-circle</v-icon>{{ $t('addAdsStudioKitchen')}}</span>
+                                <span @click="checkArr('raznoe', 'komnati_izolirovani')" class="form__item" :class="{'item__active':form.raznoe.includes('komnati_izolirovani')}"><v-icon color="green" v-if="form.raznoe.includes('komnati_izolirovani')">mdi-check-circle</v-icon>{{ $t('addAdsTheRoomsAreIsolated')}}</span>
+                                <span @click="checkArr('raznoe', 'kabelnoe_tv')" class="form__item" :class="{'item__active':form.raznoe.includes('kabelnoe_tv')}"><v-icon color="green" v-if="form.raznoe.includes('kabelnoe_tv')">mdi-check-circle</v-icon>{{ $t('addAdsCableTV')}}</span>
+                                <span @click="checkArr('raznoe', 'hozpostroiki')" class="form__item" :class="{'item__active':form.raznoe.includes('hozpostroiki')}"><v-icon color="green" v-if="form.raznoe.includes('hozpostroiki')">mdi-check-circle</v-icon>{{ $t('addAdsOutbuildings')}}</span>
+                                <span @click="checkArr('raznoe', '3_fazi')" class="form__item" :class="{'item__active':form.raznoe.includes('3_fazi')}"><v-icon color="green" v-if="form.raznoe.includes('3_fazi')">mdi-check-circle</v-icon>{{ $t('addAds3Phases')}}</span>
                             </div>
 
                             <!-- Разное - Магазин -->
                             <div class="form__input" v-if="$route.params.table_name == 'Magazin'">
-                                <span @click="checkArr('raznoe', 'С товаром')"  class="form__item" :class="{'item__active':form.raznoe.includes('С товаром')}"><v-icon color="green" v-if="form.raznoe.includes('С товаром')">mdi-check-circle</v-icon>{{ $t('addAdsWithTheProduct')}}</span>
-                                <span @click="checkArr('raznoe', 'С торговым оборудованием')"  class="form__item" :class="{'item__active':form.raznoe.includes('С торговым оборудованием')}"><v-icon color="green" v-if="form.raznoe.includes('С торговым оборудованием')">mdi-check-circle</v-icon>{{ $t('addAdsWithCommercialEquipment')}}</span>
+                                <span @click="checkArr('raznoe', 's_tovarom')"  class="form__item" :class="{'item__active':form.raznoe.includes('s_tovarom')}"><v-icon color="green" v-if="form.raznoe.includes('s_tovarom')">mdi-check-circle</v-icon>{{ $t('addAdsWithTheProduct')}}</span>
+                                <span @click="checkArr('raznoe', 's_torgovim_oborudovaniem')"  class="form__item" :class="{'item__active':form.raznoe.includes('s_torgovim_oborudovaniem')}"><v-icon color="green" v-if="form.raznoe.includes('s_torgovim_oborudovaniem')">mdi-check-circle</v-icon>{{ $t('addAdsWithCommercialEquipment')}}</span>
                             </div>
 
                             <!-- Разное - Промбаза -->
                             <div class="form__input" v-if="$route.params.table_name == 'Prombaza'">
-                                <span @click="checkArr('raznoe', 'Ж/д тупик')" class="form__item" :class="{'item__active':form.raznoe.includes('Ж/д тупик')}"><v-icon color="green" v-if="form.raznoe.includes('Ж/д тупик')">mdi-check-circle</v-icon>{{ $t('addAdsRailwayDeadEnd') }}</span>
-                                <span @click="checkArr('raznoe', 'Автовесы')"  class="form__item" :class="{'item__active':form.raznoe.includes('Автовесы')}"><v-icon color="green" v-if="form.raznoe.includes('Автовесы')">mdi-check-circle</v-icon>{{ $t('addAdsCarWeights')}}</span>
-                                <span @click="checkArr('raznoe', 'Холодильные камеры')"  class="form__item" :class="{'item__active':form.raznoe.includes('Холодильные камеры')}"><v-icon color="green" v-if="form.raznoe.includes('Холодильные камеры')">mdi-check-circle</v-icon>{{ $t('addAdsColdStorageRooms')}}</span>
-                                <span @click="checkArr('raznoe', 'Кран-балка')" class="form__item" :class="{'item__active':form.raznoe.includes('Кран-балка')}"><v-icon color="green" v-if="form.raznoe.includes('Кран-балка')">mdi-check-circle</v-icon>{{ $t('addAdsCraneBeam')}}</span>
-                                <span @click="checkArr('raznoe', 'Пандус')" class="form__item" :class="{'item__active':form.raznoe.includes('Пандус')}"><v-icon color="green" v-if="form.raznoe.includes('Пандус')">mdi-check-circle</v-icon>{{ $t('addAdsRamp') }}</span>
-                                <span @click="checkArr('raznoe', 'Своя подстанция')" class="form__item" :class="{'item__active':form.raznoe.includes('Своя подстанция')}"><v-icon color="green" v-if="form.raznoe.includes('Своя подстанция')">mdi-check-circle</v-icon>{{ $t('addAdsOwnSubstation')}}</span>
+                                <span @click="checkArr('raznoe', 'jd_tupik')" class="form__item" :class="{'item__active':form.raznoe.includes('jd_tupik')}"><v-icon color="green" v-if="form.raznoe.includes('jd_tupik')">mdi-check-circle</v-icon>{{ $t('addAdsRailwayDeadEnd') }}</span>
+                                <span @click="checkArr('raznoe', 'avtovesi')"  class="form__item" :class="{'item__active':form.raznoe.includes('avtovesi')}"><v-icon color="green" v-if="form.raznoe.includes('avtovesi')">mdi-check-circle</v-icon>{{ $t('addAdsCarWeights')}}</span>
+                                <span @click="checkArr('raznoe', 'holodilnie_kameri')"  class="form__item" :class="{'item__active':form.raznoe.includes('holodilnie_kameri')}"><v-icon color="green" v-if="form.raznoe.includes('holodilnie_kameri')">mdi-check-circle</v-icon>{{ $t('addAdsColdStorageRooms')}}</span>
+                                <span @click="checkArr('raznoe', 'kran_balka')" class="form__item" :class="{'item__active':form.raznoe.includes('kran_balka')}"><v-icon color="green" v-if="form.raznoe.includes('kran_balka')">mdi-check-circle</v-icon>{{ $t('addAdsCraneBeam')}}</span>
+                                <span @click="checkArr('raznoe', 'pandus')" class="form__item" :class="{'item__active':form.raznoe.includes('pandus')}"><v-icon color="green" v-if="form.raznoe.includes('pandus')">mdi-check-circle</v-icon>{{ $t('addAdsRamp') }}</span>
+                                <span @click="checkArr('raznoe', 'svoya_podstanciya')" class="form__item" :class="{'item__active':form.raznoe.includes('svoya_podstanciya')}"><v-icon color="green" v-if="form.raznoe.includes('svoya_podstanciya')">mdi-check-circle</v-icon>{{ $t('addAdsOwnSubstation')}}</span>
                             </div>
 
                         </div>
@@ -1116,9 +1103,9 @@
                             <div class="form__title">{{ $t('addAdsLocation') }}</div>
 
                             <div class="form__input">
-                                <span @click="checkArr('raspolojenie', 'В городе')" class="form__item" :class="{'item__active':form.raspolojenie.includes('В городе')}"><v-icon color="green" v-if="form.raspolojenie.includes('В городе')">mdi-check-circle</v-icon>{{ $t('addAdsInTheCity') }}</span>
-                                <span @click="checkArr('raspolojenie', 'В пригороде')" class="form__item" :class="{'item__active':form.raspolojenie.includes('В пригороде')}"><v-icon color="green" v-if="form.raspolojenie.includes('В пригороде')">mdi-check-circle</v-icon>{{ $t('addAdsInTheSuburbs')}}</span>
-                                <span @click="checkArr('raspolojenie', 'Вдоль трассы')" class="form__item" :class="{'item__active':form.raspolojenie.includes('Вдоль трассы')}"><v-icon color="green" v-if="form.raspolojenie.includes('Вдоль трассы')">mdi-check-circle</v-icon>{{ $t('addAdsAlongTheHighway') }}</span>
+                                <span @click="checkArr('raspolojenie', 'v_gorode')" class="form__item" :class="{'item__active':form.raspolojenie.includes('v_gorode')}"><v-icon color="green" v-if="form.raspolojenie.includes('v_gorode')">mdi-check-circle</v-icon>{{ $t('addAdsInTheCity') }}</span>
+                                <span @click="checkArr('raspolojenie', 'v_prigorode')" class="form__item" :class="{'item__active':form.raspolojenie.includes('v_prigorode')}"><v-icon color="green" v-if="form.raspolojenie.includes('v_prigorode')">mdi-check-circle</v-icon>{{ $t('addAdsInTheSuburbs')}}</span>
+                                <span @click="checkArr('raspolojenie', 'vdol_trasi')" class="form__item" :class="{'item__active':form.raspolojenie.includes('vdol_trasi')}"><v-icon color="green" v-if="form.raspolojenie.includes('vdol_trasi')">mdi-check-circle</v-icon>{{ $t('addAdsAlongTheHighway') }}</span>
                             </div>
                         </div>
 
@@ -1129,13 +1116,13 @@
                             <div class="form__title">{{ $t('addAdsCommunications') }}</div>
 
                             <div class="form__input">
-                                <span @click="checkArr('kommunikacii', 'Свет')" class="form__item" :class="{'item__active':form.kommunikacii.includes('Свет')}"><v-icon color="green" v-if="form.kommunikacii.includes('Свет')">mdi-check-circle</v-icon>{{ $t('addAdsLight') }}</span>
-                                <span @click="checkArr('kommunikacii', 'Газ')" class="form__item" :class="{'item__active':form.kommunikacii.includes('Газ')}"><v-icon color="green" v-if="form.kommunikacii.includes('Газ')">mdi-check-circle</v-icon>{{ $t('addAdsGas') }}</span>
-                                <span @click="checkArr('kommunikacii', 'Интернет')"  class="form__item" :class="{'item__active':form.kommunikacii.includes('Интернет')}"><v-icon color="green" v-if="form.kommunikacii.includes('Интернет')">mdi-check-circle</v-icon>{{ $t('addAdsTheInternet') }}</span>
-                                <span @click="checkArr('kommunikacii', 'Отопление')"  class="form__item" :class="{'item__active':form.kommunikacii.includes('Отопление')}"><v-icon color="green" v-if="form.kommunikacii.includes('Отопление')">mdi-check-circle</v-icon>{{ $t('addAdsHeating') }}</span>
-                                <span @click="checkArr('kommunikacii', 'Вода')"  class="form__item" :class="{'item__active':form.kommunikacii.includes('Вода')}"><v-icon color="green" v-if="form.kommunikacii.includes('Вода')">mdi-check-circle</v-icon>{{ $t('addAdsWater') }}</span>
-                                <span @click="checkArr('kommunikacii', 'Телефон')" class="form__item"  :class="{'item__active':form.kommunikacii.includes('Телефон')}"><v-icon color="green" v-if="form.kommunikacii.includes('Телефон')">mdi-check-circle</v-icon>{{ $t('addAdsTelephone') }}</span>
-                                <span @click="checkArr('kommunikacii', 'Канализация')" class="form__item" :class="{'item__active':form.kommunikacii.includes('Канализация')}"><v-icon color="green" v-if="form.kommunikacii.includes('Канализация')">mdi-check-circle</v-icon>{{ $t('addAdsSewageSystem') }}</span>
+                                <span @click="checkArr('kommunikacii', 'svet')" class="form__item" :class="{'item__active':form.kommunikacii.includes('svet')}"><v-icon color="green" v-if="form.kommunikacii.includes('svet')">mdi-check-circle</v-icon>{{ $t('addAdsLight') }}</span>
+                                <span @click="checkArr('kommunikacii', 'gaz')" class="form__item" :class="{'item__active':form.kommunikacii.includes('gaz')}"><v-icon color="green" v-if="form.kommunikacii.includes('gaz')">mdi-check-circle</v-icon>{{ $t('addAdsGas') }}</span>
+                                <span @click="checkArr('kommunikacii', 'internet')"  class="form__item" :class="{'item__active':form.kommunikacii.includes('internet')}"><v-icon color="green" v-if="form.kommunikacii.includes('internet')">mdi-check-circle</v-icon>{{ $t('addAdsTheInternet') }}</span>
+                                <span @click="checkArr('kommunikacii', 'otoplenie')"  class="form__item" :class="{'item__active':form.kommunikacii.includes('otoplenie')}"><v-icon color="green" v-if="form.kommunikacii.includes('otoplenie')">mdi-check-circle</v-icon>{{ $t('addAdsHeating') }}</span>
+                                <span @click="checkArr('kommunikacii', 'voda')"  class="form__item" :class="{'item__active':form.kommunikacii.includes('voda')}"><v-icon color="green" v-if="form.kommunikacii.includes('voda')">mdi-check-circle</v-icon>{{ $t('addAdsWater') }}</span>
+                                <span @click="checkArr('kommunikacii', 'telefon')" class="form__item"  :class="{'item__active':form.kommunikacii.includes('telefon')}"><v-icon color="green" v-if="form.kommunikacii.includes('telefon')">mdi-check-circle</v-icon>{{ $t('addAdsTelephone') }}</span>
+                                <span @click="checkArr('kommunikacii', 'kanalizaciya')" class="form__item" :class="{'item__active':form.kommunikacii.includes('kanalizaciya')}"><v-icon color="green" v-if="form.kommunikacii.includes('kanalizaciya')">mdi-check-circle</v-icon>{{ $t('addAdsSewageSystem') }}</span>
                             </div>
 
                         </div>
@@ -1146,14 +1133,14 @@
                             <div class="form__title">{{ $t('addAdsSecurity') }}</div>
 
                             <div class="form__input">
-                                <span @click="checkArr('bezopasnost', 'Домофон')" class="form__item" :class="{'item__active':form.bezopasnost.includes('Домофон')}"><v-icon color="green" v-if="form.bezopasnost.includes('Домофон')">mdi-check-circle</v-icon>{{ $t('addAdsIntercom') }}</span>
-                                <span @click="checkArr('bezopasnost', 'Видеодомофон')" class="form__item" :class="{'item__active':form.bezopasnost.includes('Видеодомофон')}"><v-icon color="green" v-if="form.bezopasnost.includes('Видеодомофон')">mdi-check-circle</v-icon>{{ $t('addAdsVideoIntercom') }}</span>
-                                <span @click="checkArr('bezopasnost', 'Сигнализация')" class="form__item" :class="{'item__active':form.bezopasnost.includes('Сигнализация')}"><v-icon color="green" v-if="form.bezopasnost.includes('Сигнализация')">mdi-check-circle</v-icon>{{ $t('addAdsAlarmSystem') }}</span>
-                                <span @click="checkArr('bezopasnost', 'Решетки на окнах')" class="form__item" :class="{'item__active':form.bezopasnost.includes('Решетки на окнах')}"><v-icon color="green" v-if="form.bezopasnost.includes('Решетки на окнах')">mdi-check-circle</v-icon>{{ $t('addAdsBarsOnTheWindows') }}</span>
-                                <span @click="checkArr('bezopasnost', 'Охрана')" class="form__item" :class="{'item__active':form.bezopasnost.includes('Охрана')}"><v-icon color="green" v-if="form.bezopasnost.includes('Охрана')">mdi-check-circle</v-icon>{{ $t('addAdsSecurity2') }}</span>
-                                <span @click="checkArr('bezopasnost', 'Видеонаблюдение')" class="form__item" :class="{'item__active':form.bezopasnost.includes('Видеонаблюдение')}"><v-icon color="green" v-if="form.bezopasnost.includes('Видеонаблюдение')">mdi-check-circle</v-icon>{{ $t('addAdsVideoSurveillance') }}</span>
-                                <span @click="checkArr('bezopasnost', 'Кодовый замок')" class="form__item" :class="{'item__active':form.bezopasnost.includes('Кодовый замок')}"><v-icon color="green" v-if="form.bezopasnost.includes('Кодовый замок')">mdi-check-circle</v-icon>{{ $t('addAdsCombinationLock') }}</span>
-                                <span @click="checkArr('bezopasnost', 'Консьерж')" class="form__item" :class="{'item__active':form.bezopasnost.includes('Консьерж')}"><v-icon color="green" v-if="form.bezopasnost.includes('Консьерж')">mdi-check-circle</v-icon>{{ $t('addAdsConcierge') }}</span>
+                                <span @click="checkArr('bezopasnost', 'domofon')" class="form__item" :class="{'item__active':form.bezopasnost.includes('domofon')}"><v-icon color="green" v-if="form.bezopasnost.includes('domofon')">mdi-check-circle</v-icon>{{ $t('addAdsIntercom') }}</span>
+                                <span @click="checkArr('bezopasnost', 'videodomofon')" class="form__item" :class="{'item__active':form.bezopasnost.includes('videodomofon')}"><v-icon color="green" v-if="form.bezopasnost.includes('videodomofon')">mdi-check-circle</v-icon>{{ $t('addAdsVideoIntercom') }}</span>
+                                <span @click="checkArr('bezopasnost', 'signalizaciya')" class="form__item" :class="{'item__active':form.bezopasnost.includes('signalizaciya')}"><v-icon color="green" v-if="form.bezopasnost.includes('signalizaciya')">mdi-check-circle</v-icon>{{ $t('addAdsAlarmSystem') }}</span>
+                                <span @click="checkArr('bezopasnost', 'reshotki_na_oknah')" class="form__item" :class="{'item__active':form.bezopasnost.includes('reshotki_na_oknah')}"><v-icon color="green" v-if="form.bezopasnost.includes('reshotki_na_oknah')">mdi-check-circle</v-icon>{{ $t('addAdsBarsOnTheWindows') }}</span>
+                                <span @click="checkArr('bezopasnost', 'ohrana')" class="form__item" :class="{'item__active':form.bezopasnost.includes('ohrana')}"><v-icon color="green" v-if="form.bezopasnost.includes('ohrana')">mdi-check-circle</v-icon>{{ $t('addAdsSecurity2') }}</span>
+                                <span @click="checkArr('bezopasnost', 'videonabludenie')" class="form__item" :class="{'item__active':form.bezopasnost.includes('videonabludenie')}"><v-icon color="green" v-if="form.bezopasnost.includes('videonabludenie')">mdi-check-circle</v-icon>{{ $t('addAdsVideoSurveillance') }}</span>
+                                <span @click="checkArr('bezopasnost', 'kodoviy_zamok')" class="form__item" :class="{'item__active':form.bezopasnost.includes('kodoviy_zamok')}"><v-icon color="green" v-if="form.bezopasnost.includes('kodoviy_zamok')">mdi-check-circle</v-icon>{{ $t('addAdsCombinationLock') }}</span>
+                                <span @click="checkArr('bezopasnost', 'konserj')" class="form__item" :class="{'item__active':form.bezopasnost.includes('konserj')}"><v-icon color="green" v-if="form.bezopasnost.includes('konserj')">mdi-check-circle</v-icon>{{ $t('addAdsConcierge') }}</span>
                             </div>
 
                         </div>
@@ -1163,12 +1150,11 @@
                     <!--Текст описание - Textarea -->
                     <div v-if="$route.params.step == 4" class="form-group  addAds__form-block">
 
-
                         <!-- Заголовок -->
-                        <h2 class="text-center py-2 pb-4 fw-bold">{{ updateDateLocaleStore.lang == 'ru' ? 'Описание и цена' : ''}}{{ updateDateLocaleStore.lang == 'kz' ? 'Сипаттама және баға' : ''}}{{ updateDateLocaleStore.lang == 'en' ? 'Description and price' : ''}}</h2>
+                        <h2 class="text-center py-2 pb-4 fw-bold">{{ langStore.lang == 'ru' ? 'Описание и цена' : ''}}{{ langStore.lang == 'kz' ? 'Сипаттама және баға' : ''}}</h2>
 
                         <!-- Цена в месяц - За кв.м, за все -->
-                        <div v-if="$route.params.table_name == 'Business' || $route.params.table_name == 'Ofis' || $route.params.table_name == 'Zdanie' || $route.params.table_name == 'Magazin' || $route.params.table_name == 'Prombaza' || $route.params.table_name == 'Prochaya'" class="py-3">
+                        <div v-if="form.tip_sdelki == 'sdam' && form.tip_sdelki == 'sdam' && ['Business','Ofis','Zdanie','Magazin','Prombaza','Prochaya'].includes($route.params.table_name)" class="py-3">
 
                             <!-- Заголовок -->
                             <div class="form__title">{{ $t('addAdsPricePerMonth') }}</div>
@@ -1177,8 +1163,8 @@
                             <validation-provider rules="required" v-model="form.cena_tip" name="cena_tip" v-slot="{ errors }">
 
                                 <div class="form__input">
-                                    <span @click="form.cena_tip = 'За все'" class="form__item" :class="{'item__active':form.cena_tip == 'За все'}"><v-icon color="green" v-if="form.cena_tip == 'За все'">mdi-check-circle</v-icon>{{ $t('addAdsForEverything') }}</span>
-                                    <span @click="form.cena_tip = 'За кв.м'" class="form__item" :class="{'item__active':form.cena_tip == 'За кв.м'}"><v-icon color="green" v-if="form.cena_tip == 'За кв.м'">mdi-check-circle</v-icon>{{ $t('addAdsPerSqM') }}</span>
+                                    <span @click="form.cena_tip = 'za_vse'" class="form__item" :class="{'item__active':form.cena_tip == 'za_vse'}"><v-icon color="green" v-if="form.cena_tip == 'za_vse'">mdi-check-circle</v-icon>{{ $t('addAdsForEverything') }}</span>
+                                    <span @click="form.cena_tip = 'za_kvm'" class="form__item" :class="{'item__active':form.cena_tip == 'za_kvm'}"><v-icon color="green" v-if="form.cena_tip == 'za_kvm'">mdi-check-circle</v-icon>{{ $t('addAdsPerSqM') }}</span>
                                 </div>
 
                                 <!-- Вывожу ошибки - veevalidate, vform -->
@@ -1470,13 +1456,13 @@
                         <!-- Телефон 2 -->
                         <div class="form-group">
 
-                            <vue-tel-input v-model="form.tel2"  style="height: 56px"
+                            <vue-tel-input v-model="form.tel_2"  style="height: 56px"
                                            :inputOptions="{ placeholder: $t('addAdsYourPhoneNumber'), showDialCode: true}"
                                            :validCharactersOnly="true"
                             ></vue-tel-input>
 
                             <div class="whatsapp-checkbox">
-                                <input type="checkbox" v-model="form.whatsapp_tel2" :disabled="!form.tel2" :true-value="1" :false-value="0" id="whatsapp2">
+                                <input type="checkbox" v-model="form.whatsapp_tel_2" :disabled="!form.tel_2" :true-value="1" :false-value="0" id="whatsapp2">
                                 <label for="whatsapp2">WhatsApp</label>
                             </div>
 
@@ -1579,7 +1565,7 @@
 import {useAuthStore} from "../../../stores/auth";
 import {useImagesStore} from "../../../stores/images";
 import {useKZLocationStore} from "../../../stores/KZLocation";
-import { useUpdateDateLocaleStore } from "../../../stores/updateDateLocale";
+import { useLangStore } from "../../../stores/lang";
 
 // VueDraggable Пакет для перемещения картинок в массиве (по экрану)
 import draggable from 'vuedraggable'
@@ -1619,7 +1605,7 @@ export default {
             authStore: useAuthStore(),
             imageStore: useImagesStore(),
             KZLocationStore: useKZLocationStore(),
-            updateDateLocaleStore: useUpdateDateLocaleStore(),
+            langStore: useLangStore(),
 
             query: false,
 
@@ -1634,17 +1620,17 @@ export default {
 
                 table_name: '',
                 zagolovok: '',
-                tip_sdelki: 'Сдам',
+                tip_sdelki: 'sdam',
                 tip_obekta: '',
-                period_arendi: 'На длительно',
+                period_arendi: 'na_dlitelno',
                 kolichestvo_komnat: 1,
 
-                deistvuushii_bisnes: 'Да',
-                sfera_deyatelnosti: 'Производство',
+                deistvuushii_biznes: 'da',
+                sfera_deyatelnosti: 'proizvodstvo',
                 cena: '',
-                cena_tip: 'За все',
+                cena_tip: 'za_vse',
                 mestopolojenie: '', //магазин
-                tip_stroeniya: 'Панель',
+                tip_stroeniya: 'panel',
                 god_postroiki: '',
                 tip_ofisa: '',
                 visota_potolkov: 2.5,
@@ -1702,8 +1688,8 @@ export default {
                 name: '',
                 tel: '',
                 whatsapp_tel: 0,
-                tel2: '',
-                whatsapp_tel2: 0,
+                tel_2: '',
+                whatsapp_tel_2: 0,
 
             }),
             imageAndPreviewImage: [],
@@ -1828,21 +1814,25 @@ export default {
         // Поле цена
         cena(){
 
-            if(this.form.period_arendi == 'На длительно' || this.form.period_arendi == 'На подселение'){
-                if(this.updateDateLocaleStore.lang == 'ru')return 'Цена / В месяц'
-                if(this.updateDateLocaleStore.lang == 'kz')return 'Баға / айына'
-                if(this.updateDateLocaleStore.lang == 'en')return 'Price / Per month'
+            if(this.form.tip_sdelki == 'prodam'){
+                if(this.langStore.lang == 'ru')return 'Цена'
+                if(this.langStore.lang == 'kz')return 'Баға'
             }
-            if(this.form.period_arendi == 'Посуточно'){
-                if(this.updateDateLocaleStore.lang == 'ru')return 'Цена / В сутки'
-                if(this.updateDateLocaleStore.lang == 'kz')return 'Баға / тәулігіне'
-                if(this.updateDateLocaleStore.lang == 'en')return 'Price / Per day'
+            if(this.form.period_arendi == 'na_dlitelno' || this.form.period_arendi == 'na_poselenie'){
+                if(this.langStore.lang == 'ru')return 'Цена / В месяц'
+                if(this.langStore.lang == 'kz')return 'Баға / айына'
             }
-            if(this.form.period_arendi == 'По часам'){
-                if(this.updateDateLocaleStore.lang == 'ru')return 'Цена / В час'
-                if(this.updateDateLocaleStore.lang == 'kz')return 'Баға / сағатына'
-                if(this.updateDateLocaleStore.lang == 'en')return 'Price / Per hour'
+            if(this.form.period_arendi == 'posutochno'){
+                if(this.langStore.lang == 'ru')return 'Цена / В сутки'
+                if(this.langStore.lang == 'kz')return 'Баға / тәулігіне'
             }
+            if(this.form.period_arendi == 'po_chasam'){
+                if(this.langStore.lang == 'ru')return 'Цена / В час'
+                if(this.langStore.lang == 'kz')return 'Баға / сағатына'
+            }
+
+            // Значение по умолчанию, если ни одно условие не сработало
+            return this.langStore.lang == 'kz' ? 'Баға' : 'Цена';
 
         },
 
@@ -1859,7 +1849,7 @@ export default {
                 this.form.table_name = this.$route.params.table_name;
                 this.form.name = this.authStore.user.name;
                 this.form.tel = this.authStore.user.tel;
-                this.form.tel2 = this.authStore.user.tel2;
+                this.form.tel_2 = this.authStore.user.tel_2;
 
                 // Показать форму
                 this.showForm = true;
@@ -1872,7 +1862,7 @@ export default {
                     this.form.author_id = this.authStore.user.id;
                     this.form.name = this.authStore.user.name;
                     this.form.tel = this.authStore.user.tel;
-                    this.form.tel2 = this.authStore.user.tel2;
+                    this.form.tel_2 = this.authStore.user.tel_2;
 
                     //Занесем локацию
                     this.KZLocationStore.addLocation({
@@ -2061,7 +2051,7 @@ export default {
                     }
                     else{
                         //Tel 2
-                        this.form.tel2 != null && this.form.tel2.length < 3 ? this.form.tel2 = '' : '';
+                        this.form.tel_2 != null && this.form.tel_2.length < 3 ? this.form.tel_2 = '' : '';
                         this.addOrUpdateAds();
                     }
                 }else{

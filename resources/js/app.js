@@ -1,189 +1,151 @@
-// Подключение Service Worker для сайта PWA Если он доступен в Браузере
+// Подключение Service Worker для PWA
 window.addEventListener('load', async () => {
-    // Проверка есть ли данное свойство в данном браузере в navigator
     if ('serviceWorker' in navigator) {
-        // Получение значения appUrl из .env или другого источника
-        const appUrl = window.appUrl
-
-        // Регистрация Service Worker и отправка сообщения с данными
+        const appUrl = window.appUrl;
         navigator.serviceWorker.register('/service-worker.js')
             .then(registration => {
-                // Отправляем сообщение с данными в Service Worker
-                registration.active.postMessage({ appUrl: appUrl });
+                if (registration.active) {
+                    registration.active.postMessage({ appUrl });
+                }
             })
-            .catch(error => {
-                console.error('Ошибка при регистрации Service Worker:', error);
-            });
+            .catch(error => console.error('Ошибка при регистрации Service Worker:', error));
     }
 });
 
 import './bootstrap';
 
-//Создаем приложение VUE
-import {createApp} from 'vue/dist/vue.esm-bundler'
-//Импортируем главный компонент
-import App from './components/AppComponent.vue'
+// Создаем приложение Vue
+import { createApp } from 'vue';
+import App from './components/AppComponent.vue';
 const app = createApp(App);
 
-
-
+// Важная переменная проекта
 window.SiteDomain = window.location.origin;
 
-//Пакет красивых alert sweetalert2
+// SweetAlert2
 import Swal from 'sweetalert2';
-window.Swal = Swal.mixin({
-    // toast: true,
-    confirmButtonColor: '#10a37f',
-});
-const Toast = Swal.mixin({
+window.Swal = Swal.mixin({ confirmButtonColor: '#10a37f' });
+window.Toast = Swal.mixin({
     toast: true,
     position: 'bottom',
     showConfirmButton: false,
     timer: 1500,
-    padding: '0',
+    padding: '0'
 });
-window.Toast = Toast;
 
-//Подключаю рекапчу 3 версия
-import { VueReCaptcha } from 'vue-recaptcha-v3'; //Пакет reCAPTCHA
+// ReCaptcha v3
+import { VueReCaptcha } from 'vue-recaptcha-v3';
 
-//Импортируем плагин настройки валидации VeeValidate
-import VeeValidatePlugin from './plugins/veeValidate'
+// VeeValidate
+import VeeValidatePlugin from './plugins/veeValidate';
 
-
-// Пакет форматирование даты
+// Moment.js
 import moment from 'moment';
 import 'moment/dist/locale/kk';
 import 'moment/dist/locale/ru';
-import 'moment/dist/locale/en-gb';
+const momentMap = { ru: 'ru', kz: 'kk' };
 
-const momentLocale = moment;
+// Pinia
+import { createPinia } from 'pinia';
+import piniaPersist from 'pinia-plugin-persist';
+const pinia = createPinia();
+pinia.use(piniaPersist);
+app.use(pinia);
 
-let lang = localStorage.getItem('lang') == undefined ? 'ru': localStorage.getItem('lang');
-lang == 'kz' ? lang = 'kk' : '';
-lang == 'en' ? lang = 'en-gb' : '';
-moment.locale(lang);
-app.config.globalProperties.$filters = {
+// Lang Store
+import { useLangStore } from './stores/lang';
+const langStore = useLangStore();
 
-    //Для трансформации даты в календарный формат с часами
-    transformDateRu(last_active) {
-        const today = moment();
-        const yesterday = moment().subtract(1, 'days');
-        const lastActiveDate = moment(last_active);
-
-        if (lastActiveDate.isSame(today, 'day')) {
-            if (moment.locale() === 'ru') return `Сегодня, ${lastActiveDate.format('HH:mm')}`;
-            if (moment.locale() === 'kk') return `Бүгін, ${lastActiveDate.format('HH:mm')}`;
-            if (moment.locale() === 'en-gb') return `Today, ${lastActiveDate.format('HH:mm')}`;
-        } else if (lastActiveDate.isSame(yesterday, 'day')) {
-            if (moment.locale() === 'ru') return `Вчера, ${lastActiveDate.format('HH:mm')}`;
-            if (moment.locale() === 'kk') return `Кеше, ${lastActiveDate.format('HH:mm')}`;
-            if (moment.locale() === 'en-gb') return `Yesterday, ${lastActiveDate.format('HH:mm')}`;
-        } else {
-            return lastActiveDate.format('D MMMM, HH:mm');
-        }
-    },
-
-    //Для трансформации даты в календарный формат без часов
-    transformDateRuNotWatch(last_active) {
-        const today = moment();
-        const yesterday = moment().subtract(1, 'days');
-        const lastActiveDate = moment(last_active);
-
-        if (lastActiveDate.isSame(today, 'day')) {
-            if (moment.locale() === 'ru') return 'Сегодня';
-            if (moment.locale() === 'kk') return 'Бүгін';
-            if (moment.locale() === 'en-gb') return 'Today';
-        } else if (lastActiveDate.isSame(yesterday, 'day')) {
-            if (moment.locale() === 'ru') return 'Вчера';
-            if (moment.locale() === 'kk') return 'Кеше';
-            if (moment.locale() === 'en-gb') return 'Yesterday';
-        } else {
-            return lastActiveDate.format('D MMMM');
-        }
-    },
-
-    //Для часов
-    transformDateWatch(last_active) {
-        return moment(last_active).format("HH:mm"); // Например, "14:30"
-    },
-
-    //Для цены было 90000000 формат будет 9 000 000
-    format_number(value) {
-        return parseInt(value).toLocaleString()
-    },
-}
-
-
+// Инициализация moment с текущим языком
+moment.locale(momentMap[langStore.LANG] ?? 'ru');
 
 // Vuetify
-import '@mdi/font/css/materialdesignicons.css' // Ensure you
-import colors from 'vuetify/lib/util/colors'
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-
+import '@mdi/font/css/materialdesignicons.css';
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
 const vuetify = createVuetify({
     components,
     directives,
-    icons: {
-        defaultSet: 'mdi', // This is already the default value - only for display purposes
-    },
+    icons: { defaultSet: 'mdi' },
+    theme: { themes: { light: { colors: { teal: '#008080' } } } }
+});
 
-    theme: {
-        themes: {
-            light: {
-                colors: {
-                    teal: '#008080',
-                }
-            },
-        },
-    },
-
-})
-
-//Импортируем стили и Bootstrap
-import '../sass/app.scss'
-import * as bootstrap from 'bootstrap'
-// Bootstrap Icons
+// Bootstrap & стили
+import '../sass/app.scss';
+import * as bootstrap from 'bootstrap';
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-
-//Для загрузки картинок На сервер
+// Для загрузки изображений
 import { serialize } from 'object-to-formdata';
 window.objectToFormData = serialize;
 
+// Router
+import Router from './router/index';
 
+// Google Login
+import vue3GoogleLogin from 'vue3-google-login';
 
+// i18n
+import { i18nVue } from 'laravel-vue-i18n';
+app.use(i18nVue, {
+    resolve: async lang => {
+        const langs = import.meta.glob('./lang/*.json');
+        return await langs[`./lang/${lang}.json`]();
+    }
+});
 
-//Импортируем маршруты
-import Router from './router/index'
+// Фильтры для дат и чисел
+app.config.globalProperties.$filters = {
+    transformDateRu(last_active) {
+        const today = moment();
+        const yesterday = moment().subtract(1, 'days');
+        const d = moment(last_active);
+        const locale = momentMap[langStore.LANG] ?? 'ru';
+        moment.locale(locale);
 
-//Подключаем пакет Pinia глобальный Store
-import { createPinia } from 'pinia'
-import piniaPersist from 'pinia-plugin-persist'
-const pinia = createPinia()
-pinia.use(piniaPersist)
+        if (d.isSame(today, 'day')) {
+            if (locale === 'ru') return `Сегодня, ${d.format('HH:mm')}`;
+            if (locale === 'kk') return `Бүгін, ${d.format('HH:mm')}`;
+        } else if (d.isSame(yesterday, 'day')) {
+            if (locale === 'ru') return `Вчера, ${d.format('HH:mm')}`;
+            if (locale === 'kk') return `Кеше, ${d.format('HH:mm')}`;
+        } else {
+            return d.format('D MMMM, HH:mm');
+        }
+    },
+    transformDateRuNotWatch(last_active) {
+        const today = moment();
+        const yesterday = moment().subtract(1, 'days');
+        const d = moment(last_active);
+        const locale = momentMap[langStore.LANG] ?? 'ru';
+        moment.locale(locale);
 
-//Авторизация через Google, Apple
-import vue3GoogleLogin from 'vue3-google-login'
+        if (d.isSame(today, 'day')) {
+            if (locale === 'ru') return 'Сегодня';
+            if (locale === 'kk') return 'Бүгін';
+        } else if (d.isSame(yesterday, 'day')) {
+            if (locale === 'ru') return 'Вчера';
+            if (locale === 'kk') return 'Кеше';
+        } else {
+            return d.format('D MMMM');
+        }
+    },
+    transformDateWatch(last_active) {
+        const locale = momentMap[langStore.LANG] ?? 'ru';
+        moment.locale(locale);
+        return moment(last_active).format("HH:mm");
+    },
+    format_number(value) {
+        return parseInt(value).toLocaleString();
+    }
+};
 
-//Для мультиязыка приложения переводы берутся из папки resources/js/lang
-import { i18nVue } from 'laravel-vue-i18n'
-
+// Инициализация приложения
 app.use(VeeValidatePlugin)
-    .use(pinia)
     .use(Router)
     .use(vuetify)
-    .use(vue3GoogleLogin, {
-        clientId: '360947734406-hsjnvasg1pokf20r4sa112vf4mv16jf6.apps.googleusercontent.com'
-    })
-    .use(VueReCaptcha, { siteKey: '6Ld4nRkkAAAAABV1_7o0mAOBAHWa5hf1Y5Z7OEoB', loaderOptions: {useRecaptchaNet: true}})
-    .use(i18nVue, {
-        resolve: async lang => {
-            const langs = import.meta.glob('./lang/*.json');
-            return await langs[`./lang/${lang}.json`]();
-        }
-    })
-    .mount("#app")
+    .use(vue3GoogleLogin, { clientId: '360947734406-hsjnvasg1pokf20r4sa112vf4mv16jf6.apps.googleusercontent.com' })
+    .use(VueReCaptcha, { siteKey: '6Ld4nRkkAAAAABV1_7o0mAOBAHWa5hf1Y5Z7OEoB', loaderOptions: { useRecaptchaNet: true } })
+    .mount("#app");

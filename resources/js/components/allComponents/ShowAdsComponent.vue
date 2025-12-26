@@ -14,7 +14,7 @@
 
             <!-- Счетчик найденных объявлений -->
             <div class="show-ads-page__top-panel-count">
-                {{ $t('indexFound') }} {{ countAds }}
+                {{ $t('showAdsNaideno') }} {{ countAds }}
             </div>
 
             <!-- Кнопка фильтр -->
@@ -25,19 +25,16 @@
                 </svg>
 
                 <!-- Текст кнопки -->
-                <span class="show-ads-page__top-panel-filter-text">{{ $t('indexFilter') }}</span>
+                <span class="show-ads-page__top-panel-filter-text">{{ $t('showAdsFilter') }}</span>
 
                 <!-- Бейдж количества активных фильтров -->
                 <span v-if="countFilter > 0" class="show-ads-page__top-panel-filter-badge">{{ countFilter }}</span>
             </div>
 
-            <!-- Выбор языка -->
-            <div
-                @click="$router.push({ name: $route.name + 'Lang', params: { lang: updateDateLocaleStore.lang.toLowerCase() } })"
-                class="show-ads-page__top-panel-lang"
-            >
+            <!-- Toggle - Переключение языка ru - kz -->
+            <div @click="langStore.toggleLang()" class="show-ads-page__top-panel-lang">
                 <span class="show-ads-page__lang-current">
-                    {{ updateDateLocaleStore.lang.toUpperCase() }}
+                    {{ langStore.lang.toUpperCase() }}
                 </span>
             </div>
 
@@ -47,7 +44,7 @@
         <div v-if="appInstallStore.app" class="install-app-container">
             <button @click="appInstallStore.install()" class="install-app-btn">
                 <img src="/img/siteImg/allImg/logo.svg" alt="logo" class="install-app-logo">
-                <span>{{ $t('indexInstallLime') }}</span>
+                <span>{{ $t('showAdsUstanovitLaimkz') }}</span>
             </button>
         </div>
 
@@ -64,7 +61,7 @@
 
         <!-- Если объявления не найдены -->
         <div v-if="adsNotFound" class="ads-not-found">
-            <h4>{{ $t('indexAdsNotFound') }}</h4>
+            <h4>{{ $t('showAdsObyavleniyaNeNaideni') }}</h4>
         </div>
 
 
@@ -75,7 +72,7 @@
             @click="$router.push({ name: 'allAdsMap' })"
         >
             <i class="bi bi-geo-alt"></i>
-            {{ $t('indexOnTheMap') }}
+            {{ $t('showAdsNaKarte') }}
         </button>
 
 
@@ -97,19 +94,20 @@ import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()// - объект router позволяет программно переходить на другие страницы (router.push, router.replace)
 const route = useRoute()// - объект route содержит текущий маршрут, параметры, query и имя страницы
 
+
 // 📦 Импортируем Stores из разных модулей
 import { useAuthStore } from "../../stores/auth";
 import { useAppInstallStore } from "../../stores/AppInstall";
 import { useFilterStore } from "../../stores/Filter";
 import { useKZLocationStore } from "../../stores/KZLocation";
-import { useUpdateDateLocaleStore } from "../../stores/updateDateLocale";
+import { useLangStore } from '../../stores/lang';
 
 // ⚡ Инициализация Stores
 const authStore = useAuthStore();
 const appInstallStore = useAppInstallStore();
 const filterStore = useFilterStore();
-const updateDateLocaleStore = useUpdateDateLocaleStore();
 const KZLocationStore = useKZLocationStore();
+const langStore = useLangStore()
 
 // 📦 Импортируем компоненты и утилиты
 import AdsPreviewComponent from "./AdsPreviewComponent.vue"; // - Компонент для превью объявлений, который используется в шаблоне <ads-preview-component>

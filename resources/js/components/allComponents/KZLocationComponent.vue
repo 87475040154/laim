@@ -184,7 +184,6 @@
 
 //Импортирую Store - Наше общее состояние
 import {useKZLocationStore} from "../../stores/KZLocation";
-import {useUpdateDateLocaleStore} from "../../stores/updateDateLocale";
 
 export default {
     name: 'KZLocation',
@@ -194,7 +193,6 @@ export default {
 
             //Подключаю Store - Наше общее состояние
             KZLocationStore: useKZLocationStore(),
-            updateDateLocale: useUpdateDateLocaleStore(),
             locationAnimation: false,
 
             popular_cities:['Астана', 'Алматы', 'Шымкент', 'Актобе', 'Караганда', 'Павлодар', 'Усть-Каменогорск', 'Семей', 'Атырау', 'Костанай'],

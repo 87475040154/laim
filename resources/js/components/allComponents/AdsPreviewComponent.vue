@@ -150,12 +150,11 @@
 
                     <!-- На сайте до-->
                     <div class="px-1 px-md-0">
-                        <span v-if="updateDateLocale.lang == 'ru'">На сайте до: </span>
-                        <span v-if="updateDateLocale.lang == 'en'">Before: </span>
+                        <span v-if="langStore.lang == 'ru'">На сайте до: </span>
                         <span v-if="props.ads_arr[virtualRow.index].top_x30 != null">{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].top_x30, 30) }}</span>
                         <span v-else-if="props.ads_arr[virtualRow.index].top_x7 != null">{{ addDaysToCurrentDate(ads.top_x7, 7) }}</span>
                         <span v-else>{{ addDaysToCurrentDate(props.ads_arr[virtualRow.index].updated_at, 7) }}</span>
-                        <span v-if="updateDateLocale.lang == 'kz'" class="pl-1"> дейін</span>
+                        <span v-if="langStore.lang == 'kz'" class="pl-1"> дейін</span>
 
                     </div>
 
@@ -242,7 +241,7 @@
                     <!-- Блок статистика -->
                     <div v-if="controlBlockType == 'Статистика' && !deleteAdsBlock">
                         <div>{{ $t('AdsPreviewAddViewed') }} : <span class="fw-bold">{{ads.view}}</span></div>
-                        <div class="mt-2">{{ $t('AdsPreviewAddGotTheNumber') }} : <span class="fw-bold">{{ads.viewTel}}</span></div>
+                        <div class="mt-2">{{ $t('AdsPreviewAddGotTheNumber') }} : <span class="fw-bold">{{ads.view_tel}}</span></div>
                     </div>
 
                     <!-- Блок Поступили жалобы -->
@@ -294,7 +293,7 @@ const filters = appContext.config.globalProperties.$filters
 import { useAuthStore } from "../../stores/auth"
 import { useImagesStore } from "../../stores/images"
 import { useAdsStore } from "../../stores/ads"
-import { useUpdateDateLocaleStore } from "../../stores/updateDateLocale"
+import { useLangStore } from "../../stores/lang"
 import { useKZLocationStore } from "../../stores/KZLocation"
 
 import { useWindowVirtualizer  } from '@tanstack/vue-virtual'
@@ -318,7 +317,7 @@ const route = useRoute()
 const authStore = useAuthStore()
 const imageStore = useImagesStore()
 const adsStore = useAdsStore()
-const updateDateLocale = useUpdateDateLocaleStore()
+const langStore = useLangStore()
 const KZLocationStore = useKZLocationStore()
 
 // ------------------ STATE ------------------
@@ -527,7 +526,7 @@ function getStatus(one) {
     if (control === 'Поступили жалобы' && author_id === user.id) return {control: 'Поступили жалобы', style: 'bg-red-darken-1 p-1 px-2 rounded-lg', text: t('AdsPreviewAddComplain') }
     if (control === 'Активно' && author_id === user.id) return { style: 'bg-green-darken-1 p-1 px-2 rounded-lg', text: t('AdsPreviewAddActive') }
     if (control === 'Не активно') return { style: 'bg-blue-darken-1 p-1 px-2 rounded-lg', text: t('AdsPreviewAddNoActive') }
-    if (author_id !== user.id && control !== 'В архиве') return { style: 'bg-green-darken-1 p-1 px-2 rounded-lg', text: ownerText[updateDateLocale.lang] }
+    if (author_id !== user.id && control !== 'В архиве') return { style: 'bg-green-darken-1 p-1 px-2 rounded-lg', text: ownerText[langStore.lang] }
     return { style: '', text: '' }
 }
 

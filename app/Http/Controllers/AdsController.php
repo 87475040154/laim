@@ -92,7 +92,7 @@ class AdsController extends Controller
             'text_obyavleniya'=> 'required|string|min:1|max:2000',
             'name'=> 'required|string|min:1|max:30',
             'tel'=> 'required|string|max:255',
-            'tel2'=> 'nullable|string|max:255',
+            'tel_2'=> 'nullable|string|max:255',
             'recaptcha_token' => 'required|string'
         ];
 
@@ -268,7 +268,7 @@ class AdsController extends Controller
             })->orderBy('likes.created_at', 'desc')// Сортировка по времени добавления лайка
                 ->select([
                     "{$tableName}.id", "{$tableName}.author_id", 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images',
-                    'control', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30', 'bueAds',
+                    'control', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30', 'bue_ads',
                     "{$tableName}.updated_at", "{$tableName}.created_at", 'likes.created_at as like_created_at'
                 ]);
 
@@ -279,12 +279,12 @@ class AdsController extends Controller
 
             // Применение условия для фильтрации по состоянию
             $query->where('control', $controlStatus)
-                ->orderBy('bueAds', 'desc')
+                ->orderBy('bue_ads', 'desc')
                 ->orderBy('updated_at', 'desc')
                 ->orderBy('id', 'asc')
                 ->select([
                     'id', 'author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images',
-                    'control', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30', 'bueAds',
+                    'control', 'srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30', 'bue_ads',
                     'updated_at', 'created_at'
                 ])
                 ->with(['likes' => function($query) use ($request) {
@@ -464,10 +464,10 @@ class AdsController extends Controller
         //Если запрос при клике на сам кластер - то получим данные объявлений входящих в этот кластер
         // Получим объявления по ID
         $query->whereIn('id', $request->arr_ads_id)
-            ->orderBy('bueAds', 'desc')
+            ->orderBy('bue_ads', 'desc')
             ->orderBy('updated_at', 'desc')
             ->orderBy('id', 'asc')
-            ->select(['id', 'author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images','control','srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30','bueAds','updated_at', 'created_at'])
+            ->select(['id', 'author_id', 'zagolovok', 'table_name', 'cena', 'gorod', 'raion', 'images','control','srochno_torg', 'top', 'top_8', 'top_x7', 'top_x30','bue_ads','updated_at', 'created_at'])
             ->with(['likes' => function($query) use ($request) {
                 $query->where('author_id', $request->user_id); // Загружаем только лайки текущего пользователя
             }]);
@@ -606,7 +606,7 @@ class AdsController extends Controller
         // Увеличим счетчик просмотра телефона
         $ads = $modelClassName::find($request->ads_id);
         $ads->timestamps = false;
-        $ads->increment('viewTel');
+        $ads->increment('view_tel');
 
         return 'Статистика добавлена';
     }
@@ -665,12 +665,12 @@ class AdsController extends Controller
 
         if ($like->exists) {// Если лайк уже есть, удаляем его
             $like->delete();
-            $ads->decrement('countLike');
+            $ads->decrement('count_like');
             return 'Удалено из избранного';
         }
         else { // Если лайка нет, создаем его
             $like->save();
-            $ads->increment('countLike');
+            $ads->increment('count_like');
             return 'Добавлено в избранное';
         }
     }

@@ -19,7 +19,7 @@ class Prombaza extends Model
         'nomer_doma', 'sostoyanie', 'ploshad_proizvodstvennih_pomesheniy', 'visota_proizvodstvennih_pomesheniy',
         'ploshad_skladskih_pomesheniy', 'visota_skladskih_pomesheniy','ploshad_ofisnih_pomesheniy',
         'text_obyavleniya', 'raspolojenie','kommunikacii','raznoe',
-        'name', 'tel','tel2','whatsapp_tel','whatsapp_tel2', 'bueAds', 'top', 'top_8', 'top_x7', 'top_x30'
+        'name', 'tel','tel_2','whatsapp_tel','whatsapp_tel_2', 'bue_ads', 'top', 'top_8', 'top_x7', 'top_x30'
     ];
 
     // Преобразуем масив в json и обратно при занесении данных в БД и при получении из нее автоматически
